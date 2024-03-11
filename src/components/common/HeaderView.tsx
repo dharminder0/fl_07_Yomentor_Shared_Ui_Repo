@@ -1,10 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {cardStyle} from '../../assets/styles/Common';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { cardStyle } from "../../assets/styles/Common";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { YoColors } from "../../assets/themes/YoColors";
 
-const HeaderView = ({title = '', type = 'back'}) => {
+const HeaderView = ({ title = "", type = "back" }) => {
   const navigation: any = useNavigation();
   const openDrawerScreen = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -14,37 +15,39 @@ const HeaderView = ({title = '', type = 'back'}) => {
       style={[
         cardStyle.row,
         {
-          backgroundColor: '#124076',
-          alignItems: 'center',
+          backgroundColor: YoColors.primary,
+          alignItems: "center",
           paddingHorizontal: 17,
           marginBottom: 12,
         },
-      ]}>
-      {type === 'back' && (
+      ]}
+    >
+      {type === "back" && (
         <MaterialCommunityIcons
           name="arrow-left"
           size={23}
-          color={'#fff'}
+          color={"#fff"}
           onPress={() => navigation.goBack()}
         />
       )}
-      {type === 'drawer' && (
+      {type === "drawer" && (
         <MaterialCommunityIcons
           name="menu"
           size={23}
-          color={'#fff'}
+          color={"#fff"}
           onPress={openDrawerScreen}
         />
       )}
       <Text
         style={{
-          color: '#fff',
+          color: "#fff",
           fontSize: 17,
           marginVertical: 10,
-          fontWeight: '600',
-          textAlign: 'center',
-          width: '88%',
-        }}>
+          fontWeight: "600",
+          textAlign: "center",
+          width: "88%",
+        }}
+      >
         {title}
       </Text>
     </View>

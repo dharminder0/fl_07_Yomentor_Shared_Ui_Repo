@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Dimensions, View} from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {YoImages} from '../assets/themes/YoImages';
-import {Image} from 'react-native-elements';
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Dimensions, View } from "react-native";
+import SplashScreen from "react-native-splash-screen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { YoImages } from "../assets/themes/YoImages";
+import { Image } from "react-native-elements";
 
-const {height, width} = Dimensions.get('window');
-const Startup = ({navigation}: {navigation: any}) => {
+const { height, width } = Dimensions.get("window");
+const Startup = ({ navigation }: { navigation: any }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const init = async () => {
-    await new Promise(resolve =>
+    await new Promise((resolve) =>
       setTimeout(() => {
         resolve(true);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: isLoggedIn ? "AppStack" : "AuthStack" }],
+        });
         SplashScreen.hide();
-      }, 2000),
+      }, 2000)
     );
-    navigation.reset({
-      index: 0,
-      routes: [{name: isLoggedIn ? 'AppStack' : 'AuthStack'}],
-    });
   };
 
   useEffect(() => {
@@ -27,11 +27,11 @@ const Startup = ({navigation}: {navigation: any}) => {
 
   const checkLoggedInStatus = async () => {
     try {
-      const userData = await AsyncStorage.getItem('userData');
+      const userData = await AsyncStorage.getItem("userData");
       setIsLoggedIn(!!userData);
       init();
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -41,13 +41,14 @@ const Startup = ({navigation}: {navigation: any}) => {
     <View
       style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <View style={{marginBottom: 50}}>
-        <Image source={image.logo} style={{height: 55, width: width - 40}} />
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <View style={{ marginBottom: 50 }}>
+        <Image source={image.logo} style={{ height: 55, width: width - 40 }} />
       </View>
-      <ActivityIndicator size={'large'} />
+      <ActivityIndicator size={"large"} />
     </View>
   );
 };

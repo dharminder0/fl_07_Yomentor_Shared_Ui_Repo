@@ -1,38 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   SafeAreaView,
   StatusBar,
   useColorScheme,
-} from 'react-native';
+} from "react-native";
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import LoginPage from './src/components/LoginPage';
-import {NavigationContainer} from '@react-navigation/native';
-import {StackNavigator} from './src/navigation/StackNavigator';
-import DrawerNavigation from './src/navigation/DrawerNavigation';
-import {getUserData} from './src/shared/sharedDetails';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthStack} from './src/navigation/AuthStack';
-import MainNavigator from './src/navigation/MainNavigator';
+import { NavigationContainer } from "@react-navigation/native";
+import MainNavigator from "./src/navigation/MainNavigator";
+import { YoColors } from "./src/assets/themes/YoColors";
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const {height} = Dimensions.get('window');
+  const isDarkMode = useColorScheme() === "dark";
+  const { height } = Dimensions.get("window");
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? '#124076' : '#124076',
+    backgroundColor: isDarkMode ? YoColors.primary : YoColors.primary,
     height: height,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'light-content'}
+        barStyle={isDarkMode ? "light-content" : "light-content"}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <NavigationContainer>
         <MainNavigator />
-        {/* {!isLoggedIn ? <AuthStack /> : <DrawerNavigation />} */}
       </NavigationContainer>
     </SafeAreaView>
   );

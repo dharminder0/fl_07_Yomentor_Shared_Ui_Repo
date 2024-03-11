@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
+import { YoColors } from "../themes/YoColors";
 export const common = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
@@ -13,29 +14,29 @@ export const cardStyle = StyleSheet.create({
     padding: 12,
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   row3: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '33.3%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "33.3%",
   },
   j_row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 5,
   },
   title: {
     fontSize: 18,
     marginVertical: 10,
-    fontWeight: '600',
-    color: '#124076',
+    fontWeight: "600",
+    color: YoColors.primary,
   },
   headTitle: {
-    fontWeight: '600',
+    fontWeight: "600",
     // marginBottom: 5,
-    color: '#124076',
+    color: YoColors.primary,
   },
   subTitle: {
     marginStart: 5,
