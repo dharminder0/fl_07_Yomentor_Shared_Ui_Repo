@@ -9,6 +9,7 @@ export async function getSubjectByGradeId(gradeId: any): Promise<any> {
 }
 
 export async function getOpenBatchListbyTeacherId(
+  reqPayload: any
 ): Promise<any> {
   return AxiosInterceptor.post(`Batch/BatchListbyUserid`, reqPayload);
 }
