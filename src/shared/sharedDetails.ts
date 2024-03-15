@@ -28,7 +28,7 @@ export const saveAsyncData = async (key: string, userData: any) => {
     await AsyncStorage.setItem(key, JSON.stringify(userData));
     console.log("User data saved successfully.");
   } catch (error) {
-    console.error("Error saving user data:", error);
+    console.error("Error saving user data: ", error);
   }
 };
 
@@ -39,7 +39,7 @@ export const getUserData = async (key: string) => {
     if (key === "userData") userInfo = JSON.parse(result);
     return JSON.parse(result);
   } catch (error) {
-    console.error("Error retrieving user data:", error);
+    console.error("Error retrieving user data: ", error);
     return null;
   }
 };
@@ -53,7 +53,7 @@ export const clearUserData = async (key: string) => {
     await AsyncStorage.removeItem(key);
     console.log("User data cleared successfully.");
   } catch (error) {
-    console.error("Error clearing user data:", error);
+    console.error("Error clearing user data: ", error);
   }
 };
 

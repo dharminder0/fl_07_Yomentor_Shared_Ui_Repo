@@ -9,6 +9,8 @@ import BatchDetailTab from "../components/BatchDetailTab";
 import AddStudentAttendence from "../components/batch/students/AddStudentAttendence";
 import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
 import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
+import AssignmentDetails from "../components/batch/assignments/AssignmentDetails";
+import AssesmentDetails from "../components/batch/assessments/AssesmentDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +96,26 @@ export function StackNavigator() {
         options={{
           headerShown: false,
           title: "TeacherAssignmentList",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssignmentDetails"
+        component={AssignmentDetails}
+        options={{
+          headerShown: false,
+          title: "AssignmentDetails",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssesmentDetails"
+        component={AssesmentDetails}
+        options={{
+          headerShown: false,
+          title: "AssesmentDetails",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

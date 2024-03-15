@@ -72,6 +72,9 @@ export const common = StyleSheet.create({
     fontSize: 10,
     marginBottom: 5,
   },
+  mtop10: {
+    marginTop: 10
+  }
 });
 export const cardStyle = StyleSheet.create({
   container: {

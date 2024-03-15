@@ -15,21 +15,11 @@ import { cardStyle } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../../assets/themes/YoColors";
 
-const AssesmentCardView = ({
-  title = "",
-  data = [],
-  isOpenEnroll = false,
-  role = "Student",
-}) => {
+const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
   const navigation: any = useNavigation();
 
   const gotoBatchDetail = (item: any) => {
-    if (!isOpenEnroll) {
-      navigation.navigate("BatchDetailTab", { batchItem: item });
-    }
-    if (isOpenEnroll) {
-      navigation.navigate("OpenBatchDetails", { batchItem: item });
-    }
+    navigation.navigate("AssesmentDetails", { selectedAssessment: item });
   };
 
   const renderItem = ({ item, index }: any) => (
@@ -66,7 +56,7 @@ const AssesmentCardView = ({
           { justifyContent: "space-between", marginBottom: 8 },
         ]}
       >
-        <Text style={cardStyle.headTitle}>{title??''}</Text>
+        <Text style={cardStyle.headTitle}>{title ?? ""}</Text>
         {isOpenEnroll && (
           <View style={cardStyle.row}>
             <MaterialCommunityIcons name="plus" size={14} />

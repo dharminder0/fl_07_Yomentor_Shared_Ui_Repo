@@ -23,7 +23,6 @@ const AssessmentList = ({ batchInfo }: any) => {
     getAssessmentsListByBatchId(payload)
       .then((response: any) => {
         setAssessmentsList([]);
-        console.log(response.data);
         if (response.data && response.data.length > 0) {
           setAssessmentsList(response.data);
         }
@@ -31,7 +30,7 @@ const AssessmentList = ({ batchInfo }: any) => {
       })
       .catch((error: any) => {
         setIsLoading(false);
-        console.error("Error fetching assessments:", error);
+        console.error("Error fetching assessments: ", error);
       });
   }, []);
 

@@ -35,7 +35,7 @@ const StudentList = ({ batchInfo }: any) => {
       })
       .catch((error: any) => {
         setIsLoading(false);
-        console.error("Error fetching students:", error);
+        console.error("Error fetching students: ", error);
       });
   }, []);
 

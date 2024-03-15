@@ -36,6 +36,14 @@ export async function getAssessmentsListByBatchId(payload: any): Promise<any> {
   );
 }
 
+export async function getAssignmentDetailsById(id: number): Promise<any> {
+  return AxiosInterceptor.get(`Assignments/GetAssignment/${id}`);
+}
+
+export async function getAssessmentDetailsById(id: number): Promise<any> {
+  return AxiosInterceptor.get(`Assessments/GetAssessments/${id}`);
+}
+
 export async function getAssignmentsListByTeacherId(
   payload: any
 ): Promise<any> {
