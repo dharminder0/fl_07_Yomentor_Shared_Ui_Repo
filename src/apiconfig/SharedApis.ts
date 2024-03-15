@@ -43,3 +43,21 @@ export async function getAssignmentDetailsById(id: number): Promise<any> {
 export async function getAssessmentDetailsById(id: number): Promise<any> {
   return AxiosInterceptor.get(`Assessments/GetAssessments/${id}`);
 }
+
+export async function getAssignmentsListByTeacherId(
+  payload: any
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `Assignments/GetAssignmentsList/teacherid`,
+    payload
+  );
+}
+
+export async function getAssessmentsListByTeacherId(
+  payload: any
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `Assessments/GetAssessmentsList/teacherid`,
+    payload
+  );
+}
