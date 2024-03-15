@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { common } from "../../assets/styles/Common";
 import { getAssignmentsListByBatchId } from "../../apiconfig/SharedApis";
 import AssesmentCardView from "../common/AssesmentCardView";
-import NoDataAvailable from "../../screens/NoDataAvailable";
 import Loading from "../../screens/Loading";
+import NoDataView from "../../screens/NoDataView";
 
 const AssignmentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -45,7 +45,7 @@ const AssignmentList = ({ batchInfo }: any) => {
           isOpenEnroll={true}
         />
       ) : (
-        <NoDataAvailable />
+        <NoDataView />
       )}
     </View>
   );

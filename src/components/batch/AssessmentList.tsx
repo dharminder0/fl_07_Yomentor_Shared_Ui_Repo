@@ -4,7 +4,7 @@ import AssesmentCardView from "../common/AssesmentCardView";
 import { getAssessmentsListByBatchId } from "../../apiconfig/SharedApis";
 import { common } from "../../assets/styles/Common";
 import Loading from "../../screens/Loading";
-import NoDataAvailable from "../../screens/NoDataAvailable";
+import NoDataView from "../../screens/NoDataView";
 
 const AssessmentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -46,7 +46,7 @@ const AssessmentList = ({ batchInfo }: any) => {
           isOpenEnroll={true}
         />
       ) : (
-        <NoDataAvailable />
+        <NoDataView />
       )}
     </View>
   );

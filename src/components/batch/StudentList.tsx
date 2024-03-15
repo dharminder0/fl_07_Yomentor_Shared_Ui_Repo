@@ -16,7 +16,7 @@ import { YoImages } from "../../assets/themes/YoImages";
 import { YoColors } from "../../assets/themes/YoColors";
 import { getStudentsListByBatchId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
-import NoDataAvailable from "../../screens/NoDataAvailable";
+import NoDataView from "../../screens/NoDataView";
 
 const StudentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -125,7 +125,7 @@ const StudentList = ({ batchInfo }: any) => {
           renderItem={renderItem}
         />
       ) : (
-        <NoDataAvailable />
+        <NoDataView />
       )}
     </View>
   );
