@@ -6,12 +6,11 @@ import { Calendar, Agenda } from "react-native-calendars";
 import moment from "moment";
 
 const AddStudentAttendence = ({ route }: any) => {
-  const batchName = route?.params?.batchItem?.name;
+  const batchName = route?.params?.batchItem?.batchName;
   const [selectedDate, setSelectedDate] = useState<any>(
     moment(new Date()).format("YYYY-MM-DD")
   );
 
-  const studentData = getStudentData();
   const [items, setItems] = useState<any>({
     "2024-03-11": [{ name: "Item 1 - any js object" }],
     "2024-03-12": [{ name: "Item 2 - any js object", height: 80 }],

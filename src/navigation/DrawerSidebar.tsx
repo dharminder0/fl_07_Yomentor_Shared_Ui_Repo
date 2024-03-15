@@ -38,6 +38,20 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
         <Ionicons name="home" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>Dashboard</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.tabView}
+        onPress={() => navigation.navigate("AssessmentList")}
+      >
+        <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
+        <Text style={styles.tabTitle}>My Assessment</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.tabView}
+        onPress={() => navigation.navigate("AssignmentList")}
+      >
+        <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
+        <Text style={styles.tabTitle}>My Assignment</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.tabView} onPress={logoutUser}>
         <MaterialCommunityIcons name="logout" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>Logout</Text>

@@ -9,6 +9,8 @@ import DrawerNavigation from "./DrawerNavigation";
 import { YoColors } from "../assets/themes/YoColors";
 import BatchDetailTab from "../components/BatchDetailTab";
 import AddStudentAttendence from "../components/batch/AddStudentAttendence";
+import AssessmentList from "../components/teacher/AssessmentList";
+import AssignmentList from "../components/teacher/AssignmentList";
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +76,26 @@ export function StackNavigator() {
         options={{
           headerShown: false,
           title: "BatchDetailTab",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssessmentList"
+        component={AssessmentList}
+        options={{
+          headerShown: false,
+          title: "AssessmentList",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssignmentList"
+        component={AssignmentList}
+        options={{
+          headerShown: false,
+          title: "AssignmentList",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

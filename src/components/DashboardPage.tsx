@@ -99,7 +99,6 @@ const DashboardPage = () => {
     setModalVisible(false);
     setTimeout(() => {
       getOpenBatchDatabyTeacherId(1);
-      getOpenBatchDatabyTeacherId(2);
     }, 500);
   };
 
