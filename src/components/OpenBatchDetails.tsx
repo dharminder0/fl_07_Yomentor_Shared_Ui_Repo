@@ -88,7 +88,7 @@ const OpenBatchDetails = ({ route }: any) => {
 
   return (
     <>
-      <HeaderView title={batchItem?.name} />
+      <HeaderView title={batchItem?.batchName} />
       <View style={common.container}>
         {studentData && studentData.length > 0 && (
           <FlatList

@@ -9,6 +9,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigator";
 import { YoColors } from "./src/assets/themes/YoColors";
+import InternetConnectionStatus from "./src/screens/InternetConnectionStatus";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -27,6 +28,7 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <MainNavigator />
       </NavigationContainer>
+      {/* <InternetConnectionStatus /> */}
     </SafeAreaView>
   );
 }

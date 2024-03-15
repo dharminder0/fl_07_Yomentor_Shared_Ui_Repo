@@ -18,7 +18,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
           backgroundColor: YoColors.primary,
           alignItems: "center",
           paddingHorizontal: 17,
-          marginBottom: 12,
+          marginBottom: 5,
         },
       ]}
     >

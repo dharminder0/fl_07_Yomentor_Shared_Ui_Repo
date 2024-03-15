@@ -7,21 +7,17 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { getStudentData } from "../shared/sharedDetails";
+import { getStudentData } from "../../shared/sharedDetails";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/themed";
-import { cardStyle, common } from "../assets/styles/Common";
-import { useNavigation } from "@react-navigation/native";
-import HeaderView from "./common/HeaderView";
-import { YoImages } from "../assets/themes/YoImages";
-import { YoColors } from "../assets/themes/YoColors";
+import { cardStyle, common } from "../../assets/styles/Common";
+import { YoImages } from "../../assets/themes/YoImages";
+import { YoColors } from "../../assets/themes/YoColors";
 
-const BatchDetails = ({ route }: any) => {
-  const batchItem: any = route.params.batchItem;
+const StudentList = () => {
   const studentData: any = getStudentData();
-  const navigation: any = useNavigation();
   const image: any = YoImages();
 
   const renderItem = ({ item, index }: any) => (
@@ -46,52 +42,51 @@ const BatchDetails = ({ route }: any) => {
               }}
             />
           </View>
-          <View style={{ marginStart: 12, width: "73%" }}>
+          <View
+            style={{
+              width: "79%",
+              paddingHorizontal: 10,
+            }}
+          >
             <View style={[cardStyle.j_row]}>
-              <Text style={[cardStyle.headTitle, cardStyle.fs18]}>
-                {item?.name}
-              </Text>
+              <Text style={[common.h3Title]}>{item?.name}</Text>
               <Ionicons
                 name="checkmark-circle"
-                size={20}
+                size={18}
                 color={YoColors.primary}
               />
             </View>
             <View style={cardStyle.row}>
-              <Ionicons
-                name="location-sharp"
-                size={14}
-                color={YoColors.primary}
-              />
-              <Text style={cardStyle.subTitle}>{item?.address}</Text>
+              <Ionicons name="location-sharp" size={12} />
+              <Text style={common.rText}> {item?.address}</Text>
             </View>
             <View style={cardStyle.row}>
-              <Icon name="phone-alt" size={13} color={YoColors.primary} />
-              <Text style={cardStyle.subTitle}>{item?.phone}</Text>
+              <MaterialCommunityIcons name="phone" size={12} />
+              <Text style={common.rText}> {item?.phone}</Text>
             </View>
           </View>
         </View>
 
         <View style={[cardStyle.j_row, { marginTop: 10 }]}>
           <View style={cardStyle.row}>
-            <Icon name="history" size={14} color={YoColors.primary} />
-            <Text style={cardStyle.subTitle}>Att. History</Text>
+            <Icon name="history" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Att. History</Text>
           </View>
           <View style={cardStyle.row}>
-            <Ionicons name="person" size={14} color={YoColors.primary} />
-            <Text style={cardStyle.subTitle}>Profile</Text>
+            <Ionicons name="person" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Profile</Text>
           </View>
           <View style={cardStyle.row}>
-            <Ionicons name="chatbubble" size={14} color={YoColors.primary} />
-            <Text style={cardStyle.subTitle}>Chat</Text>
+            <Ionicons name="chatbubble" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Chat</Text>
           </View>
           <View style={cardStyle.row}>
             <MaterialCommunityIcons
               name="account-group"
-              size={16}
+              size={12}
               color={YoColors.primary}
             />
-            <Text style={cardStyle.subTitle}>Assessments</Text>
+            <Text style={common.rText}> Assessments</Text>
           </View>
         </View>
       </Card>
@@ -99,21 +94,18 @@ const BatchDetails = ({ route }: any) => {
   );
 
   return (
-    <>
-      <HeaderView title={batchItem?.name} />
-      <View style={common.container}>
-        {studentData && studentData.length > 0 && (
-          <FlatList
-            data={studentData}
-            keyExtractor={(item: any) => item?.id}
-            renderItem={renderItem}
-          />
-        )}
-      </View>
-    </>
+    <View style={common.container}>
+      {studentData && studentData.length > 0 && (
+        <FlatList
+          data={studentData}
+          keyExtractor={(item: any) => item?.id}
+          renderItem={renderItem}
+        />
+      )}
+    </View>
   );
 };
 
-export default BatchDetails;
+export default StudentList;
 
 const styles = StyleSheet.create({});
