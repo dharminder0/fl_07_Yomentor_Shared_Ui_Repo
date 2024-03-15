@@ -11,9 +11,9 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import { cardStyle } from "../../assets/styles/Common";
+import { cardStyle } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { YoColors } from "../../../assets/themes/YoColors";
 
 const AssesmentCardView = ({
   title = "",
@@ -66,11 +66,11 @@ const AssesmentCardView = ({
           { justifyContent: "space-between", marginBottom: 8 },
         ]}
       >
-        {title && <Text style={cardStyle.headTitle}>{title}</Text>}
+        <Text style={cardStyle.headTitle}>{title??''}</Text>
         {isOpenEnroll && (
           <View style={cardStyle.row}>
             <MaterialCommunityIcons name="plus" size={14} />
-            <Text style={cardStyle.subTitle}>Add {title}</Text>
+            <Text style={cardStyle.subTitle}>Add </Text>
           </View>
         )}
       </View>

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import AssesmentCardView from "../common/AssesmentCardView";
-import { getAssessmentsListByBatchId } from "../../apiconfig/SharedApis";
-import { common } from "../../assets/styles/Common";
-import Loading from "../../screens/Loading";
-import NoDataView from "../../screens/NoDataView";
+import { getAssessmentsListByBatchId } from "../../../apiconfig/SharedApis";
+import { common } from "../../../assets/styles/Common";
+import Loading from "../../../screens/Loading";
+import NoDataView from "../../../screens/NoDataView";
+import AssesmentCardView from "./AssesmentCardView";
 
 const AssessmentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -41,7 +41,7 @@ const AssessmentList = ({ batchInfo }: any) => {
         <Loading />
       ) : assessmentsList && assessmentsList.length > 0 ? (
         <AssesmentCardView
-          title="Assesments"
+          //title="Assesments"
           data={assessmentsList}
           isOpenEnroll={true}
         />

@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import StudentList from "../components/batch/StudentList";
+import StudentList from "../components/batch/students/StudentList";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import OpenBatchDetails from "../components/OpenBatchDetails";
 import DrawerNavigation from "./DrawerNavigation";
 import { YoColors } from "../assets/themes/YoColors";
 import BatchDetailTab from "../components/BatchDetailTab";
-import AddStudentAttendence from "../components/batch/AddStudentAttendence";
+import AddStudentAttendence from "../components/batch/students/AddStudentAttendence";
 import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
 import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
 

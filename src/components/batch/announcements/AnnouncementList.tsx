@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import AssesmentCardView from "../common/AssesmentCardView";
-import { common } from "../../assets/styles/Common";
+import { common } from "../../../assets/styles/Common";
+import AnnouncementCardView from "./AnnouncementCardView";
 
 const AnnouncementList = () => {
   const announcement: any = [
@@ -32,7 +32,7 @@ const AnnouncementList = () => {
   ];
   return (
     <View style={common.container}>
-      <AssesmentCardView data={announcement} />
+      <AnnouncementCardView data={announcement} />
     </View>
   );
 };

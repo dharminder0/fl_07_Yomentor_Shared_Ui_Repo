@@ -11,12 +11,12 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/themed";
-import { cardStyle, common } from "../../assets/styles/Common";
-import { YoImages } from "../../assets/themes/YoImages";
-import { YoColors } from "../../assets/themes/YoColors";
-import { getStudentsListByBatchId } from "../../apiconfig/SharedApis";
-import Loading from "../../screens/Loading";
-import NoDataView from "../../screens/NoDataView";
+import { cardStyle, common } from "../../../assets/styles/Common";
+import { YoImages } from "../../../assets/themes/YoImages";
+import { YoColors } from "../../../assets/themes/YoColors";
+import { getStudentsListByBatchId } from "../../../apiconfig/SharedApis";
+import Loading from "../../../screens/Loading";
+import NoDataView from "../../../screens/NoDataView";
 
 const StudentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -71,11 +71,6 @@ const StudentList = ({ batchInfo }: any) => {
           >
             <View style={[cardStyle.j_row]}>
               <Text style={[common.h3Title]}>{item?.name}</Text>
-              <Ionicons
-                name="checkmark-circle"
-                size={18}
-                color={YoColors.primary}
-              />
             </View>
             <View style={cardStyle.row}>
               <Ionicons name="location-sharp" size={12} />

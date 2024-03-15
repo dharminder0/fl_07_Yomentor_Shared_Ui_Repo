@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import HeaderView from "../common/HeaderView";
-import { getStudentData } from "../../shared/sharedDetails";
+import HeaderView from "../../common/HeaderView";
+import { getStudentData } from "../../../shared/sharedDetails";
 import { Calendar, Agenda } from "react-native-calendars";
 import moment from "moment";
 

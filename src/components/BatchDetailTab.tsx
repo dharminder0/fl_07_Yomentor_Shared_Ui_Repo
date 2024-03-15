@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import AssignmentList from "./batch/AssignmentList";
-import AssessmentList from "./batch/AssessmentList";
-import AnnouncementList from "./batch/AnnouncementList";
-import StudentList from "./batch/StudentList";
+import AssignmentList from "./batch/assignments/AssignmentList";
+import AssessmentList from "./batch/assessments/AssessmentList";
+import AnnouncementList from "./batch/announcements/AnnouncementList";
+import StudentList from "./batch/students/StudentList";
 import HeaderView from "./common/HeaderView";
 import { YoColors } from "../assets/themes/YoColors";
 

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { common } from "../../assets/styles/Common";
-import { getAssignmentsListByBatchId } from "../../apiconfig/SharedApis";
-import AssesmentCardView from "../common/AssesmentCardView";
-import Loading from "../../screens/Loading";
-import NoDataView from "../../screens/NoDataView";
+import { common } from "../../../assets/styles/Common";
+import { getAssignmentsListByBatchId } from "../../../apiconfig/SharedApis";
+import Loading from "../../../screens/Loading";
+import NoDataView from "../../../screens/NoDataView";
+import AssignmentCardView from "./AssignmentCardView";
 
 const AssignmentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
@@ -39,8 +39,8 @@ const AssignmentList = ({ batchInfo }: any) => {
       {isLoading ? (
         <Loading />
       ) : assignmentsList && assignmentsList.length > 0 ? (
-        <AssesmentCardView
-          title="Assignment"
+        <AssignmentCardView
+          //title="Assignment"
           data={assignmentsList}
           isOpenEnroll={true}
         />
