@@ -44,22 +44,25 @@ const DashboardPage = () => {
     setIsLoading(true);
     setOpenBatchList([]);
     setOngoingBatchList([]);
-    getOpenBatchListbyTeacherId(userInfo?.id, statusId).then(
-      (response: any) => {
-        console.log(response.data);
-        if (response?.data && response?.data?.length) {
-          if (statusId === 1) {
-            setOpenBatchList(response?.data);
-          }
-          if (statusId === 2) {
-            setOngoingBatchList(response?.data);
-          }
+    getOpenBatchListbyTeacherId({
+      userid: userInfo?.id,
+      userType: 1,
+      statusId: [statusId],
+      pageSize: 20,
+      pageIndex: 1,
+    }).then((response: any) => {
+      if (response?.data && response?.data?.length) {
+        if (statusId === 1) {
+          setOpenBatchList(response?.data);
         }
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
+        if (statusId === 2) {
+          setOngoingBatchList(response?.data);
+        }
       }
-    );
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    });
   };
 
   const [routes] = useState([
