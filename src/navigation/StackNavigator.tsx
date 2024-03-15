@@ -1,6 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import DashboardPage from "../components/DashboardPage";
-import LoginPage from "../components/auth/LoginPage";
 import StudentList from "../components/batch/StudentList";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
@@ -9,8 +7,8 @@ import DrawerNavigation from "./DrawerNavigation";
 import { YoColors } from "../assets/themes/YoColors";
 import BatchDetailTab from "../components/BatchDetailTab";
 import AddStudentAttendence from "../components/batch/AddStudentAttendence";
-import AssessmentList from "../components/teacher/AssessmentList";
-import AssignmentList from "../components/teacher/AssignmentList";
+import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
+import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,21 +79,21 @@ export function StackNavigator() {
         }}
       />
       <Stack.Screen
-        name="AssessmentList"
-        component={AssessmentList}
+        name="TeacherAssessmentList"
+        component={TeacherAssessmentList}
         options={{
           headerShown: false,
-          title: "AssessmentList",
+          title: "TeacherAssessmentList",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
       />
       <Stack.Screen
-        name="AssignmentList"
-        component={AssignmentList}
+        name="TeacherAssignmentList"
+        component={TeacherAssignmentList}
         options={{
           headerShown: false,
-          title: "AssignmentList",
+          title: "TeacherAssignmentList",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

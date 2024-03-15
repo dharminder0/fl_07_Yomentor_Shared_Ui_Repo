@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import HeaderView from "../common/HeaderView";
 
-const AssessmentList = () => {
+const TeacherAssessmentList = () => {
   return (
     <>
       <HeaderView title="My Assessment" />
@@ -13,6 +13,6 @@ const AssessmentList = () => {
   );
 };
 
-export default AssessmentList;
+export default TeacherAssessmentList;
 
 const styles = StyleSheet.create({});

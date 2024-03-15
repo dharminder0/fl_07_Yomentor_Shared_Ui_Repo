@@ -40,14 +40,14 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.tabView}
-        onPress={() => navigation.navigate("AssessmentList")}
+        onPress={() => navigation.navigate("TeacherAssessmentList")}
       >
         <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>My Assessment</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.tabView}
-        onPress={() => navigation.navigate("AssignmentList")}
+        onPress={() => navigation.navigate("TeacherAssignmentList")}
       >
         <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>My Assignment</Text>

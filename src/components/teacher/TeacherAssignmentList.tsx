@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import HeaderView from "../common/HeaderView";
 import { getUserData } from "../../shared/sharedDetails";
 
-const AssignmentList = () => {
+const TeacherAssignmentList = () => {
   const [userInfo, setUserInfo] = useState<any>();
   useEffect(() => {
     getUserData("userData").then((result: any) => {
@@ -21,6 +21,6 @@ const AssignmentList = () => {
   );
 };
 
-export default AssignmentList;
+export default TeacherAssignmentList;
 
 const styles = StyleSheet.create({});
