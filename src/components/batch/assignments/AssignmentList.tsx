@@ -30,7 +30,7 @@ const AssignmentList = ({ batchInfo }: any) => {
       })
       .catch((error: any) => {
         setIsLoading(false);
-        console.error("Error fetching assignments:", error);
+        console.error("Error fetching assignments: ", error);
       });
   }, []);
 

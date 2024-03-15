@@ -19,17 +19,11 @@ const AssignmentCardView = ({
   title = "",
   data = [],
   isOpenEnroll = false,
-  role = "Student",
 }) => {
   const navigation: any = useNavigation();
 
   const gotoBatchDetail = (item: any) => {
-    if (!isOpenEnroll) {
-      navigation.navigate("BatchDetailTab", { batchItem: item });
-    }
-    if (isOpenEnroll) {
-      navigation.navigate("OpenBatchDetails", { batchItem: item });
-    }
+    navigation.navigate("AssignmentDetails", { selectedAssignment: item });
   };
 
   const renderItem = ({ item, index }: any) => (

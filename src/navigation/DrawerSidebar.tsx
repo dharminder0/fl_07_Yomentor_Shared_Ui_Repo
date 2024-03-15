@@ -20,7 +20,7 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
       const data = await AsyncStorage.getItem("userData");
       setUserData(data);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching user data: ", error);
     }
   };
 

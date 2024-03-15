@@ -19,7 +19,6 @@ const AssesmentCardView = ({
   title = "",
   data = [],
   isOpenEnroll = false,
-  role = "Student",
 }) => {
   const navigation: any = useNavigation();
 
