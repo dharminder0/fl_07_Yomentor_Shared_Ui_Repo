@@ -17,18 +17,23 @@ import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
-import { getDayList, getFeeTypes } from "../../shared/sharedDetails";
+import {
+  getDayList,
+  getFeeTypes,
+  getUserData,
+  getUserInfo,
+} from "../../shared/sharedDetails";
 import {
   getGradeList,
   getSubjectByGradeId,
-  upsertAssessments,
+  upsertAssignments,
 } from "../../apiconfig/SharedApis";
 import ProcessLoader from "../../screens/ProcessLoader";
 import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import FileUploadModal from "../common/FileUploadModal";
 
-const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
+const AddAssignmentModal = ({ userId = "", onClose = () => {} }) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
 
@@ -83,7 +88,7 @@ const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
   const onSubmit = (data: any) => {
     console.log(data); // Handle form submission
     setIsProcessLoader(true);
-    upsertAssessments(data).then((response: any) => {
+    upsertAssignments(data).then((response: any) => {
       if (response.data && response.data?.success) {
         setIsPopupModalVisible(true);
         setIsPopupModal(true);
@@ -108,7 +113,7 @@ const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
     >
       {isPopupModalVisible && (
         <PopupModal
-          message="Assessment Created Successful"
+          message="Assignment Created Successful"
           icon={"checkmark-circle"}
           color={"green"}
           iconSize={40}
@@ -129,7 +134,7 @@ const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
             }}
           >
             <View style={[cardStyle.j_row, { marginBottom: 20 }]}>
-              <Text style={common.h3Title}>Create New Assessment</Text>
+              <Text style={common.h3Title}>Create New Assignment</Text>
               <Icon
                 name="times"
                 size={18}
@@ -197,24 +202,6 @@ const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
                 </View>
               </View>
 
-              <Controller
-                control={control}
-                name="maxmark"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      { borderColor: errors.maxmark ? "red" : "#ccc" },
-                    ]}
-                    value={value}
-                    placeholder="Max Mark"
-                    keyboardType="number-pad"
-                  />
-                )}
-              />
-
               <View>
                 <FileUploadModal />
               </View>
@@ -234,7 +221,7 @@ const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
   );
 };
 
-export default AddAssessmentModal;
+export default AddAssignmentModal;
 
 const styles = StyleSheet.create({
   input: {

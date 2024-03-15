@@ -20,6 +20,7 @@ const AddStudentAttendence = ({ route }: any) => {
       { name: "Item 4 - any js object" },
     ],
   });
+
   const handleDayPress = (e: any) => {
     setSelectedDate(e.dateString);
   };

@@ -53,3 +53,11 @@ export async function getAssessmentsListByTeacherId(
     payload
   );
 }
+
+export async function upsertAssessments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assessments/Upsert`, payload);
+}
+
+export async function upsertAssignments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assignments/Upsert`, payload);
+}

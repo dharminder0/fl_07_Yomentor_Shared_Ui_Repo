@@ -91,6 +91,7 @@ const LoginPage = () => {
         buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
         titleStyle={{ fontWeight: "600" }}
         containerStyle={{ width: "100%" }}
+        loading={!isLoggedIn}
       />
       <View
         style={[
