@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
-import { getStudentData } from "../../shared/sharedDetails";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,9 +14,31 @@ import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
 import { YoColors } from "../../assets/themes/YoColors";
+import { getStudentsListByBatchId } from "../../apiconfig/SharedApis";
+import Loading from "../../screens/Loading";
+import NoDataAvailable from "../../screens/NoDataAvailable";
 
-const StudentList = () => {
-  const studentData: any = getStudentData();
+const StudentList = ({ batchInfo }: any) => {
+  const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
+  const [isLoading, setIsLoading] = useState(false);
+  const [studentsList, setStudentsList] = useState([]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getStudentsListByBatchId(selectedBatch.id)
+      .then((response: any) => {
+        setStudentsList([]);
+        if (response.data && response.data.length > 0) {
+          setStudentsList(response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error: any) => {
+        setIsLoading(false);
+        console.error("Error fetching students:", error);
+      });
+  }, []);
+
   const image: any = YoImages();
 
   const renderItem = ({ item, index }: any) => (
@@ -58,7 +79,7 @@ const StudentList = () => {
             </View>
             <View style={cardStyle.row}>
               <Ionicons name="location-sharp" size={12} />
-              <Text style={common.rText}> {item?.address}</Text>
+              <Text style={common.rText}>{item?.address}</Text>
             </View>
             <View style={cardStyle.row}>
               <MaterialCommunityIcons name="phone" size={12} />
@@ -95,12 +116,16 @@ const StudentList = () => {
 
   return (
     <View style={common.container}>
-      {studentData && studentData.length > 0 && (
+      {isLoading ? (
+        <Loading />
+      ) : studentsList && studentsList.length > 0 ? (
         <FlatList
-          data={studentData}
+          data={studentsList}
           keyExtractor={(item: any) => item?.id}
           renderItem={renderItem}
         />
+      ) : (
+        <NoDataAvailable />
       )}
     </View>
   );

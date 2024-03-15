@@ -1,43 +1,52 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { common } from "../../assets/styles/Common";
+import { getAssignmentsListByBatchId } from "../../apiconfig/SharedApis";
 import AssesmentCardView from "../common/AssesmentCardView";
+import NoDataAvailable from "../../screens/NoDataAvailable";
+import Loading from "../../screens/Loading";
 
-const AssignmentList = () => {
-  const assignment: any = [
-    {
-      id: 1,
-      title: "Chapter 4 prepare the notes for your learning",
-      description:
-        "please make noteds of the capter  4 and submit it for me review by tomorrow.",
-      createdDate: "2024-03-06 12:15:46.103",
-      files: [],
-    },
-    {
-      id: 2,
-      title: "Chapter 5 prepare the notes for your learning",
-      description:
-        "please make noteds of the capter  4 and submit it for me review by tomorrow.",
-      createdDate: "2024-03-06 12:15:46.103",
-      files: [],
-    },
-    {
-      id: 3,
-      title: "Chapter 6 prepare the notes for your learning",
-      description:
-        "please make noteds of the capter  4 and submit it for me review by tomorrow.",
-      createdDate: "2024-03-06 12:15:46.103",
-      files: [],
-    },
-  ];
+const AssignmentList = ({ batchInfo }: any) => {
+  const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
+  const [isLoading, setIsLoading] = useState(false);
+  const [assignmentsList, setAssignmentsList] = useState([]);
+  const [pageSize, setPageSize] = useState(100);
+  const [pageIndex, setPageIndex] = useState(1);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const payload: any = {
+      batchId: selectedBatch.id,
+      pageSize: pageSize,
+      pageIndex: pageIndex,
+    };
+    getAssignmentsListByBatchId(payload)
+      .then((response: any) => {
+        setAssignmentsList([]);
+        if (response.data && response.data.length > 0) {
+          setAssignmentsList(response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error: any) => {
+        setIsLoading(false);
+        console.error("Error fetching assignments:", error);
+      });
+  }, []);
 
   return (
     <View style={common.container}>
-      <AssesmentCardView
-        title="Assignment"
-        data={assignment}
-        isOpenEnroll={true}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : assignmentsList && assignmentsList.length > 0 ? (
+        <AssesmentCardView
+          title="Assignment"
+          data={assignmentsList}
+          isOpenEnroll={true}
+        />
+      ) : (
+        <NoDataAvailable />
+      )}
     </View>
   );
 };

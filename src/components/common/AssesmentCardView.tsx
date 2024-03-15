@@ -44,7 +44,7 @@ const AssesmentCardView = ({
           </Text>
           {isOpenEnroll && (
             <Text style={{ fontSize: 12 }}>
-              {moment(item?.startdate).format("MMM DD, YYYY")}
+              {moment(item?.createdate).format("MMM DD, YYYY")}
             </Text>
           )}
         </View>

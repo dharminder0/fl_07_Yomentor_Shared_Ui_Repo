@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AssignmentList from "./batch/AssignmentList";
 import AssessmentList from "./batch/AssessmentList";
 import AnnouncementList from "./batch/AnnouncementList";
@@ -8,7 +8,8 @@ import HeaderView from "./common/HeaderView";
 import { YoColors } from "../assets/themes/YoColors";
 
 const BatchDetailTab = ({ route }: any) => {
-  const batchName = route?.params?.batchItem?.batchName;
+  const batchInfo = route?.params?.batchItem??{};
+  const [selectedBatch, setSelectedBatch] = useState(batchInfo);
   const [index, setIndex] = React.useState(0);
 
   const [routes] = useState([
@@ -21,11 +22,11 @@ const BatchDetailTab = ({ route }: any) => {
   const renderScene = ({ route }: any) => {
     switch (route.key) {
       case "student":
-        return <StudentList />;
+        return <StudentList batchInfo={selectedBatch} />;
       case "assignment":
-        return <AssignmentList />;
+        return <AssignmentList batchInfo={selectedBatch} />;
       case "assessment":
-        return <AssessmentList />;
+        return <AssessmentList batchInfo={selectedBatch} />;
       case "announcement":
         return <AnnouncementList />;
       default:
@@ -35,7 +36,7 @@ const BatchDetailTab = ({ route }: any) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <HeaderView title={batchName} />
+      <HeaderView title={batchInfo.batchName} />
       <View
         style={{
           flexDirection: "row",

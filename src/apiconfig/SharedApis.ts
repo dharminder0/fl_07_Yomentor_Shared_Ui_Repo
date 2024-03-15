@@ -17,3 +17,15 @@ export async function getOpenBatchListbyTeacherId(
 export async function addBatch(reqPayload: any): Promise<any> {
   return AxiosInterceptor.post("Batch/Add", reqPayload);
 }
+
+export async function getStudentsListByBatchId (batchId : number): Promise<any> {
+  return AxiosInterceptor.get(`Batch/StudentList/${batchId}`);
+}
+
+export async function getAssignmentsListByBatchId (payload : any): Promise<any> {
+  return AxiosInterceptor.post(`Assignments/GetAssignmentsList/batchId`, payload);
+}
+
+export async function getAssessmentsListByBatchId (payload : any): Promise<any> {
+  return AxiosInterceptor.post(`Assessments/GetAssessmentsList/batchId`, payload);
+}
