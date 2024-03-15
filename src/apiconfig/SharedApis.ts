@@ -35,3 +35,21 @@ export async function getAssessmentsListByBatchId(payload: any): Promise<any> {
     payload
   );
 }
+
+export async function getAssignmentsListByTeacherId(
+  payload: any
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `Assignments/GetAssignmentsList/teacherid`,
+    payload
+  );
+}
+
+export async function getAssessmentsListByTeacherId(
+  payload: any
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `Assessments/GetAssessmentsList/teacherid`,
+    payload
+  );
+}
