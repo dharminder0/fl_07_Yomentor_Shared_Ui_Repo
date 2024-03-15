@@ -17,3 +17,7 @@ export async function getOpenBatchListbyTeacherId(
 export async function addBatch(reqPayload: any): Promise<any> {
   return AxiosInterceptor.post("Batch/Add", reqPayload);
 }
+
+export async function getStudentsListByBatchId(batchId: number): Promise<any> {
+  return AxiosInterceptor.get(`Batch/StudentList/${batchId}`);
+}

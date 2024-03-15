@@ -30,6 +30,7 @@ import {
   getSubjectByGradeId,
 } from "../../apiconfig/SharedApis";
 import PopupModal from "./PopupModal";
+import ProcessLoader from "../../screens/ProcessLoader";
 
 const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const feeTypes: any = getFeeTypes();
@@ -41,14 +42,13 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
+  const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isClassTime, setIsClassTime] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible); // Toggle the modal visibility state
-  };
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -58,6 +58,10 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible); // Toggle the modal visibility state
+  };
 
   useEffect(() => {
     reset();
@@ -81,13 +85,20 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
 
   const onSubmit = (data: any) => {
     console.log(data); // Handle form submission
+    setIsProcessLoader(true);
     addBatch(data).then((response: any) => {
       if (response.data && response.data?.response) {
+        setIsPopupModalVisible(true);
         setIsPopupModal(true);
         setTimeout(() => {
           onClose();
-        }, 3000);
+        }, 1000);
       }
+      setTimeout(() => {
+        setIsPopupModalVisible(false);
+        setIsPopupModal(false);
+        setIsProcessLoader(false);
+      }, 500);
     });
   };
 
@@ -100,7 +111,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
       style={{ margin: 0, justifyContent: "flex-end" }}
       useNativeDriver
     >
-      {isPopupModal && (
+      {isPopupModalVisible && (
         <PopupModal
           message="Batch Created Successful"
           icon={"checkmark-circle"}
@@ -108,6 +119,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
           iconSize={40}
         />
       )}
+      {isProcessLoader && <ProcessLoader />}
       <>
         <ScrollView
           style={{ maxHeight: height - 100 }}
@@ -152,12 +164,17 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
               <Controller
                 control={control}
                 name="description"
+                rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
                     style={[
                       styles.input,
-                      { height: 75, textAlignVertical: "top" },
+                      {
+                        height: 75,
+                        textAlignVertical: "top",
+                        borderColor: errors.description ? "red" : "#ccc",
+                      },
                     ]}
                     value={value}
                     placeholder="Description"
@@ -229,10 +246,16 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   <Controller
                     control={control}
                     name="fee"
+                    rules={{ required: true }}
                     render={({ field: { onChange, value } }) => (
                       <TextInput
                         onChangeText={onChange}
-                        style={styles.input}
+                        style={[
+                          styles.input,
+                          {
+                            borderColor: errors.fee ? "red" : "#ccc",
+                          },
+                        ]}
                         value={value}
                         placeholder="Fee"
                         keyboardType="numeric"
@@ -253,10 +276,16 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
               <Controller
                 control={control}
                 name="numberOfStudents"
+                rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
-                    style={styles.input}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: errors.numberOfStudents ? "red" : "#ccc",
+                      },
+                    ]}
                     value={value}
                     placeholder="Number of Students"
                     keyboardType="numeric"
