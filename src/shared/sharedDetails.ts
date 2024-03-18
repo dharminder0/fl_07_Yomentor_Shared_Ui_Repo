@@ -23,9 +23,9 @@ export const userData = () => {
   return userData;
 };
 
-export const saveAsyncData = async (key: string, userData: any) => {
+export const saveAsyncData = async (key: string, data: any) => {
   try {
-    await AsyncStorage.setItem(key, JSON.stringify(userData));
+    await AsyncStorage.setItem(key, JSON.stringify(data));
     console.log("User data saved successfully.");
   } catch (error) {
     console.error("Error saving user data: ", error);
@@ -36,8 +36,9 @@ let userInfo: any = {};
 export const getUserData = async (key: string) => {
   try {
     const result: any = await AsyncStorage.getItem(key);
-    if (key === "userData") userInfo = JSON.parse(result);
-    return JSON.parse(result);
+    const currentUser = JSON.parse(result);
+    if (key === "userData") userInfo = currentUser;
+    return currentUser;
   } catch (error) {
     console.error("Error retrieving user data: ", error);
     return null;

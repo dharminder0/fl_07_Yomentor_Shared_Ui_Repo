@@ -4,12 +4,16 @@ import SplashScreen from "react-native-splash-screen";
 import { YoImages } from "../assets/themes/YoImages";
 import { Image } from "react-native-elements";
 import { getUserData } from "../shared/sharedDetails";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
-const Startup = ({ navigation }: { navigation: any }) => {
+const Startup = () => {
   const image: any = YoImages();
+  const navigation: any = useNavigation();
 
   useEffect(() => {
     getUserData("userData").then((result: any) => {
+      console.log(result);
       if (result && result?.id) {
         new Promise((resolve) =>
           setTimeout(() => {

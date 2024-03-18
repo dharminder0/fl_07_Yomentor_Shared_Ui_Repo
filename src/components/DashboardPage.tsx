@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { common } from "../assets/styles/Common";
 import BatchCardView from "./common/BatchCardView";
-import { getUserData } from "../shared/sharedDetails";
+import { getUserData, getUserInfo } from "../shared/sharedDetails";
 import HeaderView from "./common/HeaderView";
 import { getOpenBatchListbyTeacherId } from "../apiconfig/SharedApis";
 import Welcome from "./common/Welcome";
@@ -21,16 +21,13 @@ import { YoColors } from "../assets/themes/YoColors";
 
 const DashboardPage = () => {
   const { height, width } = Dimensions.get("window");
-  const [userInfo, setUserInfo] = useState<any>({});
+  const userInfo: any = getUserInfo();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openBatchList, setOpenBatchList] = useState([]);
   const [ongoingBatchList, setOngoingBatchList] = useState([]);
   const { isModalVisible, setModalVisible }: any = useStore();
   const [index, setIndex] = React.useState(0);
   useEffect(() => {
-    getUserData("userData").then((result: any) => {
-      setUserInfo(result);
-    });
     getOpenBatchDatabyTeacherId(1);
     getOpenBatchDatabyTeacherId(2);
   }, [userInfo?.id]);

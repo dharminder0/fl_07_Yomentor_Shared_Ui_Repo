@@ -36,20 +36,15 @@ const LoginPage = () => {
   const onSubmit = (data: any) => {
     if (!!data?.phone && !!data?.password) {
       setIsLoggedIn(true);
-      userLogin(data)
-        .then((result: any) => {
-          if (result?.data && result?.data.success) {
-            saveAsyncData("userData", result?.data?.content);
-            navigation.navigate("Startup");
-          }
-          setTimeout(() => {
-            setIsLoggedIn(false);
-          }, 500);
-        })
-        .catch((error: any) => {
+      userLogin(data).then((result: any) => {
+        if (result?.data && result?.data.success) {
+          saveAsyncData("userData", result?.data?.content);
+          navigation.navigate("Startup");
+        }
+        setTimeout(() => {
           setIsLoggedIn(false);
-          console.error("Error fetching assessment details: ", error);
-        });
+        }, 500);
+      });
     }
   };
 

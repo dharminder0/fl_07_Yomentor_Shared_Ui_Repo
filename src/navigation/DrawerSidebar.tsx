@@ -4,25 +4,11 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { clearUserData } from "../shared/sharedDetails";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { clearUserData, getUserInfo } from "../shared/sharedDetails";
 import { YoColors } from "../assets/themes/YoColors";
 
 const DrawerSidebar = ({ navigation }: { navigation: any }) => {
-  const [userData, setUserData] = useState<any>();
-
-  useEffect(() => {
-    fetchUserData();
-  }, [userData]);
-
-  const fetchUserData = async () => {
-    try {
-      const data = await AsyncStorage.getItem("userData");
-      setUserData(data);
-    } catch (error) {
-      console.error("Error fetching user data: ", error);
-    }
-  };
+  const userInfo: any = getUserInfo();
 
   const logoutUser = () => {
     clearUserData("userData");
@@ -32,13 +18,13 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
   return (
     <View style={{ padding: 5, flex: 1, backgroundColor: YoColors.primary }}>
       <View>
-        <Text style={{ color: "red" }}>{userData?.name}</Text>
+        <Text style={{ color: "red" }}>{userInfo?.name}</Text>
       </View>
       <TouchableOpacity style={styles.tabView}>
         <Ionicons name="home" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>Dashboard</Text>
       </TouchableOpacity>
-      {userData?.type === 1 && (
+      {userInfo?.type === 1 && (
         <>
           <TouchableOpacity
             style={styles.tabView}
