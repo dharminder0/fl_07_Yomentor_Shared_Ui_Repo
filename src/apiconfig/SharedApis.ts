@@ -63,6 +63,13 @@ export async function getAssessmentsListByTeacherId(
 }
 
 export async function getStudentsAttendance(payload: any): Promise<any> {
-  console.log('getStudentsAttendance')
   return AxiosInterceptor.post(`Attendance/StudentsAttendance`, payload);
+}
+
+export async function upsertAssessments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assessments/Upsert`, payload);
+}
+
+export async function upsertAssignments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assignments/Upsert`, payload);
 }

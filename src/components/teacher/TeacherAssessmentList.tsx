@@ -4,28 +4,29 @@ import HeaderView from "../common/HeaderView";
 import { getUserData } from "../../shared/sharedDetails";
 import { getAssessmentsListByTeacherId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
-import NoDataView from "../../screens/NoDataView";
 import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
 import { common } from "../../assets/styles/Common";
 import AddAssessmentModal from "./AddAssessmentModal";
 import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import CardAssessment from "./CardAssessment";
 
 const TeacherAssessmentList = () => {
   const [userInfo, setUserInfo] = useState<any>();
   const [assessmentList, setAssessmentList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const { isModalVisible, setModalVisible }: any = useStore();
   useEffect(() => {
     setIsLoading(true);
     getUserData("userData").then((result: any) => {
       setUserInfo(result);
     });
-    getAssignmentList();
+    getAssessmentList();
   }, [userInfo?.id]);
 
-  const getAssignmentList = () => {
+  const getAssessmentList = () => {
     const payload: any = {
       teacherId: userInfo?.id,
       pageSize: 10,
@@ -38,8 +39,15 @@ const TeacherAssessmentList = () => {
       }
       setTimeout(() => {
         setIsLoading(false);
+        setRefreshLoader(false);
       }, 1000);
     });
+  };
+  const onCloseUpdate = () => {
+    setModalVisible(false);
+    setTimeout(() => {
+      getAssessmentList();
+    }, 500);
   };
 
   return (
@@ -55,7 +63,14 @@ const TeacherAssessmentList = () => {
               <Text>Create Assessment</Text>
             </Pressable>
           </View>
-          <View style={common.row}></View>
+          <View style={common.row}>
+            <CardAssessment
+              data={assessmentList}
+              reload={getAssessmentList}
+              setRefreshLoader={setRefreshLoader}
+              refreshLoader={refreshLoader}
+            />
+          </View>
         </View>
       ) : (
         <View
@@ -74,7 +89,10 @@ const TeacherAssessmentList = () => {
           />
         </View>
       )}
-      <AddAssessmentModal />
+      <AddAssessmentModal
+        userId={userInfo?.id}
+        onClose={() => onCloseUpdate()}
+      />
     </>
   );
 };
