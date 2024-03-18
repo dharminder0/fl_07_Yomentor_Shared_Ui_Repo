@@ -24,12 +24,15 @@ const CardAssessment = ({
   const { height } = Dimensions.get("window");
   const navigation: any = useNavigation();
 
-  const gotoBatchDetail = (item: any) => {
-    navigation.navigate("BatchDetailTab", { batchItem: item });
+  const gotoAssessmentDetail = (item: any) => {
+    navigation.navigate("AssesmentDetails", { selectedAssessment: item });
   };
 
   const renderItem = ({ item, index }: any) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => gotoBatchDetail(item)}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => gotoAssessmentDetail(item)}
+    >
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text numberOfLines={2} style={[common.title, { width: "72%" }]}>
@@ -46,16 +49,16 @@ const CardAssessment = ({
           </Text>
         )}
 
-        <View style={[cardStyle.j_row, { margin: 0 }]}>
-          <View style={cardStyle.row3}>
+        <View style={[cardStyle.row, { margin: 0 }]}>
+          <View style={[cardStyle.row, { marginEnd: 15 }]}>
             <Icon name="laptop" size={12} />
-            <Text style={common.rText}> {item?.gradeId}</Text>
+            <Text style={common.rText}> {item?.gradeName}</Text>
           </View>
-          <View style={cardStyle.row3}>
+          <View style={[cardStyle.row, { marginEnd: 15 }]}>
             <Icon name="book" size={12} />
-            <Text style={common.rText}> {item?.subjectid}</Text>
+            <Text style={common.rText}> {item?.subjectName}</Text>
           </View>
-          <View style={cardStyle.row3}>
+          <View style={[cardStyle.row, { marginEnd: 15 }]}>
             <MaterialCommunityIcons name="file-document-edit" size={14} />
             <Text style={common.rText}> {item?.maxmark}</Text>
           </View>

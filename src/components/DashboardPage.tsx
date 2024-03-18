@@ -6,17 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { common } from "../assets/styles/Common";
 import BatchCardView from "./common/BatchCardView";
-import {
-  getOngoingBatchData,
-  getOpenBatchData,
-  getUserData,
-} from "../shared/sharedDetails";
+import { getUserData } from "../shared/sharedDetails";
 import HeaderView from "./common/HeaderView";
 import { getOpenBatchListbyTeacherId } from "../apiconfig/SharedApis";
-import { useFocusEffect } from "@react-navigation/native";
 import Welcome from "./common/Welcome";
 import Loading from "../screens/Loading";
 import AddBatchModalForm from "./common/AddBatchModalForm";
@@ -46,7 +41,7 @@ const DashboardPage = () => {
     setOngoingBatchList([]);
     getOpenBatchListbyTeacherId({
       userid: userInfo?.id,
-      userType: 1,
+      userType: userInfo?.type,
       statusId: [statusId],
       pageSize: 20,
       pageIndex: 1,
