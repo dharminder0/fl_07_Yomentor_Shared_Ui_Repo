@@ -61,3 +61,8 @@ export async function getAssessmentsListByTeacherId(
     payload
   );
 }
+
+export async function getStudentsAttendance(payload: any): Promise<any> {
+  console.log('getStudentsAttendance')
+  return AxiosInterceptor.post(`Attendance/StudentsAttendance`, payload);
+}
