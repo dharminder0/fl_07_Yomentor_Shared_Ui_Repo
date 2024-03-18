@@ -35,13 +35,13 @@ const AddStudentAttendance = ({ route }: any) => {
   useEffect(() => {
     setIsLoading(true);
     const payload: any = {
-      batchId: 1,
+      batchId: batchInfo?.id,
       fromDate: calendarDate,
       toDate: calendarDate,
       pageSize: pageSize,
       pageIndex: pageIndex,
     };
-    console.log(payload)
+    console.log(payload);
     getStudentsAttendance(payload)
       .then((response: any) => {
         setStudentsList([]);
@@ -55,7 +55,7 @@ const AddStudentAttendance = ({ route }: any) => {
         console.error("Error fetching students: ", error);
       });
   }, [calendarDate]);
-  
+
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity
       activeOpacity={0.7}

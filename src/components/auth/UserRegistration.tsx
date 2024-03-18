@@ -1,5 +1,9 @@
 import {
+  Dimensions,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +21,8 @@ import PopupModal from "../common/PopupModal";
 import useStore from "../../store/useStore";
 import { YoImages } from "../../assets/themes/YoImages";
 import { saveAsyncData } from "../../shared/sharedDetails";
+
+const { height, width } = Dimensions.get("window");
 
 const UserRegistration = ({ route }: any) => {
   const navigation: any = useNavigation();
@@ -55,61 +61,71 @@ const UserRegistration = ({ route }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      {isPopupModal && (
-        <PopupModal
-          message="Registration Successful"
-          icon={"checkmark-circle"}
-          color={"green"}
-          iconSize={40}
-        />
-      )}
-
-      <View style={{ alignItems: "center", marginBottom: 50 }}>
-        <Image source={image.icon} style={{ height: 102, width: 156 }} />
-      </View>
-
-      <Text style={[common.h2Title, { marginBottom: 20 }]}>
-        Enter your details
-      </Text>
-      <Controller
-        control={control}
-        name="firstname"
-        rules={{ required: "First Name is required" }}
-        render={({ field: { onChange, value } }) => (
-          <>
-            <TextInput
-              onChangeText={onChange}
-              value={value}
-              placeholder="First Name"
-              style={[
-                common.input,
-                {
-                  borderColor: errors.firstname ? "red" : "#ccc",
-                },
-              ]}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 50}
+    >
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          {isPopupModal && (
+            <PopupModal
+              message="Registration Successful"
+              icon={"checkmark-circle"}
+              color={"green"}
+              iconSize={40}
             />
-            {errors.firstname && (
-              <Text style={common.errorText}>{errors.firstname.message}</Text>
+          )}
+
+          <View style={{ alignItems: "center", marginBottom: 50 }}>
+            <Image source={image.icon} style={{ height: 102, width: 156 }} />
+          </View>
+
+          <Text style={[common.h2Title, { marginBottom: 20 }]}>
+            Enter your details
+          </Text>
+          <Controller
+            control={control}
+            name="firstname"
+            rules={{ required: "First Name is required" }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="First Name"
+                  style={[
+                    common.input,
+                    {
+                      borderColor: errors.firstname ? "red" : "#ccc",
+                    },
+                  ]}
+                />
+                {errors.firstname && (
+                  <Text style={common.errorText}>
+                    {errors.firstname.message}
+                  </Text>
+                )}
+              </>
             )}
-          </>
-        )}
-      />
-      <Controller
-        control={control}
-        name="lastname"
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            onChangeText={onChange}
-            value={value}
-            placeholder="Last Name"
-            style={[common.input]}
           />
-        )}
-      />
-      {/* Repeat similar blocks for other fields */}
-      {/* Email */}
-      {/* <Controller
+          <Controller
+            control={control}
+            name="lastname"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                onChangeText={onChange}
+                value={value}
+                placeholder="Last Name"
+                style={[common.input]}
+              />
+            )}
+          />
+          {/* Repeat similar blocks for other fields */}
+          {/* Email */}
+          {/* <Controller
         control={control}
         name="email"
         rules={{ required: "Email is required" }}
@@ -132,32 +148,32 @@ const UserRegistration = ({ route }: any) => {
           </>
         )}
       /> */}
-      {/* Phone Number */}
-      <Controller
-        control={control}
-        name="phone"
-        rules={{ required: "Phone number is required" }}
-        render={({ field: { onChange, value } }) => (
-          <>
-            <TextInput
-              onChangeText={onChange}
-              value={value}
-              placeholder="Phone Number"
-              style={[
-                common.input,
-                {
-                  borderColor: errors.phone ? "red" : "#ccc",
-                },
-              ]}
-            />
-            {errors.phone && (
-              <Text style={common.errorText}>{errors.phone.message}</Text>
+          {/* Phone Number */}
+          <Controller
+            control={control}
+            name="phone"
+            rules={{ required: "Phone number is required" }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Phone Number"
+                  style={[
+                    common.input,
+                    {
+                      borderColor: errors.phone ? "red" : "#ccc",
+                    },
+                  ]}
+                />
+                {errors.phone && (
+                  <Text style={common.errorText}>{errors.phone.message}</Text>
+                )}
+              </>
             )}
-          </>
-        )}
-      />
-      {/* Address */}
-      {/* <Controller
+          />
+          {/* Address */}
+          {/* <Controller
         control={control}
         name="address"
         rules={{ required: "Address is required" }}
@@ -182,33 +198,35 @@ const UserRegistration = ({ route }: any) => {
           </>
         )}
       /> */}
-      {/* Password */}
-      <Controller
-        control={control}
-        name="password"
-        rules={{ required: "Password is required" }}
-        render={({ field: { onChange, value } }) => (
-          <>
-            <TextInput
-              onChangeText={onChange}
-              value={value}
-              placeholder="Password"
-              secureTextEntry={true}
-              style={[
-                common.input,
-                {
-                  borderColor: errors.name ? "red" : "#ccc",
-                },
-              ]}
-            />
-            {errors.password && (
-              <Text style={common.errorText}>{errors.password.message}</Text>
+          {/* Password */}
+          <Controller
+            control={control}
+            name="password"
+            rules={{ required: "Password is required" }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  style={[
+                    common.input,
+                    {
+                      borderColor: errors.name ? "red" : "#ccc",
+                    },
+                  ]}
+                />
+                {errors.password && (
+                  <Text style={common.errorText}>
+                    {errors.password.message}
+                  </Text>
+                )}
+              </>
             )}
-          </>
-        )}
-      />
-      {/* Confirm Password */}
-      {/* <Controller
+          />
+          {/* Confirm Password */}
+          {/* <Controller
         control={control}
         name="confirmPassword"
         rules={{
@@ -239,30 +257,32 @@ const UserRegistration = ({ route }: any) => {
           </>
         )}
       /> */}
-      <Button
-        title="Register"
-        onPress={handleSubmit(onSubmit)}
-        buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
-        titleStyle={{ fontWeight: "600" }}
-      />
-      <View
-        style={[
-          common.row,
-          {
-            marginTop: 20,
-            justifyContent: "flex-end",
-          },
-        ]}
-      >
-        <Text style={common.rText}>Already have an account</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={[common.rText, { color: YoColors.primary }]}>
-            {" "}
-            Log in
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          <Button
+            title="Register"
+            onPress={handleSubmit(onSubmit)}
+            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
+            titleStyle={{ fontWeight: "600" }}
+          />
+          <View
+            style={[
+              common.row,
+              {
+                marginTop: 20,
+                justifyContent: "flex-end",
+              },
+            ]}
+          >
+            <Text style={common.rText}>Already have an account</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={[common.rText, { color: YoColors.primary }]}>
+                {" "}
+                Log in
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -270,8 +290,8 @@ export default UserRegistration;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
     justifyContent: "center",
+    paddingHorizontal: 20,
+    height: height,
   },
 });
