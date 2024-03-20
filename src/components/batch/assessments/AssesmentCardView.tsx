@@ -50,22 +50,21 @@ const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
 
   return (
     <View>
-      <View
-        style={[
-          cardStyle.row,
-          { justifyContent: "space-between", marginBottom: 8 },
-        ]}
-      >
-        <Text style={cardStyle.headTitle}>{title ?? ""}</Text>
+      <View style={[cardStyle.j_row, { marginBottom: 8 }]}>
         {isOpenEnroll && (
-          <View style={cardStyle.row}>
-            <MaterialCommunityIcons name="plus" size={14} />
-            <Text style={cardStyle.subTitle}>Add </Text>
-          </View>
+          <>
+            <View style={cardStyle.row}>
+              <Text style={cardStyle.subTitle}>Assign from my List</Text>
+            </View>
+            <View style={cardStyle.row}>
+              <MaterialCommunityIcons name="plus" size={14} />
+              <Text style={cardStyle.subTitle}>Create Assessment</Text>
+            </View>
+          </>
         )}
       </View>
 
-      {data && data.length > 0 && (
+      {data && data?.length > 0 && (
         <FlatList
           data={data}
           keyExtractor={(item: any) => item?.id}

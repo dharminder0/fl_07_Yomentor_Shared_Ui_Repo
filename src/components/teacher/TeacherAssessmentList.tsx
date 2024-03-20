@@ -1,36 +1,35 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import HeaderView from "../common/HeaderView";
-import { getUserData } from "../../shared/sharedDetails";
+import { getUserData, getUserInfo } from "../../shared/sharedDetails";
 import { getAssessmentsListByTeacherId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
 import { common } from "../../assets/styles/Common";
 import AddAssessmentModal from "./AddAssessmentModal";
-import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CardAssessment from "./CardAssessment";
 
 const TeacherAssessmentList = () => {
-  const [userInfo, setUserInfo] = useState<any>();
+  const userInfo: any = getUserInfo();
   const [assessmentList, setAssessmentList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pageIndex, setPageIndex] = useState<any>(1);
+  const [pageSize, setPageSize] = useState<any>(10);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
-  const { isModalVisible, setModalVisible }: any = useStore();
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
   useEffect(() => {
     setIsLoading(true);
-    getUserData("userData").then((result: any) => {
-      setUserInfo(result);
-    });
     getAssessmentList();
   }, [userInfo?.id]);
 
   const getAssessmentList = () => {
     const payload: any = {
       teacherId: userInfo?.id,
-      pageSize: 10,
-      pageIndex: 1,
+      pageSize: pageSize,
+      pageIndex: pageIndex,
     };
     getAssessmentsListByTeacherId(payload).then((result: any) => {
       setAssessmentList([]);
@@ -40,9 +39,10 @@ const TeacherAssessmentList = () => {
       setTimeout(() => {
         setIsLoading(false);
         setRefreshLoader(false);
-      }, 1000);
+      }, 500);
     });
   };
+
   const onCloseUpdate = () => {
     setModalVisible(false);
     setTimeout(() => {
@@ -79,7 +79,7 @@ const TeacherAssessmentList = () => {
             { alignItems: "center", justifyContent: "center", height: "90%" },
           ]}
         >
-          <Text style={common.h3Title}>No Assessment Available</Text>
+          <Text style={common.h3Title}>You don't have any Assessment</Text>
           <Button
             title="Create Your First Assessment"
             onPress={() => setModalVisible(true)}
@@ -92,6 +92,8 @@ const TeacherAssessmentList = () => {
       <AddAssessmentModal
         userId={userInfo?.id}
         onClose={() => onCloseUpdate()}
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
       />
     </>
   );

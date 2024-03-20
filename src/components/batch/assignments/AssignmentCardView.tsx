@@ -54,18 +54,17 @@ const AssignmentCardView = ({
 
   return (
     <View>
-      <View
-        style={[
-          cardStyle.row,
-          { justifyContent: "space-between", marginBottom: 8 },
-        ]}
-      >
-        <Text style={cardStyle.headTitle}>{title??''}</Text>
+      <View style={[cardStyle.j_row, { marginBottom: 8 }]}>
         {isOpenEnroll && (
-          <View style={cardStyle.row}>
-            <MaterialCommunityIcons name="plus" size={14} />
-            <Text style={cardStyle.subTitle}>Add</Text>
-          </View>
+          <>
+            <View style={cardStyle.row}>
+              <Text style={cardStyle.subTitle}>Assign from my List</Text>
+            </View>
+            <View style={cardStyle.row}>
+              <MaterialCommunityIcons name="plus" size={14} />
+              <Text style={cardStyle.subTitle}>Create Assignment</Text>
+            </View>
+          </>
         )}
       </View>
 

@@ -23,6 +23,7 @@ const DashboardPage = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [openBatchList, setOpenBatchList] = useState([]);
   const [ongoingBatchList, setOngoingBatchList] = useState([]);
   const { isModalVisible, setModalVisible }: any = useStore();
@@ -53,6 +54,7 @@ const DashboardPage = () => {
       }
       setTimeout(() => {
         setIsLoading(false);
+        setRefreshLoader(false);
       }, 1000);
     });
   };
@@ -62,6 +64,11 @@ const DashboardPage = () => {
     { key: "open", title: "Open for Enrollment" },
   ]);
 
+  const relaodPage = () => {
+    getOpenBatchDatabyTeacherId(1);
+    getOpenBatchDatabyTeacherId(2);
+  };
+
   const renderScene = ({ route }: any) => {
     switch (route.key) {
       case "ongoing":
@@ -70,6 +77,10 @@ const DashboardPage = () => {
             data={ongoingBatchList}
             height={height - 90}
             onAddModalOpen={() => setModalVisible(true)}
+            usedStatusId={2}
+            refreshLoader={refreshLoader}
+            setRefreshLoader={setRefreshLoader}
+            reloadPage={relaodPage}
           />
         );
       case "open":
@@ -77,9 +88,12 @@ const DashboardPage = () => {
           <BatchCardView
             title=" "
             data={openBatchList}
-            isOpenEnroll={true}
             height={height - 90}
             onAddModalOpen={() => setModalVisible(true)}
+            usedStatusId={1}
+            refreshLoader={refreshLoader}
+            setRefreshLoader={setRefreshLoader}
+            reloadPage={relaodPage}
           />
         );
       default:
@@ -99,12 +113,7 @@ const DashboardPage = () => {
       <HeaderView title="Dashboard" type="drawer" />
       {isLoading ? (
         <Loading />
-      ) : ongoingBatchList?.length === 0 && openBatchList?.length === 0 ? (
-        <Welcome
-          userType={userInfo?.type}
-          onAddModalOpen={() => setModalVisible(true)}
-        />
-      ) : (
+      ) : ongoingBatchList?.length > 0 || openBatchList?.length > 0 ? (
         <View>
           <View
             style={{
@@ -120,9 +129,8 @@ const DashboardPage = () => {
                 buttonStyle={[
                   common.tabButton,
                   {
-                    borderBottomColor: index === idx ? YoColors.primary : "",
                     width: width / 2,
-                    borderBottomWidth: index === idx ? 2 : 0,
+                    borderColor: index === idx ? YoColors.primary : "#fff",
                   },
                 ]}
                 title={route.title}
@@ -138,6 +146,11 @@ const DashboardPage = () => {
             {renderScene({ route: routes[index] })}
           </View>
         </View>
+      ) : (
+        <Welcome
+          userType={userInfo?.type}
+          onAddModalOpen={() => setModalVisible(true)}
+        />
       )}
 
       <AddBatchModalForm

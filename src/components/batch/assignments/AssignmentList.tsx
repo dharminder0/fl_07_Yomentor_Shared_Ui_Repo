@@ -38,14 +38,16 @@ const AssignmentList = ({ batchInfo }: any) => {
     <View style={common.container}>
       {isLoading ? (
         <Loading />
-      ) : assignmentsList && assignmentsList.length > 0 ? (
+      ) : assignmentsList && assignmentsList?.length > 0 ? (
         <AssignmentCardView
           //title="Assignment"
           data={assignmentsList}
           isOpenEnroll={true}
         />
       ) : (
-        <NoDataView />
+        <>
+          <NoDataView message="You don't have any Assignment given to this batch" />
+        </>
       )}
     </View>
   );

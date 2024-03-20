@@ -25,7 +25,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
       {type === "back" && (
         <MaterialCommunityIcons
           name="arrow-left"
-          size={23}
+          size={25}
           color={"#fff"}
           onPress={() => navigation.goBack()}
         />
@@ -33,7 +33,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
       {type === "drawer" && (
         <MaterialCommunityIcons
           name="menu"
-          size={23}
+          size={27}
           color={"#fff"}
           onPress={openDrawerScreen}
         />
@@ -41,11 +41,11 @@ const HeaderView = ({ title = "", type = "back" }) => {
       <Text
         style={{
           color: "#fff",
-          fontSize: 17,
+          fontSize: 19,
           marginVertical: 10,
           fontWeight: "600",
           textAlign: "center",
-          width: "88%",
+          width: "86%",
         }}
       >
         {title}

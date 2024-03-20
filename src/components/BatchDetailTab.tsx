@@ -16,15 +16,18 @@ const BatchDetailTab = ({ route }: any) => {
   const userInfo: any = getUserInfo();
 
   const [routes, setRoutes] = useState([
-    { key: "assignment", title: "Assignment" },
-    { key: "assessment", title: "Assessment" },
-    { key: "announcement", title: "Announcement" },
+    { key: "assignment", title: "Assignments" },
+    { key: "assessment", title: "Assessments" },
+    { key: "announcement", title: "Announcements" },
   ]);
 
   useEffect(() => {
-    if (userInfo?.type === 1) {
+    if (
+      userInfo?.type === 1 &&
+      !routes.includes({ key: "student", title: "Students" })
+    ) {
       setRoutes((prevRoutes) => [
-        { key: "student", title: "Student" },
+        { key: "student", title: "Students" },
         ...prevRoutes,
       ]);
     }
@@ -53,19 +56,22 @@ const BatchDetailTab = ({ route }: any) => {
           flexDirection: "row",
           justifyContent: "space-around",
           alignItems: "center",
-          borderBottomWidth: 1,
         }}
       >
         {routes.map((route, idx) => (
           <TouchableOpacity
             key={route.key}
             onPress={() => setIndex(idx)}
-            style={{ padding: 8 }}
+            style={{
+              padding: 8,
+              borderBottomWidth: index === idx ? 1 : 0,
+              borderBottomColor: index === idx ? YoColors.primary : "",
+            }}
             activeOpacity={0.7}
           >
             <Text
               style={{
-                fontWeight: index === idx ? "bold" : "normal",
+                fontWeight: "600",
                 color: index === idx ? YoColors.primary : YoColors.text,
               }}
             >

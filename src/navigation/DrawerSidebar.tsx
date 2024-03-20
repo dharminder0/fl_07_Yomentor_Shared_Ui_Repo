@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -17,10 +17,13 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={{ padding: 5, flex: 1, backgroundColor: YoColors.primary }}>
-      <View>
+      {/* <View style={{ height: 100 }}>
         <Text style={{ color: "red" }}>{userInfo?.name}</Text>
-      </View>
-      <TouchableOpacity style={styles.tabView}>
+      </View> */}
+      <TouchableOpacity
+        style={styles.tabView}
+        onPress={() => navigation.navigate("DashboardPage")}
+      >
         <Ionicons name="home" size={19} color={"#fff"} />
         <Text style={styles.tabTitle}>Dashboard</Text>
       </TouchableOpacity>

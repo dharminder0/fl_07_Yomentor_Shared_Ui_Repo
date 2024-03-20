@@ -28,13 +28,18 @@ import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import FileUploadModal from "../common/FileUploadModal";
 
-const AddAssessmentModal = ({ userId = "", onClose = () => {} }) => {
+const AddAssessmentModal = ({
+  userId = "",
+  onClose = () => {},
+  isModalVisible = false,
+  setModalVisible = (value: any) => {},
+}) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
 
   const { height, width } = Dimensions.get("window");
 
-  const { setModalVisible, isModalVisible }: any = useStore();
+  // const { setModalVisible, isModalVisible }: any = useStore();
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);

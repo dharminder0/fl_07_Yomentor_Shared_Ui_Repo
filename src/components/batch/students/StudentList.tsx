@@ -72,29 +72,29 @@ const StudentList = ({ batchInfo }: any) => {
             <View style={[cardStyle.j_row]}>
               <Text style={[common.h3Title]}>{item?.name}</Text>
             </View>
-            <View style={cardStyle.row}>
-              <Ionicons name="location-sharp" size={12} />
-              <Text style={common.rText}>{item?.address}</Text>
-            </View>
-            <View style={cardStyle.row}>
-              <MaterialCommunityIcons name="phone" size={12} />
-              <Text style={common.rText}> {item?.phone}</Text>
-            </View>
+            {item?.address && (
+              <View style={cardStyle.row}>
+                <Ionicons name="location-sharp" size={12} />
+                <Text style={common.rText}>{item?.address}</Text>
+              </View>
+            )}
+            {item?.phone && (
+              <View style={cardStyle.row}>
+                <MaterialCommunityIcons name="phone" size={12} />
+                <Text style={common.rText}> {item?.phone}</Text>
+              </View>
+            )}
           </View>
         </View>
 
         <View style={[cardStyle.j_row, { marginTop: 10 }]}>
           <View style={cardStyle.row}>
-            <Icon name="history" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Att. History</Text>
-          </View>
-          <View style={cardStyle.row}>
-            <Ionicons name="person" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Profile</Text>
-          </View>
-          <View style={cardStyle.row}>
-            <Ionicons name="chatbubble" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Chat</Text>
+            <MaterialCommunityIcons
+              name="account-group"
+              size={12}
+              color={YoColors.primary}
+            />
+            <Text style={common.rText}> Assignments</Text>
           </View>
           <View style={cardStyle.row}>
             <MaterialCommunityIcons
@@ -103,6 +103,18 @@ const StudentList = ({ batchInfo }: any) => {
               color={YoColors.primary}
             />
             <Text style={common.rText}> Assessments</Text>
+          </View>
+          <View style={cardStyle.row}>
+            <Icon name="history" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Att. History</Text>
+          </View>
+          {/* <View style={cardStyle.row}>
+            <Ionicons name="person" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Profile</Text>
+          </View> */}
+          <View style={cardStyle.row}>
+            <Ionicons name="chatbubble" size={12} color={YoColors.primary} />
+            <Text style={common.rText}> Chat</Text>
           </View>
         </View>
       </Card>

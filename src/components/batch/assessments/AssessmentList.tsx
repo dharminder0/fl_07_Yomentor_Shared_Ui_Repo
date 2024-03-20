@@ -45,7 +45,9 @@ const AssessmentList = ({ batchInfo }: any) => {
           isOpenEnroll={true}
         />
       ) : (
-        <NoDataView />
+        <View style={{ justifyContent: "center" }}>
+          <NoDataView message="You don't have any Assessment given to this batch" />
+        </View>
       )}
     </View>
   );
