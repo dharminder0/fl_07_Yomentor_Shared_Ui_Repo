@@ -49,7 +49,7 @@ const BatchCardView = ({
           {item?.statusId === 1 && (
             <Text>{moment(item?.startDate).format("MMM DD, YYYY")}</Text>
           )}
-          {item?.statusId === 2 && (
+          {item?.statusId === 2 && userInfo?.type === 1 && (
             <Icon
               onPress={() =>
                 navigation.navigate("AddStudentAttendence", { batchItem: item })
@@ -60,6 +60,20 @@ const BatchCardView = ({
             />
           )}
         </View>
+
+        {item?.teacherInformation?.firstName && userInfo?.type === 3 && (
+          <View style={[cardStyle.row, { marginVertical: 5 }]}>
+            <Icon name="chalkboard-teacher" size={12} />
+            <Text style={common.rText} numberOfLines={1}>
+              {" "}
+              {item?.teacherInformation?.firstName +
+                " " +
+                item?.teacherInformation?.lastName +
+                " " +
+                `(${item?.teacherInformation?.phone})`}
+            </Text>
+          </View>
+        )}
 
         {item?.description && (
           <Text style={{ marginBottom: 10 }} numberOfLines={2}>

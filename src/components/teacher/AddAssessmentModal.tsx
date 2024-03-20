@@ -19,6 +19,7 @@ import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import { getDayList, getFeeTypes } from "../../shared/sharedDetails";
 import {
+  getAssignStudentAssessments,
   getGradeList,
   getSubjectByGradeId,
   upsertAssessments,
@@ -33,6 +34,7 @@ const AddAssessmentModal = ({
   onClose = () => {},
   isModalVisible = false,
   setModalVisible = (value: any) => {},
+  batchId = null,
 }) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
@@ -86,13 +88,25 @@ const AddAssessmentModal = ({
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
-    console.log(data); // Handle form submission
     setIsProcessLoader(true);
     upsertAssessments(data).then((response: any) => {
       if (response.data && response.data?.success) {
-        setIsPopupModalVisible(true);
-        setIsPopupModal(true);
-        onClose();
+        if (batchId) {
+          getAssignStudentAssessments({
+            batchId: batchId,
+            assignmentId: response.data?.content,
+            status: 1,
+          }).then((res: any) => {
+            if (res.data && res.data.response) {
+              console.log("res -----", res.data.response);
+            }
+          });
+        }
+        setTimeout(() => {
+          setIsPopupModalVisible(true);
+          setIsPopupModal(true);
+          onClose();
+        }, 500);
       }
       setTimeout(() => {
         setIsPopupModalVisible(false);
@@ -122,7 +136,7 @@ const AddAssessmentModal = ({
       {isProcessLoader && <ProcessLoader />}
       <>
         <ScrollView
-          style={{ maxHeight: height - 200 }}
+          style={{ maxHeight: height - 100 }}
           showsVerticalScrollIndicator={false}
         >
           <View

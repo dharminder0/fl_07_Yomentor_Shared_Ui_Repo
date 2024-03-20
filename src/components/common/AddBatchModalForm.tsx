@@ -64,7 +64,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   };
 
   useEffect(() => {
-    reset();
     getGradeList().then((result: any) => {
       if (!!result.data) {
         setClassList(result.data);
@@ -84,13 +83,13 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
-    console.log(data); // Handle form submission
     setIsProcessLoader(true);
     addBatch(data).then((response: any) => {
       if (response.data && response.data?.response) {
         setIsPopupModalVisible(true);
         setIsPopupModal(true);
         setTimeout(() => {
+          reset();
           onClose();
         }, 1000);
       }

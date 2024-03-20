@@ -11,6 +11,7 @@ import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
 import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
 import AssignmentDetails from "../components/batch/assignments/AssignmentDetails";
 import AssesmentDetails from "../components/batch/assessments/AssesmentDetails";
+import TeachersList from "../components/TeachersList";
 
 const Stack = createNativeStackNavigator();
 
@@ -116,6 +117,16 @@ export function StackNavigator() {
         options={{
           headerShown: false,
           title: "AssesmentDetails",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="TeachersList"
+        component={TeachersList}
+        options={{
+          headerShown: false,
+          title: "TeachersList",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
