@@ -91,9 +91,10 @@ const AddAssignmentModal = ({
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
-    // console.log(data);
+    console.log(data);
     setIsProcessLoader(true);
     upsertAssignments(data).then((response: any) => {
+      console.log(response.data)
       if (response.data && response.data?.response) {
         if (batchId) {
           getAssignStudentAssignments({

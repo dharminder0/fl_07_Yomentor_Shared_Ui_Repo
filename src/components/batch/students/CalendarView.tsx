@@ -7,12 +7,13 @@ import {
   ScrollView,
 } from "react-native";
 import moment from "moment";
-const CalendarView = ({setCalendarDate}: any) => {
+import { YoColors } from "../../../assets/themes/YoColors";
+const CalendarView = ({ setCalendarDate }: any) => {
   const [selectedDate, setSelectedDate] = useState(moment());
 
   // Generate an array of dates for the calendar (e.g., 7 days)
   const dates = [];
-  for (let i = -7; i <= 7; i++) {
+  for (let i = -3; i <= 3; i++) {
     let date = moment().add(i, "days");
     dates.push(date);
   }
@@ -24,7 +25,7 @@ const CalendarView = ({setCalendarDate}: any) => {
 
   useEffect(() => {
     setCalendarDate(selectedDate);
-  },[selectedDate])
+  }, [selectedDate]);
 
   // Function to render individual date item
   const renderDateItem = (date: any) => {
@@ -43,12 +44,15 @@ const CalendarView = ({setCalendarDate}: any) => {
   };
 
   return (
-    <View>
-      <ScrollView horizontal>
-        <View style={styles.container}>
-          {dates.map((date) => renderDateItem(date))}
-        </View>
-      </ScrollView>
+    // <View>
+    //   <ScrollView horizontal>
+    //     <View style={styles.container}>
+    //       {dates.map((date) => renderDateItem(date))}
+    //     </View>
+    //   </ScrollView>
+    // </View>
+    <View style={styles.container}>
+      {dates.map((date) => renderDateItem(date))}
     </View>
   );
 };
@@ -58,15 +62,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10
   },
   dateItem: {
     padding: 10,
-    marginHorizontal: 5,
+    margin: 5,
     borderRadius: 5,
-    backgroundColor: "#eee",
+    backgroundColor: "#e7e7e7",
+    width: '11%',
+    alignItems: "center"
   },
   selectedDateItem: {
-    backgroundColor: "blue",
+    backgroundColor: YoColors.primary,
   },
   selectedDateText: {
     color: "white",
