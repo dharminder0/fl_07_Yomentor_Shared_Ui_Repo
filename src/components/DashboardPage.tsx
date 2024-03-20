@@ -75,7 +75,7 @@ const DashboardPage = () => {
         return (
           <BatchCardView
             data={ongoingBatchList}
-            height={height - 90}
+            height={height - 150}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={2}
             refreshLoader={refreshLoader}
@@ -88,7 +88,7 @@ const DashboardPage = () => {
           <BatchCardView
             title=" "
             data={openBatchList}
-            height={height - 90}
+            height={height - 155}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={1}
             refreshLoader={refreshLoader}

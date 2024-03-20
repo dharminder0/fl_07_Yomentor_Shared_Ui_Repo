@@ -34,7 +34,6 @@ const OpenBatchDetails = ({ route }: any) => {
     getStudentsListByBatchId(batchItem?.id).then((response: any) => {
       setStudentData([]);
       if (response && response?.data?.length > 0) {
-        console.log(response?.data);
         setStudentData(response?.data);
       }
       setTimeout(() => {

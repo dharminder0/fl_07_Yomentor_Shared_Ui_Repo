@@ -24,6 +24,7 @@ import {
   getUserInfo,
 } from "../../shared/sharedDetails";
 import {
+  getAssignStudentAssignments,
   getGradeList,
   getSubjectByGradeId,
   upsertAssignments,
@@ -38,6 +39,7 @@ const AddAssignmentModal = ({
   onClose = () => {},
   isModalVisible = false,
   setModalVisible = (value: any) => {},
+  batchId = null,
 }) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
@@ -69,7 +71,6 @@ const AddAssignmentModal = ({
   };
 
   useEffect(() => {
-    reset();
     getGradeList().then((result: any) => {
       if (!!result.data) {
         setClassList(result.data);
@@ -90,13 +91,28 @@ const AddAssignmentModal = ({
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
-    console.log(data); // Handle form submission
+    console.log(data);
     setIsProcessLoader(true);
     upsertAssignments(data).then((response: any) => {
-      if (response.data && response.data?.success) {
-        setIsPopupModalVisible(true);
-        setIsPopupModal(true);
-        onClose();
+      console.log(response.data)
+      if (response.data && response.data?.response) {
+        if (batchId) {
+          getAssignStudentAssignments({
+            batchId: batchId,
+            assignmentId: response.data?.content,
+            status: 1,
+          }).then((res: any) => {
+            if (res.data && res.data.response) {
+              console.log("res -----", res.data.response);
+            }
+          });
+        }
+        setTimeout(() => {
+          setIsPopupModalVisible(true);
+          setIsPopupModal(true);
+          reset();
+          onClose();
+        }, 1000);
       }
       setTimeout(() => {
         setIsPopupModalVisible(false);
@@ -126,7 +142,7 @@ const AddAssignmentModal = ({
       {isProcessLoader && <ProcessLoader />}
       <>
         <ScrollView
-          style={{ maxHeight: height - 200 }}
+          style={{ maxHeight: height - 100 }}
           showsVerticalScrollIndicator={false}
         >
           <View

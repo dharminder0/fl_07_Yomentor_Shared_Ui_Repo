@@ -4,6 +4,10 @@ export async function getGradeList(): Promise<any> {
   return AxiosInterceptor.get("Grade/list");
 }
 
+export async function getUsersList(payload: any): Promise<any> {
+  return AxiosInterceptor.post("User/UserSearch", payload);
+}
+
 export async function getSubjectByGradeId(gradeId: any): Promise<any> {
   return AxiosInterceptor.get(`Subject/list?gradeId=${gradeId}`);
 }
@@ -76,4 +80,12 @@ export async function upsertAssignments(payload: any): Promise<any> {
 
 export async function upsertAttendanceBulkAdd(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Attendance/Bulk/Add`, payload);
+}
+
+export async function getAssignStudentAssignments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assignments/AssignStudentAssignments`, payload);
+}
+
+export async function getAssignStudentAssessments(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Assessments/AssignStudentAssessments`, payload);
 }

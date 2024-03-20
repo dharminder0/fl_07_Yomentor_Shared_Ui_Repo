@@ -47,7 +47,6 @@ const AddStudentAttendance = ({ route }: any) => {
       pageSize: 100,
       pageIndex: 1,
     };
-    
     getStudentsAttendance(payload)
       .then((response: any) => {
         setStudentsList([]);

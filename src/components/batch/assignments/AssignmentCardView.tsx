@@ -1,5 +1,7 @@
 import {
   FlatList,
+  Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,9 +18,13 @@ import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../../assets/themes/YoColors";
 
 const AssignmentCardView = ({
-  title = "",
   data = [],
-  isOpenEnroll = false,
+  userType = 1,
+  useForm = (value: any) => {},
+  refreshLoader = false,
+  setRefreshLoader = (value: any) => {},
+  reload = () => {},
+  height = 400,
 }) => {
   const navigation: any = useNavigation();
 
@@ -36,7 +42,7 @@ const AssignmentCardView = ({
           >
             {item?.title}
           </Text>
-          {isOpenEnroll && (
+          {userType === 1 && (
             <Text style={{ fontSize: 12 }}>
               {moment(item?.createdate).format("MMM DD, YYYY")}
             </Text>
@@ -55,15 +61,15 @@ const AssignmentCardView = ({
   return (
     <View>
       <View style={[cardStyle.j_row, { marginBottom: 8 }]}>
-        {isOpenEnroll && (
+        {userType === 1 && (
           <>
             <View style={cardStyle.row}>
               <Text style={cardStyle.subTitle}>Assign from my List</Text>
             </View>
-            <View style={cardStyle.row}>
+            <Pressable style={cardStyle.row} onPress={() => useForm("addForm")}>
               <MaterialCommunityIcons name="plus" size={14} />
               <Text style={cardStyle.subTitle}>Create Assignment</Text>
-            </View>
+            </Pressable>
           </>
         )}
       </View>
@@ -73,6 +79,17 @@ const AssignmentCardView = ({
           data={data}
           keyExtractor={(item: any) => item?.id}
           renderItem={renderItem}
+          style={{ height: height }}
+          windowSize={height}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshLoader}
+              onRefresh={() => {
+                setRefreshLoader(true);
+                reload();
+              }}
+            />
+          }
         />
       )}
     </View>

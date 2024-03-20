@@ -1,5 +1,7 @@
 import {
   FlatList,
+  Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,7 +17,15 @@ import { cardStyle } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../../assets/themes/YoColors";
 
-const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
+const AssesmentCardView = ({
+  data = [],
+  userType = 1,
+  useForm = (value: any) => {},
+  refreshLoader = false,
+  setRefreshLoader = (value: any) => {},
+  reload = () => {},
+  height = 400,
+}) => {
   const navigation: any = useNavigation();
 
   const gotoBatchDetail = (item: any) => {
@@ -32,7 +42,7 @@ const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
           >
             {item?.title}
           </Text>
-          {isOpenEnroll && (
+          {userType === 1 && (
             <Text style={{ fontSize: 12 }}>
               {moment(item?.createdate).format("MMM DD, YYYY")}
             </Text>
@@ -51,15 +61,15 @@ const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
   return (
     <View>
       <View style={[cardStyle.j_row, { marginBottom: 8 }]}>
-        {isOpenEnroll && (
+        {userType === 1 && (
           <>
             <View style={cardStyle.row}>
               <Text style={cardStyle.subTitle}>Assign from my List</Text>
             </View>
-            <View style={cardStyle.row}>
+            <Pressable style={cardStyle.row} onPress={() => useForm("addForm")}>
               <MaterialCommunityIcons name="plus" size={14} />
               <Text style={cardStyle.subTitle}>Create Assessment</Text>
-            </View>
+            </Pressable>
           </>
         )}
       </View>
@@ -69,6 +79,17 @@ const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
           data={data}
           keyExtractor={(item: any) => item?.id}
           renderItem={renderItem}
+          style={{ height: height }}
+          windowSize={height}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshLoader}
+              onRefresh={() => {
+                setRefreshLoader(true);
+                reload();
+              }}
+            />
+          }
         />
       )}
     </View>
