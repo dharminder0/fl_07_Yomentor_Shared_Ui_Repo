@@ -73,3 +73,7 @@ export async function upsertAssessments(payload: any): Promise<any> {
 export async function upsertAssignments(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Assignments/Upsert`, payload);
 }
+
+export async function upsertAttendanceBulkAdd(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Attendance/Bulk/Add`, payload);
+}

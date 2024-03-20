@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
 import useStore from "../../store/useStore";
@@ -21,6 +21,12 @@ const PopupModal: React.FC<ModelProps> = ({
   iconSize = 40,
 }) => {
   const { isPopupModal, setIsPopupModal }: any = useStore();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsPopupModal(false);
+    }, 2000);
+  },[isPopupModal])
 
   return (
     <View>

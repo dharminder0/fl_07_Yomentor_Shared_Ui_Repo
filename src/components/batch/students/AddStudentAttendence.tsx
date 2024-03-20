@@ -4,33 +4,39 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   FlatList,
   Image,
+  Alert,
+  Dimensions,
 } from "react-native";
-import moment from "moment";
 import HeaderView from "../../common/HeaderView";
-import Loading from "../../../screens/Loading";
 import CalendarView from "./CalendarView";
 import NoDataView from "../../../screens/NoDataView";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../../assets/styles/Common";
 import { YoImages } from "../../../assets/themes/YoImages";
 import { YoColors } from "../../../assets/themes/YoColors";
-import { getStudentsAttendance } from "../../../apiconfig/SharedApis";
+import {
+  getStudentsAttendance,
+  upsertAttendanceBulkAdd,
+} from "../../../apiconfig/SharedApis";
+import { Button } from "react-native-elements";
+import Loading from "../../../screens/Loading";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import PopupModal from "../../common/PopupModal";
+import useStore from "../../../store/useStore";
+import moment from "moment";
 
 const AddStudentAttendance = ({ route }: any) => {
   const batchInfo = route?.params?.batchItem ?? {};
-  const [selectedBatch, setSelectedBatch] = useState(batchInfo);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingForAttendance, setIsLoadingForAttendance] = useState(false);
   const [studentsList, setStudentsList] = useState([]);
   const [calendarDate, setCalendarDate] = useState<any>();
-  const [pageSize, setPageSize] = useState(100);
-  const [pageIndex, setPageIndex] = useState(1);
+  const [attendanceList, setAttendanceList] = useState<any>({});
   const image: any = YoImages();
+  const { height } = Dimensions.get("window");
+  const { isPopupModal, setIsPopupModal }: any = useStore();
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,14 +44,27 @@ const AddStudentAttendance = ({ route }: any) => {
       batchId: batchInfo?.id,
       fromDate: calendarDate,
       toDate: calendarDate,
-      pageSize: pageSize,
-      pageIndex: pageIndex,
+      pageSize: 100,
+      pageIndex: 1,
     };
-    console.log(payload);
+    
     getStudentsAttendance(payload)
       .then((response: any) => {
         setStudentsList([]);
         if (response.data && response.data.length > 0) {
+          const attendanceObj: any = {};
+          response.data.forEach((student: any) => {
+            attendanceObj[student.studentId] =
+              student.status == 1
+                ? "present"
+                : student.status == 2
+                ? "absent"
+                : "none"; // 'none', 'present', or 'absent'
+          });
+          console.log('attendanceObj');
+          console.log(attendanceObj);
+          console.log('attendanceObj');
+          setAttendanceList(attendanceObj);
           setStudentsList(response.data);
         }
         setIsLoading(false);
@@ -56,19 +75,50 @@ const AddStudentAttendance = ({ route }: any) => {
       });
   }, [calendarDate]);
 
+  const handleAttendance = (studentId: any, status: any) => {
+    setAttendanceList({ ...attendanceList, [studentId]: status });
+  };
+
+  const addBulkAttendance = () => {
+    setIsLoadingForAttendance(true);
+    let payload: any = {
+      student_attendance: [],
+      batchId: batchInfo?.id,
+      date: calendarDate,
+      createDate: moment(),
+      updateDate: moment(),
+    };
+    if (attendanceList && Object.keys(attendanceList).length > 0) {
+      for (const [key, value] of Object.entries(attendanceList)) {
+        console.log("Key:", key, "Value:", value);
+        let tempObj: any = {
+          studentId: parseInt(key),
+          status: value == "present" ? 1 : value == "absent" ? 2 : 0,
+        };
+        payload.student_attendance.push(tempObj);
+      }
+    }
+console.log('upsertAttendanceBulkAdd');
+console.log(payload);
+console.log('upsertAttendanceBulkAdd');
+    upsertAttendanceBulkAdd(payload)
+      .then((response: any) => {
+        if (response.data && response.data.response) {
+          setIsPopupModal(true);
+          setIsLoadingForAttendance(false);
+        }
+      })
+      .catch((error: any) => {
+        setIsLoadingForAttendance(false);
+        console.error("Error update attendance: ", error);
+      });
+  };
+
   const renderItem = ({ item, index }: any) => (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      //   onPress={() => gotoBatchDetail(item?.id)}
-    >
+    <TouchableOpacity activeOpacity={0.7}>
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={cardStyle.row}>
-          <View
-            style={{
-              width: 75,
-              height: 75,
-            }}
-          >
+          <View style={{ marginRight: 10 }}>
             <Image
               source={image.DefaultUser}
               style={{
@@ -78,46 +128,54 @@ const AddStudentAttendance = ({ route }: any) => {
               }}
             />
           </View>
-          <View
-            style={{
-              width: "79%",
-              paddingHorizontal: 10,
-            }}
-          >
+          <View>
             <View style={[cardStyle.j_row]}>
-              <Text style={[common.h3Title]}>{item?.name}</Text>
+              <Text
+                style={[common.h3Title, { width: "72%" }]}
+                numberOfLines={1}
+              >
+                {item?.firstName} {item?.lastName}
+              </Text>
             </View>
-            <View style={cardStyle.row}>
-              <Ionicons name="location-sharp" size={12} />
-              <Text style={common.rText}>{item?.address}</Text>
-            </View>
-            <View style={cardStyle.row}>
-              <MaterialCommunityIcons name="phone" size={12} />
-              <Text style={common.rText}> {item?.phone}</Text>
-            </View>
+            {item.phone && (
+              <View style={cardStyle.row}>
+                <Text style={common.rText}> {item.phone}</Text>
+              </View>
+            )}
           </View>
-        </View>
-
-        <View style={[cardStyle.j_row, { marginTop: 10 }]}>
-          <View style={cardStyle.row}>
-            <Icon name="history" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Att. History</Text>
-          </View>
-          <View style={cardStyle.row}>
-            <Ionicons name="person" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Profile</Text>
-          </View>
-          <View style={cardStyle.row}>
-            <Ionicons name="chatbubble" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Chat</Text>
-          </View>
-          <View style={cardStyle.row}>
-            <MaterialCommunityIcons
-              name="account-group"
-              size={12}
-              color={YoColors.primary}
-            />
-            <Text style={common.rText}> Assessments</Text>
+          <View style={styles.attendanceButtonsContainer}>
+            <TouchableOpacity
+              style={styles.attendanceButton}
+              onPress={() => handleAttendance(item.studentId, "present")}
+            >
+              <Text
+                style={[
+                  styles.attendanceButtonText,
+                  {
+                    color:
+                      attendanceList[item.studentId] === "present" ? "green" : "grey",
+                  },
+                ]}
+              >
+                <Icon name="user-check" size={18} />
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.attendanceButton}
+              onPress={() => handleAttendance(item.studentId, "absent")}
+            >
+              <Text
+                style={[
+                  styles.attendanceButtonText,
+                  {
+                    color:
+                      attendanceList[item.studentId] === "absent" ? "red" : "grey",
+                  },
+                ]}
+              >
+                <Icon name="user-times" size={18} />
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Card>
@@ -133,18 +191,58 @@ const AddStudentAttendance = ({ route }: any) => {
           {isLoading ? (
             <Loading />
           ) : studentsList && studentsList.length > 0 ? (
-            <FlatList
-              data={studentsList}
-              keyExtractor={(item: any) => item?.id}
-              renderItem={renderItem}
-            />
+            <View style={{ height: "100%" }}>
+              <View style={{ height: height - 180 }}>
+                <FlatList
+                  data={studentsList}
+                  keyExtractor={(item: any) => item?.id}
+                  renderItem={renderItem}
+                />
+              </View>
+              <Button
+                title="Submit"
+                loading={isLoadingForAttendance}
+                onPress={addBulkAttendance}
+                buttonStyle={{
+                  backgroundColor: YoColors.primary,
+                  marginTop: 20,
+                }}
+                titleStyle={{ fontWeight: "600" }}
+                containerStyle={{ width: "100%" }}
+              />
+            </View>
           ) : (
             <NoDataView />
+          )}
+          {isPopupModal && (
+            <PopupModal
+              message="Attendance marked successfully"
+              icon={"checkmark-circle"}
+              color={"green"}
+              iconSize={40}
+            />
           )}
         </View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  attendanceButtonsContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    right: 0,
+    top: 10,
+  },
+  attendanceButton: {
+    padding: 5,
+    borderRadius: 5,
+    margin: 5,
+  },
+  attendanceButtonText: {
+    color: "white",
+  },
+});
 
 export default AddStudentAttendance;
