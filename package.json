@@ -26,6 +26,7 @@
     "react": "18.2.0",
     "react-hook-form": "^7.51.0",
     "react-native": "0.73.5",
+    "react-native-accordion-list-view": "^2.0.3",
     "react-native-calendars": "^1.1304.1",
     "react-native-date-picker": "^4.4.0",
     "react-native-eject": "^0.2.0",
@@ -38,6 +39,7 @@
     "react-native-screens": "^3.29.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-tab-view": "^3.5.2",
+    "react-native-toast-notifications": "^3.4.0",
     "react-native-vector-icons": "^10.0.3",
     "zustand": "^4.5.2"
   },

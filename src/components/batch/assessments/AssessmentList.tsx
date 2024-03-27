@@ -30,6 +30,10 @@ const AssessmentList = ({ batchInfo }: any) => {
       pageSize: pageSize,
       pageIndex: pageIndex,
     };
+    if (userInfo.type === 3) {
+      payload["studentId"] = userInfo?.id;
+    }
+    console.log(payload);
     getAssessmentsListByBatchId(payload)
       .then((response: any) => {
         setAssessmentsList([]);

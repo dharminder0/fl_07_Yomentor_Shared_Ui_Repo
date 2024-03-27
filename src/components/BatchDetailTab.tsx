@@ -7,6 +7,7 @@ import StudentList from "./batch/students/StudentList";
 import HeaderView from "./common/HeaderView";
 import { YoColors } from "../assets/themes/YoColors";
 import { getUserInfo } from "../shared/sharedDetails";
+import AddReview from "./common/AddReview";
 
 const BatchDetailTab = ({ route }: any) => {
   const batchInfo = route?.params?.batchItem ?? {};
@@ -31,6 +32,15 @@ const BatchDetailTab = ({ route }: any) => {
         ...prevRoutes,
       ]);
     }
+    if (
+      userInfo?.type === 3 &&
+      !routes.includes({ key: "review", title: "Review" })
+    ) {
+      setRoutes((prevRoutes) => [
+        ...prevRoutes,
+        { key: "review", title: "Review" },
+      ]);
+    }
   }, []);
 
   const renderScene = ({ route }: any) => {
@@ -43,6 +53,8 @@ const BatchDetailTab = ({ route }: any) => {
         return <AssessmentList batchInfo={selectedBatch} />;
       case "announcement":
         return <AnnouncementList />;
+      case "review":
+        return <AddReview batchId={selectedBatch?.id} />;
       default:
         return null;
     }

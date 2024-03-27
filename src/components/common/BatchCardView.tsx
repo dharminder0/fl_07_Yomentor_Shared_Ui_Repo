@@ -42,7 +42,7 @@ const BatchCardView = ({
   };
 
   const renderItem = ({ item, index }: any) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => gotoBatchDetail(item)}>
+    <Pressable onPress={() => gotoBatchDetail(item)}>
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
@@ -127,7 +127,7 @@ const BatchCardView = ({
           </View>
         </View>
       </Card>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
@@ -170,7 +170,7 @@ const BatchCardView = ({
             height: "85%",
           }}
         >
-          {usedStatusId === 1 && (
+          {usedStatusId === 1 && userInfo?.type === 1 && (
             <>
               <Text style={common.h3Title}>
                 You don't have any batch to open for enrollment
@@ -188,8 +188,33 @@ const BatchCardView = ({
             </>
           )}
 
-          {usedStatusId === 2 && (
+          {usedStatusId === 2 && userInfo?.type === 1 && (
             <Text style={common.h3Title}>You don't have any ongoing batch</Text>
+          )}
+
+          {usedStatusId === 1 && userInfo?.type === 3 && (
+            <Text style={common.h3Title}>
+              You don't have any opening batch for Enrollment
+            </Text>
+          )}
+
+          {userInfo?.type === 3 && usedStatusId == 2 && (
+            <>
+              <Text style={[common.h3Title, { textAlign: "center" }]}>
+                Sorry, you do not have any ongoing batches. Search for a teacher
+                and enroll yourself.
+              </Text>
+              <Button
+                title="Find Teacher"
+                onPress={() => navigation.navigate("TeachersList")}
+                buttonStyle={{
+                  backgroundColor: YoColors.primary,
+                  marginTop: 20,
+                }}
+                titleStyle={{ fontWeight: "600" }}
+                containerStyle={{ width: "50%" }}
+              />
+            </>
           )}
         </View>
       )}

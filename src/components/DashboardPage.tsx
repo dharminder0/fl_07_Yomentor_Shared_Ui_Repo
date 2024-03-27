@@ -6,18 +6,20 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { common } from "../assets/styles/Common";
 import BatchCardView from "./common/BatchCardView";
 import { getUserData, getUserInfo } from "../shared/sharedDetails";
 import HeaderView from "./common/HeaderView";
-import { getOpenBatchListbyTeacherId } from "../apiconfig/SharedApis";
+import { getBatchListbyUserid } from "../apiconfig/SharedApis";
 import Welcome from "./common/Welcome";
 import Loading from "../screens/Loading";
 import AddBatchModalForm from "./common/AddBatchModalForm";
 import useStore from "../store/useStore";
 import { Button } from "react-native-elements";
 import { YoColors } from "../assets/themes/YoColors";
+import ProfileBatchCard from "./common/ProfileBatchCard";
+import { useFocusEffect } from "@react-navigation/native";
 
 const DashboardPage = () => {
   const { height, width } = Dimensions.get("window");
@@ -28,16 +30,19 @@ const DashboardPage = () => {
   const [ongoingBatchList, setOngoingBatchList] = useState([]);
   const { isModalVisible, setModalVisible }: any = useStore();
   const [index, setIndex] = React.useState(0);
-  useEffect(() => {
-    getOpenBatchDatabyTeacherId(1);
-    getOpenBatchDatabyTeacherId(2);
-  }, [userInfo?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getOpenBatchDatabyTeacherId(1);
+      getOpenBatchDatabyTeacherId(2);
+    }, [userInfo?.id])
+  );
 
   const getOpenBatchDatabyTeacherId = (statusId: number) => {
     setIsLoading(true);
     setOpenBatchList([]);
     setOngoingBatchList([]);
-    getOpenBatchListbyTeacherId({
+    getBatchListbyUserid({
       userid: userInfo?.id,
       userType: userInfo?.type,
       statusId: [statusId],
@@ -59,10 +64,38 @@ const DashboardPage = () => {
     });
   };
 
-  const [routes] = useState([
-    { key: "ongoing", title: "Ongoing Batches" },
+  const [routes, setRoutes] = useState([]);
+
+  const allRoutes = [
+    { key: "ongoing", title: "Ongoing" },
     { key: "open", title: "Open for Enrollment" },
-  ]);
+    { key: "enrolled", title: "Enrolled" },
+    { key: "shortlisted", title: "Shortlisted" },
+  ];
+
+  useEffect(() => {
+    const filteredRoutes: any = allRoutes.filter((route) => {
+      if (userInfo?.type === 1) {
+        if (route.key === "open" || route.key === "ongoing") {
+          return true;
+        }
+      }
+
+      if (userInfo?.type === 3) {
+        if (
+          route.key === "shortlisted" ||
+          route.key === "ongoing" ||
+          route.key === "enrolled"
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    setRoutes(filteredRoutes);
+  }, []);
 
   const relaodPage = () => {
     getOpenBatchDatabyTeacherId(1);
@@ -83,17 +116,43 @@ const DashboardPage = () => {
             reloadPage={relaodPage}
           />
         );
+
       case "open":
         return (
           <BatchCardView
             title=" "
             data={openBatchList}
-            height={height - 155}
+            height={height - 150}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={1}
             refreshLoader={refreshLoader}
             setRefreshLoader={setRefreshLoader}
             reloadPage={relaodPage}
+          />
+        );
+      case "shortlisted":
+        return (
+          <ProfileBatchCard
+            data={openBatchList}
+            height={height - 102}
+            isLoading={isLoading}
+            refreshLoader={refreshLoader}
+            setRefreshLoader={setRefreshLoader}
+            reloadPage={relaodPage}
+            usedStatusId={1}
+            intrested={true}
+          />
+        );
+      case "enrolled":
+        return (
+          <ProfileBatchCard
+            data={openBatchList}
+            height={height - 102}
+            isLoading={isLoading}
+            refreshLoader={refreshLoader}
+            setRefreshLoader={setRefreshLoader}
+            reloadPage={relaodPage}
+            usedStatusId={1}
           />
         );
       default:
@@ -122,14 +181,14 @@ const DashboardPage = () => {
               alignItems: "center",
             }}
           >
-            {routes.map((route, idx) => (
+            {routes.map((route: any, idx) => (
               <Button
                 key={route.key}
                 onPress={() => setIndex(idx)}
                 buttonStyle={[
                   common.tabButton,
                   {
-                    width: width / 2,
+                    width: width / routes.length,
                     borderColor: index === idx ? YoColors.primary : "#fff",
                   },
                 ]}

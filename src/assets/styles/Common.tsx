@@ -73,8 +73,8 @@ export const common = StyleSheet.create({
     marginBottom: 5,
   },
   mtop10: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 export const cardStyle = StyleSheet.create({
   container: {
@@ -83,6 +83,12 @@ export const cardStyle = StyleSheet.create({
     margin: 0,
     marginBottom: 10,
     padding: 12,
+  },
+  wrapper: {
+    borderRadius: 6,
+    borderWidth: 0,
+    margin: 0,
+    marginBottom: 10,
   },
   row: {
     flexDirection: "row",

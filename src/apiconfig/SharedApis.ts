@@ -12,9 +12,7 @@ export async function getSubjectByGradeId(gradeId: any): Promise<any> {
   return AxiosInterceptor.get(`Subject/list?gradeId=${gradeId}`);
 }
 
-export async function getOpenBatchListbyTeacherId(
-  reqPayload: any
-): Promise<any> {
+export async function getBatchListbyUserid(reqPayload: any): Promise<any> {
   return AxiosInterceptor.post(`Batch/BatchListbyUserid`, reqPayload);
 }
 
@@ -88,4 +86,39 @@ export async function getAssignStudentAssignments(payload: any): Promise<any> {
 
 export async function getAssignStudentAssessments(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Assessments/AssignStudentAssessments`, payload);
+}
+
+export async function getReviews(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Reviews/GetReviews`, payload);
+}
+
+export async function upsertReviews(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Reviews/Upsert`, payload);
+}
+
+export async function updateBatchStatus(
+  batchId: number,
+  batchStatus: number
+): Promise<any> {
+  return AxiosInterceptor.get(
+    `Batch/UpdateBatchStatus?batchStatus=${batchStatus}&batchId=${batchId}`
+  );
+}
+
+export async function assignStudentBatch(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Batch/AssignedStudent`, payload);
+}
+
+export async function assignFavouriteBatch(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Batch/AssignedFavouriteBatch`, payload);
+}
+
+export async function updateEnrollmentStatus(
+  status: number,
+  studentId: number,
+  batchId: number
+): Promise<any> {
+  return AxiosInterceptor.get(
+    `Batch/UpdateEnrollmentStatus?status=${status}&studentid=${studentId}&batchId=${batchId}`
+  );
 }

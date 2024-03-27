@@ -1,0 +1,297 @@
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import { Card } from "@rneui/themed";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import moment from "moment";
+import { cardStyle, common } from "../../assets/styles/Common";
+import { useNavigation } from "@react-navigation/native";
+import { YoColors } from "../../assets/themes/YoColors";
+import useStore from "../../store/useStore";
+import { getUserInfo } from "../../shared/sharedDetails";
+import { Button } from "react-native-elements";
+import Loading from "../../screens/Loading";
+import {
+  assignFavouriteBatch,
+  assignStudentBatch,
+} from "../../apiconfig/SharedApis";
+import { useToast } from "react-native-toast-notifications";
+import ConfirmationPopup from "./ConfirmationPopup";
+
+const ProfileBatchCard = ({
+  data = [],
+  onAddModalOpen = () => {},
+  height = 150,
+  isLoading = false,
+  refreshLoader = false,
+  setRefreshLoader = (value: any) => {},
+  reloadPage = () => {},
+  intrested = false,
+  usedStatusId = 1,
+}) => {
+  const navigation: any = useNavigation();
+  const userInfo: any = getUserInfo();
+  const toast: any = useToast();
+  const [isEnrollModal, setIsEnrollModal] = useState<boolean>(false);
+  const [selectedBatchId, setSelectedBatchId] = useState<number>();
+
+  const enrollBatch = () => {
+    const payload: any = {
+      student_Info: [
+        {
+          studentId: userInfo?.id,
+          status: 1,
+        },
+      ],
+      batchId: selectedBatchId,
+    };
+    if (selectedBatchId) {
+      assignStudentBatch(payload)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            setIsEnrollModal(false);
+            toast.show("Enroll Request Send", {
+              type: "success",
+              duration: 2000,
+            });
+          }
+        })
+        .catch((error: any) => {
+          setIsEnrollModal(false);
+          toast.show("Error in Enroll", {
+            type: "danger",
+            duration: 2000,
+          });
+        });
+    }
+  };
+  const setFavorite = (batchId: number) => {
+    const payload: any = {
+      userId: userInfo?.id,
+      isFavourite: true,
+      entityTypeId: batchId,
+      entityType: 1,
+    };
+    assignFavouriteBatch(payload).then((response: any) => {
+      console.log(response.data);
+    });
+  };
+
+  const renderItem = ({ item, index }: any) => (
+    <Card
+      containerStyle={[cardStyle.container, { paddingBottom: 5 }]}
+      key={index}
+    >
+      <View style={[cardStyle.j_row, { margin: 0 }]}>
+        <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
+
+        {item?.statusId === 1 && (
+          <Text>{moment(item?.startDate).format("MMM DD, YYYY")}</Text>
+        )}
+      </View>
+
+      {item?.teacherInformation?.firstName && userInfo?.type === 3 && (
+        <View style={[cardStyle.row, { marginVertical: 5 }]}>
+          <Icon name="chalkboard-teacher" size={12} />
+          <Text style={common.rText} numberOfLines={1}>
+            {" "}
+            {item?.teacherInformation?.firstName +
+              " " +
+              item?.teacherInformation?.lastName +
+              " " +
+              `(${item?.teacherInformation?.phone})`}
+          </Text>
+        </View>
+      )}
+
+      {item?.description && (
+        <Text style={{ marginBottom: 10 }} numberOfLines={2}>
+          {item?.description}
+        </Text>
+      )}
+
+      <View style={cardStyle.j_row}>
+        <View style={cardStyle.row3}>
+          <Icon name="laptop" size={12} />
+          <Text style={common.rText}> Class {item?.className}</Text>
+        </View>
+        <View style={cardStyle.row3}>
+          <MaterialCommunityIcons name="clock-time-four-outline" size={13} />
+          <Text style={common.rText}>
+            {" "}
+            {moment(item?.tuitionTime, "HH:mm:ss").format("h:mm A")}
+          </Text>
+        </View>
+        <View style={cardStyle.row3}>
+          <Icon name="money-bill-wave" size={12} />
+          <Text style={common.rText}>
+            {" "}
+            {item?.fee.replace(".00", "")} / {item?.feeType}
+          </Text>
+        </View>
+      </View>
+
+      <View style={cardStyle.j_row}>
+        <View style={cardStyle.row3}>
+          <Icon name="book" size={12} />
+          <Text style={common.rText}> {item?.subjectName}</Text>
+        </View>
+        <View style={cardStyle.row3}>
+          <Icon name="calendar-day" size={12} style={{ marginEnd: 6 }} />
+          {!!item?.days &&
+            Array.isArray(item.days) &&
+            item.days.map((dayItem: any, key: number) => (
+              <Text
+                style={[common.rText, { textTransform: "uppercase" }]}
+                key={key}
+              >
+                {key !== 0 && "/"}
+                {dayItem}
+              </Text>
+            ))}
+        </View>
+        <View style={cardStyle.row3}>
+          <Icon name="users" size={13} />
+          <Text style={common.rText}> {item?.studentCount}</Text>
+        </View>
+      </View>
+
+      {intrested && (
+        <View
+          style={[
+            common.j_row,
+            {
+              borderTopWidth: 0.6,
+              borderTopColor: "#dadada",
+              paddingTop: 8,
+              marginTop: 8,
+            },
+          ]}
+        >
+          {item?.statusId === 1 && userInfo?.type === 3 && (
+            <TouchableOpacity
+              style={common.row}
+              activeOpacity={0.7}
+              onPress={() => {
+                setIsEnrollModal(true);
+                setSelectedBatchId(item?.id);
+              }}
+            >
+              <Text style={{ color: YoColors.primary, fontWeight: "600" }}>
+                Enroll Now
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          <Pressable style={common.row} onPress={() => setFavorite(item?.id)}>
+            <MaterialCommunityIcons
+              name={item?.isFavourite ? "heart" : "heart-outline"}
+              size={16}
+            />
+            <Text style={{ color: YoColors.primary, fontWeight: "600" }}>
+              {" "}
+              Save for later
+            </Text>
+          </Pressable>
+        </View>
+      )}
+    </Card>
+  );
+
+  return (
+    <View>
+      {isLoading && <Loading />}
+      {data && data.length > 0 ? (
+        <FlatList
+          data={data}
+          keyExtractor={(item: any) => item?.id}
+          renderItem={renderItem}
+          style={{ height: height }}
+          showsVerticalScrollIndicator={false}
+          windowSize={height}
+          scrollEnabled={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshLoader}
+              onRefresh={() => {
+                setRefreshLoader(true);
+                reloadPage();
+              }}
+            />
+          }
+        />
+      ) : (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "85%",
+          }}
+        >
+          {userInfo?.type === 3 && usedStatusId === 1 && (
+            <>
+              <Text style={[common.h3Title, { textAlign: "center" }]}>
+                Sorry, you do not have any shortlisted batches. Search for a
+                teacher and enroll yourself.
+              </Text>
+              <Button
+                title="Find Teacher"
+                onPress={() => navigation.navigate("TeachersList")}
+                buttonStyle={{
+                  backgroundColor: YoColors.primary,
+                  marginTop: 20,
+                }}
+                titleStyle={{ fontWeight: "600" }}
+                containerStyle={{ width: "50%" }}
+              />
+            </>
+          )}
+
+          {userInfo?.type === 3 && usedStatusId == 2 && (
+            <>
+              <Text style={[common.h3Title, { textAlign: "center" }]}>
+                Sorry, you do not have any ongoing batches. Search for a teacher
+                and enroll yourself.
+              </Text>
+              <Button
+                title="Find Teacher"
+                onPress={() => navigation.navigate("TeachersList")}
+                buttonStyle={{
+                  backgroundColor: YoColors.primary,
+                  marginTop: 20,
+                }}
+                titleStyle={{ fontWeight: "600" }}
+                containerStyle={{ width: "50%" }}
+              />
+            </>
+          )}
+
+          {userInfo?.type === 3 && usedStatusId === 0 && (
+            <Text style={[common.h3Title, { textAlign: "center" }]}>
+              Sorry, there is no batch for Enrollment
+            </Text>
+          )}
+        </View>
+      )}
+
+      <ConfirmationPopup
+        message="Are you sure to want to enroll in this batch?"
+        onSubmit={enrollBatch}
+        isVisible={isEnrollModal}
+        setIsVisible={setIsEnrollModal}
+      />
+    </View>
+  );
+};
+
+export default ProfileBatchCard;
+
+const styles = StyleSheet.create({});

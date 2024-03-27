@@ -4,4 +4,5 @@ export const YoColors = {
   background: "#f8f9fa",
   text: "#343a40",
   white: "#fff",
+  start: "#f0ca02",
 };
