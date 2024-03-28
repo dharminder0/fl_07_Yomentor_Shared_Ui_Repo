@@ -1,13 +1,28 @@
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
-import React, { memo, useState } from "react";
+import {
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+} from "react-native";
+import React, { memo, useState, useEffect } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { Button } from "react-native-elements";
 import moment from "moment";
 import { getTypes } from "../../shared/sharedDetails";
 import { YoColors } from "../../assets/themes/YoColors";
 import Modal from "react-native-modal";
-import { uploadStyles } from "../../assets/styles/UploadStyle";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import DocumentPicker from "react-native-document-picker";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { uploadStyles } from "../../assets/styles/UploadStyle";
+import { uploadFileToBlob } from "../../apiconfig/SharedApis";
+import FlashMessage, {
+  hideMessage,
+  showMessage,
+} from 'react-native-flash-message';
 
 const FileUploadModal = ({
   title = "",
@@ -20,58 +35,125 @@ const FileUploadModal = ({
   patientId = "",
   fileNameAs = "filename",
   urlAs = "url",
+  setIsDisabled = (value: boolean) => {},
 }) => {
   const types = getTypes();
   const [isBrowseFile, setIsBrowseFile] = useState(false);
   const [selectedFileToDelete, setSelectedFileToDelete] = useState<any>({});
+  const [isLoaderVisible, setIsLoaderVisible] = useState<boolean>(true);
+  const [cameraPermission, setCameraPermission] = useState<string | null>(null);
+  const [storagePermission, setStoragePermission] = useState<string | null>(
+    null
+  );
+  const [uploadedFile, setUploadedFile] = useState<any>('');
 
-  const handleSelectChange = (value: any) => {
-    if (onChange) {
-      onChange(value);
+  // useEffect(() => {
+  //   requestPermissions();
+  // }, [isBrowseFile]);
+
+  const requestPermissions = async () => {
+    if (Platform.OS === "android") {
+      // Request CAMERA permission for Android
+      const cameraPermissionStatus = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA
+      );
+      setCameraPermission(cameraPermissionStatus);
+
+      // Request WRITE_EXTERNAL_STORAGE permission for Android
+      const storagePermissionStatus = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      setStoragePermission(storagePermissionStatus);
+    } else {
+      // Request CAMERA permission for iOS
+      // You can add iOS specific permissions here if needed
     }
   };
 
   const uploadFile = (type: string) => {
     let payload: any = {};
-    const options: any = { mediaType: "photo", allowsEditing: true };
-
+    const options: any = { mediaType: "photo" };
     if (type === "document") {
-      //   DocumentPicker.pick({
-      //     type: [DocumentPicker.types.allFiles],
-      //     allowMultiSelection: false,
-      //   }).then((result: any) => {
-      //     if (result && result.length > 0) {
+      // if (storagePermission === 'granted') {
+      //   DocumentPicker.pick({type: [DocumentPicker.types.allFiles],allowMultiSelection: false}).then((result:any) => {
+      //     if(result && result.length > 0){
       //       uploadFileToDB(result[0]);
       //     }
       //   });
+      // } else {
+      //   Alert.alert('Permission Required', 'Please grant storage permission to access files.');
+      // }
+      DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        allowMultiSelection: false,
+      }).then((result: any) => {
+        if (result && result.length > 0) {
+          uploadFileToDB(result[0]);
+        }
+      });
     } else if (type === "image") {
-      //   launchImageLibrary(options).then((result: any) => {
-      //     if (result && result.assets && result.assets.length > 0) {
+      // if (storagePermission === 'granted') {
+      //   launchImageLibrary(options).then((result:any) => {
+      //     if(result && result.assets && result.assets.length > 0){
       //       payload = {
-      //         fileCopyUri: null,
-      //         name: result.assets[0].fileName,
-      //         size: result.assets[0].fileSize,
-      //         type: result.assets[0].type,
-      //         uri: result.assets[0].uri,
-      //       };
+      //         "fileCopyUri": null,
+      //         "name": result.assets[0].fileName,
+      //         "size": result.assets[0].fileSize,
+      //         "type": result.assets[0].type,
+      //         "uri": result.assets[0].uri
+      //       }
       //       uploadFileToDB(payload);
       //     }
       //   });
+      // } else {
+      //   Alert.alert('Permission Required', 'Please grant storage permission to access photos.');
+      // }
+      launchImageLibrary(options).then((result: any) => {
+        if (result && result.assets && result.assets.length > 0) {
+          payload = {
+            fileCopyUri: null,
+            name: result.assets[0].fileName,
+            size: result.assets[0].fileSize,
+            type: result.assets[0].type,
+            uri: result.assets[0].uri,
+          };
+          uploadFileToDB(payload);
+        }
+      });
     } else if (type === "camera") {
-      //   launchCamera(options).then((result: any) => {
-      //     if (result && result.assets && result.assets.length > 0) {
+      // if (cameraPermission === 'granted' && storagePermission === 'granted') {
+      //   launchCamera(options).then((result:any) => {
+      //     if(result && result.assets && result.assets.length > 0){
       //       payload = {
-      //         fileCopyUri: null,
-      //         name: result.assets[0].fileName,
-      //         size: result.assets[0].fileSize,
-      //         type: result.assets[0].type,
-      //         uri: result.assets[0].uri,
-      //       };
+      //         "fileCopyUri": null,
+      //         "name": result.assets[0].fileName,
+      //         "size": result.assets[0].fileSize,
+      //         "type": result.assets[0].type,
+      //         "uri": result.assets[0].uri
+      //       }
       //       uploadFileToDB(payload);
       //     }
       //   });
+      // } else {
+      //   Alert.alert(
+      //     'Permissions Required',
+      //     'Please grant camera and storage permissions to use the camera.',
+      //   );
+      // }
+      launchCamera(options).then((result: any) => {
+        if (result && result.assets && result.assets.length > 0) {
+          payload = {
+            fileCopyUri: null,
+            name: result.assets[0].fileName,
+            size: result.assets[0].fileSize,
+            type: result.assets[0].type,
+            uri: result.assets[0].uri,
+          };
+          uploadFileToDB(payload);
+        }
+      });
     }
-    // setIsMainLoader(false);
+    setIsLoaderVisible(false);
   };
 
   const getFileExtention = (fileUrl: any) => {
@@ -79,70 +161,44 @@ const FileUploadModal = ({
     return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
 
-  const uploadFileToDB = (data: any) => {
+  const uploadFileToDB = (data:any) => {
     const fData: any = new FormData();
-    fData.append("file", data);
+    fData.append('file', data);
     setIsBrowseFile(false);
-    // uploadFileToBlob(fData, 3).then((result: any) => {
-    //   console.log("upload file db", result.data);
-    //   if (result.data && result.data.message == "Upload success") {
-    //     setIsBrowseFile(false);
-    //     handleSelectChange(result.data.data);
-    //     showMessage({ message: result.data.message, type: "success" });
-    //     addMediaByEntity(result.data.data);
-    //   } else {
-    //     showMessage({ message: result.data.message, type: "danger" });
-    //   }
-    //   setTimeout(() => {
-    //     hideMessage();
-    //   }, 1000);
-    // });
-  };
+    setIsDisabled(true);
+    setIsLoaderVisible(true);
+    uploadFileToBlob(fData, 3).then((result: any) => {
+      if (result.data && result.data.message == 'Upload success') {
+        setIsBrowseFile(false)
+        showMessage({ message: result.data.message, type: 'success', });
+        const updatedObject = { ...uploadedFile, fileLink : result.data.data.fileLink, fileName : result.data.data.fileName }
+        setUploadedFile(updatedObject);
+        console.log('updatedObject');
+        console.log(updatedObject);
+        console.log('updatedObject');
+        setIsLoaderVisible(false);
+      }
+      else {
+        setIsBrowseFile(false)
+        showMessage({ message: result.data.message, type: 'danger' });
+      }
+      setTimeout(() => {
+        setIsDisabled(false);
+        hideMessage();
+      }, 1000);
+    });
+  }
 
   const downloadFile = (fileLink: string) => {
-    // setIsMainLoader(true);
-    // let file_ext: any = getFileExtention(fileLink);
-    // let file_ext2: any = "." + file_ext[0];
-    // RNFetchBlob.config({
-    //   fileCache: true,
-    //   appendExt: file_ext2,
-    // })
-    //   .fetch("GET", fileLink)
-    //   .then((res) => {
-    //     Platform.OS == "ios"
-    //       ? RNFetchBlob.ios.openDocument(res.path())
-    //       : RNFetchBlob.android.actionViewIntent(
-    //           res.path(),
-    //           types[file_ext[0]]
-    //         );
-    //     setIsMainLoader(false);
-    //   });
+    // Handle file download
   };
 
   const addMediaByEntity = (file: any) => {
-    let requestBody: any = {
-      mediaTypeId: 0,
-      entityTypeId: 3, //PatientSpecific
-      entityId: appointmentId,
-      fileName: !file.fileName ? file[0].fileName : file.fileName,
-      bloblink: !file.fileLink ? file[0].uri : file.fileLink,
-      docUsageType: docUseType, //docUsageType
-    };
-
-    // addMediaByEntityId(requestBody).then((result: any) => {
-    //   if (result.data) {
-    //     if (include === "Health") {
-    //       requestBody["entityId"] = patientId;
-    //       requestBody["docUsageType"] = 3;
-    //       addMediaByEntityId(requestBody).then((result: any) => {});
-    //     }
-    //     setIsMainLoader(false);
-    //   }
-    // });
+    // Handle adding media by entity
   };
 
   const handleDelete = (data: any) => {
-    setSelectedFileToDelete(data);
+    // Handle delete action
   };
 
   const deleteMedia = (file?: any) => {
@@ -152,19 +208,6 @@ const FileUploadModal = ({
       entityId: appointmentId,
       bloblink: file.url,
     };
-
-    // deleteMediaFile(requestBody).then((result: any) => {
-    //   if (result.data) {
-    //     if (include === "Health") {
-    //       requestBody["entityId"] = patientId;
-    //       deleteMediaFile(requestBody).then((result: any) => {});
-    //     }
-    //     showMessage({ message: "Deleted Successfully", type: "success" });
-    //   } else {
-    //     showMessage({ message: "Getting Some Error", type: "danger" });
-    //   }
-    //   setIsConfirmModal(false);
-    // });
   };
 
   return (
@@ -185,6 +228,7 @@ const FileUploadModal = ({
           disabled={isDisabled}
           buttonStyle={uploadStyles.fileUploadCard}
           onPress={() => {
+            requestPermissions();
             setIsBrowseFile(true);
           }}
           icon={
@@ -200,6 +244,10 @@ const FileUploadModal = ({
           }
         />
       )}
+      <FlashMessage
+              position="top"
+              style={{ borderRadius: 4, alignItems: 'center' }}
+            />
       <Modal
         isVisible={isBrowseFile}
         onBackButtonPress={() => setIsBrowseFile(false)}

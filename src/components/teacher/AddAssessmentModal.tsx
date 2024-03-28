@@ -52,6 +52,7 @@ const AddAssessmentModal = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
@@ -244,11 +245,12 @@ const AddAssessmentModal = ({
               />
 
               <View>
-                <FileUploadModal />
+                <FileUploadModal setIsDisabled={setIsDisabled}/>
               </View>
 
               <View style={{ marginTop: 30 }}>
                 <Button
+                disabled={isDisabled}
                   title="Create Assessment"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}

@@ -131,3 +131,13 @@ export async function updateEnrollmentStatus(
     `Batch/UpdateEnrollmentStatus?status=${status}&studentid=${studentId}&batchId=${batchId}`
   );
 }
+
+export async function uploadFileToBlob(
+  fileData: any,
+  mediaEntityType: number = 0,
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `MediaFile/Blob/UploadFile?mediaEntityType=${mediaEntityType}`,
+    fileData,
+  );
+}
