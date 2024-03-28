@@ -6,10 +6,11 @@ import { getAssessmentsListByTeacherId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
-import { common } from "../../assets/styles/Common";
+import { btnStyle, common } from "../../assets/styles/Common";
 import AddAssessmentModal from "./AddAssessmentModal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CardAssessment from "./CardAssessment";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const TeacherAssessmentList = () => {
   const userInfo: any = getUserInfo();
@@ -58,10 +59,19 @@ const TeacherAssessmentList = () => {
       ) : assessmentList?.length > 0 ? (
         <View style={common.container}>
           <View style={{ alignItems: "flex-end" }}>
-            <Pressable style={common.row} onPress={() => setModalVisible(true)}>
-              <Icon name="plus" size={16} />
-              <Text>Create Assessment</Text>
-            </Pressable>
+            <Button
+              title=" Create Assessment"
+              onPress={() => setModalVisible(true)}
+              icon={
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={12}
+                  color={YoColors.primary}
+                />
+              }
+              buttonStyle={[btnStyle.outline]}
+              titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            />
           </View>
           <View style={common.row}>
             <CardAssessment

@@ -113,6 +113,15 @@ export async function assignFavouriteBatch(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Batch/AssignedFavouriteBatch`, payload);
 }
 
+export async function updateFavouriteStatus(
+  userId: number,
+  entityId: number
+): Promise<any> {
+  return AxiosInterceptor.get(
+    `Batch/UpdateFavouriteStatus?userId=${userId}&entityId=${entityId}`
+  );
+}
+
 export async function updateEnrollmentStatus(
   status: number,
   studentId: number,

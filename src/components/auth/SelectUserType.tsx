@@ -27,7 +27,7 @@ const SelectUserType = () => {
         Who you are ?
       </Text>
       <View style={{ alignItems: "center" }}>
-        <View style={common.j_row}>
+        {/* <View style={common.j_row}>
           <Pressable
             style={styles.cardWrapper}
             onPress={() =>
@@ -42,7 +42,7 @@ const SelectUserType = () => {
               <Text style={[common.h3Title, { marginTop: 15 }]}>Teacher</Text>
             </Card>
           </Pressable>
-        </View>
+        </View> */}
         <View
           style={{
             justifyContent: "space-around",
@@ -51,6 +51,20 @@ const SelectUserType = () => {
           }}
         >
           <Pressable
+            style={styles.cardWrapper}
+            onPress={() =>
+              navigation.navigate("UserRegistration", { userType: 1 })
+            }
+          >
+            <Card
+              containerStyle={styles.card}
+              wrapperStyle={{ alignItems: "center" }}
+            >
+              <Icon name="chalkboard-teacher" size={50} />
+              <Text style={[common.h3Title, { marginTop: 15 }]}>Teacher</Text>
+            </Card>
+          </Pressable>
+          {/* <Pressable
             style={styles.cardWrapper}
             onPress={() =>
               navigation.navigate("UserRegistration", { userType: 2 })
@@ -63,7 +77,7 @@ const SelectUserType = () => {
               <Icon name="users" size={50} />
               <Text style={[common.h3Title, { marginTop: 15 }]}>Parent</Text>
             </Card>
-          </Pressable>
+          </Pressable> */}
 
           <Pressable
             style={styles.cardWrapper}

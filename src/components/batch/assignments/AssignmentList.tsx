@@ -7,6 +7,9 @@ import NoDataView from "../../../screens/NoDataView";
 import AssignmentCardView from "./AssignmentCardView";
 import AddAssignmentModal from "../../teacher/AddAssignmentModal";
 import { getUserInfo } from "../../../shared/sharedDetails";
+import { Button } from "react-native-elements";
+import { YoColors } from "../../../assets/themes/YoColors";
+import AssignAssignmentModal from "./AssignAssignmentModal";
 
 const AssignmentList = ({ batchInfo }: any) => {
   const userInfo: any = getUserInfo();
@@ -15,6 +18,8 @@ const AssignmentList = ({ batchInfo }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [assignmentsList, setAssignmentsList] = useState([]);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isAssignModalVisible, setIsAssignModalVisible] =
+    useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [pageSize, setPageSize] = useState(20);
   const [pageIndex, setPageIndex] = useState(1);
@@ -55,10 +60,14 @@ const AssignmentList = ({ batchInfo }: any) => {
     if (useFor === "addForm") {
       setModalVisible(true);
     }
+    if (useFor === "selectForm") {
+      setIsAssignModalVisible(true);
+    }
   };
 
   const onCloseUpdate = () => {
     setModalVisible(false);
+    setIsAssignModalVisible(false);
     getAssignmentsDataByBatchId();
   };
 
@@ -77,9 +86,42 @@ const AssignmentList = ({ batchInfo }: any) => {
           reload={getAssignmentsDataByBatchId}
         />
       ) : (
-        <>
-          <NoDataView message="You don't have any Assignment given to this batch" />
-        </>
+        <View
+          style={{
+            height: height - 120,
+            justifyContent: "center",
+          }}
+        >
+          {userInfo.type === 3 && (
+            <Text
+              style={[common.h3Title, common.mb10, { textAlign: "center" }]}
+            >
+              You don't have any Assignment for this batch
+            </Text>
+          )}
+
+          {userInfo.type === 1 && (
+            <>
+              <Text style={[common.h3Title, common.mb10]}>
+                You don't have any Assignment given to this batch
+              </Text>
+              <View style={[common.j_row, common.my10]}>
+                <Button
+                  title="Create New"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  containerStyle={{ width: "45%" }}
+                  onPress={() => useForm("addForm")}
+                />
+                <Button
+                  title="Select Existing"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  onPress={() => useForm("selectForm")}
+                  containerStyle={{ width: "45%" }}
+                />
+              </View>
+            </>
+          )}
+        </View>
       )}
 
       <AddAssignmentModal
@@ -88,6 +130,14 @@ const AssignmentList = ({ batchInfo }: any) => {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
         batchId={selectedBatch.id}
+      />
+
+      <AssignAssignmentModal
+        userId={userInfo?.id}
+        onClose={() => onCloseUpdate()}
+        isModalVisible={isAssignModalVisible}
+        setModalVisible={setIsAssignModalVisible}
+        batchInfo={selectedBatch}
       />
     </View>
   );

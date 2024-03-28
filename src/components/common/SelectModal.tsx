@@ -21,10 +21,12 @@ const SelectModal = ({
   title = "",
   placeholder = "",
   data = [],
-  onChange = (value: any) => {},
+  onChanged = (value: any) => {},
   isMulti = false,
   isDisabled = false,
+  fieldError = false,
 }) => {
+  console.log(fieldError);
   const { width, height } = Dimensions.get("window");
   const [isSelectModal, setIsSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any[]>([]);
@@ -34,8 +36,8 @@ const SelectModal = ({
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);
     setSelectedValue([value.name]);
-    if (onChange) {
-      onChange(value);
+    if (onChanged) {
+      onChanged(value);
     }
   };
 
@@ -60,8 +62,8 @@ const SelectModal = ({
     }
   };
   useEffect(() => {
-    if (onChange) {
-      onChange(selectedIds);
+    if (onChanged) {
+      onChanged(selectedIds);
     }
   }, [selectedIds]);
 
@@ -82,7 +84,7 @@ const SelectModal = ({
           )}
           <Button
             onPress={() => setIsSelectModal(true)}
-            buttonStyle={styles.selectBtn}
+            buttonStyle={[styles.selectBtn, fieldError && styles.borderRed]}
             disabledStyle={{
               opacity: 0.7,
               backgroundColor: "#fff",
@@ -239,5 +241,8 @@ const styles = StyleSheet.create({
   hrLine: {
     borderBottomColor: "#CACCCD",
     borderBottomWidth: 1,
+  },
+  borderRed: {
+    borderColor: "red",
   },
 });

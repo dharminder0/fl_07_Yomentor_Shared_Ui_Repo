@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { common } from "../../assets/styles/Common";
@@ -28,6 +28,8 @@ const UserRegistration = ({ route }: any) => {
   const navigation: any = useNavigation();
   const image: any = YoImages();
   const userType: any = route.params.userType;
+  const [regError, setRegError] = useState<string>();
+
   const {
     control,
     handleSubmit,
@@ -54,8 +56,14 @@ const UserRegistration = ({ route }: any) => {
               }
             }
           );
-          navigation.navigate("Login");
-        }, 3000);
+        }, 1000);
+      }
+
+      if (!result.data?.success && result.data) {
+        setRegError(result.data.message);
+        setTimeout(() => {
+          setRegError("");
+        }, 4000);
       }
     });
   };
@@ -257,6 +265,13 @@ const UserRegistration = ({ route }: any) => {
           </>
         )}
       /> */}
+
+          {regError && (
+            <Text style={[common.errorText, { textTransform: "capitalize" }]}>
+              {regError}
+            </Text>
+          )}
+
           <Button
             title="Register"
             onPress={handleSubmit(onSubmit)}

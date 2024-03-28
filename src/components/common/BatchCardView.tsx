@@ -12,7 +12,7 @@ import { Card } from "@rneui/themed";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../assets/themes/YoColors";
 import useStore from "../../store/useStore";
@@ -24,14 +24,14 @@ const BatchCardView = ({
   data = [],
   onAddModalOpen = () => {},
   height = 150,
-  usedStatusId = 1,
+  usedStatusId = 0,
   refreshLoader = false,
   setRefreshLoader = (value: any) => {},
   reloadPage = () => {},
 }) => {
   const navigation: any = useNavigation();
   const userInfo: any = getUserInfo();
-  const { isModalVisible, setModalVisible }: any = useStore();
+
   const gotoBatchDetail = (item: any) => {
     if (item?.statusId === 2) {
       navigation.navigate("BatchDetailTab", { batchItem: item });
@@ -46,18 +46,20 @@ const BatchCardView = ({
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
+
           {item?.statusId === 1 && (
             <Text>{moment(item?.startDate).format("MMM DD, YYYY")}</Text>
           )}
+
           {item?.statusId === 2 && userInfo?.type === 1 && (
-            <Icon
+            <Pressable
               onPress={() =>
                 navigation.navigate("AddStudentAttendence", { batchItem: item })
               }
-              name="user-check"
-              size={16}
-              color={YoColors.primary}
-            />
+              style={{ padding: 4 }}
+            >
+              <Icon name="user-check" size={16} color={YoColors.primary} />
+            </Pressable>
           )}
         </View>
 
@@ -84,7 +86,7 @@ const BatchCardView = ({
         <View style={cardStyle.j_row}>
           <View style={cardStyle.row3}>
             <Icon name="laptop" size={12} />
-            <Text style={common.rText}> Class {item?.className}</Text>
+            <Text style={common.rText}>{item?.gradeName}</Text>
           </View>
           <View style={cardStyle.row3}>
             <MaterialCommunityIcons name="clock-time-four-outline" size={13} />
@@ -123,7 +125,11 @@ const BatchCardView = ({
           </View>
           <View style={cardStyle.row3}>
             <Icon name="users" size={13} />
-            <Text style={common.rText}> {item?.studentCount}</Text>
+            <Text style={common.rText}>
+              {" "}
+              {item?.studentCount}
+              {usedStatusId === 1 && `/` + item?.actualStudents}
+            </Text>
           </View>
         </View>
       </Card>
@@ -133,13 +139,24 @@ const BatchCardView = ({
   return (
     <View>
       <View style={[cardStyle.row, { justifyContent: "space-between" }]}>
-        {title && <Text style={cardStyle.title}>{title}</Text>}
+        {title && <Text style={cardStyle.title1}>{title}</Text>}
         {userInfo?.type === 1 && usedStatusId === 1 && data.length > 0 && (
-          <Pressable style={cardStyle.row} onPress={onAddModalOpen}>
-            <MaterialCommunityIcons name="plus" size={14} />
-            <Text style={cardStyle.subTitle}>Add</Text>
-            {/* <AddBatchModalForm userId={userInfo?.id} /> */}
-          </Pressable>
+          <>
+            <Button
+              title=" Create New Batch"
+              onPress={onAddModalOpen}
+              icon={
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={12}
+                  color={YoColors.primary}
+                />
+              }
+              buttonStyle={[btnStyle.outline]}
+              containerStyle={common.mb10}
+              titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            />
+          </>
         )}
       </View>
 

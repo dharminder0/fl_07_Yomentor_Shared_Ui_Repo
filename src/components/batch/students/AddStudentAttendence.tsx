@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   Dimensions,
+  Platform,
 } from "react-native";
 import HeaderView from "../../common/HeaderView";
 import CalendarView from "./CalendarView";
@@ -60,9 +61,9 @@ const AddStudentAttendance = ({ route }: any) => {
                 ? "absent"
                 : "none"; // 'none', 'present', or 'absent'
           });
-          console.log('attendanceObj');
+          console.log("attendanceObj");
           console.log(attendanceObj);
-          console.log('attendanceObj');
+          console.log("attendanceObj");
           setAttendanceList(attendanceObj);
           setStudentsList(response.data);
         }
@@ -97,9 +98,9 @@ const AddStudentAttendance = ({ route }: any) => {
         payload.student_attendance.push(tempObj);
       }
     }
-console.log('upsertAttendanceBulkAdd');
-console.log(payload);
-console.log('upsertAttendanceBulkAdd');
+    console.log("upsertAttendanceBulkAdd");
+    console.log(payload);
+    console.log("upsertAttendanceBulkAdd");
     upsertAttendanceBulkAdd(payload)
       .then((response: any) => {
         if (response.data && response.data.response) {
@@ -152,7 +153,9 @@ console.log('upsertAttendanceBulkAdd');
                   styles.attendanceButtonText,
                   {
                     color:
-                      attendanceList[item.studentId] === "present" ? "green" : "grey",
+                      attendanceList[item.studentId] === "present"
+                        ? "green"
+                        : "grey",
                   },
                 ]}
               >
@@ -168,7 +171,9 @@ console.log('upsertAttendanceBulkAdd');
                   styles.attendanceButtonText,
                   {
                     color:
-                      attendanceList[item.studentId] === "absent" ? "red" : "grey",
+                      attendanceList[item.studentId] === "absent"
+                        ? "red"
+                        : "grey",
                   },
                 ]}
               >
@@ -191,7 +196,11 @@ console.log('upsertAttendanceBulkAdd');
             <Loading />
           ) : studentsList && studentsList.length > 0 ? (
             <View style={{ height: "100%" }}>
-              <View style={{ height: height - 180 }}>
+              <View
+                style={{
+                  height: Platform.OS == "ios" ? height - 265 : height - 180,
+                }}
+              >
                 <FlatList
                   data={studentsList}
                   keyExtractor={(item: any) => item?.id}

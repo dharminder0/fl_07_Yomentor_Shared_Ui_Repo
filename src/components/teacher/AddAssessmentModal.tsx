@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
@@ -28,6 +28,7 @@ import ProcessLoader from "../../screens/ProcessLoader";
 import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import FileUploadModal from "../common/FileUploadModal";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const AddAssessmentModal = ({
   userId = "",
@@ -94,7 +95,7 @@ const AddAssessmentModal = ({
         if (batchId) {
           getAssignStudentAssessments({
             batchId: batchId,
-            assignmentId: response.data?.content,
+            assessmentId: response.data?.content,
             status: 1,
           }).then((res: any) => {
             if (res.data && res.data.response) {
@@ -102,17 +103,18 @@ const AddAssessmentModal = ({
             }
           });
         }
+        reset();
+        onClose();
         setTimeout(() => {
           setIsPopupModalVisible(true);
           setIsPopupModal(true);
-          onClose();
-        }, 500);
+        }, 100);
       }
       setTimeout(() => {
         setIsPopupModalVisible(false);
         setIsPopupModal(false);
         setIsProcessLoader(false);
-      }, 2000);
+      }, 1000);
     });
   };
 
@@ -149,11 +151,18 @@ const AddAssessmentModal = ({
           >
             <View style={[cardStyle.j_row, { marginBottom: 20 }]}>
               <Text style={common.h3Title}>Create New Assessment</Text>
-              <Icon
-                name="times"
-                size={18}
-                color={"red"}
+
+              <Button
                 onPress={toggleModal}
+                icon={
+                  <Ionicons
+                    name="close-sharp"
+                    size={24}
+                    color={YoColors.primary}
+                  />
+                }
+                buttonStyle={btnStyle.btnCross}
+                containerStyle={{ padding: 0 }}
               />
             </View>
             <View style={{ paddingVertical: 12 }}>
@@ -201,7 +210,7 @@ const AddAssessmentModal = ({
                   <SelectModal
                     data={classList}
                     placeholder="Class"
-                    onChange={(value: any) => {
+                    onChanged={(value: any) => {
                       setValue("gradeId", value?.id);
                       setGradeId(value?.id);
                     }}
@@ -211,7 +220,7 @@ const AddAssessmentModal = ({
                   <SelectModal
                     data={subjectList}
                     placeholder={"Subject"}
-                    onChange={(value: any) => setValue("subjectId", value?.id)}
+                    onChanged={(value: any) => setValue("subjectId", value?.id)}
                   />
                 </View>
               </View>
@@ -240,7 +249,7 @@ const AddAssessmentModal = ({
 
               <View style={{ marginTop: 30 }}>
                 <Button
-                  title="Create"
+                  title="Create Assessment"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
                 />

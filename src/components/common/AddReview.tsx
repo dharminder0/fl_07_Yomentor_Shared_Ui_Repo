@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
-import { common } from "../../assets/styles/Common";
+import React, { useEffect, useState } from "react";
+import { cardStyle, common } from "../../assets/styles/Common";
 import { Button, Rating } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
 import { Controller, useForm } from "react-hook-form";
@@ -8,10 +8,15 @@ import { TextInput } from "react-native-gesture-handler";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { getReviews, upsertReviews } from "../../apiconfig/SharedApis";
 import { useToast } from "react-native-toast-notifications";
+import { Card } from "@rneui/base";
+import moment from "moment";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const AddReview = ({ batchId = 0 }) => {
+const AddReview = ({ batchDetail }: any) => {
   const userInfo: any = getUserInfo();
   const toast: any = useToast();
+  const [reviewList, setReviewList] = useState<any>([]);
+
   const {
     control,
     handleSubmit,
@@ -21,21 +26,25 @@ const AddReview = ({ batchId = 0 }) => {
 
   useEffect(() => {
     getReviewList();
-    setValue("batchId", batchId);
+    setValue("batchId", batchDetail?.id);
     setValue("rating", 4);
     setValue("addedBy", userInfo?.id);
+    setValue("addedFor", batchDetail?.teacherInformation.id);
   }, []);
 
   const getReviewList = () => {
     const payload: any = {
       addedBy: userInfo?.id,
-      batchId: batchId,
+      // addedFor: batchDetail?.teacherInformation.id,
+      batchId: batchDetail?.id,
       pageSize: 10,
       pageIndex: 1,
     };
-    console.log(payload);
     getReviews(payload).then((response: any) => {
-      console.log(response.data);
+      if (response.data && response.data?.length > 0) {
+        setReviewList(response.data);
+        console.log(response.data);
+      }
     });
   };
 
@@ -55,40 +64,84 @@ const AddReview = ({ batchId = 0 }) => {
   };
 
   return (
-    <View style={[common.container, { alignItems: "flex-end" }]}>
-      <Rating
-        imageSize={20}
-        startingValue={4}
-        onFinishRating={ratingCompleted}
-        onSwipeRating={ratingCompleted}
-        style={{ marginVertical: 10 }}
-      />
+    <>
+      {reviewList && reviewList?.length > 0 ? (
+        <View style={[common.container]}>
+          {reviewList?.map((item: any, key: number) => (
+            <Card containerStyle={cardStyle.container} key={key}>
+              <View style={common.j_row}>
+                <Text style={[common.title, common.mb5]}>
+                  {item?.batchTitle}
+                </Text>
+                <Text style={common.rText}>
+                  {moment(item?.createDate).format("DD MMM, YYYY")}
+                </Text>
+              </View>
+              <Text style={common.rText} numberOfLines={20}>
+                {item?.review}
+              </Text>
+              <View style={[common.j_row, common.mtop10]}>
+                <Text style={common.rText} numberOfLines={20}>
+                  {item?.addedByFirstName + " " + item?.addedByLastName}
+                </Text>
+                {item?.rating > 0 && (
+                  <Text style={common.rText}>
+                    {Array.from(Array(item?.rating).keys())?.map(
+                      (key: number) => (
+                        <MaterialCommunityIcons
+                          name="star"
+                          size={12}
+                          color={YoColors.star}
+                          key={key}
+                        />
+                      )
+                    )}
+                  </Text>
+                )}
+              </View>
+            </Card>
+          ))}
+        </View>
+      ) : (
+        <View style={[common.container, { alignItems: "flex-end" }]}>
+          <Rating
+            imageSize={20}
+            startingValue={4}
+            onFinishRating={ratingCompleted}
+            onSwipeRating={ratingCompleted}
+            style={{ marginVertical: 10 }}
+          />
 
-      <Controller
-        control={control}
-        name="review"
-        defaultValue=""
-        rules={{ required: "Review is required" }}
-        render={({ field: { onChange, value } }) => (
-          <>
-            <TextInput
-              placeholder="Write a review..."
-              onChangeText={onChange}
-              value={value}
-              style={[common.input, { minHeight: 100, verticalAlign: "top" }]}
-              multiline={true}
-            />
-          </>
-        )}
-      />
-      <Button
-        title="Submit"
-        onPress={handleSubmit(onSubmit)}
-        buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
-        titleStyle={{ fontWeight: "600" }}
-        containerStyle={{ width: "40%" }}
-      />
-    </View>
+          <Controller
+            control={control}
+            name="review"
+            defaultValue=""
+            rules={{ required: "Review is required" }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <TextInput
+                  placeholder="Write a review..."
+                  onChangeText={onChange}
+                  value={value}
+                  style={[
+                    common.input,
+                    { minHeight: 100, verticalAlign: "top" },
+                  ]}
+                  multiline={true}
+                />
+              </>
+            )}
+          />
+          <Button
+            title="Submit"
+            onPress={handleSubmit(onSubmit)}
+            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
+            titleStyle={{ fontWeight: "600" }}
+            containerStyle={{ width: "40%" }}
+          />
+        </View>
+      )}
+    </>
   );
 };
 

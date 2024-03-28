@@ -13,9 +13,10 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import { cardStyle } from "../../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../../assets/themes/YoColors";
+import { Button } from "react-native-elements";
 
 const AssignmentCardView = ({
   data = [],
@@ -60,16 +61,29 @@ const AssignmentCardView = ({
 
   return (
     <View>
-      <View style={[cardStyle.j_row, { marginBottom: 8 }]}>
+      <View style={[cardStyle.j_row, { marginBottom: 10 }]}>
         {userType === 1 && (
           <>
-            <View style={cardStyle.row}>
-              <Text style={cardStyle.subTitle}>Assign from my List</Text>
-            </View>
-            <Pressable style={cardStyle.row} onPress={() => useForm("addForm")}>
-              <MaterialCommunityIcons name="plus" size={14} />
-              <Text style={cardStyle.subTitle}>Create Assignment</Text>
-            </Pressable>
+            <Button
+              title=" Assign from my List"
+              onPress={() => useForm("selectForm")}
+              buttonStyle={[btnStyle.outline]}
+              titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            />
+
+            <Button
+              title=" Create Assignment"
+              onPress={() => useForm("addForm")}
+              icon={
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={12}
+                  color={YoColors.primary}
+                />
+              }
+              buttonStyle={[btnStyle.outline]}
+              titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            />
           </>
         )}
       </View>

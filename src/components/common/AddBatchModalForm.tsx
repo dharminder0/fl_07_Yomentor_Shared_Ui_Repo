@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import SelectModal from "./SelectModal";
 import { Button } from "react-native-elements";
@@ -31,6 +31,7 @@ import {
 } from "../../apiconfig/SharedApis";
 import PopupModal from "./PopupModal";
 import ProcessLoader from "../../screens/ProcessLoader";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const feeTypes: any = getFeeTypes();
@@ -61,6 +62,9 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
+    reset();
+    setDate(new Date());
+    setTime(new Date());
   };
 
   useEffect(() => {
@@ -70,6 +74,8 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
       }
     });
   }, []);
+
+  console.log(errors);
 
   useEffect(() => {
     if (gradeId) {
@@ -87,11 +93,9 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     addBatch(data).then((response: any) => {
       if (response.data && response.data?.response) {
         setIsPopupModalVisible(true);
+        onClose();
         setIsPopupModal(true);
-        setTimeout(() => {
-          reset();
-          onClose();
-        }, 1000);
+        reset();
       }
       setTimeout(() => {
         setIsPopupModalVisible(false);
@@ -126,22 +130,29 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
         >
           <View
             style={{
-              padding: 12,
               backgroundColor: "#fff",
               height: height,
               minHeight: 150,
             }}
           >
-            <View style={[cardStyle.j_row, { marginBottom: 20 }]}>
+            <View
+              style={[cardStyle.j_row, { padding: 12, alignItems: "center" }]}
+            >
               <Text style={cardStyle.headTitle}>Create New Batch</Text>
-              <Icon
-                name="times"
-                size={18}
-                color={"red"}
+              <Button
                 onPress={toggleModal}
+                icon={
+                  <Ionicons
+                    name="close-sharp"
+                    size={24}
+                    color={YoColors.primary}
+                  />
+                }
+                buttonStyle={btnStyle.btnCross}
+                containerStyle={{ padding: 0 }}
               />
             </View>
-            <View style={{ paddingVertical: 12 }}>
+            <View style={{ paddingHorizontal: 12 }}>
               <Controller
                 control={control}
                 name="name"
@@ -183,29 +194,55 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
               />
               <View style={cardStyle.j_row}>
                 <View style={{ width: "48%" }}>
-                  <SelectModal
-                    data={classList}
-                    placeholder="Class"
-                    onChange={(value: any) => {
-                      setValue("gradeId", value?.id);
-                      setGradeId(value?.id);
-                    }}
+                  <Controller
+                    control={control}
+                    name="gradeId"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <SelectModal
+                        data={classList}
+                        placeholder="Class"
+                        onChanged={(values: any) => {
+                          setValue("gradeId", values?.id);
+                          setGradeId(values?.id);
+                        }}
+                        // fieldError={errors.gradeId ? true : false}
+                      />
+                    )}
                   />
                 </View>
                 <View style={{ width: "48%" }}>
-                  <SelectModal
-                    data={subjectList}
-                    placeholder={"Subject"}
-                    onChange={(value: any) => setValue("subjectId", value?.id)}
+                  <Controller
+                    control={control}
+                    name="subjectId"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <SelectModal
+                        data={subjectList}
+                        placeholder={"Subject"}
+                        onChanged={(value: any) =>
+                          setValue("subjectId", value?.id)
+                        }
+                        // fieldError={errors.subjectId ? true : false}
+                      />
+                    )}
                   />
                 </View>
               </View>
 
-              <SelectModal
-                data={days}
-                placeholder="Select Days"
-                onChange={(value: any) => setValue("days", value)}
-                isMulti={true}
+              <Controller
+                control={control}
+                name="days"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <SelectModal
+                    data={days}
+                    placeholder="Select Days"
+                    onChanged={(value: any) => setValue("days", value)}
+                    isMulti={true}
+                    // fieldError={errors.days ? true : false}
+                  />
+                )}
               />
 
               <View style={cardStyle.row}>
@@ -214,7 +251,10 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   style={[
                     styles.input,
                     cardStyle.row,
-                    { justifyContent: "space-between" },
+                    {
+                      justifyContent: "space-between",
+                      borderColor: errors.classTime ? "red" : "#ccc",
+                    },
                   ]}
                 >
                   <Text> {moment(time).format("HH:mm")}</Text>
@@ -264,10 +304,20 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                 </View>
 
                 <View style={{ width: "48%" }}>
-                  <SelectModal
-                    data={feeTypes}
-                    placeholder="Fee Type"
-                    onChange={(value: any) => setValue("feeType", value?.id)}
+                  <Controller
+                    control={control}
+                    name="feeType"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                      <SelectModal
+                        data={feeTypes}
+                        placeholder="Fee Type"
+                        onChanged={(value: any) =>
+                          setValue("feeType", value?.id)
+                        }
+                        fieldError={errors.feeType ? true : false}
+                      />
+                    )}
                   />
                 </View>
               </View>
@@ -305,7 +355,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                     {" "}
                     {moment(new Date()).format("DD-MM-YYYY") ===
                     moment(date).format("DD-MM-YYYY")
-                      ? "Started Date (DD-MM-YYYY)"
+                      ? "Batch Start Date (DD-MM-YYYY)"
                       : moment(date).format("DD-MM-YYYY")}
                   </Text>
                   <Icon name="calendar" size={13} color={YoColors.secondary} />

@@ -3,6 +3,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   RefreshControl,
   StyleSheet,
   Text,
@@ -27,7 +28,7 @@ import { YoImages } from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 
 const TeachersList = () => {
-  const { height } = Dimensions.get("window");
+  const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
   const image: any = YoImages();
@@ -119,23 +120,15 @@ const TeachersList = () => {
           />
           <View
             style={{
-              width: "79%",
-              paddingHorizontal: 10,
+              width: width - 95,
+              paddingStart: 10,
             }}
           >
             <View style={[cardStyle.j_row]}>
               <Text style={[common.title]}>
                 {item?.firstName + " " + item?.lastName}
               </Text>
-            </View>
-            {item?.phone && (
-              <View style={cardStyle.row}>
-                <MaterialCommunityIcons name="phone" size={12} />
-                <Text style={common.rText}> {item?.phone}</Text>
-              </View>
-            )}
 
-            <View style={cardStyle.row}>
               {item?.averageRating > 0 && (
                 <Text style={common.rText}>
                   {Array.from(Array(item?.averageRating).keys())?.map(
@@ -143,7 +136,7 @@ const TeachersList = () => {
                       <MaterialCommunityIcons
                         name="star"
                         size={12}
-                        color={YoColors.start}
+                        color={YoColors.star}
                         key={key}
                       />
                     )
@@ -152,6 +145,27 @@ const TeachersList = () => {
                 </Text>
               )}
             </View>
+
+            {item?.phone && (
+              <View style={cardStyle.row}>
+                <MaterialCommunityIcons name="phone" size={12} />
+                <Text style={common.rText}> {item?.phone}</Text>
+              </View>
+            )}
+
+            {item?.education && (
+              <View style={cardStyle.row}>
+                <Icon name="user-graduate" size={12} />
+                <Text style={common.rText}> {item?.education}</Text>
+              </View>
+            )}
+
+            {item?.education && (
+              <View style={cardStyle.row}>
+                <Icon name="user-graduate" size={12} />
+                <Text style={common.rText}> {item?.education}</Text>
+              </View>
+            )}
           </View>
         </View>
       </Card>
@@ -193,8 +207,11 @@ const TeachersList = () => {
               data={teacherList}
               keyExtractor={(item: any) => item?.id}
               renderItem={renderItem}
-              style={{ height: height - 125, marginTop: 5 }}
-              windowSize={height - 125}
+              style={{
+                height: Platform.OS === "ios" ? height - 200 : height - 125,
+                marginTop: 5,
+              }}
+              windowSize={Platform.OS === "ios" ? height - 200 : height - 125}
               showsVerticalScrollIndicator={false}
               onScrollEndDrag={handleLoadMore}
               onEndReachedThreshold={0.5}

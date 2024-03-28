@@ -72,8 +72,45 @@ export const common = StyleSheet.create({
     fontSize: 10,
     marginBottom: 5,
   },
-  mtop10: {
-    marginTop: 10,
+  mtop10: { marginTop: 10 },
+  mb5: { marginBottom: 5 },
+  mb10: { marginBottom: 10 },
+  my10: { marginVertical: 10 },
+  ptop10: { paddingTop: 10 },
+  pb5: { paddingBottom: 5 },
+  pb10: { paddingBottom: 10 },
+  py10: { paddingVertical: 10 },
+  ph10: { paddingHorizontal: 10 },
+  p12: { padding: 12 },
+  px12: { paddingHorizontal: 12 },
+  fs12: { fontSize: 12 },
+});
+
+export const btnStyle = StyleSheet.create({
+  outline: {
+    backgroundColor: YoColors.white,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderWidth: 0.7,
+    borderColor: YoColors.primary,
+  },
+  outlineTitle: {
+    color: YoColors.primary,
+  },
+  solid: {
+    backgroundColor: YoColors.primary,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderWidth: 0.7,
+    borderColor: YoColors.primary,
+  },
+  solidTitle: {
+    color: YoColors.white,
+  },
+  btnCross: {
+    paddingHorizontal: 15,
+    paddingVertical: 0,
+    backgroundColor: "#fff",
   },
 });
 export const cardStyle = StyleSheet.create({
@@ -107,6 +144,11 @@ export const cardStyle = StyleSheet.create({
   title: {
     fontSize: 18,
     marginVertical: 10,
+    fontWeight: "600",
+    color: YoColors.primary,
+  },
+  title1: {
+    fontSize: 18,
     fontWeight: "600",
     color: YoColors.primary,
   },

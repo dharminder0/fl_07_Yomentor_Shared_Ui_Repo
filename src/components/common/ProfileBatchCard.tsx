@@ -22,6 +22,7 @@ import Loading from "../../screens/Loading";
 import {
   assignFavouriteBatch,
   assignStudentBatch,
+  updateFavouriteStatus,
 } from "../../apiconfig/SharedApis";
 import { useToast } from "react-native-toast-notifications";
 import ConfirmationPopup from "./ConfirmationPopup";
@@ -36,11 +37,13 @@ const ProfileBatchCard = ({
   reloadPage = () => {},
   intrested = false,
   usedStatusId = 1,
+  withdraw = false,
 }) => {
   const navigation: any = useNavigation();
   const userInfo: any = getUserInfo();
   const toast: any = useToast();
   const [isEnrollModal, setIsEnrollModal] = useState<boolean>(false);
+  const [isWithdrawModal, setIsWithdrawModal] = useState<boolean>(false);
   const [selectedBatchId, setSelectedBatchId] = useState<number>();
 
   const enrollBatch = () => {
@@ -73,16 +76,30 @@ const ProfileBatchCard = ({
         });
     }
   };
-  const setFavorite = (batchId: number) => {
-    const payload: any = {
-      userId: userInfo?.id,
-      isFavourite: true,
-      entityTypeId: batchId,
-      entityType: 1,
-    };
-    assignFavouriteBatch(payload).then((response: any) => {
-      console.log(response.data);
-    });
+  const setFavoriteStatus = (batchId: number, useFor: boolean) => {
+    if (!useFor) {
+      const payload: any = {
+        userId: userInfo?.id,
+        isFavourite: true,
+        entityTypeId: batchId,
+        entityType: 1,
+      };
+      assignFavouriteBatch(payload).then((response: any) => {
+        if (response.data && response.data.response) {
+          reloadPage();
+        }
+      });
+    } else {
+      updateFavouriteStatus(userInfo?.id, batchId)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            reloadPage();
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
   };
 
   const renderItem = ({ item, index }: any) => (
@@ -177,30 +194,77 @@ const ProfileBatchCard = ({
           ]}
         >
           {item?.statusId === 1 && userInfo?.type === 3 && (
-            <TouchableOpacity
-              style={common.row}
-              activeOpacity={0.7}
+            <Button
+              title="Enroll Now"
               onPress={() => {
                 setIsEnrollModal(true);
                 setSelectedBatchId(item?.id);
               }}
-            >
-              <Text style={{ color: YoColors.primary, fontWeight: "600" }}>
-                Enroll Now
-              </Text>
-            </TouchableOpacity>
-          )}
-
-          <Pressable style={common.row} onPress={() => setFavorite(item?.id)}>
-            <MaterialCommunityIcons
-              name={item?.isFavourite ? "heart" : "heart-outline"}
-              size={16}
+              buttonStyle={{
+                backgroundColor: YoColors.primary,
+                paddingHorizontal: 7,
+                paddingVertical: 3,
+              }}
+              containerStyle={{ padding: 0 }}
+              titleStyle={common.rText}
             />
-            <Text style={{ color: YoColors.primary, fontWeight: "600" }}>
-              {" "}
-              Save for later
-            </Text>
-          </Pressable>
+          )}
+          <Button
+            title={!item?.isFavourite ? "Shortlist" : "Remove from shortlist"}
+            onPress={() => setFavoriteStatus(item?.id, item?.isFavourite)}
+            buttonStyle={{
+              backgroundColor: "none",
+              paddingHorizontal: 7,
+              paddingVertical: 3,
+            }}
+            icon={
+              <MaterialCommunityIcons
+                name={item?.isFavourite ? "heart" : "heart-outline"}
+                size={14}
+                color={YoColors.primary}
+              />
+            }
+            containerStyle={{ padding: 0 }}
+            titleStyle={[
+              common.rText,
+              { color: YoColors.text, fontWeight: "500" },
+            ]}
+          />
+        </View>
+      )}
+      {withdraw && (
+        <View
+          style={[
+            common.j_row,
+            {
+              borderTopWidth: 0.6,
+              borderTopColor: "#dadada",
+              paddingTop: 8,
+              marginTop: 8,
+            },
+          ]}
+        >
+          {item?.statusId === 1 && userInfo?.type === 3 && (
+            <Button
+              title="Withdraw Enrollment"
+              onPress={() => {
+                setIsWithdrawModal(true);
+                setSelectedBatchId(item?.id);
+              }}
+              buttonStyle={{
+                backgroundColor: YoColors.white,
+                paddingHorizontal: 7,
+                paddingVertical: 3,
+                borderWidth: 0.7,
+                borderColor: YoColors.primary,
+              }}
+              containerStyle={{ padding: 0 }}
+              titleStyle={[
+                common.rText,
+                { color: YoColors.primary, fontWeight: "400" },
+              ]}
+            />
+          )}
         </View>
       )}
     </Card>
@@ -287,6 +351,13 @@ const ProfileBatchCard = ({
         onSubmit={enrollBatch}
         isVisible={isEnrollModal}
         setIsVisible={setIsEnrollModal}
+      />
+
+      <ConfirmationPopup
+        message="Are you sure to want to withdraw your enrollment?"
+        // onSubmit={enrollBatch}
+        isVisible={isWithdrawModal}
+        setIsVisible={setIsWithdrawModal}
       />
     </View>
   );

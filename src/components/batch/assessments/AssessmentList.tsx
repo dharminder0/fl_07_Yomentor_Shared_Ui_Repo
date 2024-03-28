@@ -7,6 +7,9 @@ import NoDataView from "../../../screens/NoDataView";
 import AssesmentCardView from "./AssesmentCardView";
 import { getUserInfo } from "../../../shared/sharedDetails";
 import AddAssessmentModal from "../../teacher/AddAssessmentModal";
+import { Button } from "react-native-elements";
+import { YoColors } from "../../../assets/themes/YoColors";
+import AssignAssessmentModal from "./AssignAssessmentModal";
 
 const AssessmentList = ({ batchInfo }: any) => {
   const userInfo: any = getUserInfo();
@@ -16,7 +19,9 @@ const AssessmentList = ({ batchInfo }: any) => {
   const [assessmentsList, setAssessmentsList] = useState([]);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
-  const [pageSize, setPageSize] = useState(100);
+  const [isAssignModalVisible, setIsAssignModalVisible] =
+    useState<boolean>(false);
+  const [pageSize, setPageSize] = useState(20);
   const [pageIndex, setPageIndex] = useState(1);
 
   useEffect(() => {
@@ -30,10 +35,11 @@ const AssessmentList = ({ batchInfo }: any) => {
       pageSize: pageSize,
       pageIndex: pageIndex,
     };
+
     if (userInfo.type === 3) {
       payload["studentId"] = userInfo?.id;
     }
-    console.log(payload);
+
     getAssessmentsListByBatchId(payload)
       .then((response: any) => {
         setAssessmentsList([]);
@@ -56,10 +62,14 @@ const AssessmentList = ({ batchInfo }: any) => {
     if (useFor === "addForm") {
       setModalVisible(true);
     }
+    if (useFor === "selectForm") {
+      setIsAssignModalVisible(true);
+    }
   };
 
   const onCloseUpdate = () => {
     setModalVisible(false);
+    setIsAssignModalVisible(false);
     getAssessmentsDataByBatchId();
   };
 
@@ -78,8 +88,40 @@ const AssessmentList = ({ batchInfo }: any) => {
           reload={getAssessmentsDataByBatchId}
         />
       ) : (
-        <View style={{ justifyContent: "center" }}>
-          <NoDataView message="You don't have any Assessment given to this batch" />
+        <View
+          style={{
+            height: height - 120,
+            justifyContent: "center",
+          }}
+        >
+          {userInfo.type === 3 && (
+            <Text
+              style={[common.h3Title, common.mb10, { textAlign: "center" }]}
+            >
+              You don't have any Assessment for this batch
+            </Text>
+          )}
+          {userInfo.type === 1 && (
+            <>
+              <Text style={[common.h3Title, common.mb10]}>
+                You don't have any Assessment given to this batch
+              </Text>
+              <View style={[common.j_row, common.my10]}>
+                <Button
+                  title="Create New"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  containerStyle={{ width: "45%" }}
+                  onPress={() => useForm("addForm")}
+                />
+                <Button
+                  title="Select Existing"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  onPress={() => useForm("selectForm")}
+                  containerStyle={{ width: "45%" }}
+                />
+              </View>
+            </>
+          )}
         </View>
       )}
       <AddAssessmentModal
@@ -88,6 +130,14 @@ const AssessmentList = ({ batchInfo }: any) => {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
         batchId={selectedBatch?.id}
+      />
+
+      <AssignAssessmentModal
+        userId={userInfo?.id}
+        onClose={() => onCloseUpdate()}
+        isModalVisible={isAssignModalVisible}
+        setModalVisible={setIsAssignModalVisible}
+        batchInfo={selectedBatch}
       />
     </View>
   );

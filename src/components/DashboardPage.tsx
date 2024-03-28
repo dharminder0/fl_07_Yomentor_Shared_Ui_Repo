@@ -1,15 +1,8 @@
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { common } from "../assets/styles/Common";
 import BatchCardView from "./common/BatchCardView";
-import { getUserData, getUserInfo } from "../shared/sharedDetails";
+import { getUserInfo } from "../shared/sharedDetails";
 import HeaderView from "./common/HeaderView";
 import { getBatchListbyUserid } from "../apiconfig/SharedApis";
 import Welcome from "./common/Welcome";
@@ -31,40 +24,7 @@ const DashboardPage = () => {
   const { isModalVisible, setModalVisible }: any = useStore();
   const [index, setIndex] = React.useState(0);
 
-  useFocusEffect(
-    useCallback(() => {
-      getOpenBatchDatabyTeacherId(1);
-      getOpenBatchDatabyTeacherId(2);
-    }, [userInfo?.id])
-  );
-
-  const getOpenBatchDatabyTeacherId = (statusId: number) => {
-    setIsLoading(true);
-    setOpenBatchList([]);
-    setOngoingBatchList([]);
-    getBatchListbyUserid({
-      userid: userInfo?.id,
-      userType: userInfo?.type,
-      statusId: [statusId],
-      pageSize: 20,
-      pageIndex: 1,
-    }).then((response: any) => {
-      if (response?.data && response?.data?.length) {
-        if (statusId === 1) {
-          setOpenBatchList(response?.data);
-        }
-        if (statusId === 2) {
-          setOngoingBatchList(response?.data);
-        }
-      }
-      setTimeout(() => {
-        setIsLoading(false);
-        setRefreshLoader(false);
-      }, 1000);
-    });
-  };
-
-  const [routes, setRoutes] = useState([]);
+  const [routes, setRoutes] = useState<any>([]);
 
   const allRoutes = [
     { key: "ongoing", title: "Ongoing" },
@@ -97,18 +57,69 @@ const DashboardPage = () => {
     setRoutes(filteredRoutes);
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      getOpenBatchDatabyTeacherId(1);
+      getOpenBatchDatabyTeacherId(2);
+    }, [userInfo?.id, index])
+  );
+
+  const getOpenBatchDatabyTeacherId = (statusId: number) => {
+    setIsLoading(true);
+    const payload: any = {
+      userid: userInfo?.id,
+      userType: userInfo?.type,
+      pageSize: 20,
+      pageIndex: 1,
+    };
+
+    if (routes[index]?.key == "ongoing" || routes[index]?.key == "open") {
+      payload["statusId"] = [statusId];
+    }
+
+    if (routes[index]?.key == "enrolled") {
+      payload["statusId"] = [1, 2, 3, 4];
+    }
+
+    if (userInfo?.type === 3) {
+      payload["isFavourite"] = true;
+    }
+
+    // setIsLoading(true);
+    setOpenBatchList([]);
+    setOngoingBatchList([]);
+    getBatchListbyUserid(payload)
+      .then((response: any) => {
+        if (response?.data && response?.data?.length) {
+          if (statusId === 1) {
+            setOpenBatchList(response?.data);
+          }
+          if (statusId === 2) {
+            setOngoingBatchList(response?.data);
+          }
+        }
+        setTimeout(() => {
+          setIsLoading(false);
+          setRefreshLoader(false);
+        }, 200);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   const relaodPage = () => {
     getOpenBatchDatabyTeacherId(1);
     getOpenBatchDatabyTeacherId(2);
   };
 
   const renderScene = ({ route }: any) => {
-    switch (route.key) {
+    switch (route?.key) {
       case "ongoing":
         return (
           <BatchCardView
             data={ongoingBatchList}
-            height={height - 150}
+            height={Platform.OS === "ios" ? height - 150 : height - 102}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={2}
             refreshLoader={refreshLoader}
@@ -122,7 +133,7 @@ const DashboardPage = () => {
           <BatchCardView
             title=" "
             data={openBatchList}
-            height={height - 150}
+            height={Platform.OS === "ios" ? height - 235 : height - 135}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={1}
             refreshLoader={refreshLoader}
@@ -130,11 +141,12 @@ const DashboardPage = () => {
             reloadPage={relaodPage}
           />
         );
+
       case "shortlisted":
         return (
           <ProfileBatchCard
             data={openBatchList}
-            height={height - 102}
+            height={Platform.OS === "ios" ? height - 190 : height - 135}
             isLoading={isLoading}
             refreshLoader={refreshLoader}
             setRefreshLoader={setRefreshLoader}
@@ -143,6 +155,7 @@ const DashboardPage = () => {
             intrested={true}
           />
         );
+
       case "enrolled":
         return (
           <ProfileBatchCard
@@ -153,8 +166,10 @@ const DashboardPage = () => {
             setRefreshLoader={setRefreshLoader}
             reloadPage={relaodPage}
             usedStatusId={1}
+            withdraw={true}
           />
         );
+
       default:
         null;
     }
@@ -166,6 +181,8 @@ const DashboardPage = () => {
       getOpenBatchDatabyTeacherId(1);
     }, 500);
   };
+
+  console.log(openBatchList);
 
   return (
     <>
@@ -181,7 +198,7 @@ const DashboardPage = () => {
               alignItems: "center",
             }}
           >
-            {routes.map((route: any, idx) => (
+            {routes.map((route: any, idx: number) => (
               <Button
                 key={route.key}
                 onPress={() => setIndex(idx)}

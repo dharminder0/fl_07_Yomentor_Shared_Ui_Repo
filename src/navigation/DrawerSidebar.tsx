@@ -7,10 +7,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { clearUserData, getUserInfo } from "../shared/sharedDetails";
 import { YoColors } from "../assets/themes/YoColors";
 import { common } from "../assets/styles/Common";
+import { YoImages } from "../assets/themes/YoImages";
 
 const DrawerSidebar = ({ navigation }: { navigation: any }) => {
   const userInfo: any = getUserInfo();
-
+  const image: any = YoImages();
   const logoutUser = () => {
     clearUserData("userData");
     navigation.navigate("Startup");
@@ -18,48 +19,66 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: YoColors.primary }}>
-      {/* <View
+      <View
         style={{
-          maxHeight: 70,
-          borderBottomWidth: 1,
-          padding: 8,
-          borderBottomColor: YoColors.white,
+          minHeight: 70,
+          paddingVertical: 15,
+          paddingHorizontal: 12,
+          backgroundColor: YoColors.white,
         }}
       >
-        <View>
-          <Text style={[common.h3Title, { color: YoColors.white }]}>
-            {userInfo?.firstname + " " + userInfo?.lastname}
-          </Text>
-          {userInfo?.email && (
-            <Text style={[common.title, { color: YoColors.white }]}>
-              {userInfo?.email}
+        <View style={common.row}>
+          <View style={{ width: 60 }}>
+            {!userInfo.image ? (
+              <Image
+                source={image.DefaultUser}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                }}
+              />
+            ) : (
+              <Image
+                source={{ uri: userInfo.image }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                }}
+              />
+            )}
+          </View>
+          <View>
+            <Text style={[common.h3Title]}>
+              {userInfo?.firstname + " " + userInfo?.lastname}
             </Text>
-          )}
-          {userInfo?.phone && (
-            <View style={common.row}>
-              <MaterialCommunityIcons
-                name="phone"
-                size={14}
-                color={YoColors.white}
-              />
-              <Text style={[common.title, { color: YoColors.white }]}>
-                {" "}
-                {userInfo?.phone}
-              </Text>
-            </View>
-          )}
-          {userInfo?.address && (
-            <View style={common.row}>
-              <Ionicons
-                name="location-sharp"
-                size={12}
-                color={YoColors.white}
-              />
-              <Text style={common.rText}>{userInfo?.address}</Text>
-            </View>
-          )}
+            {userInfo?.email && (
+              <Text style={[common.title]}>{userInfo?.email}</Text>
+            )}
+            {userInfo?.phone && (
+              <View style={common.row}>
+                <MaterialCommunityIcons
+                  name="phone"
+                  size={14}
+                  color={YoColors.primary}
+                />
+                <Text style={[common.title]}> {userInfo?.phone}</Text>
+              </View>
+            )}
+            {userInfo?.address && (
+              <View style={common.row}>
+                <Ionicons
+                  name="location-sharp"
+                  size={12}
+                  color={YoColors.primary}
+                />
+                <Text style={common.rText}>{userInfo?.address}</Text>
+              </View>
+            )}
+          </View>
         </View>
-      </View> */}
+      </View>
       <View style={{ padding: 8 }}>
         <TouchableOpacity
           style={styles.tabView}

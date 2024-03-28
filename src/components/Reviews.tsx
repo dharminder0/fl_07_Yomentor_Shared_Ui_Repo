@@ -24,9 +24,10 @@ import { getReviews } from "../apiconfig/SharedApis";
 import moment from "moment";
 import { YoColors } from "../assets/themes/YoColors";
 
-const Reviews = () => {
+const Reviews = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("screen");
   const image: any = YoImages();
+  const teacherId = route.params.teacherId;
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
   const [refreshLoader, setRefreshLoader] = useState(false);
@@ -43,7 +44,7 @@ const Reviews = () => {
 
   const getReviewList = () => {
     const payload: any = {
-      addedFor: 21,
+      addedFor: teacherId,
       pageSize: 10,
       pageIndex: pageIndex,
     };
@@ -131,16 +132,18 @@ const Reviews = () => {
           </View>
         </View>
         <View style={[cardStyle.j_row, common.mtop10]}>
-          <Text style={[common.title]}>
-            {item?.addedByFirstName + " " + item?.addedByLastName}
-          </Text>
+          {item?.addedByFirstName && (
+            <Text style={[common.title]}>
+              {item?.addedByFirstName + " " + item?.addedByLastName}
+            </Text>
+          )}
           <Text style={[common.title]}>{item?.batchTitle}</Text>
           <View style={[cardStyle.row, { marginStart: 15 }]}>
             {Array.from(Array(item?.rating).keys())?.map((key: number) => (
               <MaterialCommunityIcons
                 name="star"
                 size={12}
-                color={"#FF7400"}
+                color={YoColors.star}
                 key={key}
               />
             ))}

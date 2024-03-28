@@ -17,6 +17,7 @@ import { getBatchListbyUserid } from "../apiconfig/SharedApis";
 import { getUserInfo } from "../shared/sharedDetails";
 import BatchCardView from "./common/BatchCardView";
 import ProfileBatchCard from "./common/ProfileBatchCard";
+import { YoColors } from "../assets/themes/YoColors";
 
 const UserDetails = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("window");
@@ -87,7 +88,9 @@ const UserDetails = ({ route }: { route: any }) => {
               {detail?.averageRating > 0 && (
                 <Pressable
                   style={[cardStyle.row]}
-                  onPress={() => navigation.navigate("Reviews")}
+                  onPress={() =>
+                    navigation.navigate("Reviews", { teacherId: detail?.id })
+                  }
                 >
                   {detail?.averageRating > 0 && (
                     <Text style={common.rText}>
@@ -96,7 +99,7 @@ const UserDetails = ({ route }: { route: any }) => {
                           <MaterialCommunityIcons
                             name="star"
                             size={12}
-                            color={"#FF7400"}
+                            color={YoColors.star}
                             key={key}
                           />
                         )
