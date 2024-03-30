@@ -41,7 +41,9 @@ const AddAssignmentModal = ({
   isModalVisible = false,
   setModalVisible = (value: any) => {},
   batchId = null,
-}) => {
+  title = "",
+  dataToEdit = {}
+}:any) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
 
@@ -56,7 +58,8 @@ const AddAssignmentModal = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -66,6 +69,16 @@ const AddAssignmentModal = ({
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    reset(dataToEdit);
+    if(dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0){
+      setUploadedFilesList(dataToEdit.uploadedFiles);
+    }
+    else{
+      setUploadedFilesList([]);
+    }
+  }, [isModalVisible, reset]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
@@ -81,7 +94,7 @@ const AddAssignmentModal = ({
 
   useEffect(() => {
     setValue("teacherId", userId);
-    setValue("isfavorite", true);
+    setValue("isFavorite", true);
     if (gradeId) {
       getSubjectByGradeId(gradeId).then((result: any) => {
         if (!!result.data) {
@@ -93,8 +106,10 @@ const AddAssignmentModal = ({
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
+    const payload: any = { ...data };
+    payload.uploadedFiles = [...uploadedFilesList];
     upsertAssignments(data).then((response: any) => {
-      if (response.data && response.data?.response) {
+      if (response.data && response.data?.success) {
         if (batchId) {
           getAssignStudentAssignments({
             batchId: batchId,
@@ -106,7 +121,6 @@ const AddAssignmentModal = ({
             }
           });
         }
-        reset();
         onClose();
         setTimeout(() => {
           setIsPopupModalVisible(true);
@@ -118,7 +132,11 @@ const AddAssignmentModal = ({
         setIsPopupModal(false);
         setIsProcessLoader(false);
       }, 1000);
+    }).catch((error: any) => {
+      console.log(error);
+      setIsProcessLoader(false);
     });
+    
   };
 
   return (
@@ -153,7 +171,7 @@ const AddAssignmentModal = ({
             }}
           >
             <View style={[cardStyle.j_row]}>
-              <Text style={common.h3Title}>Create New Assignment</Text>
+              <Text style={common.h3Title}>{title}</Text>
               <Button
                 onPress={toggleModal}
                 icon={
@@ -217,24 +235,31 @@ const AddAssignmentModal = ({
                       setValue("gradeId", value?.id);
                       setGradeId(value?.id);
                     }}
+                    defaultValue={dataToEdit.gradeId ? {id: dataToEdit.gradeId,name: dataToEdit.gradeName}: null}
                   />
                 </View>
                 <View style={{ width: "48%" }}>
                   <SelectModal
                     data={subjectList}
-                    placeholder={"Subject"}
+                    placeholder="Subject"
                     onChanged={(value: any) => setValue("subjectId", value?.id)}
+                    defaultValue={dataToEdit.subjectId ? {id: dataToEdit.subjectId,name: dataToEdit.subjectName}: null}
                   />
                 </View>
               </View>
 
               <View>
-                <FileUploadModal />
+                <FileUploadModal
+                  setIsLoading={setIsLoading}
+                  uploadedFilesList={uploadedFilesList}
+                  setUploadedFilesList={setUploadedFilesList}
+                />
               </View>
 
               <View style={{ marginTop: 30 }}>
                 <Button
-                  title="Create Assignment"
+                  loading={isLoading}
+                  title={title}
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
                 />

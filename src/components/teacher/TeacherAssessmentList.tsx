@@ -104,6 +104,7 @@ const TeacherAssessmentList = () => {
         onClose={() => onCloseUpdate()}
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
+        title="Create new assessment"
       />
     </>
   );

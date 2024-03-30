@@ -36,7 +36,9 @@ const AddAssessmentModal = ({
   isModalVisible = false,
   setModalVisible = (value: any) => {},
   batchId = null,
-}) => {
+  title = "",
+  dataToEdit = {}
+}:any) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
 
@@ -52,8 +54,8 @@ const AddAssessmentModal = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -64,12 +66,21 @@ const AddAssessmentModal = ({
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    reset(dataToEdit);
+    if(dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0){
+      setUploadedFilesList(dataToEdit.uploadedFiles);
+    }
+    else{
+      setUploadedFilesList([]);
+    }
+  }, [isModalVisible, reset]);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
   };
 
   useEffect(() => {
-    reset();
     getGradeList().then((result: any) => {
       if (!!result.data) {
         setClassList(result.data);
@@ -79,7 +90,7 @@ const AddAssessmentModal = ({
 
   useEffect(() => {
     setValue("teacherId", userId);
-    setValue("isfavorite", true);
+    setValue("isFavorite", true);
     if (gradeId) {
       getSubjectByGradeId(gradeId).then((result: any) => {
         if (!!result.data) {
@@ -91,7 +102,9 @@ const AddAssessmentModal = ({
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    upsertAssessments(data).then((response: any) => {
+    const payload: any = {...data};
+    payload.uploadedFiles = [...uploadedFilesList];
+    upsertAssessments(payload).then((response: any) => {
       if (response.data && response.data?.success) {
         if (batchId) {
           getAssignStudentAssessments({
@@ -104,7 +117,6 @@ const AddAssessmentModal = ({
             }
           });
         }
-        reset();
         onClose();
         setTimeout(() => {
           setIsPopupModalVisible(true);
@@ -116,6 +128,9 @@ const AddAssessmentModal = ({
         setIsPopupModal(false);
         setIsProcessLoader(false);
       }, 1000);
+    }).catch((error: any) => {
+      console.log(error);
+      setIsProcessLoader(false);
     });
   };
 
@@ -151,7 +166,7 @@ const AddAssessmentModal = ({
             }}
           >
             <View style={[cardStyle.j_row, { marginBottom: 20 }]}>
-              <Text style={common.h3Title}>Create New Assessment</Text>
+              <Text style={common.h3Title}>{title}</Text>
 
               <Button
                 onPress={toggleModal}
@@ -215,13 +230,15 @@ const AddAssessmentModal = ({
                       setValue("gradeId", value?.id);
                       setGradeId(value?.id);
                     }}
+                    defaultValue={dataToEdit.gradeId ? {id: dataToEdit.gradeId,name: dataToEdit.gradeName}: null}
                   />
                 </View>
                 <View style={{ width: "48%" }}>
                   <SelectModal
                     data={subjectList}
-                    placeholder={"Subject"}
+                    placeholder="Subject"
                     onChanged={(value: any) => setValue("subjectId", value?.id)}
+                    defaultValue={dataToEdit.subjectId ? {id: dataToEdit.subjectId,name: dataToEdit.subjectName}: null}
                   />
                 </View>
               </View>
@@ -245,13 +262,13 @@ const AddAssessmentModal = ({
               />
 
               <View>
-                <FileUploadModal setIsDisabled={setIsDisabled}/>
+                <FileUploadModal setIsLoading={setIsLoading} uploadedFilesList={uploadedFilesList} setUploadedFilesList={setUploadedFilesList} />
               </View>
 
               <View style={{ marginTop: 30 }}>
                 <Button
-                disabled={isDisabled}
-                  title="Create Assessment"
+                  loading={isLoading}
+                  title={title}
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
                 />

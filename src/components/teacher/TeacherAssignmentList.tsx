@@ -103,6 +103,7 @@ const TeacherAssignmentList = () => {
         onClose={() => onCloseUpdate()}
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
+        title="Create new assignment"
       />
     </>
   );
