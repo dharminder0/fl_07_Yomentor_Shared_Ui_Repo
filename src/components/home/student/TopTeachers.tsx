@@ -26,19 +26,30 @@ const TopTeachers = ({ title = "", data = [] }) => {
   const renderItem = ({ item, index }: any) => {
     return (
       <Pressable
-        onPress={() => navigation.navigate("UserDetails", { detail: item })}
+        onPress={() => navigation.navigate("UserDetails", { userId: item?.id })}
       >
         <View style={styles.item} key={index}>
           <View>
             <View style={[common.mb10, { alignItems: "center" }]}>
-              <Image
-                source={image.DefaultUser}
-                style={{
-                  width: 65,
-                  height: 65,
-                  borderRadius: 33,
-                }}
-              />
+              {item?.profilePicture ? (
+                <Image
+                  source={{ uri: item?.profilePicture }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    borderRadius: 33,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={image.DefaultUser}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    borderRadius: 33,
+                  }}
+                />
+              )}
             </View>
             <View style={{ alignItems: "center" }}>
               <View style={[cardStyle.j_row]}>

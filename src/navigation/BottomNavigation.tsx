@@ -31,6 +31,7 @@ export const BottomNavigation = () => {
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
   const Images: any = YoImages();
+
   const openDrawerScreen = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };
@@ -40,15 +41,25 @@ export const BottomNavigation = () => {
       onPress={openDrawerScreen}
       style={{ paddingEnd: 12, paddingVertical: 5 }}
     >
-      {/* <Icon name="bars" size={21} color={"#fff"} /> */}
-      <Image
-        source={Images.DefaultUser}
-        style={{
-          width: 36,
-          height: 36,
-          borderRadius: 18,
-        }}
-      />
+      {userInfo?.profilePicture ? (
+        <Image
+          source={{ uri: userInfo?.profilePicture }}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+          }}
+        />
+      ) : (
+        <Image
+          source={Images.DefaultUser}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+          }}
+        />
+      )}
     </Pressable>
   );
 
@@ -80,13 +91,13 @@ export const BottomNavigation = () => {
     },
     TeacherAssignmentTab: {
       headerTintColor: "#fff",
-      title: "My Assignment",
+      title: "My Assignments",
       headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
     TeacherAssessmentTab: {
       headerTintColor: "#fff",
-      title: "My Assessment",
+      title: "My Assessments",
       headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },

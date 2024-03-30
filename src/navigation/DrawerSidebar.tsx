@@ -1,4 +1,11 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,7 +18,7 @@ import { YoImages } from "../assets/themes/YoImages";
 
 const DrawerSidebar = ({ navigation }: { navigation: any }) => {
   const userInfo: any = getUserInfo();
-  const { height } = Dimensions.get("screen");
+  const { height, width } = Dimensions.get("screen");
   const image: any = YoImages();
   const logoutUser = () => {
     clearUserData("userData");
@@ -50,7 +57,7 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
               />
             )}
           </View>
-          <View>
+          <View style={{ width: width - 205 }}>
             <Text
               style={[common.h2Title, { color: YoColors.white }]}
               numberOfLines={1}
@@ -78,8 +85,8 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
                 </Text>
               </View>
             )}
-            {userInfo?.address && (
-              <View style={common.row}>
+            {/* {userInfo?.address && (
+              <View style={[common.row, { alignItems: "flex-start" }]}>
                 <Ionicons
                   name="location-sharp"
                   size={12}
@@ -92,7 +99,7 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
                   {userInfo?.address}
                 </Text>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>
@@ -100,9 +107,14 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
       <View
         style={{
           padding: 8,
+          backgroundColor: YoColors.bgColor,
         }}
       >
-        <View style={{ height: height - 200 }}>
+        <View
+          style={{
+            height: Platform.OS === "ios" ? height - 220 : height - 200,
+          }}
+        >
           <TouchableOpacity
             style={styles.tabView}
             onPress={() => navigation.navigate("Home")}

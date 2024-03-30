@@ -26,7 +26,6 @@ const SelectModal = ({
   isDisabled = false,
   fieldError = false,
 }) => {
-  console.log(fieldError);
   const { width, height } = Dimensions.get("window");
   const [isSelectModal, setIsSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any[]>([]);

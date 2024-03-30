@@ -108,7 +108,8 @@ const Reviews = ({ route }: { route: any }) => {
               paddingHorizontal: 10,
             }}
           >
-            <View style={[cardStyle.row, { justifyContent: "flex-end" }]}>
+            <View style={[cardStyle.j_row]}>
+              <Text style={[common.title]}>{item?.batchTitle}</Text>
               <Text style={common.rText}>
                 {moment(item?.createDate).format("DD MMM YYYY")}
               </Text>
@@ -133,11 +134,10 @@ const Reviews = ({ route }: { route: any }) => {
         </View>
         <View style={[cardStyle.j_row, common.mtop10]}>
           {item?.addedByFirstName && (
-            <Text style={[common.title]}>
+            <Text style={[common.rText]}>
               {item?.addedByFirstName + " " + item?.addedByLastName}
             </Text>
           )}
-          <Text style={[common.title]}>{item?.batchTitle}</Text>
           <View style={[cardStyle.row, { marginStart: 15 }]}>
             {Array.from(Array(item?.rating).keys())?.map((key: number) => (
               <MaterialCommunityIcons

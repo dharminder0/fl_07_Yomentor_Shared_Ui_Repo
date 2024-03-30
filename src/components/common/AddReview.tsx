@@ -11,11 +11,13 @@ import { useToast } from "react-native-toast-notifications";
 import { Card } from "@rneui/base";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Loading from "../../screens/Loading";
 
 const AddReview = ({ batchDetail }: any) => {
   const userInfo: any = getUserInfo();
   const toast: any = useToast();
   const [reviewList, setReviewList] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     control,
@@ -33,6 +35,7 @@ const AddReview = ({ batchDetail }: any) => {
   }, []);
 
   const getReviewList = () => {
+    setIsLoading(true);
     const payload: any = {
       addedBy: userInfo?.id,
       // addedFor: batchDetail?.teacherInformation.id,
@@ -44,6 +47,7 @@ const AddReview = ({ batchDetail }: any) => {
       if (response.data && response.data?.length > 0) {
         setReviewList(response.data);
       }
+      setIsLoading(false);
     });
   };
 
@@ -52,14 +56,19 @@ const AddReview = ({ batchDetail }: any) => {
   };
 
   const onSubmit = (data: any) => {
-    upsertReviews(data).then((response: any) => {
-      if (response.data && response.data.success) {
-        toast.show("Review added successfully", {
-          type: "success",
-          duration: 2000,
-        });
-      }
-    });
+    upsertReviews(data)
+      .then((response: any) => {
+        if (response.data && response.data.success) {
+          toast.show("Review added successfully", {
+            type: "success",
+            duration: 2000,
+          });
+          getReviewList();
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -101,6 +110,8 @@ const AddReview = ({ batchDetail }: any) => {
             </Card>
           ))}
         </View>
+      ) : isLoading ? (
+        <Loading />
       ) : (
         <View style={[common.container, { alignItems: "flex-end" }]}>
           <Rating
@@ -124,7 +135,11 @@ const AddReview = ({ batchDetail }: any) => {
                   value={value}
                   style={[
                     common.input,
-                    { minHeight: 100, verticalAlign: "top" },
+                    {
+                      minHeight: 100,
+                      verticalAlign: "top",
+                      borderColor: errors.review ? "red" : "#ccc",
+                    },
                   ]}
                   multiline={true}
                 />

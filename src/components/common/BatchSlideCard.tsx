@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { Button } from "react-native-elements";
 import Swiper from "react-native-swiper";
@@ -9,6 +9,14 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { Card } from "@rneui/base";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import ConfirmationPopup from "./ConfirmationPopup";
+import {
+  assignFavouriteBatch,
+  assignStudentBatch,
+  updateEnrollmentStatus,
+  updateFavouriteStatus,
+} from "../../apiconfig/SharedApis";
+import { useToast } from "react-native-toast-notifications";
 
 const BatchSlideCard = ({
   title = "",
@@ -18,8 +26,94 @@ const BatchSlideCard = ({
   enroll = false,
   withdraw = false,
   height = 180,
+  reloadPage = () => {},
 }) => {
   const navigation: any = useNavigation();
+  const toast: any = useToast();
+  const [isWithdrawModal, setIsWithdrawModal] = useState<boolean>(false);
+  const [isEnrollModal, setIsEnrollModal] = useState<boolean>(false);
+  const [selectedBatchId, setSelectedBatchId] = useState<number>();
+
+  const enrollBatch = () => {
+    const payload: any = {
+      student_Info: [
+        {
+          studentId: userInfo?.id,
+          status: 1,
+        },
+      ],
+      batchId: selectedBatchId,
+    };
+
+    if (selectedBatchId) {
+      assignStudentBatch(payload)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            setIsEnrollModal(false);
+            toast.show("Enroll Request Send", {
+              type: "success",
+              duration: 2000,
+            });
+          }
+        })
+        .catch((error: any) => {
+          setIsEnrollModal(false);
+          toast.show("Error in Enroll", {
+            type: "danger",
+            duration: 2000,
+          });
+        });
+    }
+  };
+
+  const setFavoriteStatus = (batchId: number, useFor: boolean) => {
+    if (!useFor) {
+      const payload: any = {
+        userId: userInfo?.id,
+        isFavourite: true,
+        entityTypeId: batchId,
+        entityType: 1,
+      };
+      assignFavouriteBatch(payload).then((response: any) => {
+        if (response.data && response.data.response) {
+          reloadPage();
+        }
+      });
+    } else {
+      updateFavouriteStatus(userInfo?.id, batchId)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            reloadPage();
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const studentEnrollmentStatus = () => {
+    if (selectedBatchId) {
+      updateEnrollmentStatus(4, userInfo?.id, selectedBatchId)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            setIsWithdrawModal(false);
+            toast.show("Withdrawn Sucess", {
+              type: "success",
+              duration: 2000,
+            });
+            reloadPage();
+          }
+        })
+        .catch((error: any) => {
+          setIsWithdrawModal(false);
+          toast.show("Something went wrong...", {
+            type: "danger",
+            duration: 2000,
+          });
+        });
+    }
+  };
 
   return (
     <View>
@@ -81,7 +175,7 @@ const BatchSlideCard = ({
               <View style={cardStyle.j_row}>
                 <View style={cardStyle.row3}>
                   <Icon name="laptop" size={12} />
-                  <Text style={common.rText}> Class {item?.className}</Text>
+                  <Text style={common.rText}>{item?.gradeName}</Text>
                 </View>
                 <View style={cardStyle.row3}>
                   <MaterialCommunityIcons
@@ -146,10 +240,10 @@ const BatchSlideCard = ({
                   {userInfo?.type === 3 && (
                     <Button
                       title="Enroll Now"
-                      //   onPress={() => {
-                      //     setIsEnrollModal(true);
-                      //     setSelectedBatchId(item?.id);
-                      //   }}
+                      onPress={() => {
+                        setIsEnrollModal(true);
+                        setSelectedBatchId(item?.id);
+                      }}
                       buttonStyle={{
                         backgroundColor: YoColors.primary,
                         paddingHorizontal: 7,
@@ -163,9 +257,9 @@ const BatchSlideCard = ({
                     title={
                       !item?.isFavourite ? "Shortlist" : "Remove from shortlist"
                     }
-                    // onPress={() =>
-                    //   setFavoriteStatus(item?.id, item?.isFavourite)
-                    // }
+                    onPress={() =>
+                      setFavoriteStatus(item?.id, item?.isFavourite)
+                    }
                     buttonStyle={{
                       backgroundColor: "none",
                       paddingHorizontal: 7,
@@ -199,31 +293,49 @@ const BatchSlideCard = ({
                     },
                   ]}
                 >
-                  <Button
-                    title="Withdraw Enrollment"
-                    //   onPress={() => {
-                    //     setIsWithdrawModal(true);
-                    //     setSelectedBatchId(item?.id);
-                    //   }}
-                    buttonStyle={{
-                      backgroundColor: YoColors.white,
-                      paddingHorizontal: 7,
-                      paddingVertical: 3,
-                      borderWidth: 0.7,
-                      borderColor: YoColors.primary,
-                    }}
-                    containerStyle={{ padding: 0 }}
-                    titleStyle={[
-                      common.rText,
-                      { color: YoColors.primary, fontWeight: "400" },
-                    ]}
-                  />
+                  {item?.enrollmentstatusId !== 4 ? (
+                    <Button
+                      title="Withdraw Enrollment"
+                      onPress={() => {
+                        setIsWithdrawModal(true);
+                        setSelectedBatchId(item?.id);
+                      }}
+                      buttonStyle={{
+                        backgroundColor: YoColors.white,
+                        paddingHorizontal: 7,
+                        paddingVertical: 3,
+                        borderWidth: 0.7,
+                        borderColor: YoColors.primary,
+                      }}
+                      containerStyle={{ padding: 0 }}
+                      titleStyle={[
+                        common.rText,
+                        { color: YoColors.primary, fontWeight: "400" },
+                      ]}
+                    />
+                  ) : (
+                    <Text style={common.rText}>{item?.enrollmentstatus}</Text>
+                  )}
                 </View>
               )}
             </Card>
           ))}
         </Swiper>
       </View>
+
+      <ConfirmationPopup
+        message="Are you sure to want to withdraw your enrollment?"
+        onSubmit={studentEnrollmentStatus}
+        isVisible={isWithdrawModal}
+        setIsVisible={setIsWithdrawModal}
+      />
+
+      <ConfirmationPopup
+        message="Are you sure to want to enroll in this batch?"
+        onSubmit={enrollBatch}
+        isVisible={isEnrollModal}
+        setIsVisible={setIsEnrollModal}
+      />
     </View>
   );
 };

@@ -15,7 +15,6 @@ import React, { useEffect, useState } from "react";
 import { cardStyle, common } from "../assets/styles/Common";
 import Loading from "../screens/Loading";
 import NoDataView from "../screens/NoDataView";
-import HeaderView from "./common/HeaderView";
 import { getUserInfo } from "../shared/sharedDetails";
 import { getUsersList } from "../apiconfig/SharedApis";
 import { Card } from "@rneui/base";
@@ -23,9 +22,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { YoColors } from "../assets/themes/YoColors";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { Controller, useForm } from "react-hook-form";
 import { YoImages } from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
+import LoginPage from "./auth/LoginPage";
 
 const TeachersList = () => {
   const { height, width } = Dimensions.get("window");
@@ -66,14 +65,11 @@ const TeachersList = () => {
     };
     getUsersList(payload)
       .then((response: any) => {
+        if (pageIndex === 1) {
+          setTeacherList([]);
+        }
         if (response.data && response.data.length > 0) {
-          if (pageIndex === 1) {
-            setTeacherList([]);
-            setTeacherList(response.data);
-          }
-          if (pageIndex > 1) {
-            setTeacherList((prevList: any) => [...prevList, ...response.data]);
-          }
+          setTeacherList((prevList: any) => [...prevList, ...response.data]);
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -106,18 +102,29 @@ const TeachersList = () => {
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("UserDetails", { detail: item })}
+      onPress={() => navigation.navigate("UserDetails", { userId: item?.id })}
     >
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={cardStyle.row}>
-          <Image
-            source={image.DefaultUser}
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-            }}
-          />
+          {item?.profilePicture ? (
+            <Image
+              source={{ uri: item?.profilePicture }}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+              }}
+            />
+          ) : (
+            <Image
+              source={image.DefaultUser}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+              }}
+            />
+          )}
           <View
             style={{
               width: width - 95,
@@ -147,23 +154,26 @@ const TeachersList = () => {
             </View>
 
             {item?.phone && (
-              <View style={cardStyle.row}>
+              <View style={[cardStyle.row, common.mb5]}>
                 <MaterialCommunityIcons name="phone" size={12} />
                 <Text style={common.rText}> {item?.phone}</Text>
               </View>
             )}
 
             {item?.education && (
-              <View style={cardStyle.row}>
+              <View style={[cardStyle.row, common.mb5]}>
                 <Icon name="user-graduate" size={12} />
                 <Text style={common.rText}> {item?.education}</Text>
               </View>
             )}
 
-            {item?.education && (
-              <View style={cardStyle.row}>
-                <Icon name="user-graduate" size={12} />
-                <Text style={common.rText}> {item?.education}</Text>
+            {item?.experience && (
+              <View style={[cardStyle.row, common.mb5]}>
+                <Icon name="info-circle" size={12} />
+                <Text style={common.rText}>
+                  {" "}
+                  {item?.experience + " years of experience"}
+                </Text>
               </View>
             )}
           </View>
@@ -173,72 +183,68 @@ const TeachersList = () => {
   );
 
   return (
-    <>
-      <View style={common.container}>
-        {isLoading ? (
-          <Loading />
-        ) : teacherList && teacherList.length > 0 ? (
-          <>
-            <View style={common.row}>
-              <TextInput
-                placeholder="Search Teacher"
-                onChangeText={(text: any) => setSearchText(text)}
-                value={searchText}
-                style={[common.input]}
-                onSubmitEditing={handleSearch}
-              />
-              {searchText && searchText?.length > 0 ? (
-                <Ionicons
-                  onPress={() => setSearchText("")}
-                  name="close-sharp"
-                  size={21}
-                  style={{ position: "absolute", right: 10, top: 12 }}
-                />
-              ) : (
-                <Ionicons
-                  name="search-outline"
-                  size={21}
-                  style={{ position: "absolute", right: 10, top: 12 }}
-                />
-              )}
-            </View>
-            <FlatList
-              data={teacherList}
-              keyExtractor={(item: any) => item?.id}
-              renderItem={renderItem}
-              style={{
-                height: Platform.OS === "ios" ? height - 200 : height - 125,
-                marginTop: 5,
-              }}
-              windowSize={Platform.OS === "ios" ? height - 200 : height - 125}
-              showsVerticalScrollIndicator={false}
-              onScrollEndDrag={handleLoadMore}
-              onEndReachedThreshold={0.5}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshLoader}
-                  onRefresh={() => {
-                    setRefreshLoader(true);
-                    setPageIndex(1);
-                  }}
-                />
-              }
-              ListFooterComponent={
-                <>
-                  {isBottomLoader && (
-                    <View style={{ height: 50 }}>
-                      <ActivityIndicator size="large" />
-                    </View>
-                  )}
-                </>
-              }
-            />
-          </>
+    <View style={common.container}>
+      <View style={[common.row, common.mtop10]}>
+        <TextInput
+          placeholder="Search Teacher"
+          onChangeText={(text: any) => setSearchText(text)}
+          value={searchText}
+          style={[common.input, common.mb5]}
+          onSubmitEditing={handleSearch}
+        />
+        {searchText && searchText?.length > 0 ? (
+          <Ionicons
+            onPress={() => setSearchText("")}
+            name="close-sharp"
+            size={21}
+            style={{ position: "absolute", right: 10, top: 12 }}
+          />
         ) : (
-          <NoDataView />
+          <Ionicons
+            name="search-outline"
+            size={21}
+            style={{ position: "absolute", right: 10, top: 12 }}
+          />
         )}
       </View>
-    </>
+      {teacherList && teacherList.length > 0 ? (
+        <FlatList
+          data={teacherList}
+          keyExtractor={(item: any) => item?.id}
+          renderItem={renderItem}
+          style={{
+            height: Platform.OS === "ios" ? height - 250 : height - 165,
+            marginTop: 5,
+          }}
+          windowSize={Platform.OS === "ios" ? height - 250 : height - 165}
+          showsVerticalScrollIndicator={false}
+          onScrollEndDrag={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshLoader}
+              onRefresh={() => {
+                setRefreshLoader(true);
+                setPageIndex(1);
+              }}
+            />
+          }
+          ListFooterComponent={
+            <>
+              {isBottomLoader && (
+                <View style={{ height: 50 }}>
+                  <ActivityIndicator size="large" />
+                </View>
+              )}
+            </>
+          }
+        />
+      ) : isLoading ? (
+        <Loading />
+      ) : (
+        <NoDataView />
+      )}
+    </View>
   );
 };
 

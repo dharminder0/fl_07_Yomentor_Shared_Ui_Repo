@@ -15,13 +15,13 @@ import moment from "moment";
 import { cardStyle, common } from "../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { YoColors } from "../../assets/themes/YoColors";
-import useStore from "../../store/useStore";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { Button } from "react-native-elements";
 import Loading from "../../screens/Loading";
 import {
   assignFavouriteBatch,
   assignStudentBatch,
+  updateEnrollmentStatus,
   updateFavouriteStatus,
 } from "../../apiconfig/SharedApis";
 import { useToast } from "react-native-toast-notifications";
@@ -57,6 +57,7 @@ const ProfileBatchCard = ({
       batchId: selectedBatchId,
     };
     if (selectedBatchId) {
+      console.log(payload);
       assignStudentBatch(payload)
         .then((response: any) => {
           if (response.data && response.data.response) {
@@ -76,6 +77,7 @@ const ProfileBatchCard = ({
         });
     }
   };
+
   const setFavoriteStatus = (batchId: number, useFor: boolean) => {
     if (!useFor) {
       const payload: any = {
@@ -102,6 +104,29 @@ const ProfileBatchCard = ({
     }
   };
 
+  const studentEnrollmentStatus = () => {
+    if (selectedBatchId) {
+      updateEnrollmentStatus(4, userInfo?.id, selectedBatchId)
+        .then((response: any) => {
+          if (response.data && response.data.response) {
+            setIsWithdrawModal(false);
+            toast.show("Withdrawn Sucess", {
+              type: "success",
+              duration: 2000,
+            });
+            reloadPage();
+          }
+        })
+        .catch((error: any) => {
+          setIsWithdrawModal(false);
+          toast.show("Something went wrong...", {
+            type: "danger",
+            duration: 2000,
+          });
+        });
+    }
+  };
+
   const renderItem = ({ item, index }: any) => (
     <Card
       containerStyle={[cardStyle.container, { paddingBottom: 5 }]}
@@ -116,7 +141,14 @@ const ProfileBatchCard = ({
       </View>
 
       {item?.teacherInformation?.firstName && userInfo?.type === 3 && (
-        <View style={[cardStyle.row, { marginVertical: 5 }]}>
+        <Pressable
+          style={[cardStyle.row, { marginVertical: 5 }]}
+          onPress={() =>
+            navigation.navigate("UserDetails", {
+              userId: item?.teacherInformation?.id,
+            })
+          }
+        >
           <Icon name="chalkboard-teacher" size={12} />
           <Text style={common.rText} numberOfLines={1}>
             {" "}
@@ -124,9 +156,9 @@ const ProfileBatchCard = ({
               " " +
               item?.teacherInformation?.lastName +
               " " +
-              `(${item?.teacherInformation?.phone})`}
+              `(${item?.teacherInformation?.phone.trim()})`}
           </Text>
-        </View>
+        </Pressable>
       )}
 
       {item?.description && (
@@ -181,7 +213,7 @@ const ProfileBatchCard = ({
         </View>
       </View>
 
-      {intrested && (
+      {intrested && item?.statusId === 1 && userInfo?.type === 3 && (
         <View
           style={[
             common.j_row,
@@ -193,7 +225,7 @@ const ProfileBatchCard = ({
             },
           ]}
         >
-          {item?.statusId === 1 && userInfo?.type === 3 && (
+          {item?.enrollmentstatusId === 0 && (
             <Button
               title="Enroll Now"
               onPress={() => {
@@ -209,6 +241,11 @@ const ProfileBatchCard = ({
               titleStyle={common.rText}
             />
           )}
+
+          {item?.enrollmentstatusId === 1 && (
+            <Text style={common.rText}>{item?.enrollmentstatus}</Text>
+          )}
+
           <Button
             title={!item?.isFavourite ? "Shortlist" : "Remove from shortlist"}
             onPress={() => setFavoriteStatus(item?.id, item?.isFavourite)}
@@ -244,7 +281,7 @@ const ProfileBatchCard = ({
             },
           ]}
         >
-          {userInfo?.type === 3 && (
+          {userInfo?.type === 3 && item?.enrollmentstatusId !== 4 ? (
             <Button
               title="Withdraw Enrollment"
               onPress={() => {
@@ -264,6 +301,8 @@ const ProfileBatchCard = ({
                 { color: YoColors.primary, fontWeight: "400" },
               ]}
             />
+          ) : (
+            <Text style={common.rText}>{item?.enrollmentstatus}</Text>
           )}
         </View>
       )}
@@ -272,7 +311,11 @@ const ProfileBatchCard = ({
 
   return (
     <View>
-      {isLoading && <Loading />}
+      {isLoading && (
+        <View style={{ height: height }}>
+          <Loading />
+        </View>
+      )}
       {data && data.length > 0 ? (
         <FlatList
           data={data}
@@ -355,7 +398,7 @@ const ProfileBatchCard = ({
 
       <ConfirmationPopup
         message="Are you sure to want to withdraw your enrollment?"
-        // onSubmit={enrollBatch}
+        onSubmit={studentEnrollmentStatus}
         isVisible={isWithdrawModal}
         setIsVisible={setIsWithdrawModal}
       />

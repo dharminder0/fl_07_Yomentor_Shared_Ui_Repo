@@ -1,6 +1,7 @@
 import {
   Dimensions,
   FlatList,
+  Platform,
   RefreshControl,
   StyleSheet,
   Text,
@@ -68,8 +69,10 @@ const CardAssignment = ({
       {data && data.length > 0 && (
         <FlatList
           data={data}
-          style={{ height: height - 150 }}
-          windowSize={height - 150}
+          style={{
+            height: Platform.OS === "ios" ? height - 230 : height - 170,
+          }}
+          windowSize={Platform.OS === "ios" ? height - 230 : height - 170}
           keyExtractor={(item: any) => item?.id}
           showsVerticalScrollIndicator={false}
           renderItem={renderItem}

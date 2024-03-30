@@ -173,9 +173,6 @@ const FileUploadModal = ({
         showMessage({ message: result.data.message, type: "success" });
         const updatedList = [...uploadedFilesList, result.data.data];
         setUploadedFilesList(updatedList);
-        console.log('uploadedFilesList');
-        console.log(uploadedFilesList);
-        console.log('uploadedFilesList');
         setIsLoaderVisible(false);
       } else {
         setIsBrowseFile(false);

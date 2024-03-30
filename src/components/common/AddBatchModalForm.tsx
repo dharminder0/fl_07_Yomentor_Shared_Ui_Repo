@@ -75,8 +75,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     });
   }, []);
 
-  console.log(errors);
-
   useEffect(() => {
     if (gradeId) {
       setValue("teacherId", userId);

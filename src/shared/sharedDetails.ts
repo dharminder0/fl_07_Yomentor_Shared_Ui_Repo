@@ -1,27 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const userData = () => {
-  const userData: any = [
-    {
-      name: "Teacher",
-      phone: "11111",
-      password: "11111",
-      role: "Teacher",
-    },
-    {
-      name: "Student",
-      phone: "22222",
-      password: "22222",
-      role: "Student",
-    },
-    {
-      name: "Parent",
-      phone: "33333",
-      password: "33333",
-      role: "Parent",
-    },
-  ];
-  return userData;
-};
 
 export const saveAsyncData = async (key: string, data: any) => {
   try {

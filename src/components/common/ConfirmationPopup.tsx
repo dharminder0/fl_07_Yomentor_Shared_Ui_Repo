@@ -33,7 +33,7 @@ const ConfirmationPopup = ({
           backgroundColor: "white",
           minHeight: 120,
           maxHeight: 300,
-          width: width - 40,
+          width: width - 25,
           borderRadius: 12,
           justifyContent: "center",
           alignItems: "center",
@@ -43,7 +43,7 @@ const ConfirmationPopup = ({
         <View style={[common.row, { alignSelf: "flex-end", marginEnd: 10 }]}>
           <Pressable
             style={{
-              paddingHorizontal: 10,
+              paddingHorizontal: 20,
               marginEnd: 10,
             }}
             onPress={onSubmit}

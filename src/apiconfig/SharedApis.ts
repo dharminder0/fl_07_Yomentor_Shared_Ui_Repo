@@ -8,6 +8,15 @@ export async function getUsersList(payload: any): Promise<any> {
   return AxiosInterceptor.post("User/UserSearch", payload);
 }
 
+export async function getUsersDetails(
+  userId: number,
+  type: number
+): Promise<any> {
+  return AxiosInterceptor.post(
+    `User/UserDetails?userid=${userId}&type=${type}`
+  );
+}
+
 export async function getSubjectByGradeId(gradeId: any): Promise<any> {
   return AxiosInterceptor.get(`Subject/list?gradeId=${gradeId}`);
 }
@@ -121,6 +130,9 @@ export async function updateFavouriteStatus(
     `Batch/UpdateFavouriteStatus?userId=${userId}&entityId=${entityId}`
   );
 }
+export async function getBatchListbyEntity(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Batch/BatchListbyEntity`, payload);
+}
 
 export async function updateEnrollmentStatus(
   status: number,
@@ -134,10 +146,10 @@ export async function updateEnrollmentStatus(
 
 export async function uploadFileToBlob(
   fileData: any,
-  mediaEntityType: number = 0,
+  mediaEntityType: number = 0
 ): Promise<any> {
   return AxiosInterceptor.post(
     `MediaFile/Blob/UploadFile?mediaEntityType=${mediaEntityType}`,
-    fileData,
+    fileData
   );
 }
