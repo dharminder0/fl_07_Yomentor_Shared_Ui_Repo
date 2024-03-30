@@ -106,9 +106,10 @@ const AddAssignmentModal = ({
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    const payload: any = { ...data };
+    let payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
-    upsertAssignments(data).then((response: any) => {
+    
+    upsertAssignments(payload).then((response: any) => {
       if (response.data && response.data?.success) {
         if (batchId) {
           getAssignStudentAssignments({
