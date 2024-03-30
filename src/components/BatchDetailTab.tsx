@@ -21,7 +21,7 @@ const BatchDetailTab = ({ route }: any) => {
     { key: "student", title: "Students" },
     { key: "assignment", title: "Assignments" },
     { key: "assessment", title: "Assessments" },
-    { key: "announcement", title: "Announcements" },
+    // { key: "announcement", title: "Announcements" },
     { key: "review", title: "Review" },
   ];
 
@@ -63,8 +63,8 @@ const BatchDetailTab = ({ route }: any) => {
         return <AssignmentList batchInfo={selectedBatch} />;
       case "assessment":
         return <AssessmentList batchInfo={selectedBatch} />;
-      case "announcement":
-        return <AnnouncementList />;
+      // case "announcement":
+      //   return <AnnouncementList />;
       case "review":
         return <AddReview batchDetail={selectedBatch} />;
       default:

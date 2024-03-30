@@ -68,8 +68,10 @@ const CardAssignment = ({
       {data && data.length > 0 && (
         <FlatList
           data={data}
-          style={{ height: height - 70 }}
+          style={{ height: height - 150 }}
+          windowSize={height - 150}
           keyExtractor={(item: any) => item?.id}
+          showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           refreshControl={
             <RefreshControl

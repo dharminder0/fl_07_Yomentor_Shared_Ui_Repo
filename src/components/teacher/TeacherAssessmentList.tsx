@@ -53,11 +53,11 @@ const TeacherAssessmentList = () => {
 
   return (
     <>
-      <HeaderView title="My Assessment" />
+      {/* <HeaderView title="My Assessment" /> */}
       {isLoading ? (
         <Loading />
       ) : assessmentList?.length > 0 ? (
-        <View style={common.container}>
+        <View style={common.p12}>
           <View style={{ alignItems: "flex-end" }}>
             <Button
               title=" Create Assessment"

@@ -244,7 +244,7 @@ const ProfileBatchCard = ({
             },
           ]}
         >
-          {item?.statusId === 1 && userInfo?.type === 3 && (
+          {userInfo?.type === 3 && (
             <Button
               title="Withdraw Enrollment"
               onPress={() => {

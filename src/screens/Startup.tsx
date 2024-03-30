@@ -13,10 +13,10 @@ const Startup = () => {
 
   useEffect(() => {
     getUserData("userData").then((result: any) => {
-      console.log(result);
       if (result && result?.id) {
         new Promise((resolve) =>
           setTimeout(() => {
+            console.log(result);
             resolve(true);
             navigation.reset({
               index: 0,

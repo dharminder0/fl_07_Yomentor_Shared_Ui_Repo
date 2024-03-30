@@ -944,7 +944,7 @@ PODS:
   - React-Mapbuffer (0.73.5):
     - glog
     - React-debug
-  - react-native-date-picker (4.4.0):
+  - react-native-date-picker (4.4.2):
     - React-Core
   - react-native-netinfo (11.3.1):
     - React-Core
@@ -1403,7 +1403,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 32db5e364bcae8fca8cdf8891830636275add0c5
   React-logger: 0331362115f0f5b392bd7ed14636d1a3ea612479
   React-Mapbuffer: 7c35cd53a22d0be04d3f26f7881c7fb7dd230216
-  react-native-date-picker: ebcb936d72fc3bbde0dea47c6641e913523231ca
+  react-native-date-picker: 312c387d2ff873c66c5e4cf78ff6827fa91644e2
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-pager-view: d5f3adb58a4e6e0d200055e9a4afdcda9b9022ce
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b

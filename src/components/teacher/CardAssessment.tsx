@@ -72,9 +72,10 @@ const CardAssessment = ({
       {data && data.length > 0 && (
         <FlatList
           data={data}
-          style={{ height: height - 100 }}
-          windowSize={height - 100}
+          style={{ height: height - 150 }}
+          windowSize={height - 150}
           keyExtractor={(item: any) => item?.id}
+          showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           refreshControl={
             <RefreshControl
