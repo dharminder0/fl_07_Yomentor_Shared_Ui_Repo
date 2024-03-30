@@ -22,7 +22,7 @@ import { uploadFileToBlob } from "../../apiconfig/SharedApis";
 import FlashMessage, {
   hideMessage,
   showMessage,
-} from 'react-native-flash-message';
+} from "react-native-flash-message";
 
 const FileUploadModal = ({
   title = "",
@@ -45,7 +45,7 @@ const FileUploadModal = ({
   const [storagePermission, setStoragePermission] = useState<string | null>(
     null
   );
-  const [uploadedFile, setUploadedFile] = useState<any>('');
+  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
 
   // useEffect(() => {
   //   requestPermissions();
@@ -161,33 +161,32 @@ const FileUploadModal = ({
     return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
 
-  const uploadFileToDB = (data:any) => {
+  const uploadFileToDB = (data: any) => {
     const fData: any = new FormData();
-    fData.append('file', data);
+    fData.append("file", data);
     setIsBrowseFile(false);
     setIsDisabled(true);
     setIsLoaderVisible(true);
     uploadFileToBlob(fData, 3).then((result: any) => {
-      if (result.data && result.data.message == 'Upload success') {
-        setIsBrowseFile(false)
-        showMessage({ message: result.data.message, type: 'success', });
-        const updatedObject = { ...uploadedFile, fileLink : result.data.data.fileLink, fileName : result.data.data.fileName }
-        setUploadedFile(updatedObject);
-        console.log('updatedObject');
-        console.log(updatedObject);
-        console.log('updatedObject');
+      if (result.data && result.data.message == "Upload success") {
+        setIsBrowseFile(false);
+        showMessage({ message: result.data.message, type: "success" });
+        const updatedList = [...uploadedFilesList, result.data.data];
+        setUploadedFilesList(updatedList);
+        console.log('uploadedFilesList');
+        console.log(uploadedFilesList);
+        console.log('uploadedFilesList');
         setIsLoaderVisible(false);
-      }
-      else {
-        setIsBrowseFile(false)
-        showMessage({ message: result.data.message, type: 'danger' });
+      } else {
+        setIsBrowseFile(false);
+        showMessage({ message: result.data.message, type: "danger" });
       }
       setTimeout(() => {
         setIsDisabled(false);
         hideMessage();
       }, 1000);
     });
-  }
+  };
 
   const downloadFile = (fileLink: string) => {
     // Handle file download
@@ -245,9 +244,9 @@ const FileUploadModal = ({
         />
       )}
       <FlashMessage
-              position="top"
-              style={{ borderRadius: 4, alignItems: 'center' }}
-            />
+        position="top"
+        style={{ borderRadius: 4, alignItems: "center" }}
+      />
       <Modal
         isVisible={isBrowseFile}
         onBackButtonPress={() => setIsBrowseFile(false)}
@@ -289,9 +288,9 @@ const FileUploadModal = ({
           </View>
         </View>
       </Modal>
-      {fileList && fileList.length > 0 && (
+      {uploadedFilesList && uploadedFilesList.length > 0 && (
         <FlatList
-          data={fileList}
+          data={uploadedFilesList}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }: { item: any; index: number }) => {
             return (
@@ -308,7 +307,7 @@ const FileUploadModal = ({
                   style={{ marginEnd: 5, width: isDisabled ? "90%" : "80%" }}
                 >
                   <Text numberOfLines={1} style={{ color: YoColors.text }}>
-                    {item?.[fileNameAs]}
+                    {item?.fileName}
                   </Text>
                   {item?.createdDate && (
                     <Text numberOfLines={1} style={{ fontSize: 12 }}>
