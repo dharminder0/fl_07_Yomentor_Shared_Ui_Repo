@@ -53,11 +53,10 @@ const TeacherAssignmentList = () => {
 
   return (
     <>
-      <HeaderView title="My Assignment" />
       {isLoading ? (
         <Loading />
       ) : assignmentList?.length > 0 ? (
-        <View style={common.container}>
+        <View style={common.p12}>
           <View style={{ alignItems: "flex-end" }}>
             <Button
               title=" Create Assignment"

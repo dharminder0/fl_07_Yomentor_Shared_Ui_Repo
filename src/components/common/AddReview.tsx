@@ -43,7 +43,6 @@ const AddReview = ({ batchDetail }: any) => {
     getReviews(payload).then((response: any) => {
       if (response.data && response.data?.length > 0) {
         setReviewList(response.data);
-        console.log(response.data);
       }
     });
   };

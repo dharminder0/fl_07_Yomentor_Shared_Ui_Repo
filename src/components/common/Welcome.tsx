@@ -29,12 +29,39 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
 
       {userType === 3 && (
         <>
-          <Text
-            style={[common.h3Title, { textAlign: "center", marginTop: 20 }]}
-          >
-            Sorry, you do not have any ongoing batches. Search for a teacher and
-            enroll yourself.
+          <Text style={[common.h3Title, { marginVertical: 15 }]}>
+            How does it work:{" "}
           </Text>
+
+          <Text style={[common.mb10]}>
+            You have not joined any batches yet. You can find a suitable batch
+            and request to join.
+          </Text>
+
+          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
+            <Icon name="check" size={13} style={{ marginTop: 4 }} />
+            <Text style={{ paddingStart: 5 }}>
+              Find a teacher as per your tuition needs, view the teacher
+              profile, and read the feedback given by other students.
+            </Text>
+          </View>
+
+          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
+            <Icon name="check" size={13} style={{ marginTop: 4 }} />
+            <Text style={{ paddingStart: 5 }}>
+              Shortlist the batches of your interest and discuss your tuition
+              needs and fee details with the teacher.
+            </Text>
+          </View>
+
+          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
+            <Icon name="check" size={13} style={{ marginTop: 4 }} />
+            <Text style={{ paddingStart: 5 }}>
+              Finally, enroll in the batch and keep going to excel in the
+              subject.
+            </Text>
+          </View>
+
           <Button
             title="Find Teacher"
             onPress={() => navigation.navigate("TeachersList")}

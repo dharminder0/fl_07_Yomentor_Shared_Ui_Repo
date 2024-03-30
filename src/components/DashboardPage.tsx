@@ -57,14 +57,11 @@ const DashboardPage = () => {
     setRoutes(filteredRoutes);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getOpenBatchDatabyTeacherId(1);
-      getOpenBatchDatabyTeacherId(2);
-    }, [userInfo?.id, index])
-  );
+  useEffect(() => {
+    getOpenBatchDatabyTeacherId();
+  }, [userInfo?.id, index]);
 
-  const getOpenBatchDatabyTeacherId = (statusId: number) => {
+  const getOpenBatchDatabyTeacherId = () => {
     setIsLoading(true);
     const payload: any = {
       userid: userInfo?.id,
@@ -73,28 +70,31 @@ const DashboardPage = () => {
       pageIndex: 1,
     };
 
-    if (routes[index]?.key == "ongoing" || routes[index]?.key == "open") {
-      payload["statusId"] = [statusId];
+    if (index == 0) {
+      payload["statusId"] = [2];
     }
 
-    if (routes[index]?.key == "enrolled") {
-      payload["statusId"] = [1, 2, 3, 4];
+    if (routes[index]?.key == "open" || routes[index]?.key == "enrolled") {
+      payload["statusId"] = [1];
     }
 
-    if (userInfo?.type === 3) {
+    if (userInfo?.type === 3 && routes[index]?.key == "shortlisted") {
       payload["isFavourite"] = true;
     }
 
-    // setIsLoading(true);
     setOpenBatchList([]);
     setOngoingBatchList([]);
     getBatchListbyUserid(payload)
       .then((response: any) => {
         if (response?.data && response?.data?.length) {
-          if (statusId === 1) {
+          if (
+            routes[index]?.key == "open" ||
+            routes[index]?.key == "enrolled" ||
+            routes[index]?.key == "shortlisted"
+          ) {
             setOpenBatchList(response?.data);
           }
-          if (statusId === 2) {
+          if (index == 0) {
             setOngoingBatchList(response?.data);
           }
         }
@@ -104,13 +104,12 @@ const DashboardPage = () => {
         }, 200);
       })
       .catch((error: any) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
   const relaodPage = () => {
-    getOpenBatchDatabyTeacherId(1);
-    getOpenBatchDatabyTeacherId(2);
+    getOpenBatchDatabyTeacherId();
   };
 
   const renderScene = ({ route }: any) => {
@@ -119,7 +118,7 @@ const DashboardPage = () => {
         return (
           <BatchCardView
             data={ongoingBatchList}
-            height={Platform.OS === "ios" ? height - 150 : height - 102}
+            height={Platform.OS === "ios" ? height - 232 : height - 165}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={2}
             refreshLoader={refreshLoader}
@@ -133,7 +132,7 @@ const DashboardPage = () => {
           <BatchCardView
             title=" "
             data={openBatchList}
-            height={Platform.OS === "ios" ? height - 235 : height - 135}
+            height={Platform.OS === "ios" ? height - 252 : height - 185}
             onAddModalOpen={() => setModalVisible(true)}
             usedStatusId={1}
             refreshLoader={refreshLoader}
@@ -146,7 +145,7 @@ const DashboardPage = () => {
         return (
           <ProfileBatchCard
             data={openBatchList}
-            height={Platform.OS === "ios" ? height - 190 : height - 135}
+            height={Platform.OS === "ios" ? height - 232 : height - 165}
             isLoading={isLoading}
             refreshLoader={refreshLoader}
             setRefreshLoader={setRefreshLoader}
@@ -160,7 +159,7 @@ const DashboardPage = () => {
         return (
           <ProfileBatchCard
             data={openBatchList}
-            height={height - 102}
+            height={Platform.OS === "ios" ? height - 232 : height - 165}
             isLoading={isLoading}
             refreshLoader={refreshLoader}
             setRefreshLoader={setRefreshLoader}
@@ -178,15 +177,12 @@ const DashboardPage = () => {
   const onCloseUpdate = () => {
     setModalVisible(false);
     setTimeout(() => {
-      getOpenBatchDatabyTeacherId(1);
+      getOpenBatchDatabyTeacherId();
     }, 500);
   };
 
-  console.log(openBatchList);
-
   return (
     <>
-      <HeaderView title="Dashboard" type="drawer" />
       {isLoading ? (
         <Loading />
       ) : ongoingBatchList?.length > 0 || openBatchList?.length > 0 ? (

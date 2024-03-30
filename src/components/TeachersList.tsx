@@ -174,7 +174,6 @@ const TeachersList = () => {
 
   return (
     <>
-      <HeaderView title="Teachers" />
       <View style={common.container}>
         {isLoading ? (
           <Loading />

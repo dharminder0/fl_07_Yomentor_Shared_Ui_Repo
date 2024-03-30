@@ -14,6 +14,7 @@ import AssesmentDetails from "../components/batch/assessments/AssesmentDetails";
 import TeachersList from "../components/TeachersList";
 import UserDetails from "../components/UserDetails";
 import Reviews from "../components/Reviews";
+import { BottomNavigation } from "./BottomNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +34,7 @@ export function StackNavigator() {
   };
 
   return (
-    <Stack.Navigator initialRouteName="Dashboard">
+    <Stack.Navigator initialRouteName="">
       <Stack.Screen
         name="DrawerNavigation"
         component={DrawerNavigation}
@@ -83,7 +84,7 @@ export function StackNavigator() {
           headerTitleStyle: { color: "#fff" },
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="TeacherAssessmentList"
         component={TeacherAssessmentList}
         options={{
@@ -102,7 +103,7 @@ export function StackNavigator() {
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
-      />
+      /> */}
       <Stack.Screen
         name="AssignmentDetails"
         component={AssignmentDetails}
@@ -123,7 +124,7 @@ export function StackNavigator() {
           headerTitleStyle: { color: "#fff" },
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="TeachersList"
         component={TeachersList}
         options={{
@@ -132,7 +133,7 @@ export function StackNavigator() {
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
-      />
+      /> */}
       <Stack.Screen
         name="UserDetails"
         component={UserDetails}

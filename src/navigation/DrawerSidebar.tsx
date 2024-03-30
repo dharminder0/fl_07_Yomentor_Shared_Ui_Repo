@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,6 +11,7 @@ import { YoImages } from "../assets/themes/YoImages";
 
 const DrawerSidebar = ({ navigation }: { navigation: any }) => {
   const userInfo: any = getUserInfo();
+  const { height } = Dimensions.get("screen");
   const image: any = YoImages();
   const logoutUser = () => {
     clearUserData("userData");
@@ -18,52 +19,63 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: YoColors.primary }}>
+    <View style={{ flex: 1, backgroundColor: YoColors.white }}>
       <View
         style={{
           minHeight: 70,
           paddingVertical: 15,
           paddingHorizontal: 12,
-          backgroundColor: YoColors.white,
+          backgroundColor: YoColors.primary,
         }}
       >
         <View style={common.row}>
-          <View style={{ width: 60 }}>
+          <View style={{ width: 70 }}>
             {!userInfo.image ? (
               <Image
                 source={image.DefaultUser}
                 style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
                 }}
               />
             ) : (
               <Image
                 source={{ uri: userInfo.image }}
                 style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
                 }}
               />
             )}
           </View>
           <View>
-            <Text style={[common.h3Title]}>
+            <Text
+              style={[common.h2Title, { color: YoColors.white }]}
+              numberOfLines={1}
+            >
               {userInfo?.firstname + " " + userInfo?.lastname}
             </Text>
             {userInfo?.email && (
-              <Text style={[common.title]}>{userInfo?.email}</Text>
+              <Text
+                style={[common.title, { color: YoColors.white }]}
+                numberOfLines={1}
+              >
+                {userInfo?.email}
+              </Text>
             )}
             {userInfo?.phone && (
               <View style={common.row}>
                 <MaterialCommunityIcons
                   name="phone"
-                  size={14}
-                  color={YoColors.primary}
+                  size={13}
+                  color={YoColors.white}
                 />
-                <Text style={[common.title]}> {userInfo?.phone}</Text>
+                <Text style={[common.title, { color: YoColors.white }]}>
+                  {" "}
+                  {userInfo?.phone}
+                </Text>
               </View>
             )}
             {userInfo?.address && (
@@ -71,55 +83,53 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
                 <Ionicons
                   name="location-sharp"
                   size={12}
-                  color={YoColors.primary}
+                  color={YoColors.white}
                 />
-                <Text style={common.rText}>{userInfo?.address}</Text>
+                <Text
+                  style={[common.rText, { color: YoColors.white }]}
+                  numberOfLines={2}
+                >
+                  {userInfo?.address}
+                </Text>
               </View>
             )}
           </View>
         </View>
       </View>
-      <View style={{ padding: 8 }}>
-        <TouchableOpacity
-          style={styles.tabView}
-          onPress={() => navigation.navigate("DashboardPage")}
+
+      <View
+        style={{
+          padding: 8,
+        }}
+      >
+        <View style={{ height: height - 200 }}>
+          <TouchableOpacity
+            style={styles.tabView}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <Ionicons name="home" size={19} color={YoColors.primary} />
+            <Text style={styles.tabTitle}>Home</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            height: 20,
+            alignItems: "flex-end",
+            justifyContent: "center",
+          }}
         >
-          <Ionicons name="home" size={19} color={"#fff"} />
-          <Text style={styles.tabTitle}>Home</Text>
-        </TouchableOpacity>
-        {userInfo?.type === 1 && (
-          <>
-            <TouchableOpacity
-              style={styles.tabView}
-              onPress={() => navigation.navigate("TeacherAssessmentList")}
-            >
-              <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
-              <Text style={styles.tabTitle}>My Assessments</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.tabView}
-              onPress={() => navigation.navigate("TeacherAssignmentList")}
-            >
-              <MaterialCommunityIcons name="book" size={19} color={"#fff"} />
-              <Text style={styles.tabTitle}>My Assignments</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {userInfo?.type === 3 && (
-          <>
-            <TouchableOpacity
-              style={styles.tabView}
-              onPress={() => navigation.navigate("TeachersList")}
-            >
-              <Ionicons name="person" size={19} color={"#fff"} />
-              <Text style={styles.tabTitle}>Teachers</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        <TouchableOpacity style={styles.tabView} onPress={logoutUser}>
-          <MaterialCommunityIcons name="logout" size={19} color={"#fff"} />
-          <Text style={styles.tabTitle}>Logout</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={common.row} onPress={logoutUser}>
+            <MaterialCommunityIcons
+              name="logout"
+              size={12}
+              color={YoColors.primary}
+            />
+            <Text style={[common.fs12, { color: YoColors.primary }]}>
+              Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -138,6 +148,6 @@ const styles = StyleSheet.create({
   tabTitle: {
     paddingHorizontal: 8,
     fontSize: 19,
-    color: "#fff",
+    color: YoColors.primary,
   },
 });
