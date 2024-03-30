@@ -56,7 +56,8 @@ const AddAssignmentModal = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -66,6 +67,11 @@ const AddAssignmentModal = ({
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    reset();
+    setUploadedFilesList([]);
+  }, [isModalVisible, reset]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
@@ -93,6 +99,9 @@ const AddAssignmentModal = ({
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
+    const payload: any = { ...data };
+    payload.uploadedFiles = [...uploadedFilesList];
+    console.log(payload);
     upsertAssignments(data).then((response: any) => {
       if (response.data && response.data?.response) {
         if (batchId) {
@@ -229,11 +238,16 @@ const AddAssignmentModal = ({
               </View>
 
               <View>
-                <FileUploadModal />
+                <FileUploadModal
+                  setIsLoading={setIsLoading}
+                  uploadedFilesList={uploadedFilesList}
+                  setUploadedFilesList={setUploadedFilesList}
+                />
               </View>
 
               <View style={{ marginTop: 30 }}>
                 <Button
+                  loading={isLoading}
                   title="Create Assignment"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}

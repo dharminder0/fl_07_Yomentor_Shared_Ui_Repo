@@ -52,8 +52,8 @@ const AddAssessmentModal = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [gradeId, setGradeId] = useState<any>();
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -64,12 +64,16 @@ const AddAssessmentModal = ({
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    reset();
+    setUploadedFilesList([]);
+  }, [isModalVisible, reset]);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
   };
 
   useEffect(() => {
-    reset();
     getGradeList().then((result: any) => {
       if (!!result.data) {
         setClassList(result.data);
@@ -91,7 +95,9 @@ const AddAssessmentModal = ({
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    upsertAssessments(data).then((response: any) => {
+    const payload: any = {...data};
+    payload.uploadedFiles = [...uploadedFilesList];
+    upsertAssessments(payload).then((response: any) => {
       if (response.data && response.data?.success) {
         if (batchId) {
           getAssignStudentAssessments({
@@ -104,7 +110,6 @@ const AddAssessmentModal = ({
             }
           });
         }
-        reset();
         onClose();
         setTimeout(() => {
           setIsPopupModalVisible(true);
@@ -245,12 +250,12 @@ const AddAssessmentModal = ({
               />
 
               <View>
-                <FileUploadModal setIsDisabled={setIsDisabled}/>
+                <FileUploadModal setIsLoading={setIsLoading} uploadedFilesList={uploadedFilesList} setUploadedFilesList={setUploadedFilesList} />
               </View>
 
               <View style={{ marginTop: 30 }}>
                 <Button
-                disabled={isDisabled}
+                  loading={isLoading}
                   title="Create Assessment"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}

@@ -19,23 +19,15 @@ import DocumentPicker from "react-native-document-picker";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { uploadStyles } from "../../assets/styles/UploadStyle";
 import { uploadFileToBlob } from "../../apiconfig/SharedApis";
-import FlashMessage, {
-  hideMessage,
-  showMessage,
-} from "react-native-flash-message";
+import { useToast } from "react-native-toast-notifications";
+import RNFetchBlob from 'rn-fetch-blob';
 
 const FileUploadModal = ({
   title = "",
-  appointmentId = "",
-  fileList = [],
-  onChange = (value: any) => {},
-  docUseType = 0,
-  include = "",
+  uploadedFilesList = [],
+  setUploadedFilesList = (value: any) => {},
   isDisabled = false,
-  patientId = "",
-  fileNameAs = "filename",
-  urlAs = "url",
-  setIsDisabled = (value: boolean) => {},
+  setIsLoading = (value: boolean) => {},
 }) => {
   const types = getTypes();
   const [isBrowseFile, setIsBrowseFile] = useState(false);
@@ -45,7 +37,7 @@ const FileUploadModal = ({
   const [storagePermission, setStoragePermission] = useState<string | null>(
     null
   );
-  const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
+  const toast = useToast();
 
   // useEffect(() => {
   //   requestPermissions();
@@ -74,15 +66,6 @@ const FileUploadModal = ({
     let payload: any = {};
     const options: any = { mediaType: "photo" };
     if (type === "document") {
-      // if (storagePermission === 'granted') {
-      //   DocumentPicker.pick({type: [DocumentPicker.types.allFiles],allowMultiSelection: false}).then((result:any) => {
-      //     if(result && result.length > 0){
-      //       uploadFileToDB(result[0]);
-      //     }
-      //   });
-      // } else {
-      //   Alert.alert('Permission Required', 'Please grant storage permission to access files.');
-      // }
       DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
         allowMultiSelection: false,
@@ -92,22 +75,6 @@ const FileUploadModal = ({
         }
       });
     } else if (type === "image") {
-      // if (storagePermission === 'granted') {
-      //   launchImageLibrary(options).then((result:any) => {
-      //     if(result && result.assets && result.assets.length > 0){
-      //       payload = {
-      //         "fileCopyUri": null,
-      //         "name": result.assets[0].fileName,
-      //         "size": result.assets[0].fileSize,
-      //         "type": result.assets[0].type,
-      //         "uri": result.assets[0].uri
-      //       }
-      //       uploadFileToDB(payload);
-      //     }
-      //   });
-      // } else {
-      //   Alert.alert('Permission Required', 'Please grant storage permission to access photos.');
-      // }
       launchImageLibrary(options).then((result: any) => {
         if (result && result.assets && result.assets.length > 0) {
           payload = {
@@ -121,25 +88,6 @@ const FileUploadModal = ({
         }
       });
     } else if (type === "camera") {
-      // if (cameraPermission === 'granted' && storagePermission === 'granted') {
-      //   launchCamera(options).then((result:any) => {
-      //     if(result && result.assets && result.assets.length > 0){
-      //       payload = {
-      //         "fileCopyUri": null,
-      //         "name": result.assets[0].fileName,
-      //         "size": result.assets[0].fileSize,
-      //         "type": result.assets[0].type,
-      //         "uri": result.assets[0].uri
-      //       }
-      //       uploadFileToDB(payload);
-      //     }
-      //   });
-      // } else {
-      //   Alert.alert(
-      //     'Permissions Required',
-      //     'Please grant camera and storage permissions to use the camera.',
-      //   );
-      // }
       launchCamera(options).then((result: any) => {
         if (result && result.assets && result.assets.length > 0) {
           payload = {
@@ -153,60 +101,81 @@ const FileUploadModal = ({
         }
       });
     }
-    setIsLoaderVisible(false);
-  };
-
-  const getFileExtention = (fileUrl: any) => {
-    // To get the file extension
-    return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
 
   const uploadFileToDB = (data: any) => {
     const fData: any = new FormData();
     fData.append("file", data);
     setIsBrowseFile(false);
-    setIsDisabled(true);
-    setIsLoaderVisible(true);
+    setIsLoading(true);
     uploadFileToBlob(fData, 3).then((result: any) => {
       if (result.data && result.data.message == "Upload success") {
-        setIsBrowseFile(false);
-        showMessage({ message: result.data.message, type: "success" });
+        toast.show(result.data.message, {
+          type: "success",
+          duration: 2000,
+          placement: "top",
+        });
         const updatedList = [...uploadedFilesList, result.data.data];
         setUploadedFilesList(updatedList);
-        console.log('uploadedFilesList');
-        console.log(uploadedFilesList);
-        console.log('uploadedFilesList');
-        setIsLoaderVisible(false);
       } else {
-        setIsBrowseFile(false);
-        showMessage({ message: result.data.message, type: "danger" });
+        toast.show(result.data.message, {
+          type: "danger",
+          duration: 2000,
+          placement: "top",
+        });
       }
       setTimeout(() => {
-        setIsDisabled(false);
-        hideMessage();
+        setIsBrowseFile(false);
+        setIsLoading(false);
       }, 1000);
     });
   };
 
-  const downloadFile = (fileLink: string) => {
-    // Handle file download
+  const downloadFile = (file: any) => {
+    setIsLoading(true);
+    const file_ext:any = getFileExtension(file.fileLink);
+    
+    // Get the path to the default download directory dynamically
+    const downloadDir = RNFetchBlob.fs.dirs.DownloadDir;
+  
+    // Specify the file path in the download directory
+    const customFilePath = `${downloadDir}/${file.fileName}`;
+  
+    RNFetchBlob.config({
+      path: customFilePath,
+    })
+    .fetch('GET', file.fileLink)
+    .then((res) => {
+      if (res.respInfo.status === 200) {
+        Platform.OS == 'ios'
+          ? RNFetchBlob.ios.openDocument(res.path())
+          : RNFetchBlob.android.actionViewIntent(res.path(), types[file_ext[0]]);
+        setIsLoading(false);
+      } else {
+        console.error('Failed to download file. Server returned status:', res.respInfo.status);
+        setIsLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.error('Error downloading file:', error);
+      setIsLoading(false);
+    });
+  };
+  
+  
+
+  const getFileExtension = (fileUrl: any) => {
+    // To get the file extension
+    return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
   };
 
-  const addMediaByEntity = (file: any) => {
-    // Handle adding media by entity
-  };
-
-  const handleDelete = (data: any) => {
-    // Handle delete action
-  };
-
-  const deleteMedia = (file?: any) => {
-    let requestBody: any = {
-      mediaTypeId: 0,
-      entityTypeId: 3, //PatientSpecific
-      entityId: appointmentId,
-      bloblink: file.url,
-    };
+  const handleDelete = (indexToRemove: number) => {
+    // Filter out the object at the specified index
+    const updatedList = uploadedFilesList.filter(
+      (item: any, index: number) => index !== indexToRemove
+    );
+    // Update the state with the filtered array
+    setUploadedFilesList(updatedList);
   };
 
   return (
@@ -243,10 +212,6 @@ const FileUploadModal = ({
           }
         />
       )}
-      <FlashMessage
-        position="top"
-        style={{ borderRadius: 4, alignItems: "center" }}
-      />
       <Modal
         isVisible={isBrowseFile}
         onBackButtonPress={() => setIsBrowseFile(false)}
@@ -302,7 +267,7 @@ const FileUploadModal = ({
                 />
                 <TouchableOpacity
                   onPress={() => {
-                    downloadFile(item?.[urlAs]);
+                    downloadFile(item);
                   }}
                   style={{ marginEnd: 5, width: isDisabled ? "90%" : "80%" }}
                 >
@@ -319,7 +284,7 @@ const FileUploadModal = ({
                   )}
                 </TouchableOpacity>
                 {!isDisabled && (
-                  <Pressable onPress={() => deleteMedia(item)}>
+                  <Pressable onPress={() => handleDelete(index)}>
                     <Ionicons name="trash" size={21} color={YoColors.primary} />
                   </Pressable>
                 )}
