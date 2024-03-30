@@ -25,13 +25,21 @@ const SelectModal = ({
   isMulti = false,
   isDisabled = false,
   fieldError = false,
-}) => {
-  console.log(fieldError);
+  defaultValue = null,
+}:any) => {
   const { width, height } = Dimensions.get("window");
   const [isSelectModal, setIsSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<any[]>([]);
   const [checkedStates, setCheckedStates] = useState<CheckboxState>({});
+
+  // useEffect to set the default value when the component mounts
+  useEffect(() => {
+    if(defaultValue && Object.keys(defaultValue).length > 0){
+      setSelectedValue([defaultValue.name]);
+      onChanged(defaultValue);
+    }
+  }, [defaultValue]);
 
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);

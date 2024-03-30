@@ -130,6 +130,7 @@ const AssignmentList = ({ batchInfo }: any) => {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
         batchId={selectedBatch.id}
+        title="Create new assignment"
       />
 
       <AssignAssignmentModal

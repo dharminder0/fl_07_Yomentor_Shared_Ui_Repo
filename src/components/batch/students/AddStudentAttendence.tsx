@@ -61,9 +61,6 @@ const AddStudentAttendance = ({ route }: any) => {
                 ? "absent"
                 : "none"; // 'none', 'present', or 'absent'
           });
-          console.log("attendanceObj");
-          console.log(attendanceObj);
-          console.log("attendanceObj");
           setAttendanceList(attendanceObj);
           setStudentsList(response.data);
         }
@@ -90,7 +87,6 @@ const AddStudentAttendance = ({ route }: any) => {
     };
     if (attendanceList && Object.keys(attendanceList).length > 0) {
       for (const [key, value] of Object.entries(attendanceList)) {
-        console.log("Key:", key, "Value:", value);
         let tempObj: any = {
           studentId: parseInt(key),
           status: value == "present" ? 1 : value == "absent" ? 2 : 0,
@@ -98,9 +94,6 @@ const AddStudentAttendance = ({ route }: any) => {
         payload.student_attendance.push(tempObj);
       }
     }
-    console.log("upsertAttendanceBulkAdd");
-    console.log(payload);
-    console.log("upsertAttendanceBulkAdd");
     upsertAttendanceBulkAdd(payload)
       .then((response: any) => {
         if (response.data && response.data.response) {
