@@ -84,6 +84,7 @@ export const common = StyleSheet.create({
   p12: { padding: 12 },
   px12: { paddingHorizontal: 12 },
   fs12: { fontSize: 12 },
+  p5: { padding: 5 }
 });
 
 export const btnStyle = StyleSheet.create({
@@ -110,6 +111,10 @@ export const btnStyle = StyleSheet.create({
   btnCross: {
     paddingHorizontal: 15,
     paddingVertical: 0,
+    backgroundColor: "#fff",
+  },
+  btnEdit: {
+    padding: 0,
     backgroundColor: "#fff",
   },
 });

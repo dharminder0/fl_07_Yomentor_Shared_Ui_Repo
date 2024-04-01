@@ -30,7 +30,6 @@ const StudentList = ({ batchInfo }: any) => {
         setStudentsList([]);
         if (response.data && response.data.length > 0) {
           setStudentsList(response.data);
-          console.log(response.data);
         }
         setIsLoading(false);
       })

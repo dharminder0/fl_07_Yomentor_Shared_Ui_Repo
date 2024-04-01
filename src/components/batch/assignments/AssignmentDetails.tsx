@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { Card } from "@rneui/themed";
-import { cardStyle, common } from "../../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
 import HeaderView from "../../common/HeaderView";
 import moment from "moment";
 import { getAssignmentDetailsById } from "../../../apiconfig/SharedApis";
@@ -17,7 +17,10 @@ import NoDataView from "../../../screens/NoDataView";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import { YoColors } from "../../../assets/themes/YoColors";
 import AddAssignmentModal from "../../teacher/AddAssignmentModal";
-import { getUserInfo } from "../../../shared/sharedDetails";
+import { downloadFile, getUserInfo } from "../../../shared/sharedDetails";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { uploadStyles } from "../../../assets/styles/UploadStyle";
+import { Button } from "react-native-elements";
 
 const AssignmentDetails = ({ route }: any) => {
   const assignmentInfo = route?.params?.selectedAssignment ?? {};
@@ -87,30 +90,94 @@ const AssignmentDetails = ({ route }: any) => {
         {isLoading ? (
           <Loading />
         ) : assignmentDetails && Object.keys(assignmentDetails).length > 0 ? (
-          <Card containerStyle={cardStyle.container}>
-            <View style={[cardStyle.j_row, { margin: 0 }]}>
-              <Text style={common.h3Title}>{assignmentDetails?.title}</Text>
-              <View style={common.row}>
-                <FontAwesomeIcon
-                  name="pencil-alt"
-                  size={12}
-                  color={YoColors.primary}
-                  onPress={() => setModalVisible(true)}
-                />
-                <Text style={[common.rText, common.ph10]}>
-                  {moment(assignmentDetails?.createdate).format("MMM DD, YYYY")}
-                </Text>
+          <>
+            <Card containerStyle={cardStyle.container}>
+              <View style={[cardStyle.j_row, { margin: 0 }]}>
+                <Text style={common.h3Title}>{assignmentDetails?.title}</Text>
+                <View style={common.row}>
+                  <Button
+                    onPress={() => setModalVisible(true)}
+                    icon={
+                      <FontAwesomeIcon
+                        name="pencil-alt"
+                        size={12}
+                        color={YoColors.primary}
+                        onPress={() => setModalVisible(true)}
+                      />
+                    }
+                    buttonStyle={[btnStyle.btnEdit]}
+                    containerStyle={{ padding: 0 }}
+                  />
+                  <Text style={[common.rText, common.ph10]}>
+                    {moment(assignmentDetails?.createdate).format(
+                      "MMM DD, YYYY"
+                    )}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View>
-              {assignmentDetails?.description && (
-                <Text style={[common.mtop10]}>
-                  {/* {assignmentDetails?.description} */}
-                  {renderTextWithLinks(assignmentDetails?.description)}
-                </Text>
-              )}
-            </View>
-          </Card>
+              <View>
+                {assignmentDetails?.description && (
+                  <Text>
+                    {renderTextWithLinks(assignmentDetails?.description)}
+                  </Text>
+                )}
+              </View>
+              <View style={common.my10}>
+                {assignmentDetails.uploadedFiles &&
+                  assignmentDetails.uploadedFiles.length > 0 && (
+                    <FlatList
+                      data={assignmentDetails.uploadedFiles}
+                      showsVerticalScrollIndicator={false}
+                      renderItem={({
+                        item,
+                        index,
+                      }: {
+                        item: any;
+                        index: number;
+                      }) => {
+                        return (
+                          <View
+                            key={index}
+                            style={uploadStyles.fileCardNoBorder}
+                          >
+                            <Ionicons
+                              name="document-text"
+                              size={18}
+                              color={YoColors.primary}
+                            />
+                            <TouchableOpacity
+                              onPress={() => {
+                                downloadFile(item);
+                              }}
+                              style={{ marginEnd: 5, width: "90%" }}
+                            >
+                              <Text
+                                numberOfLines={1}
+                                style={{ color: YoColors.text }}
+                              >
+                                {item?.fileName}
+                              </Text>
+                              {item?.createdDate && (
+                                <Text
+                                  numberOfLines={1}
+                                  style={{ fontSize: 12 }}
+                                >
+                                  Attached on{" "}
+                                  {moment(
+                                    item?.createdDate,
+                                    "DD-MM-YYYY"
+                                  ).format("MMM DD, YYYY")}
+                                </Text>
+                              )}
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      }}
+                    />
+                  )}
+              </View>
+            </Card>
+          </>
         ) : (
           <NoDataView />
         )}

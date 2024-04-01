@@ -15,6 +15,8 @@ import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import { cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { YoColors } from "../../assets/themes/YoColors";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const CardAssessment = ({
   data = [],
@@ -55,14 +57,22 @@ const CardAssessment = ({
             <Icon name="laptop" size={12} />
             <Text style={common.rText}> {item?.gradeName}</Text>
           </View>
-          <View style={[cardStyle.row, { marginEnd: 15 }]}>
+          <View style={[cardStyle.row, { marginEnd: 10 }]}>
             <Icon name="book" size={12} />
             <Text style={common.rText}> {item?.subjectName}</Text>
           </View>
-          <View style={[cardStyle.row, { marginEnd: 15 }]}>
-            <MaterialCommunityIcons name="file-document-edit" size={14} />
-            <Text style={common.rText}> {item?.maxmark}</Text>
-          </View>
+          {item?.maxmark > 0 && (
+            <View style={[cardStyle.row, { marginEnd: 10 }]}>
+              <MaterialCommunityIcons name="file-document-edit" size={14} />
+              <Text style={common.rText}> {item?.maxmark}</Text>
+            </View>
+          )}
+          {item?.filesCount > 0 && (
+            <View style={[cardStyle.row, { marginEnd: 15 }]}>
+              <Ionicons name="attach-outline" size={14} />
+              <Text style={common.rText}>{item?.filesCount}</Text>
+            </View>
+          )}                                
         </View>
       </Card>
     </TouchableOpacity>

@@ -16,7 +16,6 @@ const Startup = () => {
       if (result && result?.id) {
         new Promise((resolve) =>
           setTimeout(() => {
-            console.log(result);
             resolve(true);
             navigation.reset({
               index: 0,

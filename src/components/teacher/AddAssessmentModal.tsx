@@ -100,10 +100,10 @@ const AddAssessmentModal = ({
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
-    console.log(data);
     setIsProcessLoader(true);
     const payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
+    console.log(payload);
     upsertAssessments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -258,14 +258,14 @@ const AddAssessmentModal = ({
 
               <Controller
                 control={control}
-                name="maxmark"
+                name="maxMark"
                 rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
                     style={[
                       styles.input,
-                      { borderColor: errors.maxmark ? "red" : "#ccc" },
+                      { borderColor: errors.maxMark ? "red" : "#ccc" },
                     ]}
                     value={value}
                     placeholder="Max Mark"

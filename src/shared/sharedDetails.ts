@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
 
 export const saveAsyncData = async (key: string, data: any) => {
   try {
@@ -274,3 +275,42 @@ export function getTypes() {
   };
   return type;
 }
+
+export const downloadFile = (file: any) => {
+  const types = getTypes();
+  const file_ext: any = getFileExtension(file.fileLink);
+
+  // Get the path to the default download directory dynamically
+  const downloadDir = RNFetchBlob.fs.dirs.DownloadDir;
+
+  // Specify the file path in the download directory
+  const customFilePath = `${downloadDir}/${file.fileName}`;
+
+  RNFetchBlob.config({
+    path: customFilePath,
+  })
+    .fetch("GET", file.fileLink)
+    .then((res) => {
+      if (res.respInfo.status === 200) {
+        Platform.OS == "ios"
+          ? RNFetchBlob.ios.openDocument(res.path())
+          : RNFetchBlob.android.actionViewIntent(
+              res.path(),
+              types[file_ext[0]]
+            );
+      } else {
+        console.error(
+          "Failed to download file. Server returned status:",
+          res.respInfo.status
+        );
+      }
+    })
+    .catch((error) => {
+      console.error("Error downloading file:", error);
+    });
+};
+
+const getFileExtension = (fileUrl: any) => {
+  // To get the file extension
+  return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
+};

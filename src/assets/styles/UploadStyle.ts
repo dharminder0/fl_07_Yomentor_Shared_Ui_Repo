@@ -25,6 +25,13 @@ export const uploadStyles = StyleSheet.create({
     borderRadius: 6,
     marginTop: 10,
   },
+  fileCardNoBorder: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingVertical: 2,
+    marginTop: 5,
+  },
   fileIcons: {
     height: 30,
     width: 30,

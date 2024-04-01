@@ -93,8 +93,6 @@ const DashboardPage = () => {
       payload["isFavourite"] = true;
     }
 
-    console.log(payload);
-
     setOpenBatchList([]);
     setOngoingBatchList([]);
     setShortlistedBatchList([]);

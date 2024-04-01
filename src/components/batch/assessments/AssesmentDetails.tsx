@@ -8,16 +8,19 @@ import {
   View,
 } from "react-native";
 import { Card } from "@rneui/themed";
-import { cardStyle, common } from "../../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
 import HeaderView from "../../common/HeaderView";
 import moment from "moment";
 import { getAssessmentDetailsById } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
 import AddAssessmentModal from "../../teacher/AddAssessmentModal";
-import { getUserInfo } from "../../../shared/sharedDetails";
+import { downloadFile, getUserInfo } from "../../../shared/sharedDetails";
 import { YoColors } from "../../../assets/themes/YoColors";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
+import { uploadStyles } from "../../../assets/styles/UploadStyle";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Button } from "react-native-elements";
 
 const AssesmentDetails = ({ route }: any) => {
   const assessmentInfo = route?.params?.selectedAssessment ?? {};
@@ -35,6 +38,7 @@ const AssesmentDetails = ({ route }: any) => {
     getAssessmentDetailsById(assessmentInfo.id)
       .then((response: any) => {
         setAssessmentDetails({});
+        console.log(response.data);
         if (response.data && response.data.length > 0) {
           setAssessmentDetails(response.data[0]);
         }
@@ -86,35 +90,94 @@ const AssesmentDetails = ({ route }: any) => {
         {isLoading ? (
           <Loading />
         ) : assessmentDetails && Object.keys(assessmentDetails).length > 0 ? (
-          <Card containerStyle={cardStyle.container}>
-            {/* <View style={[cardStyle.j_row, { margin: 0 }]}>
-              <Text style={common.h3Title}>{assessmentDetails?.title}</Text>
-              <Text style={common.rText}>
-                {moment(assessmentDetails?.createdate).format("MMM DD, YYYY")}
-              </Text>
-            </View> */}
-            <View style={[cardStyle.j_row, { margin: 0 }]}>
-              <Text style={common.h3Title}>{assessmentDetails?.title}</Text>
-              <View style={common.row}>
-                <FontAwesomeIcon
-                  name="pencil-alt"
-                  size={12}
-                  color={YoColors.primary}
-                  onPress={() => setModalVisible(true)}
-                />
-                <Text style={[common.rText, common.ph10]}>
-                  {moment(assessmentDetails?.createdate).format("MMM DD, YYYY")}
-                </Text>
+          <>
+            <Card containerStyle={cardStyle.container}>
+              <View style={[cardStyle.j_row, { margin: 0 }]}>
+                <Text style={common.h3Title}>{assessmentDetails?.title}</Text>
+                <View style={common.row}>
+                  <Button
+                    onPress={() => setModalVisible(true)}
+                    icon={
+                      <FontAwesomeIcon
+                        name="pencil-alt"
+                        size={12}
+                        color={YoColors.primary}
+                        onPress={() => setModalVisible(true)}
+                      />
+                    }
+                    buttonStyle={[btnStyle.btnEdit]}
+                    containerStyle={{ padding: 0 }}
+                  />
+                  <Text style={[common.rText, common.ph10]}>
+                    {moment(assessmentDetails?.createdate).format(
+                      "MMM DD, YYYY"
+                    )}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View>
-              {assessmentDetails?.description && (
-                <Text style={[common.mtop10]}>
-                  {renderTextWithLinks(assessmentDetails?.description)}
-                </Text>
-              )}
-            </View>
-          </Card>
+              <View>
+                {assessmentDetails?.description && (
+                  <Text>
+                    {renderTextWithLinks(assessmentDetails?.description)}
+                  </Text>
+                )}
+              </View>
+              <View style={common.my10}>
+                {assessmentDetails.uploadedFiles &&
+                  assessmentDetails.uploadedFiles.length > 0 && (
+                    <FlatList
+                      data={assessmentDetails.uploadedFiles}
+                      showsVerticalScrollIndicator={false}
+                      renderItem={({
+                        item,
+                        index,
+                      }: {
+                        item: any;
+                        index: number;
+                      }) => {
+                        return (
+                          <View
+                            key={index}
+                            style={uploadStyles.fileCardNoBorder}
+                          >
+                            <Ionicons
+                              name="document-text"
+                              size={18}
+                              color={YoColors.primary}
+                            />
+                            <TouchableOpacity
+                              onPress={() => {
+                                downloadFile(item);
+                              }}
+                              style={{ marginEnd: 5, width: "90%" }}
+                            >
+                              <Text
+                                numberOfLines={1}
+                                style={{ color: YoColors.text }}
+                              >
+                                {item?.fileName}
+                              </Text>
+                              {item?.createdDate && (
+                                <Text
+                                  numberOfLines={1}
+                                  style={{ fontSize: 12 }}
+                                >
+                                  Attached on{" "}
+                                  {moment(
+                                    item?.createdDate,
+                                    "DD-MM-YYYY"
+                                  ).format("MMM DD, YYYY")}
+                                </Text>
+                              )}
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      }}
+                    />
+                  )}
+              </View>
+            </Card>
+          </>
         ) : (
           <NoDataView />
         )}
