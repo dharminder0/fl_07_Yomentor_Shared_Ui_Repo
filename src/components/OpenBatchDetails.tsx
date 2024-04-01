@@ -35,7 +35,6 @@ const OpenBatchDetails = ({ route }: any) => {
   const navigation: any = useNavigation();
   const image: any = YoImages();
   const batchItem: any = route.params.batchItem;
-  // const studentData: any = getStudentData();
   const [studentData, setStudentData] = useState([]);
   const [refreshLoader, setRefreshLoader] = useState(false);
   const [isBatchModal, setIsBatchModal] = useState<boolean>(false);

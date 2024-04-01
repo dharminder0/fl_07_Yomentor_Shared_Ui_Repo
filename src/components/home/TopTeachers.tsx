@@ -7,11 +7,11 @@ import {
   VirtualizedList,
 } from "react-native";
 import React from "react";
-import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoImages } from "../../../assets/themes/YoImages";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { YoImages } from "../../assets/themes/YoImages";
+import { YoColors } from "../../assets/themes/YoColors";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { Card } from "@rneui/base";
@@ -122,7 +122,7 @@ export default TopTeachers;
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#fff",
-    height: 160,
+    height: 150,
     width: 130,
     marginEnd: 8,
     marginBottom: 8,

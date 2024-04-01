@@ -29,11 +29,11 @@ import useStore from "../../../store/useStore";
 import moment from "moment";
 
 const AddStudentAttendance = ({ route }: any) => {
-  const batchInfo = route?.params?.batchItem ?? {};
+  const batchInfo = route.params?.batchItem ?? {};
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForAttendance, setIsLoadingForAttendance] = useState(false);
   const [studentsList, setStudentsList] = useState([]);
-  const [calendarDate, setCalendarDate] = useState<any>();
+  const [calendarDate, setCalendarDate] = useState<any>(new Date());
   const [attendanceList, setAttendanceList] = useState<any>({});
   const image: any = YoImages();
   const { height } = Dimensions.get("window");
@@ -112,21 +112,29 @@ const AddStudentAttendance = ({ route }: any) => {
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={cardStyle.row}>
           <View style={{ marginRight: 10 }}>
-            <Image
-              source={image.DefaultUser}
-              style={{
-                width: 75,
-                height: 75,
-                borderRadius: 40,
-              }}
-            />
+            {item?.image ? (
+              <Image
+                source={{ uri: item?.image }}
+                style={{
+                  width: 75,
+                  height: 75,
+                  borderRadius: 40,
+                }}
+              />
+            ) : (
+              <Image
+                source={image.DefaultUser}
+                style={{
+                  width: 75,
+                  height: 75,
+                  borderRadius: 40,
+                }}
+              />
+            )}
           </View>
           <View>
             <View style={[cardStyle.j_row]}>
-              <Text
-                style={[common.h3Title, { width: "72%" }]}
-                numberOfLines={1}
-              >
+              <Text style={[common.title, { width: "72%" }]} numberOfLines={1}>
                 {item?.firstName} {item?.lastName}
               </Text>
             </View>

@@ -30,6 +30,7 @@ const StudentList = ({ batchInfo }: any) => {
         setStudentsList([]);
         if (response.data && response.data.length > 0) {
           setStudentsList(response.data);
+          console.log(response.data);
         }
         setIsLoading(false);
       })
@@ -54,14 +55,25 @@ const StudentList = ({ batchInfo }: any) => {
               height: 75,
             }}
           >
-            <Image
-              source={image.DefaultUser}
-              style={{
-                width: 75,
-                height: 75,
-                borderRadius: 40,
-              }}
-            />
+            {item?.image ? (
+              <Image
+                source={{ uri: item?.image }}
+                style={{
+                  width: 75,
+                  height: 75,
+                  borderRadius: 40,
+                }}
+              />
+            ) : (
+              <Image
+                source={image.DefaultUser}
+                style={{
+                  width: 75,
+                  height: 75,
+                  borderRadius: 40,
+                }}
+              />
+            )}
           </View>
           <View
             style={{
@@ -70,7 +82,7 @@ const StudentList = ({ batchInfo }: any) => {
             }}
           >
             <View style={[cardStyle.j_row]}>
-              <Text style={[common.h3Title]}>{item?.name}</Text>
+              <Text style={[common.title]}>{item?.name}</Text>
             </View>
             {item?.address && (
               <View style={cardStyle.row}>

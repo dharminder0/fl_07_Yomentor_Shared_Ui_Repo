@@ -41,9 +41,9 @@ export const BottomNavigation = () => {
       onPress={openDrawerScreen}
       style={{ paddingEnd: 12, paddingVertical: 5 }}
     >
-      {userInfo?.profilePicture ? (
+      {userInfo?.image ? (
         <Image
-          source={{ uri: userInfo?.profilePicture }}
+          source={{ uri: userInfo?.image }}
           style={{
             width: 32,
             height: 32,

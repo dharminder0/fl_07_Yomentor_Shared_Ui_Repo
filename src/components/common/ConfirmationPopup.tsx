@@ -33,7 +33,7 @@ const ConfirmationPopup = ({
           backgroundColor: "white",
           minHeight: 120,
           maxHeight: 300,
-          width: width - 25,
+          width: width - 30,
           borderRadius: 12,
           justifyContent: "center",
           alignItems: "center",

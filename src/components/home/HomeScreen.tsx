@@ -12,7 +12,7 @@ import { common } from "../../assets/styles/Common";
 import SlideView from "../common/SlideView";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { getBatchListbyUserid, getUsersList } from "../../apiconfig/SharedApis";
-import TopTeachers from "./student/TopTeachers";
+import TopTeachers from "./TopTeachers";
 import BatchSlideCard from "../common/BatchSlideCard";
 import { Button } from "react-native-elements";
 import { YoColors } from "../../assets/themes/YoColors";
@@ -26,8 +26,8 @@ import useStore from "../../store/useStore";
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
-  const navigation: any = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isMainLoading, setMainIsLoading] = useState<boolean>(false);
   const { isModalVisible, setModalVisible }: any = useStore();
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [openBatchList, setOpenBatchList] = useState([]);
@@ -37,7 +37,7 @@ const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setIsLoading(true);
+      setMainIsLoading(true);
       getOpenBatchDatabyTeacherId(1);
       getOpenBatchDatabyTeacherId(2);
       getOpenBatchDatabyTeacherId(3);
@@ -46,6 +46,7 @@ const HomeScreen = () => {
   );
 
   const getOpenBatchDatabyTeacherId = (statusId: number) => {
+    setIsLoading(true);
     const payload: any = {
       userid: userInfo?.id,
       userType: userInfo?.type,
@@ -80,7 +81,7 @@ const HomeScreen = () => {
         setTimeout(() => {
           setIsLoading(false);
           setRefreshLoader(false);
-        }, 500);
+        }, 1000);
       })
       .catch((error: any) => {
         console.log(error);
@@ -103,13 +104,23 @@ const HomeScreen = () => {
         if (response.data && response.data.length > 0) {
           setTeacherList(response.data);
         }
+        setTimeout(() => {
+          setMainIsLoading(false);
+        }, 1000);
       })
       .catch((error: any) => {
         console.error("Error fetching :", error);
       });
   };
 
-  console.log(openBatchList);
+  const onCloseUpdate = () => {
+    setModalVisible(false);
+    setTimeout(() => {
+      getOpenBatchDatabyTeacherId(1);
+      getOpenBatchDatabyTeacherId(2);
+      getOpenBatchDatabyTeacherId(3);
+    }, 500);
+  };
 
   return (
     <ScrollView
@@ -124,7 +135,7 @@ const HomeScreen = () => {
         />
       }
     >
-      {isLoading ? (
+      {isMainLoading || isLoading ? (
         <View
           style={{
             flex: 1,
@@ -185,7 +196,23 @@ const HomeScreen = () => {
 
           {openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
-            shortlisted?.length === 0 && (
+            userInfo?.type === 1 && (
+              <View
+                style={{
+                  height: Platform.OS === "ios" ? height - 185 : height - 135,
+                }}
+              >
+                <Welcome
+                  userType={userInfo?.type}
+                  onAddModalOpen={() => setModalVisible(true)}
+                />
+              </View>
+            )}
+
+          {openBatchList?.length === 0 &&
+            ongoingBatchList?.length === 0 &&
+            shortlisted?.length === 0 &&
+            userInfo?.type === 3 && (
               <View
                 style={{
                   height: Platform.OS === "ios" ? height - 185 : height - 135,
@@ -204,10 +231,7 @@ const HomeScreen = () => {
         </>
       )}
 
-      <AddBatchModalForm
-        userId={userInfo?.id}
-        onClose={() => setRefreshLoader(true)}
-      />
+      <AddBatchModalForm userId={userInfo?.id} onClose={onCloseUpdate} />
     </ScrollView>
   );
 };

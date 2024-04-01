@@ -27,7 +27,7 @@ const BatchSlideCard = ({
   withdraw = false,
   height = 180,
   reloadPage = () => {},
-}) => {
+}: any) => {
   const navigation: any = useNavigation();
   const toast: any = useToast();
   const [isWithdrawModal, setIsWithdrawModal] = useState<boolean>(false);
@@ -167,7 +167,7 @@ const BatchSlideCard = ({
               )}
 
               {item?.description && (
-                <Text style={{ marginBottom: 10 }} numberOfLines={2}>
+                <Text style={{ marginBottom: 10 }} numberOfLines={1}>
                   {item?.description}
                 </Text>
               )}
@@ -225,7 +225,7 @@ const BatchSlideCard = ({
                 </View>
               </View>
 
-              {enroll && (
+              {item?.statusId === 1 && userInfo?.type === 3 && (
                 <View
                   style={[
                     common.j_row,
@@ -237,84 +237,85 @@ const BatchSlideCard = ({
                     },
                   ]}
                 >
-                  {userInfo?.type === 3 && (
-                    <Button
-                      title="Enroll Now"
-                      onPress={() => {
-                        setIsEnrollModal(true);
-                        setSelectedBatchId(item?.id);
-                      }}
-                      buttonStyle={{
-                        backgroundColor: YoColors.primary,
-                        paddingHorizontal: 7,
-                        paddingVertical: 3,
-                      }}
-                      containerStyle={{ padding: 0 }}
-                      titleStyle={common.rText}
-                    />
-                  )}
-                  <Button
-                    title={
-                      !item?.isFavourite ? "Shortlist" : "Remove from shortlist"
-                    }
-                    onPress={() =>
-                      setFavoriteStatus(item?.id, item?.isFavourite)
-                    }
-                    buttonStyle={{
-                      backgroundColor: "none",
-                      paddingHorizontal: 7,
-                      paddingVertical: 3,
-                    }}
-                    icon={
-                      <MaterialCommunityIcons
-                        name={item?.isFavourite ? "heart" : "heart-outline"}
-                        size={14}
-                        color={YoColors.primary}
+                  <View style={common.row}>
+                    {item?.enrollmentstatusId === 0 && (
+                      <Button
+                        title="Enroll Now"
+                        onPress={() => {
+                          setIsEnrollModal(true);
+                          setSelectedBatchId(item?.id);
+                        }}
+                        buttonStyle={{
+                          backgroundColor: YoColors.primary,
+                          paddingHorizontal: 7,
+                          paddingVertical: 3,
+                        }}
+                        containerStyle={{ padding: 0 }}
+                        titleStyle={common.rText}
                       />
-                    }
-                    containerStyle={{ padding: 0 }}
-                    titleStyle={[
-                      common.rText,
-                      { color: YoColors.text, fontWeight: "500" },
-                    ]}
-                  />
-                </View>
-              )}
+                    )}
 
-              {withdraw && userInfo?.type === 3 && (
-                <View
-                  style={[
-                    common.j_row,
-                    {
-                      borderTopWidth: 0.6,
-                      borderTopColor: "#dadada",
-                      paddingTop: 8,
-                      marginTop: 8,
-                    },
-                  ]}
-                >
-                  {item?.enrollmentstatusId !== 4 ? (
+                    {(item?.enrollmentstatusId === 1 ||
+                      item?.enrollmentstatusId === 2) && (
+                      <Button
+                        title="Withdraw Enrollment"
+                        onPress={() => {
+                          setIsWithdrawModal(true);
+                          setSelectedBatchId(item?.id);
+                        }}
+                        buttonStyle={{
+                          backgroundColor: YoColors.white,
+                          paddingHorizontal: 7,
+                          paddingVertical: 3,
+                          borderWidth: 0.7,
+                          borderColor: YoColors.primary,
+                        }}
+                        containerStyle={{ padding: 0 }}
+                        titleStyle={[
+                          common.rText,
+                          {
+                            color: YoColors.primary,
+                            fontWeight: "400",
+                          },
+                        ]}
+                      />
+                    )}
+
+                    {item?.enrollmentstatusId !== 0 && (
+                      <Text style={[common.rText, common.px12]}>
+                        {item?.enrollmentstatus}
+                      </Text>
+                    )}
+                  </View>
+
+                  {enroll && (
                     <Button
-                      title="Withdraw Enrollment"
-                      onPress={() => {
-                        setIsWithdrawModal(true);
-                        setSelectedBatchId(item?.id);
-                      }}
+                      title={
+                        !item?.isFavourite
+                          ? "Shortlist"
+                          : "Remove from shortlist"
+                      }
+                      onPress={() =>
+                        setFavoriteStatus(item?.id, item?.isFavourite)
+                      }
                       buttonStyle={{
-                        backgroundColor: YoColors.white,
+                        backgroundColor: "none",
                         paddingHorizontal: 7,
                         paddingVertical: 3,
-                        borderWidth: 0.7,
-                        borderColor: YoColors.primary,
                       }}
+                      icon={
+                        <MaterialCommunityIcons
+                          name={item?.isFavourite ? "heart" : "heart-outline"}
+                          size={14}
+                          color={YoColors.primary}
+                        />
+                      }
                       containerStyle={{ padding: 0 }}
                       titleStyle={[
                         common.rText,
-                        { color: YoColors.primary, fontWeight: "400" },
+                        { color: YoColors.text, fontWeight: "500" },
                       ]}
                     />
-                  ) : (
-                    <Text style={common.rText}>{item?.enrollmentstatus}</Text>
                   )}
                 </View>
               )}

@@ -87,9 +87,11 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
+    console.log("payload", data);
     setIsProcessLoader(true);
     addBatch(data).then((response: any) => {
       if (response.data && response.data?.response) {
+        console.log(response.data);
         setIsPopupModalVisible(true);
         onClose();
         setIsPopupModal(true);

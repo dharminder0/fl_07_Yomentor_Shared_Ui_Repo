@@ -17,7 +17,7 @@ const SlideView = ({
   usedStatusId = 0,
   userInfo = {},
   height = 160,
-}) => {
+}: any) => {
   const navigation: any = useNavigation();
 
   const gotoBatchDetail = (item: any) => {

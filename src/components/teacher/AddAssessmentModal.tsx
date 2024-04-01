@@ -37,8 +37,8 @@ const AddAssessmentModal = ({
   setModalVisible = (value: any) => {},
   batchId = null,
   title = "",
-  dataToEdit = {}
-}:any) => {
+  dataToEdit = {},
+}: any) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
 
@@ -68,10 +68,9 @@ const AddAssessmentModal = ({
 
   useEffect(() => {
     reset(dataToEdit);
-    if(dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0){
+    if (dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0) {
       setUploadedFilesList(dataToEdit.uploadedFiles);
-    }
-    else{
+    } else {
       setUploadedFilesList([]);
     }
   }, [isModalVisible, reset]);
@@ -101,37 +100,40 @@ const AddAssessmentModal = ({
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
+    console.log(data);
     setIsProcessLoader(true);
-    const payload: any = {...data};
+    const payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
-    upsertAssessments(payload).then((response: any) => {
-      if (response.data && response.data?.success) {
-        if (batchId) {
-          getAssignStudentAssessments({
-            batchId: batchId,
-            assessmentId: response.data?.content,
-            status: 1,
-          }).then((res: any) => {
-            if (res.data && res.data.response) {
-              console.log("res -----", res.data.response);
-            }
-          });
+    upsertAssessments(payload)
+      .then((response: any) => {
+        if (response.data && response.data?.success) {
+          if (batchId) {
+            getAssignStudentAssessments({
+              batchId: batchId,
+              assessmentId: response.data?.content,
+              status: 1,
+            }).then((res: any) => {
+              if (res.data && res.data.response) {
+                console.log("res -----", res.data.response);
+              }
+            });
+          }
+          onClose();
+          setTimeout(() => {
+            setIsPopupModalVisible(true);
+            setIsPopupModal(true);
+          }, 100);
         }
-        onClose();
         setTimeout(() => {
-          setIsPopupModalVisible(true);
-          setIsPopupModal(true);
-        }, 100);
-      }
-      setTimeout(() => {
-        setIsPopupModalVisible(false);
-        setIsPopupModal(false);
+          setIsPopupModalVisible(false);
+          setIsPopupModal(false);
+          setIsProcessLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        console.log(error);
         setIsProcessLoader(false);
-      }, 1000);
-    }).catch((error: any) => {
-      console.log(error);
-      setIsProcessLoader(false);
-    });
+      });
   };
 
   return (
@@ -230,7 +232,11 @@ const AddAssessmentModal = ({
                       setValue("gradeId", value?.id);
                       setGradeId(value?.id);
                     }}
-                    defaultValue={dataToEdit.gradeId ? {id: dataToEdit.gradeId,name: dataToEdit.gradeName}: null}
+                    defaultValue={
+                      dataToEdit.gradeId
+                        ? { id: dataToEdit.gradeId, name: dataToEdit.gradeName }
+                        : null
+                    }
                   />
                 </View>
                 <View style={{ width: "48%" }}>
@@ -238,7 +244,14 @@ const AddAssessmentModal = ({
                     data={subjectList}
                     placeholder="Subject"
                     onChanged={(value: any) => setValue("subjectId", value?.id)}
-                    defaultValue={dataToEdit.subjectId ? {id: dataToEdit.subjectId,name: dataToEdit.subjectName}: null}
+                    defaultValue={
+                      dataToEdit.subjectId
+                        ? {
+                            id: dataToEdit.subjectId,
+                            name: dataToEdit.subjectName,
+                          }
+                        : null
+                    }
                   />
                 </View>
               </View>
@@ -262,7 +275,11 @@ const AddAssessmentModal = ({
               />
 
               <View>
-                <FileUploadModal setIsLoading={setIsLoading} uploadedFilesList={uploadedFilesList} setUploadedFilesList={setUploadedFilesList} />
+                <FileUploadModal
+                  setIsLoading={setIsLoading}
+                  uploadedFilesList={uploadedFilesList}
+                  setUploadedFilesList={setUploadedFilesList}
+                />
               </View>
 
               <View style={{ marginTop: 30 }}>
