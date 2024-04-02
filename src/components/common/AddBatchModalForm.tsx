@@ -15,7 +15,7 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import SelectModal from "./SelectModal";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import {
@@ -36,6 +36,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
+  const YoColors = useThemeColor();
 
   const { height, width } = Dimensions.get("window");
 

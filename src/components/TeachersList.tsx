@@ -20,7 +20,7 @@ import { getUsersList } from "../apiconfig/SharedApis";
 import { Card } from "@rneui/base";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
@@ -29,6 +29,7 @@ import LoginPage from "./auth/LoginPage";
 const TeachersList = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const image: any = YoImages();
   const [isLoading, setIsLoading] = useState(false);

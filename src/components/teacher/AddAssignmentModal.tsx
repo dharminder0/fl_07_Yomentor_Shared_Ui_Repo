@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import {
@@ -42,11 +42,11 @@ const AddAssignmentModal = ({
   setModalVisible = (value: any) => {},
   batchId = null,
   title = "",
-  dataToEdit = {}
-}:any) => {
+  dataToEdit = {},
+}: any) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
-
+  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
 
   const [date, setDate] = useState(new Date());
@@ -72,10 +72,9 @@ const AddAssignmentModal = ({
 
   useEffect(() => {
     reset(dataToEdit);
-    if(dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0){
+    if (dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0) {
       setUploadedFilesList(dataToEdit.uploadedFiles);
-    }
-    else{
+    } else {
       setUploadedFilesList([]);
     }
   }, [isModalVisible, reset]);
@@ -108,36 +107,37 @@ const AddAssignmentModal = ({
     setIsProcessLoader(true);
     let payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
-    
-    upsertAssignments(payload).then((response: any) => {
-      if (response.data && response.data?.success) {
-        if (batchId) {
-          getAssignStudentAssignments({
-            batchId: batchId,
-            assignmentId: response.data?.content,
-            status: 1,
-          }).then((res: any) => {
-            if (res.data && res.data.response) {
-              console.log("res -----", res.data.response);
-            }
-          });
+
+    upsertAssignments(payload)
+      .then((response: any) => {
+        if (response.data && response.data?.success) {
+          if (batchId) {
+            getAssignStudentAssignments({
+              batchId: batchId,
+              assignmentId: response.data?.content,
+              status: 1,
+            }).then((res: any) => {
+              if (res.data && res.data.response) {
+                console.log("res -----", res.data.response);
+              }
+            });
+          }
+          onClose();
+          setTimeout(() => {
+            setIsPopupModalVisible(true);
+            setIsPopupModal(true);
+          }, 200);
         }
-        onClose();
         setTimeout(() => {
-          setIsPopupModalVisible(true);
-          setIsPopupModal(true);
-        }, 200);
-      }
-      setTimeout(() => {
-        setIsPopupModalVisible(false);
-        setIsPopupModal(false);
+          setIsPopupModalVisible(false);
+          setIsPopupModal(false);
+          setIsProcessLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        console.log(error);
         setIsProcessLoader(false);
-      }, 1000);
-    }).catch((error: any) => {
-      console.log(error);
-      setIsProcessLoader(false);
-    });
-    
+      });
   };
 
   return (
@@ -236,7 +236,11 @@ const AddAssignmentModal = ({
                       setValue("gradeId", value?.id);
                       setGradeId(value?.id);
                     }}
-                    defaultValue={dataToEdit.gradeId ? {id: dataToEdit.gradeId,name: dataToEdit.gradeName}: null}
+                    defaultValue={
+                      dataToEdit.gradeId
+                        ? { id: dataToEdit.gradeId, name: dataToEdit.gradeName }
+                        : null
+                    }
                   />
                 </View>
                 <View style={{ width: "48%" }}>
@@ -244,7 +248,14 @@ const AddAssignmentModal = ({
                     data={subjectList}
                     placeholder="Subject"
                     onChanged={(value: any) => setValue("subjectId", value?.id)}
-                    defaultValue={dataToEdit.subjectId ? {id: dataToEdit.subjectId,name: dataToEdit.subjectName}: null}
+                    defaultValue={
+                      dataToEdit.subjectId
+                        ? {
+                            id: dataToEdit.subjectId,
+                            name: dataToEdit.subjectName,
+                          }
+                        : null
+                    }
                   />
                 </View>
               </View>

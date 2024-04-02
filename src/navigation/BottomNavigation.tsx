@@ -14,7 +14,7 @@ import {
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { getUserInfo } from "../shared/sharedDetails";
 import { YoImages } from "../assets/themes/YoImages";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import HomeScreen from "../components/home/HomeScreen";
 import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
 import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
@@ -27,6 +27,7 @@ const Tab = createBottomTabNavigator();
 // Icon.loadFont();
 
 export const BottomNavigation = () => {
+  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
@@ -192,7 +193,7 @@ export const BottomNavigation = () => {
 
 const styles = StyleSheet.create({
   headerStyle: {
-    backgroundColor: YoColors.primary,
+    backgroundColor: "#124076",
   },
   iconContainer: {
     width: 65,

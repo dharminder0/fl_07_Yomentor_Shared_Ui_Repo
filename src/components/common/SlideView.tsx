@@ -4,12 +4,13 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { Button } from "react-native-elements";
 import Swiper from "react-native-swiper";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Card } from "@rneui/base";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+const YoColors = useThemeColor();
 const SlideView = ({
   title = "",
   viewTo = "",

@@ -13,7 +13,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../../assets/styles/Common";
 import { YoImages } from "../../../assets/themes/YoImages";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { getStudentsListByBatchId } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
@@ -22,6 +22,7 @@ const StudentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
   const [isLoading, setIsLoading] = useState(false);
   const [studentsList, setStudentsList] = useState([]);
+  const YoColors = useThemeColor();
 
   useEffect(() => {
     setIsLoading(true);

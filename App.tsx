@@ -8,12 +8,13 @@ import {
 
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigator";
-import { YoColors } from "./src/assets/themes/YoColors";
 import InternetConnectionStatus from "./src/screens/InternetConnectionStatus";
 import { ToastProvider } from "react-native-toast-notifications";
+import { useThemeColor } from "./src/assets/themes/useThemeColor";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
+  const YoColors = useThemeColor();
   const { height } = Dimensions.get("window");
   const backgroundStyle = {
     backgroundColor: isDarkMode ? YoColors.primary : YoColors.primary,

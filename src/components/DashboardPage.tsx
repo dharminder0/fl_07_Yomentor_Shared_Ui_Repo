@@ -17,12 +17,13 @@ import Loading from "../screens/Loading";
 import AddBatchModalForm from "./common/AddBatchModalForm";
 import useStore from "../store/useStore";
 import { Button } from "react-native-elements";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import ProfileBatchCard from "./common/ProfileBatchCard";
 import { useFocusEffect } from "@react-navigation/native";
 
 const DashboardPage = () => {
   const { height, width } = Dimensions.get("window");
+  const YoColors = useThemeColor();
   const userInfo: any = getUserInfo();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);

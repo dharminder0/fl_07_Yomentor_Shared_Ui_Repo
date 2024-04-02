@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { YoColors } from "../themes/YoColors";
 
 export const uploadStyles = StyleSheet.create({
   fileUploadCard: {
@@ -9,7 +8,7 @@ export const uploadStyles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: YoColors.primary,
+    borderColor: "#124076",
     borderWidth: 1,
     borderStyle: "dashed",
     flexDirection: "column",
@@ -17,7 +16,7 @@ export const uploadStyles = StyleSheet.create({
   fileCard: {
     flexDirection: "row",
     alignItems: "center",
-    borderColor: YoColors.primary,
+    borderColor: "#124076",
     backgroundColor: "#fff",
     borderWidth: 0.7,
     padding: 5,
@@ -64,12 +63,12 @@ export const uploadStyles = StyleSheet.create({
   },
   browseText: {
     fontSize: 12,
-    color: YoColors.primary,
+    color: "#124076",
     marginTop: 6,
   },
   headTitle: {
     fontSize: 14,
-    color: YoColors.primary,
+    color: "#124076",
     fontWeight: "500",
     marginTop: 5,
   },

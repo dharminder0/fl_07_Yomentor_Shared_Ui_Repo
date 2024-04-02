@@ -16,7 +16,7 @@ import NoDataView from "../../../screens/NoDataView";
 import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../../assets/styles/Common";
 import { YoImages } from "../../../assets/themes/YoImages";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import {
   getStudentsAttendance,
   upsertAttendanceBulkAdd,
@@ -30,6 +30,7 @@ import moment from "moment";
 
 const AddStudentAttendance = ({ route }: any) => {
   const batchInfo = route.params?.batchItem ?? {};
+  const YoColors = useThemeColor();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingForAttendance, setIsLoadingForAttendance] = useState(false);
   const [studentsList, setStudentsList] = useState([]);

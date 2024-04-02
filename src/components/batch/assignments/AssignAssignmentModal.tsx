@@ -18,7 +18,7 @@ import {
 } from "../../../apiconfig/SharedApis";
 import ProcessLoader from "../../../screens/ProcessLoader";
 import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { useToast } from "react-native-toast-notifications";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -30,6 +30,7 @@ const AssignAssignmentModal = ({
   batchInfo,
 }: any) => {
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
   const toast: any = useToast();
   const [isProcessLoader, setIsProcessLoader] = useState(false);

@@ -11,12 +11,13 @@ import React from "react";
 import { common } from "../../assets/styles/Common";
 import { Card } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../../assets/themes/YoImages";
 
 const { height } = Dimensions.get("window");
 const SelectUserType = () => {
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const image: any = YoImages();
   return (

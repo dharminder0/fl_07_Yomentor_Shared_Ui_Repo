@@ -12,11 +12,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { clearUserData, getUserInfo } from "../shared/sharedDetails";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import { common } from "../assets/styles/Common";
 import { YoImages } from "../assets/themes/YoImages";
 
 const DrawerSidebar = ({ navigation }: { navigation: any }) => {
+  const YoColors = useThemeColor();
   const userInfo: any = getUserInfo();
   const { height, width } = Dimensions.get("screen");
   const image: any = YoImages();
@@ -107,14 +108,11 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
       <View
         style={{
           padding: 8,
+          flex: 1,
           backgroundColor: YoColors.bgColor,
         }}
       >
-        <View
-          style={{
-            height: Platform.OS === "ios" ? height - 220 : height - 140,
-          }}
-        >
+        <View>
           <TouchableOpacity
             style={styles.tabView}
             onPress={() => navigation.navigate("Home")}
@@ -127,8 +125,9 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
         <View
           style={{
             height: 20,
-            alignItems: "flex-end",
-            justifyContent: "center",
+            position: "absolute",
+            left: 15,
+            bottom: 12,
           }}
         >
           <TouchableOpacity style={common.row} onPress={logoutUser}>
@@ -160,6 +159,6 @@ const styles = StyleSheet.create({
   tabTitle: {
     paddingHorizontal: 8,
     fontSize: 19,
-    color: YoColors.primary,
+    color: "#124076",
   },
 });

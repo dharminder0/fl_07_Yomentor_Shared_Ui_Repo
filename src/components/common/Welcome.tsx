@@ -2,13 +2,14 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { common } from "../../assets/styles/Common";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { YoImages } from "../../assets/themes/YoImages";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
 
 const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
   const image: any = YoImages();
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   return (
     <View

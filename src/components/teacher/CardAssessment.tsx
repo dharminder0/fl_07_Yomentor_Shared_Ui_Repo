@@ -15,7 +15,7 @@ import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import { cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const CardAssessment = ({
@@ -26,7 +26,7 @@ const CardAssessment = ({
 }) => {
   const { height } = Dimensions.get("window");
   const navigation: any = useNavigation();
-
+  const YoColors = useThemeColor();
   const gotoAssessmentDetail = (item: any) => {
     navigation.navigate("AssesmentDetails", { selectedAssessment: item });
   };
@@ -72,7 +72,7 @@ const CardAssessment = ({
               <Ionicons name="attach-outline" size={14} />
               <Text style={common.rText}>{item?.filesCount}</Text>
             </View>
-          )}                                
+          )}
         </View>
       </Card>
     </TouchableOpacity>

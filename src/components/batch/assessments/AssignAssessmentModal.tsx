@@ -18,7 +18,7 @@ import {
 } from "../../../apiconfig/SharedApis";
 import ProcessLoader from "../../../screens/ProcessLoader";
 import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { useToast } from "react-native-toast-notifications";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -32,7 +32,7 @@ const AssignAssessmentModal = ({
   const userInfo: any = getUserInfo();
   const toast: any = useToast();
   const { height, width } = Dimensions.get("window");
-
+  const YoColors = useThemeColor();
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);

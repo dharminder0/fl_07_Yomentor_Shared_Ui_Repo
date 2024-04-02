@@ -5,7 +5,7 @@ import { getUserInfo } from "../../shared/sharedDetails";
 import { getAssignmentsListByTeacherId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { btnStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CardAssignment from "./CardAssignment";
@@ -14,6 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 const TeacherAssignmentList = () => {
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const [assignmentList, setAssignmentList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);

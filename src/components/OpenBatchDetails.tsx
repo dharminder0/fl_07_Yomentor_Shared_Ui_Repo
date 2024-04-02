@@ -18,7 +18,7 @@ import { cardStyle, common } from "../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import HeaderView from "./common/HeaderView";
 import { YoImages } from "../assets/themes/YoImages";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import {
   getStudentsListByBatchId,
   updateBatchStatus,
@@ -32,6 +32,7 @@ import { useToast } from "react-native-toast-notifications";
 const OpenBatchDetails = ({ route }: any) => {
   const { width } = Dimensions.get("window");
   const toast = useToast();
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const image: any = YoImages();
   const batchItem: any = route.params.batchItem;

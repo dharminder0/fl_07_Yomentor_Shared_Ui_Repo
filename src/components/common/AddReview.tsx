@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { cardStyle, common } from "../../assets/styles/Common";
 import { Button, Rating } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "react-native-gesture-handler";
 import { getUserInfo } from "../../shared/sharedDetails";
@@ -16,6 +16,7 @@ import Loading from "../../screens/Loading";
 const AddReview = ({ batchDetail }: any) => {
   const userInfo: any = getUserInfo();
   const toast: any = useToast();
+  const YoColors = useThemeColor();
   const [reviewList, setReviewList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

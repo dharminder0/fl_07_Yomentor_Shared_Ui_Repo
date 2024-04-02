@@ -5,7 +5,7 @@ import AssessmentList from "./batch/assessments/AssessmentList";
 import AnnouncementList from "./batch/announcements/AnnouncementList";
 import StudentList from "./batch/students/StudentList";
 import HeaderView from "./common/HeaderView";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import { getUserInfo } from "../shared/sharedDetails";
 import AddReview from "./common/AddReview";
 
@@ -14,6 +14,7 @@ const BatchDetailTab = ({ route }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo);
   const [index, setIndex] = React.useState(0);
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
 
   const [routes, setRoutes] = useState([]);
 

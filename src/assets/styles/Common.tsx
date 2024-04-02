@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet } from "react-native";
-import { YoColors } from "../themes/YoColors";
 
 const { width } = Dimensions.get("window");
 export const common = StyleSheet.create({
@@ -31,22 +30,22 @@ export const common = StyleSheet.create({
   h1Title: {
     fontSize: 21,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   h2Title: {
     fontSize: 18,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   h3Title: {
     fontSize: 16,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   title: {
     fontSize: 14,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   j_row: {
     flexDirection: "row",
@@ -84,29 +83,29 @@ export const common = StyleSheet.create({
   p12: { padding: 12 },
   px12: { paddingHorizontal: 12 },
   fs12: { fontSize: 12 },
-  p5: { padding: 5 }
+  p5: { padding: 5 },
 });
 
 export const btnStyle = StyleSheet.create({
   outline: {
-    backgroundColor: YoColors.white,
+    backgroundColor: "#fff",
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderWidth: 0.7,
-    borderColor: YoColors.primary,
+    borderColor: "#124076",
   },
   outlineTitle: {
-    color: YoColors.primary,
+    color: "#124076",
   },
   solid: {
-    backgroundColor: YoColors.primary,
+    backgroundColor: "#124076",
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderWidth: 0.7,
-    borderColor: YoColors.primary,
+    borderColor: "#124076",
   },
   solidTitle: {
-    color: YoColors.white,
+    color: "#fff",
   },
   btnCross: {
     paddingHorizontal: 15,
@@ -150,17 +149,17 @@ export const cardStyle = StyleSheet.create({
     fontSize: 18,
     marginVertical: 10,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   title1: {
     fontSize: 18,
     fontWeight: "600",
-    color: YoColors.primary,
+    color: "#124076",
   },
   headTitle: {
     fontWeight: "600",
     // marginBottom: 5,
-    color: YoColors.primary,
+    color: "#124076",
   },
   subTitle: {
     marginStart: 5,

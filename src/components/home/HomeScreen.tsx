@@ -15,7 +15,7 @@ import { getBatchListbyUserid, getUsersList } from "../../apiconfig/SharedApis";
 import TopTeachers from "./TopTeachers";
 import BatchSlideCard from "../common/BatchSlideCard";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Loading from "../../screens/Loading";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -26,6 +26,7 @@ import useStore from "../../store/useStore";
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMainLoading, setMainIsLoading] = useState<boolean>(false);
   const { isModalVisible, setModalVisible }: any = useStore();

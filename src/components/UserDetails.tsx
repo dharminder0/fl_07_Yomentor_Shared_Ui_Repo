@@ -28,7 +28,7 @@ import {
 import { getUserInfo } from "../shared/sharedDetails";
 import BatchCardView from "./common/BatchCardView";
 import ProfileBatchCard from "./common/ProfileBatchCard";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button } from "react-native-elements";
@@ -42,6 +42,7 @@ const UserDetails = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("window");
   const userId: any = route.params.userId;
   const navigation: any = useNavigation();
+  const YoColors = useThemeColor();
   const toast: any = useToast();
   const image: any = YoImages();
   const userInfo: any = getUserInfo();
@@ -419,6 +420,12 @@ const UserDetails = ({ route }: { route: any }) => {
                           ]}
                         >
                           <View style={common.row}>
+                            {item?.enrollmentstatusId !== 0 && (
+                              <Text style={[common.rText, { marginEnd: 5 }]}>
+                                {item?.enrollmentstatus}
+                              </Text>
+                            )}
+
                             {item?.enrollmentstatusId === 0 && (
                               <Button
                                 title="Enroll Now"
@@ -460,12 +467,6 @@ const UserDetails = ({ route }: { route: any }) => {
                                   },
                                 ]}
                               />
-                            )}
-
-                            {item?.enrollmentstatusId !== 0 && (
-                              <Text style={[common.rText, common.px12]}>
-                                {item?.enrollmentstatus}
-                              </Text>
                             )}
                           </View>
 

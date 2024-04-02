@@ -15,7 +15,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import moment from "moment";
 import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 
 const AssesmentCardView = ({
@@ -28,6 +28,7 @@ const AssesmentCardView = ({
   height = 400,
 }) => {
   const navigation: any = useNavigation();
+  const YoColors = useThemeColor();
 
   const gotoBatchDetail = (item: any) => {
     navigation.navigate("AssesmentDetails", { selectedAssessment: item });

@@ -11,7 +11,7 @@ import Modal from "react-native-modal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Dimensions } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { common } from "../../assets/styles/Common";
 
 interface CheckboxState {
@@ -27,6 +27,7 @@ const SelectModal = ({
   fieldError = false,
   defaultValue = null,
 }: any) => {
+  const YoColors = useThemeColor();
   const { width, height } = Dimensions.get("window");
   const [isSelectModal, setIsSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any[]>([]);

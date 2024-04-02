@@ -14,7 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import moment from "moment";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import useStore from "../../store/useStore";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { Button } from "react-native-elements";
@@ -31,6 +31,7 @@ const BatchCardView = ({
 }) => {
   const navigation: any = useNavigation();
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
 
   const gotoBatchDetail = (item: any) => {
     if (item?.statusId === 2) {

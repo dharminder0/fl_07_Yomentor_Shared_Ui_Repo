@@ -15,13 +15,14 @@ import { saveAsyncData } from "../../shared/sharedDetails";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { common } from "../../assets/styles/Common";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { userLogin } from "../../apiconfig/AuthService";
 import { YoImages } from "../../assets/themes/YoImages";
 
 const { height, width } = Dimensions.get("window");
 const LoginPage = () => {
   const image: any = YoImages();
+  const YoColors = useThemeColor();
   const scrollViewRef: any = useRef();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);

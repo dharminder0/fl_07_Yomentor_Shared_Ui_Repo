@@ -13,14 +13,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import moment from "moment";
 import { cardStyle } from "../../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 
-const AssesmentCardView = ({
-  title = "",
-  data = [],
-  isOpenEnroll = false,
-}) => {
+const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
   const navigation: any = useNavigation();
+  const YoColors = useThemeColor();
 
   const gotoBatchDetail = (item: any) => {
     if (!isOpenEnroll) {
@@ -65,7 +62,7 @@ const AssesmentCardView = ({
           { justifyContent: "space-between", marginBottom: 8 },
         ]}
       >
-        <Text style={cardStyle.headTitle}>{title??''}</Text>
+        <Text style={cardStyle.headTitle}>{title ?? ""}</Text>
         {isOpenEnroll && (
           <View style={cardStyle.row}>
             <MaterialCommunityIcons name="plus" size={14} />

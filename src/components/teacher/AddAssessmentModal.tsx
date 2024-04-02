@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
 import { getDayList, getFeeTypes } from "../../shared/sharedDetails";
@@ -41,7 +41,7 @@ const AddAssessmentModal = ({
 }: any) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
-
+  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
 
   // const { setModalVisible, isModalVisible }: any = useStore();

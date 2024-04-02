@@ -15,7 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { common } from "../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { upsertUser, userLogin } from "../../apiconfig/AuthService";
 import PopupModal from "../common/PopupModal";
 import useStore from "../../store/useStore";
@@ -25,6 +25,7 @@ import { saveAsyncData } from "../../shared/sharedDetails";
 const { height, width } = Dimensions.get("window");
 
 const UserRegistration = ({ route }: any) => {
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const image: any = YoImages();
   const userType: any = route.params.userType;

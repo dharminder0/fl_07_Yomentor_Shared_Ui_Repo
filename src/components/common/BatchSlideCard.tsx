@@ -4,7 +4,7 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { Button } from "react-native-elements";
 import Swiper from "react-native-swiper";
 import { useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Card } from "@rneui/base";
 import moment from "moment";
@@ -28,6 +28,7 @@ const BatchSlideCard = ({
   height = 180,
   reloadPage = () => {},
 }: any) => {
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const toast: any = useToast();
   const [isWithdrawModal, setIsWithdrawModal] = useState<boolean>(false);
@@ -238,6 +239,12 @@ const BatchSlideCard = ({
                   ]}
                 >
                   <View style={common.row}>
+                    {item?.enrollmentstatusId !== 0 && (
+                      <Text style={[common.rText, { marginEnd: 5 }]}>
+                        {item?.enrollmentstatus}
+                      </Text>
+                    )}
+
                     {item?.enrollmentstatusId === 0 && (
                       <Button
                         title="Enroll Now"
@@ -279,12 +286,6 @@ const BatchSlideCard = ({
                           },
                         ]}
                       />
-                    )}
-
-                    {item?.enrollmentstatusId !== 0 && (
-                      <Text style={[common.rText, common.px12]}>
-                        {item?.enrollmentstatus}
-                      </Text>
                     )}
                   </View>
 
@@ -362,6 +363,6 @@ const styles = StyleSheet.create({
   },
   activeDotStyle: {
     top: 20,
-    backgroundColor: YoColors.primary,
+    backgroundColor: "#124076",
   },
 });

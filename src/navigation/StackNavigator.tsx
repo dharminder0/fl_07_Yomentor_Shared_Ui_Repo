@@ -4,7 +4,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import OpenBatchDetails from "../components/OpenBatchDetails";
 import DrawerNavigation from "./DrawerNavigation";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 import BatchDetailTab from "../components/BatchDetailTab";
 import AddStudentAttendence from "../components/batch/students/AddStudentAttendence";
 import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
@@ -17,6 +17,7 @@ import Reviews from "../components/Reviews";
 import { BottomNavigation } from "./BottomNavigation";
 
 const Stack = createNativeStackNavigator();
+const YoColors = useThemeColor();
 
 export function StackNavigator() {
   const navigation: any = useNavigation();

@@ -8,11 +8,12 @@ import AssesmentCardView from "./AssesmentCardView";
 import { getUserInfo } from "../../../shared/sharedDetails";
 import AddAssessmentModal from "../../teacher/AddAssessmentModal";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import AssignAssessmentModal from "./AssignAssessmentModal";
 
 const AssessmentList = ({ batchInfo }: any) => {
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
   const [isLoading, setIsLoading] = useState(false);

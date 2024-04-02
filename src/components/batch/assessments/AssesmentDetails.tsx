@@ -16,7 +16,7 @@ import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
 import AddAssessmentModal from "../../teacher/AddAssessmentModal";
 import { downloadFile, getUserInfo } from "../../../shared/sharedDetails";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import { uploadStyles } from "../../../assets/styles/UploadStyle";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -28,6 +28,7 @@ const AssesmentDetails = ({ route }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
 
   useEffect(() => {
     getDetails();

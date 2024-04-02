@@ -3,10 +3,11 @@ import React from "react";
 import { cardStyle } from "../../assets/styles/Common";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 
 const HeaderView = ({ title = "", type = "back" }) => {
   const navigation: any = useNavigation();
+  const YoColors = useThemeColor();
   const openDrawerScreen = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };

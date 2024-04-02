@@ -12,7 +12,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { Button } from "react-native-elements";
 import moment from "moment";
 import { getTypes } from "../../shared/sharedDetails";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Modal from "react-native-modal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DocumentPicker from "react-native-document-picker";
@@ -30,6 +30,7 @@ const FileUploadModal = ({
   setIsLoading = (value: boolean) => {},
 }) => {
   const types = getTypes();
+  const YoColors = useThemeColor();
   const [isBrowseFile, setIsBrowseFile] = useState(false);
   const [selectedFileToDelete, setSelectedFileToDelete] = useState<any>({});
   const [isLoaderVisible, setIsLoaderVisible] = useState<boolean>(true);
@@ -198,7 +199,10 @@ const FileUploadModal = ({
       {!isDisabled && (
         <Button
           disabled={isDisabled}
-          buttonStyle={uploadStyles.fileUploadCard}
+          buttonStyle={[
+            uploadStyles.fileUploadCard,
+            { borderColor: YoColors.primary },
+          ]}
           onPress={() => {
             requestPermissions();
             setIsBrowseFile(true);
@@ -263,7 +267,13 @@ const FileUploadModal = ({
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }: { item: any; index: number }) => {
             return (
-              <View key={index} style={uploadStyles.fileCard}>
+              <View
+                key={index}
+                style={[
+                  uploadStyles.fileCard,
+                  { borderColor: YoColors.primary },
+                ]}
+              >
                 <Ionicons
                   name="document-text"
                   size={34}

@@ -5,7 +5,7 @@ import { getUserData, getUserInfo } from "../../shared/sharedDetails";
 import { getAssessmentsListByTeacherId } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { Button } from "react-native-elements";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { btnStyle, common } from "../../assets/styles/Common";
 import AddAssessmentModal from "./AddAssessmentModal";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -14,6 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 const TeacherAssessmentList = () => {
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
   const [assessmentList, setAssessmentList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageIndex, setPageIndex] = useState<any>(1);

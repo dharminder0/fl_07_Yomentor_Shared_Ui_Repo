@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Ionicons";
 import useStore from "../../store/useStore";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { common } from "../../assets/styles/Common";
 
 interface ModelProps {
@@ -22,11 +22,12 @@ const PopupModal: React.FC<ModelProps> = ({
 }) => {
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
+  const YoColors = useThemeColor();
   useEffect(() => {
     setTimeout(() => {
       setIsPopupModal(false);
     }, 2000);
-  },[isPopupModal])
+  }, [isPopupModal]);
 
   return (
     <View>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     textAlign: "center",
-    color: YoColors.secondary,
+    // color: useThemeColor().secondary,
     marginVertical: 10,
     paddingTop: 10,
   },

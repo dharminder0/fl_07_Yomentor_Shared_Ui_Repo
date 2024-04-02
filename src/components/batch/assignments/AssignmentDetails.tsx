@@ -15,7 +15,7 @@ import { getAssignmentDetailsById } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
-import { YoColors } from "../../../assets/themes/YoColors";
+import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import AddAssignmentModal from "../../teacher/AddAssignmentModal";
 import { downloadFile, getUserInfo } from "../../../shared/sharedDetails";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -29,6 +29,7 @@ const AssignmentDetails = ({ route }: any) => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isChangedSomething, setIsChangedSomething] = useState<boolean>(false);
   const userInfo: any = getUserInfo();
+  const YoColors = useThemeColor();
 
   useEffect(() => {
     getDetails();

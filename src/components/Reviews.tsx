@@ -22,11 +22,12 @@ import { Card } from "@rneui/base";
 import { YoImages } from "../assets/themes/YoImages";
 import { getReviews } from "../apiconfig/SharedApis";
 import moment from "moment";
-import { YoColors } from "../assets/themes/YoColors";
+import { useThemeColor } from "../assets/themes/useThemeColor";
 
 const Reviews = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("screen");
   const image: any = YoImages();
+  const YoColors = useThemeColor();
   const teacherId = route.params.teacherId;
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);

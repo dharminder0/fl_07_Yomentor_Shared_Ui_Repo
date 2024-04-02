@@ -11,13 +11,14 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../../assets/themes/YoImages";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { Card } from "@rneui/base";
 
 const TopTeachers = ({ title = "", data = [] }) => {
   const image: any = YoImages();
+  const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const getItem = (data: any, index: any) => data[index];
 

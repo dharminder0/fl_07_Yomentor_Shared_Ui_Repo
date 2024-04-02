@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { common } from "../../assets/styles/Common";
-import { YoColors } from "../../assets/themes/YoColors";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 import useStore from "../../store/useStore";
 
 const ConfirmationPopup = ({
@@ -12,6 +12,7 @@ const ConfirmationPopup = ({
   isVisible = false,
   setIsVisible = (value: boolean) => {},
 }) => {
+  const YoColors = useThemeColor();
   const { width } = Dimensions.get("screen");
   // const { isConfirmModal, setIsConfirmModal }: any = useStore();
 
