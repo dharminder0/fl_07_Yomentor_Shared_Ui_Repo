@@ -276,37 +276,21 @@ export function getTypes() {
   return type;
 }
 
-export const downloadFile = (file: any) => {
+export const downloadFile = (file: any, setLoading: any) => {
+  setLoading(true);
   const types = getTypes();
-  const file_ext: any = getFileExtension(file.fileLink);
-
-  // Get the path to the default download directory dynamically
-  const downloadDir = RNFetchBlob.fs.dirs.DownloadDir;
-
-  // Specify the file path in the download directory
-  const customFilePath = `${downloadDir}/${file.fileName}`;
-
+  let file_ext: any = getFileExtension(file.fileLink);
+  let file_ext2: any = "." + file_ext[0];
   RNFetchBlob.config({
-    path: customFilePath,
+    fileCache: true,
+    appendExt: file_ext2,
   })
     .fetch("GET", file.fileLink)
-    .then((res) => {
-      if (res.respInfo.status === 200) {
-        Platform.OS == "ios"
-          ? RNFetchBlob.ios.openDocument(res.path())
-          : RNFetchBlob.android.actionViewIntent(
-              res.path(),
-              types[file_ext[0]]
-            );
-      } else {
-        console.error(
-          "Failed to download file. Server returned status:",
-          res.respInfo.status
-        );
-      }
-    })
-    .catch((error) => {
-      console.error("Error downloading file:", error);
+    .then((res: any) => {
+      Platform.OS == "ios"
+        ? RNFetchBlob.ios.openDocument(res.path())
+        : RNFetchBlob.android.actionViewIntent(res.path(), types[file_ext[0]]);
+      setLoading(false);
     });
 };
 

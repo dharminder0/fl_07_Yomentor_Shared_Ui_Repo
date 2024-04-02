@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Linking,
   StyleSheet,
@@ -21,6 +22,7 @@ import { downloadFile, getUserInfo } from "../../../shared/sharedDetails";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { uploadStyles } from "../../../assets/styles/UploadStyle";
 import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const AssignmentDetails = ({ route }: any) => {
   const assignmentInfo = route?.params?.selectedAssignment ?? {};
@@ -116,8 +118,24 @@ const AssignmentDetails = ({ route }: any) => {
                 </View>
               </View>
               <View>
+                <View style={[cardStyle.row, { marginBottom: 5 }]}>
+                  <View style={[cardStyle.row, { marginEnd: 15 }]}>
+                    <Icon name="laptop" size={12} />
+                    <Text style={common.rText}>
+                      {" "}
+                      {assignmentDetails.gradeName}
+                    </Text>
+                  </View>
+                  <View style={[cardStyle.row, { marginEnd: 10 }]}>
+                    <Icon name="book" size={12} />
+                    <Text style={common.rText}>
+                      {" "}
+                      {assignmentDetails.subjectName}
+                    </Text>
+                  </View>
+                </View>
                 {assignmentDetails?.description && (
-                  <Text>
+                  <Text numberOfLines={2}>
                     {renderTextWithLinks(assignmentDetails?.description)}
                   </Text>
                 )}
@@ -147,7 +165,7 @@ const AssignmentDetails = ({ route }: any) => {
                             />
                             <TouchableOpacity
                               onPress={() => {
-                                downloadFile(item);
+                                downloadFile(item, setIsLoading);
                               }}
                               style={{ marginEnd: 5, width: "90%" }}
                             >
@@ -175,6 +193,7 @@ const AssignmentDetails = ({ route }: any) => {
                       }}
                     />
                   )}
+                  {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
               </View>
             </Card>
           </>
