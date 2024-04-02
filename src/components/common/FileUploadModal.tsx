@@ -11,8 +11,8 @@ import React, { memo, useState, useEffect } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { Button } from "react-native-elements";
 import moment from "moment";
-import { getTypes } from "../../shared/sharedDetails";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
+import { downloadFile, getTypes } from "../../shared/sharedDetails";
 import Modal from "react-native-modal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DocumentPicker from "react-native-document-picker";
@@ -132,48 +132,6 @@ const FileUploadModal = ({
     });
   };
 
-  const downloadFile = (file: any) => {
-    setIsLoading(true);
-    const file_ext: any = getFileExtension(file.fileLink);
-
-    // Get the path to the default download directory dynamically
-    const downloadDir = RNFetchBlob.fs.dirs.DownloadDir;
-
-    // Specify the file path in the download directory
-    const customFilePath = `${downloadDir}/${file.fileName}`;
-
-    RNFetchBlob.config({
-      path: customFilePath,
-    })
-      .fetch("GET", file.fileLink)
-      .then((res) => {
-        if (res.respInfo.status === 200) {
-          Platform.OS == "ios"
-            ? RNFetchBlob.ios.openDocument(res.path())
-            : RNFetchBlob.android.actionViewIntent(
-                res.path(),
-                types[file_ext[0]]
-              );
-          setIsLoading(false);
-        } else {
-          console.error(
-            "Failed to download file. Server returned status:",
-            res.respInfo.status
-          );
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-        setIsLoading(false);
-      });
-  };
-
-  const getFileExtension = (fileUrl: any) => {
-    // To get the file extension
-    return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
-  };
-
   const handleDelete = (indexToRemove: number) => {
     // Filter out the object at the specified index
     const updatedList = uploadedFilesList.filter(
@@ -281,7 +239,7 @@ const FileUploadModal = ({
                 />
                 <TouchableOpacity
                   onPress={() => {
-                    downloadFile(item);
+                    downloadFile(item, setIsLoading);
                   }}
                   style={{ marginEnd: 5, width: isDisabled ? "90%" : "80%" }}
                 >
