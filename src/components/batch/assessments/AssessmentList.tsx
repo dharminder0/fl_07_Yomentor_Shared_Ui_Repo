@@ -124,6 +124,7 @@ const AssessmentList = ({ batchInfo }: any) => {
           )}
         </View>
       )}
+
       <AddAssessmentModal
         userId={userInfo?.id}
         onClose={() => onCloseUpdate()}

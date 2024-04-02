@@ -112,7 +112,7 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
       >
         <View
           style={{
-            height: Platform.OS === "ios" ? height - 220 : height - 177,
+            height: Platform.OS === "ios" ? height - 220 : height - 140,
           }}
         >
           <TouchableOpacity
