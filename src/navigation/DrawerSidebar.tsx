@@ -15,17 +15,22 @@ import { clearUserData, getUserInfo } from "../shared/sharedDetails";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import { common } from "../assets/styles/Common";
 import { YoImages } from "../assets/themes/YoImages";
+import { useNavigation } from "@react-navigation/native";
 
-const DrawerSidebar = ({ navigation }: { navigation: any }) => {
+const DrawerSidebar = () => {
   const YoColors = useThemeColor();
   const userInfo: any = getUserInfo();
   const { height, width } = Dimensions.get("screen");
   const image: any = YoImages();
+  const navigation: any = useNavigation();
   const logoutUser = () => {
     clearUserData("userData");
     navigation.navigate("Startup");
   };
 
+  const goToProfilePage = () => {
+    navigation.navigate("UserProfile");
+  }
   return (
     <View style={{ flex: 1, backgroundColor: YoColors.white }}>
       <View
@@ -36,57 +41,61 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
           backgroundColor: YoColors.primary,
         }}
       >
-        <View style={common.row}>
-          <View style={{ width: 70 }}>
-            {!userInfo.image ? (
-              <Image
-                source={image.DefaultUser}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                }}
-              />
-            ) : (
-              <Image
-                source={{ uri: userInfo.image }}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                }}
-              />
-            )}
-          </View>
-          <View style={{ width: width - 205 }}>
-            <Text
-              style={[common.h2Title, { color: YoColors.white }]}
-              numberOfLines={1}
-            >
-              {userInfo?.firstname + " " + userInfo?.lastname}
-            </Text>
-            {userInfo?.email && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => goToProfilePage()}
+        >
+          <View style={common.row}>
+            <View style={{ width: 70 }}>
+              {!userInfo.image ? (
+                <Image
+                  source={image.DefaultUser}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={{ uri: userInfo.image }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                  }}
+                />
+              )}
+            </View>
+            <View style={{ width: width - 205 }}>
               <Text
-                style={[common.title, { color: YoColors.white }]}
+                style={[common.h2Title, { color: YoColors.white }]}
                 numberOfLines={1}
               >
-                {userInfo?.email}
+                {userInfo?.firstname + " " + userInfo?.lastname}
               </Text>
-            )}
-            {userInfo?.phone && (
-              <View style={common.row}>
-                <MaterialCommunityIcons
-                  name="phone"
-                  size={13}
-                  color={YoColors.white}
-                />
-                <Text style={[common.title, { color: YoColors.white }]}>
-                  {" "}
-                  {userInfo?.phone}
+              {userInfo?.email && (
+                <Text
+                  style={[common.title, { color: YoColors.white }]}
+                  numberOfLines={1}
+                >
+                  {userInfo?.email}
                 </Text>
-              </View>
-            )}
-            {/* {userInfo?.address && (
+              )}
+              {userInfo?.phone && (
+                <View style={common.row}>
+                  <MaterialCommunityIcons
+                    name="phone"
+                    size={13}
+                    color={YoColors.white}
+                  />
+                  <Text style={[common.title, { color: YoColors.white }]}>
+                    {" "}
+                    {userInfo?.phone}
+                  </Text>
+                </View>
+              )}
+              {/* {userInfo?.address && (
               <View style={[common.row, { alignItems: "flex-start" }]}>
                 <Ionicons
                   name="location-sharp"
@@ -101,8 +110,9 @@ const DrawerSidebar = ({ navigation }: { navigation: any }) => {
                 </Text>
               </View>
             )} */}
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View
