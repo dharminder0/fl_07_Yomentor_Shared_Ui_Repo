@@ -15,7 +15,7 @@ const DrawerNavigation = () => {
         headerShown: false,
         drawerStyle: { backgroundColor: "#dadada" },
       }}
-      drawerContent={(props) => <DrawerSidebar {...props} />}
+      drawerContent={(props) => <DrawerSidebar />}
     >
       <Drawer.Screen
         name="BottomNavigation"

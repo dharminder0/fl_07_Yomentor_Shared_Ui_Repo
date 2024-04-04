@@ -15,6 +15,7 @@ import TeachersList from "../components/TeachersList";
 import UserDetails from "../components/UserDetails";
 import Reviews from "../components/Reviews";
 import { BottomNavigation } from "./BottomNavigation";
+import UserProfile from "../components/profile/UserProfile";
 
 const Stack = createNativeStackNavigator();
 const YoColors = useThemeColor();
@@ -81,6 +82,16 @@ export function StackNavigator() {
         options={{
           headerShown: false,
           title: "BatchDetailTab",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{
+          headerShown: false,
+          title: "UserProfile",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
