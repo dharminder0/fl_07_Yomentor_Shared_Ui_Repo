@@ -195,6 +195,7 @@ const AddAssessmentModal = ({
                       styles.input,
                       { borderColor: errors.title ? "red" : "#ccc" },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Title"
                   />
@@ -217,6 +218,7 @@ const AddAssessmentModal = ({
                         borderColor: errors.description ? "red" : "#ccc",
                       },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Description"
                     multiline
@@ -267,6 +269,7 @@ const AddAssessmentModal = ({
                       styles.input,
                       { borderColor: errors.maxMark ? "red" : "#ccc" },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Max Mark"
                     keyboardType="number-pad"

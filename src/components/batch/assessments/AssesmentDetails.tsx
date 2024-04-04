@@ -96,7 +96,7 @@ const AssesmentDetails = ({ route }: any) => {
           <>
             <Card containerStyle={cardStyle.container}>
               <View style={[cardStyle.j_row, { margin: 0 }]}>
-                <Text style={common.h3Title}>{assessmentDetails?.title}</Text>
+                <Text style={common.title}>{assessmentDetails?.title}</Text>
                 <View style={common.row}>
                   <Button
                     onPress={() => setModalVisible(true)}
@@ -136,7 +136,7 @@ const AssesmentDetails = ({ route }: any) => {
                   </View>
                 </View>
                 {assessmentDetails?.description && (
-                  <Text numberOfLines={2}>
+                  <Text>
                     {renderTextWithLinks(assessmentDetails?.description)}
                   </Text>
                 )}
@@ -194,7 +194,9 @@ const AssesmentDetails = ({ route }: any) => {
                       }}
                     />
                   )}
-                  {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+                {isLoading && (
+                  <ActivityIndicator size="large" color="#0000ff" />
+                )}
               </View>
             </Card>
           </>

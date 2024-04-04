@@ -163,6 +163,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                       styles.input,
                       { borderColor: errors.name ? "red" : "#ccc" },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Name"
                   />
@@ -185,6 +186,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                         borderColor: errors.description ? "red" : "#ccc",
                       },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Description"
                     multiline
@@ -294,6 +296,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                             borderColor: errors.fee ? "red" : "#ccc",
                           },
                         ]}
+                        placeholderTextColor={YoColors.placeholderText}
                         value={value}
                         placeholder="Fee"
                         keyboardType="numeric"
@@ -334,6 +337,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                         borderColor: errors.numberOfStudents ? "red" : "#ccc",
                       },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Number of Students"
                     keyboardType="numeric"

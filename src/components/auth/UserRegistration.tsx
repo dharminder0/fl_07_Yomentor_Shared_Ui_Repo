@@ -111,6 +111,7 @@ const UserRegistration = ({ route }: any) => {
                       borderColor: errors.firstname ? "red" : "#ccc",
                     },
                   ]}
+                  placeholderTextColor={YoColors.placeholderText}
                 />
                 {errors.firstname && (
                   <Text style={common.errorText}>
@@ -129,6 +130,7 @@ const UserRegistration = ({ route }: any) => {
                 value={value}
                 placeholder="Last Name"
                 style={[common.input]}
+                placeholderTextColor={YoColors.placeholderText}
               />
             )}
           />
@@ -174,6 +176,7 @@ const UserRegistration = ({ route }: any) => {
                       borderColor: errors.phone ? "red" : "#ccc",
                     },
                   ]}
+                  placeholderTextColor={YoColors.placeholderText}
                 />
                 {errors.phone && (
                   <Text style={common.errorText}>{errors.phone.message}</Text>
@@ -225,6 +228,7 @@ const UserRegistration = ({ route }: any) => {
                       borderColor: errors.name ? "red" : "#ccc",
                     },
                   ]}
+                  placeholderTextColor={YoColors.placeholderText}
                 />
                 {errors.password && (
                   <Text style={common.errorText}>

@@ -77,6 +77,7 @@ const LoginPage = () => {
                   leftIcon={{ type: "Ionicons", name: "phone" }}
                   onChangeText={onChange}
                   value={value}
+                  placeholderTextColor={YoColors.placeholderText}
                   containerStyle={{ height: 55, marginBottom: 10 }}
                   errorStyle={{ fontSize: 10 }}
                   errorMessage={errors.phone?.message}
@@ -95,6 +96,7 @@ const LoginPage = () => {
                   secureTextEntry
                   onChangeText={onChange}
                   value={value}
+                  placeholderTextColor={YoColors.placeholderText}
                   containerStyle={{ height: 55, marginBottom: 10 }}
                   errorStyle={{ fontSize: 10 }}
                   errorMessage={errors.password?.message}

@@ -96,7 +96,7 @@ const AssignmentDetails = ({ route }: any) => {
           <>
             <Card containerStyle={cardStyle.container}>
               <View style={[cardStyle.j_row, { margin: 0 }]}>
-                <Text style={common.h3Title}>{assignmentDetails?.title}</Text>
+                <Text style={common.title}>{assignmentDetails?.title}</Text>
                 <View style={common.row}>
                   <Button
                     onPress={() => setModalVisible(true)}
@@ -136,7 +136,7 @@ const AssignmentDetails = ({ route }: any) => {
                   </View>
                 </View>
                 {assignmentDetails?.description && (
-                  <Text numberOfLines={2}>
+                  <Text>
                     {renderTextWithLinks(assignmentDetails?.description)}
                   </Text>
                 )}
@@ -194,7 +194,9 @@ const AssignmentDetails = ({ route }: any) => {
                       }}
                     />
                   )}
-                  {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+                {isLoading && (
+                  <ActivityIndicator size="large" color="#0000ff" />
+                )}
               </View>
             </Card>
           </>

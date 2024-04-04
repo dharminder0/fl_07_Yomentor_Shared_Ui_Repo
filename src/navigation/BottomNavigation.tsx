@@ -81,31 +81,26 @@ export const BottomNavigation = () => {
     homeTab: {
       headerTintColor: "#fff",
       title: "Home",
-      headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
     dashboardTab: {
       headerTintColor: "#fff",
       title: "My Batches",
-      headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
     TeacherAssignmentTab: {
       headerTintColor: "#fff",
       title: "My Assignments",
-      headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
     TeacherAssessmentTab: {
       headerTintColor: "#fff",
       title: "My Assessments",
-      headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
     TeachersListTab: {
       headerTintColor: "#fff",
       title: "Teachers",
-      headerStyle: styles.headerStyle,
       headerLeft: headerDrawer,
     },
   };
@@ -152,6 +147,7 @@ export const BottomNavigation = () => {
         headerLeftContainerStyle: { paddingStart: 12 },
         headerTitleAlign: "center",
         headerRightContainerStyle: { paddingEnd: 12 },
+        headerStyle: { backgroundColor: YoColors.primary },
       })}
     >
       <Tab.Screen

@@ -41,7 +41,7 @@ const CardAssignment = ({
             {item?.title}
           </Text>
           <Text style={{ fontSize: 12 }}>
-            {moment(item?.createdate).format("MMM DD, YYYY")}
+            {moment(item?.createDate).format("MMM DD, YYYY")}
           </Text>
         </View>
 
@@ -65,7 +65,7 @@ const CardAssignment = ({
               <Ionicons name="attach-outline" size={14} />
               <Text style={common.rText}>{item?.filesCount}</Text>
             </View>
-          )} 
+          )}
         </View>
       </Card>
     </TouchableOpacity>

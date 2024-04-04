@@ -10,15 +10,17 @@ export const useThemeColor = () => {
       text: "#343a40",
       white: "#fff",
       star: "#f0ca02",
+      placeholderText: "#A0A0A0",
     },
     dark: {
       primary: "#345678", // Example dark mode color
       secondary: "#789abc", // Example dark mode color
       background: "#121212", // Example dark mode color
       bgColor: "rgba(254,175,97,.15)", // Example dark mode color
-      text: "#f0f0f0", // Example dark mode color
+      text: "#989a9c", // Example dark mode color
       white: "#fff",
       star: "#f0ca02",
+      placeholderText: "#707070",
     },
   };
 

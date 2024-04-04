@@ -95,14 +95,25 @@ const Reviews = ({ route }: { route: any }) => {
     >
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={cardStyle.row}>
-          <Image
-            source={image.DefaultUser}
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 30,
-            }}
-          />
+          {item?.studentImage ? (
+            <Image
+              source={{ uri: item?.studentImage }}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+              }}
+            />
+          ) : (
+            <Image
+              source={image.DefaultUser}
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+              }}
+            />
+          )}
           <View
             style={{
               width: "83%",

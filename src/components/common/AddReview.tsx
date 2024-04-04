@@ -142,6 +142,7 @@ const AddReview = ({ batchDetail }: any) => {
                       borderColor: errors.review ? "red" : "#ccc",
                     },
                   ]}
+                  placeholderTextColor={YoColors.placeholderText}
                   multiline={true}
                 />
               </>

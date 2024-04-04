@@ -6,7 +6,11 @@ import {
   useColorScheme,
 } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigator";
 import InternetConnectionStatus from "./src/screens/InternetConnectionStatus";
 import { ToastProvider } from "react-native-toast-notifications";
@@ -16,6 +20,7 @@ function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
   const YoColors = useThemeColor();
   const { height } = Dimensions.get("window");
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? YoColors.primary : YoColors.primary,
     height: height,
@@ -28,7 +33,9 @@ function App(): React.JSX.Element {
           barStyle={isDarkMode ? "light-content" : "light-content"}
           backgroundColor={backgroundStyle.backgroundColor}
         />
-        <NavigationContainer>
+        <NavigationContainer
+          theme={useColorScheme() === "dark" ? DarkTheme : DefaultTheme}
+        >
           <MainNavigator />
         </NavigationContainer>
         {/* <InternetConnectionStatus /> */}

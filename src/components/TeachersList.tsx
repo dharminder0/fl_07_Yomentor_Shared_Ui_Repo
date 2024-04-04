@@ -192,6 +192,7 @@ const TeachersList = () => {
           value={searchText}
           style={[common.input, common.mb5]}
           onSubmitEditing={handleSearch}
+          placeholderTextColor={YoColors.placeholderText}
         />
         {searchText && searchText?.length > 0 ? (
           <Ionicons

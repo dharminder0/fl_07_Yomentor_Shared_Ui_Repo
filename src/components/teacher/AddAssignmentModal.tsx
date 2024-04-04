@@ -199,6 +199,7 @@ const AddAssignmentModal = ({
                       styles.input,
                       { borderColor: errors.title ? "red" : "#ccc" },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Title"
                   />
@@ -221,6 +222,7 @@ const AddAssignmentModal = ({
                         borderColor: errors.description ? "red" : "#ccc",
                       },
                     ]}
+                    placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Description"
                     multiline

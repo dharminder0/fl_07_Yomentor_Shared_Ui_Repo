@@ -42,7 +42,7 @@ const CardAssessment = ({
             {item?.title}
           </Text>
           <Text style={{ fontSize: 12 }}>
-            {moment(item?.createdate).format("MMM DD, YYYY")}
+            {moment(item?.createDate).format("MMM DD, YYYY")}
           </Text>
         </View>
 

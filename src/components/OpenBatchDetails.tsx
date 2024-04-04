@@ -109,28 +109,45 @@ const OpenBatchDetails = ({ route }: any) => {
 
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity activeOpacity={0.7}>
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={{
+          margin: 0,
+          padding: 8,
+          borderRadius: 6,
+          marginBottom: 5,
+        }}
+        key={index}
+      >
         <View style={cardStyle.row}>
           <View
             style={{
-              width: 75,
-              height: 75,
+              width: 62,
+              height: 62,
             }}
           >
-            <Image
-              source={image.DefaultUser}
-              style={{
-                width: 75,
-                height: 75,
-                borderRadius: 40,
-              }}
-            />
+            {item?.image ? (
+              <Image
+                source={{ uri: item?.image }}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                }}
+              />
+            ) : (
+              <Image
+                source={image.DefaultUser}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                }}
+              />
+            )}
           </View>
           <View style={{ marginStart: 12, width: "73%" }}>
             <View style={[cardStyle.j_row]}>
-              <Text style={[cardStyle.headTitle, cardStyle.fs18]}>
-                {item?.name}
-              </Text>
+              <Text style={[common.title]}>{item?.name}</Text>
             </View>
             {item?.address && (
               <View style={cardStyle.row}>
@@ -139,13 +156,13 @@ const OpenBatchDetails = ({ route }: any) => {
                   size={14}
                   color={YoColors.primary}
                 />
-                <Text style={cardStyle.subTitle}>{item?.address}</Text>
+                <Text style={common.rText}> {item?.address}</Text>
               </View>
             )}
             {item?.phone && (
               <View style={cardStyle.row}>
                 <Icon name="phone-alt" size={13} color={YoColors.primary} />
-                <Text style={cardStyle.subTitle}>{item?.phone}</Text>
+                <Text style={common.rText}> {item?.phone}</Text>
               </View>
             )}
           </View>
@@ -162,7 +179,7 @@ const OpenBatchDetails = ({ route }: any) => {
                 }}
               >
                 <Ionicons name="checkmark-circle" size={14} color={"green"} />
-                <Text style={cardStyle.subTitle}>Accept</Text>
+                <Text style={common.rText}> Accept</Text>
               </Pressable>
               <Pressable
                 style={cardStyle.row}
@@ -172,13 +189,13 @@ const OpenBatchDetails = ({ route }: any) => {
                 }}
               >
                 <Icon name="times" size={14} color={"red"} />
-                <Text style={cardStyle.subTitle}>Reject</Text>
+                <Text style={common.rText}> Reject</Text>
               </Pressable>
             </>
           )}
 
           {item?.enrollmentstatus !== 1 && (
-            <Text style={cardStyle.subTitle}>{item?.enrollmentStatus}</Text>
+            <Text style={common.rText}>{item?.enrollmentStatus}</Text>
           )}
         </View>
         {/* </View> */}
@@ -196,6 +213,7 @@ const OpenBatchDetails = ({ route }: any) => {
             style={{ height: "85.5%" }}
             keyExtractor={(item: any) => item?.id}
             renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl
                 refreshing={refreshLoader}
