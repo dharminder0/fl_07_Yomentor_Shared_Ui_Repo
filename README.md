@@ -80,17 +80,18 @@ To learn more about React Native, take a look at the following resources:
 
 --------- ********** -----
 
-Debug APK Build
+Debug/Release APK/AAB Build
 
 node v - 18
-
-java - 17  ====>>> cmd - jabba use openjdk@1.17.0
-
-path --> android->app->build->output
+java - 17
+Jabba cmd - jabba use openjdk@1.17.0
 
 cd android
 ./gradlew clean
+
+--apk
 ./gradlew assembleRelease
 
 -- aab 
+change version and comment debug line before release in -  app>build.gradle
 ./gradlew bundleRelease
