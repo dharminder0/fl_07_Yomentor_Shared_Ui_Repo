@@ -4,6 +4,14 @@ export async function getGradeList(): Promise<any> {
   return AxiosInterceptor.get("Grade/list");
 }
 
+export async function addMediaImage(payload: any): Promise<any> {
+  return AxiosInterceptor.post("MediaFile/addMediaImage", payload);
+}
+
+export async function deleteMediaFile(payload: any): Promise<any> {
+  return AxiosInterceptor.post("MediaFile/DeleteMediaFile", payload);
+}
+
 export async function getUsersList(payload: any): Promise<any> {
   return AxiosInterceptor.post("User/UserSearch", payload);
 }

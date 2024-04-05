@@ -56,6 +56,7 @@ export const common = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
   },
   input: {
     height: 45,

@@ -30,7 +30,7 @@ const DrawerSidebar = () => {
 
   const goToProfilePage = () => {
     navigation.navigate("UserProfile");
-  }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: YoColors.white }}>
       <View
@@ -41,77 +41,64 @@ const DrawerSidebar = () => {
           backgroundColor: YoColors.primary,
         }}
       >
+        <View style={common.row}>
+          <View style={{ width: 70 }}>
+            {!userInfo.image ? (
+              <Image
+                source={image.DefaultUser}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                }}
+              />
+            ) : (
+              <Image
+                source={{ uri: userInfo.image }}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                }}
+              />
+            )}
+          </View>
+          <View style={{ width: width - 205 }}>
+            <Text
+              style={[common.h2Title, { color: YoColors.white }]}
+              numberOfLines={1}
+            >
+              {userInfo?.firstname + " " + userInfo?.lastname}
+            </Text>
+            {userInfo?.email && (
+              <Text
+                style={[common.title, { color: YoColors.white }]}
+                numberOfLines={1}
+              >
+                {userInfo?.email}
+              </Text>
+            )}
+            {userInfo?.phone && (
+              <View style={common.row}>
+                <MaterialCommunityIcons
+                  name="phone"
+                  size={13}
+                  color={YoColors.white}
+                />
+                <Text style={[common.title, { color: YoColors.white }]}>
+                  {" "}
+                  {userInfo?.phone}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
         <TouchableOpacity
+          style={common.mtop10}
           activeOpacity={0.7}
           onPress={() => goToProfilePage()}
         >
-          <View style={common.row}>
-            <View style={{ width: 70 }}>
-              {!userInfo.image ? (
-                <Image
-                  source={image.DefaultUser}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 30,
-                  }}
-                />
-              ) : (
-                <Image
-                  source={{ uri: userInfo.image }}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 30,
-                  }}
-                />
-              )}
-            </View>
-            <View style={{ width: width - 205 }}>
-              <Text
-                style={[common.h2Title, { color: YoColors.white }]}
-                numberOfLines={1}
-              >
-                {userInfo?.firstname + " " + userInfo?.lastname}
-              </Text>
-              {userInfo?.email && (
-                <Text
-                  style={[common.title, { color: YoColors.white }]}
-                  numberOfLines={1}
-                >
-                  {userInfo?.email}
-                </Text>
-              )}
-              {userInfo?.phone && (
-                <View style={common.row}>
-                  <MaterialCommunityIcons
-                    name="phone"
-                    size={13}
-                    color={YoColors.white}
-                  />
-                  <Text style={[common.title, { color: YoColors.white }]}>
-                    {" "}
-                    {userInfo?.phone}
-                  </Text>
-                </View>
-              )}
-              {/* {userInfo?.address && (
-              <View style={[common.row, { alignItems: "flex-start" }]}>
-                <Ionicons
-                  name="location-sharp"
-                  size={12}
-                  color={YoColors.white}
-                />
-                <Text
-                  style={[common.rText, { color: YoColors.white }]}
-                  numberOfLines={2}
-                >
-                  {userInfo?.address}
-                </Text>
-              </View>
-            )} */}
-            </View>
-          </View>
+          <Text style={{ color: "#fff" }}>View Profile</Text>
         </TouchableOpacity>
       </View>
 

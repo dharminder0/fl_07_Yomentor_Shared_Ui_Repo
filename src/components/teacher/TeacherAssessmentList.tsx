@@ -37,7 +37,6 @@ const TeacherAssessmentList = () => {
       setAssessmentList([]);
       if (result.data && result.data?.length > 0) {
         setAssessmentList(result.data);
-        console.log(result.data);
       }
       setTimeout(() => {
         setIsLoading(false);

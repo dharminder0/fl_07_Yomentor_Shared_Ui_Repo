@@ -41,7 +41,6 @@ const AssesmentDetails = ({ route }: any) => {
     getAssessmentDetailsById(assessmentInfo.id)
       .then((response: any) => {
         setAssessmentDetails({});
-        console.log(response.data);
         if (response.data && response.data.length > 0) {
           setAssessmentDetails(response.data[0]);
         }

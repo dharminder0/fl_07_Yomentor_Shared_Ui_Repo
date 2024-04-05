@@ -1,42 +1,26 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StudentList from "../components/batch/students/StudentList";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
 import OpenBatchDetails from "../components/OpenBatchDetails";
 import DrawerNavigation from "./DrawerNavigation";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import BatchDetailTab from "../components/BatchDetailTab";
 import AddStudentAttendence from "../components/batch/students/AddStudentAttendence";
-import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
-import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
 import AssignmentDetails from "../components/batch/assignments/AssignmentDetails";
 import AssesmentDetails from "../components/batch/assessments/AssesmentDetails";
-import TeachersList from "../components/TeachersList";
 import UserDetails from "../components/UserDetails";
 import Reviews from "../components/Reviews";
-import { BottomNavigation } from "./BottomNavigation";
 import UserProfile from "../components/profile/UserProfile";
 
 const Stack = createNativeStackNavigator();
-const YoColors = useThemeColor();
 
 export function StackNavigator() {
-  const navigation: any = useNavigation();
-  const leftBackButton = () => {
-    <MaterialCommunityIcons
-      name="arrow-left"
-      size={23}
-      color={"#fff"}
-      onPress={() => navigation.goBack()}
-    />;
-  };
-
-  const openDrawerScreen = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
+  const YoColors = useThemeColor();
 
   return (
-    <Stack.Navigator initialRouteName="">
+    <Stack.Navigator
+      initialRouteName=""
+      screenOptions={{ headerTitleAlign: "center", headerTintColor: "#fff" }}
+    >
       <Stack.Screen
         name="DrawerNavigation"
         component={DrawerNavigation}
@@ -90,32 +74,12 @@ export function StackNavigator() {
         name="UserProfile"
         component={UserProfile}
         options={{
-          headerShown: false,
-          title: "UserProfile",
+          headerShown: true,
+          title: "My Profile",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
       />
-      {/* <Stack.Screen
-        name="TeacherAssessmentList"
-        component={TeacherAssessmentList}
-        options={{
-          headerShown: false,
-          title: "TeacherAssessmentList",
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
-      />
-      <Stack.Screen
-        name="TeacherAssignmentList"
-        component={TeacherAssignmentList}
-        options={{
-          headerShown: false,
-          title: "TeacherAssignmentList",
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
-      /> */}
       <Stack.Screen
         name="AssignmentDetails"
         component={AssignmentDetails}
@@ -136,16 +100,6 @@ export function StackNavigator() {
           headerTitleStyle: { color: "#fff" },
         }}
       />
-      {/* <Stack.Screen
-        name="TeachersList"
-        component={TeachersList}
-        options={{
-          headerShown: false,
-          title: "TeachersList",
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
-      /> */}
       <Stack.Screen
         name="UserDetails"
         component={UserDetails}

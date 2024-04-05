@@ -18,7 +18,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
         {
           backgroundColor: YoColors.primary,
           alignItems: "center",
-          paddingHorizontal: 17,
+          paddingHorizontal: 15,
           marginBottom: 5,
         },
       ]}
@@ -28,6 +28,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
           name="arrow-left"
           size={25}
           color={"#fff"}
+          style={{ borderRadius: 15 }}
           onPress={() => navigation.goBack()}
         />
       )}
@@ -44,7 +45,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
           color: "#fff",
           fontSize: 19,
           marginVertical: 10,
-          fontWeight: "600",
+          fontWeight: "500",
           textAlign: "center",
           width: "86%",
         }}
