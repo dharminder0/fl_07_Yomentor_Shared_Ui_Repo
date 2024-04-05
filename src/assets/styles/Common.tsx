@@ -72,6 +72,10 @@ export const common = StyleSheet.create({
     fontSize: 10,
     marginBottom: 5,
   },
+  highLight: {
+    borderColor: '#124076',
+    borderWidth: 1,
+  },
   mtop10: { marginTop: 10 },
   mb5: { marginBottom: 5 },
   mb10: { marginBottom: 10 },

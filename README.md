@@ -77,3 +77,24 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+
+### apk build command 
+
+./gradlew clean 
+./gradlew assembleRelease 
+
+
+### aab build command 
+
+./gradlew clean 
+./gradlew bundleRelease
+
+
+node version ====> 18.14.1
+java version ====> 17
+
+apk/aab file path ==> android>app>build>output
+
+Note :- comment bundle key store from build gradlew under the android>app to make aab release file

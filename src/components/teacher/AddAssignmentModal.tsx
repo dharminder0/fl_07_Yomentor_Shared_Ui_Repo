@@ -107,7 +107,6 @@ const AddAssignmentModal = ({
     setIsProcessLoader(true);
     let payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
-
     upsertAssignments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -229,38 +228,45 @@ const AddAssignmentModal = ({
                   />
                 )}
               />
-              <View style={cardStyle.j_row}>
-                <View style={{ width: "48%" }}>
-                  <SelectModal
-                    data={classList}
-                    placeholder="Class"
-                    onChanged={(value: any) => {
-                      setValue("gradeId", value?.id);
-                      setGradeId(value?.id);
-                    }}
-                    defaultValue={
-                      dataToEdit.gradeId
-                        ? { id: dataToEdit.gradeId, name: dataToEdit.gradeName }
-                        : null
-                    }
-                  />
+              {!batchId && (
+                <View style={cardStyle.j_row}>
+                  <View style={{ width: "48%" }}>
+                    <SelectModal
+                      data={classList}
+                      placeholder="Class"
+                      onChanged={(value: any) => {
+                        setValue("gradeId", value?.id);
+                        setGradeId(value?.id);
+                      }}
+                      defaultValue={
+                        dataToEdit.gradeId
+                          ? {
+                              id: dataToEdit.gradeId,
+                              name: dataToEdit.gradeName,
+                            }
+                          : null
+                      }
+                    />
+                  </View>
+                  <View style={{ width: "48%" }}>
+                    <SelectModal
+                      data={subjectList}
+                      placeholder="Subject"
+                      onChanged={(value: any) =>
+                        setValue("subjectId", value?.id)
+                      }
+                      defaultValue={
+                        dataToEdit.subjectId
+                          ? {
+                              id: dataToEdit.subjectId,
+                              name: dataToEdit.subjectName,
+                            }
+                          : null
+                      }
+                    />
+                  </View>
                 </View>
-                <View style={{ width: "48%" }}>
-                  <SelectModal
-                    data={subjectList}
-                    placeholder="Subject"
-                    onChanged={(value: any) => setValue("subjectId", value?.id)}
-                    defaultValue={
-                      dataToEdit.subjectId
-                        ? {
-                            id: dataToEdit.subjectId,
-                            name: dataToEdit.subjectName,
-                          }
-                        : null
-                    }
-                  />
-                </View>
-              </View>
+              )}
 
               <View>
                 <FileUploadModal
