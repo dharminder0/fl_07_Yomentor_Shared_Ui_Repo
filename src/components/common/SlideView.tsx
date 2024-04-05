@@ -10,7 +10,7 @@ import { Card } from "@rneui/base";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const YoColors = useThemeColor();
+
 const SlideView = ({
   title = "",
   viewTo = "",
@@ -20,6 +20,7 @@ const SlideView = ({
   height = 160,
 }: any) => {
   const navigation: any = useNavigation();
+  const YoColors = useThemeColor();
 
   const gotoBatchDetail = (item: any) => {
     if (item?.statusId === 2) {
@@ -191,6 +192,6 @@ const styles = StyleSheet.create({
   },
   activeDotStyle: {
     top: 20,
-    backgroundColor: YoColors.primary,
+    backgroundColor: '#124076',
   },
 });

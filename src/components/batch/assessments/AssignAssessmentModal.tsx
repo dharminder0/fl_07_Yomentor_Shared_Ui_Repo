@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   VirtualizedList,
 } from "react-native";
@@ -21,6 +22,8 @@ import { btnStyle, cardStyle, common } from "../../../assets/styles/Common";
 import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { useToast } from "react-native-toast-notifications";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import moment from "moment";
+import { Card } from "@rneui/base";
 
 const AssignAssessmentModal = ({
   userId = "",
@@ -38,8 +41,7 @@ const AssignAssessmentModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [assignmentList, setAssignmentList] = useState<any>([]);
-  const [selectedIds, setSelectedIds] = useState<any>([]);
-  const [checkedStates, setCheckedStates] = useState<any>({});
+  const [selectedId, setSelectedId] = useState<number>(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
@@ -48,6 +50,10 @@ const AssignAssessmentModal = ({
   useEffect(() => {
     getAssignmentList();
   }, []);
+
+  useEffect(() => {
+    setSelectedId(0);
+  }, [isModalVisible]);
 
   const getAssignmentList = () => {
     const payload: any = {
@@ -70,46 +76,69 @@ const AssignAssessmentModal = ({
   };
 
   const onSubmit = () => {
-    if (selectedIds && selectedIds?.length > 0) {
-      getAssignStudentAssessments({
-        batchId: batchInfo?.id,
-        assessmentId: selectedIds[0],
-        status: 1,
-      }).then((res: any) => {
+    const payload: any = {
+      batchId: batchInfo?.id,
+      assessmentId: selectedId,
+      status: 1,
+    };
+    getAssignStudentAssessments(payload)
+      .then((res: any) => {
         if (res.data && res.data.response) {
-          toast.show("Assessment Assigned successfully", {
+          toast.show("Assessment has been successfully assigned.", {
             type: "success",
             duration: 2000,
+            placement: "top",
           });
           onClose();
         }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        toast.show("Assessment has failed to be assigned successfully.", {
+          type: "danger",
+          duration: 2000,
+          placement: "top",
+        });
       });
-    }
-  };
-
-  const handleCheckboxChange = (checkbox: any) => {
-    setCheckedStates((prevCheckedStates: any) => ({
-      ...prevCheckedStates,
-      [checkbox?.id]: !prevCheckedStates[checkbox?.id], // Toggle checked state
-    }));
-    setSelectedIds((prevId: any) => {
-      const index = prevId.indexOf(checkbox?.id);
-      return index !== -1
-        ? prevId.slice(0, index).concat(prevId.slice(index + 1))
-        : [...prevId, checkbox?.id];
-    });
   };
 
   const renderItem = ({ item }: any) => (
-    <View>
-      <CheckBox
-        key={item?.id}
-        // id={item?.id}
-        title={item?.title}
-        checked={checkedStates[item?.id]}
-        checkedColor={YoColors.primary}
-        onPress={() => handleCheckboxChange(item)}
-      />
+    <View style={common.p5}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => setSelectedId(item.id)}
+      >
+        <Card
+          containerStyle={[
+            cardStyle.container,
+            selectedId === item.id && common.highLight,
+          ]}
+        >
+          <View style={[cardStyle.j_row, { margin: 0 }]}>
+            <Text numberOfLines={2} style={[common.title, { width: "72%" }]}>
+              {item?.title}
+            </Text>
+            <Text style={{ fontSize: 12 }}>
+              {moment(item?.createdate).format("MMM DD, YYYY")}
+            </Text>
+          </View>
+          <View style={[cardStyle.row, { marginBottom: 5 }]}>
+            <View style={[cardStyle.row, { marginEnd: 15 }]}>
+              <Icon name="laptop" size={12} />
+              <Text style={common.rText}> {item.gradeName}</Text>
+            </View>
+            <View style={[cardStyle.row, { marginEnd: 10 }]}>
+              <Icon name="book" size={12} />
+              <Text style={common.rText}> {item.subjectName}</Text>
+            </View>
+          </View>
+          {item?.description && (
+            <Text style={{ marginBottom: 5, fontSize: 12 }} numberOfLines={2}>
+              {item?.description}
+            </Text>
+          )}
+        </Card>
+      </TouchableOpacity>
     </View>
   );
 
@@ -131,7 +160,7 @@ const AssignAssessmentModal = ({
         <View
           style={{
             backgroundColor: "#fff",
-            height: height - 50,
+            height: height - 30,
             minHeight: 150,
           }}
         >
@@ -167,6 +196,7 @@ const AssignAssessmentModal = ({
             <Button
               title="Assign to batch"
               buttonStyle={{ backgroundColor: YoColors.primary }}
+              disabled={selectedId <= 0}
               onPress={onSubmit}
             />
           </View>
