@@ -1,1 +1,18 @@
---demeo
+apk build command 
+
+./gradlew clean 
+./gradlew assembleRelease 
+
+
+aab build command 
+
+./gradlew clean 
+./gradlew bundleRelease
+
+
+node version ====> 18.14.1
+java version ====> 17
+
+apk/aab file path ==> android>app>build>output
+
+Note :- comment bundle key store from build gradlew under the android>app to make aab release file
