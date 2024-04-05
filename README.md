@@ -67,8 +67,8 @@ You've successfully run and modified your React Native App. :partying_face:
 # Troubleshooting
 
 If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
 # Learn More
+
 
 To learn more about React Native, take a look at the following resources:
 
@@ -77,3 +77,20 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+--------- ********** -----
+
+Debug APK Build
+
+node v - 18
+
+java - 17  ====>>> cmd - jabba use openjdk@1.17.0
+
+path --> android->app->build->output
+
+cd android
+./gradlew clean
+./gradlew assembleRelease
+
+-- aab 
+./gradlew bundleRelease
