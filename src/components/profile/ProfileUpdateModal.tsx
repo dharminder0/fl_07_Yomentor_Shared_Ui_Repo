@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -15,63 +16,85 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import { addBatch } from "../../apiconfig/SharedApis";
 import ProcessLoader from "../../screens/ProcessLoader";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PopupModal from "../common/PopupModal";
+import SelectModal from "../common/SelectModal";
+import DatePicker from "react-native-date-picker";
+import moment from "moment";
+import { upsertProfileInfo } from "../../apiconfig/SharedApis";
 
 const ProfileUpdateModal = ({
-  userId = "",
-  onClose = () => {},
-  setModalVisible = (value: any) => {},
-  isModalVisible = false,
+  isBasicModal = false,
+  setIsBasicModal = (value: any) => {},
+  dataToEdit = {},
 }) => {
   const YoColors = useThemeColor();
 
   const { height, width } = Dimensions.get("window");
-
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
-
-  const { isPopupModal, setIsPopupModal }: any = useStore();
+  const [dataToPreset, setDataToPreset]: any = useState(dataToEdit);
 
   const {
     control,
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
   const toggleModal = () => {
-    setModalVisible(!isModalVisible); // Toggle the modal visibility state
+    setIsBasicModal(!isBasicModal);
     reset();
   };
 
   useEffect(() => {
-    setValue("teacherId", userId);
+    reset({
+      id: dataToPreset.id,
+      teacherId: dataToPreset.teacherProfile?.teacherId,
+      about: dataToPreset.teacherProfile?.about,
+      education: dataToPreset.teacherProfile?.education,
+      experience: dataToPreset.teacherProfile?.experience,
+    });
   }, []);
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    addBatch(data).then((response: any) => {
-      if (response.data && response.data?.response) {
-        setIsPopupModalVisible(true);
-        onClose();
-        setIsPopupModal(true);
-        reset();
-      }
-      setTimeout(() => {
-        setIsPopupModalVisible(false);
-        setIsPopupModal(false);
-        setIsProcessLoader(false);
-      }, 500);
-    });
+    const payload: any = {
+      id: data.id,
+      teacherId: data.teacherId,
+      about: data.about,
+      education: data.education,
+      experience: data.experience,
+    };
+    console.log(payload);
+    upsertProfileInfo(payload)
+      .then((response: any) => {
+        console.log(response.data);
+        if (response.data && response.data.success) {
+          setIsPopupModalVisible(true);
+          toggleModal();
+        }
+        setTimeout(() => {
+          setIsPopupModalVisible(false);
+          setIsProcessLoader(false);
+        }, 500);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setTimeout(() => {
+          setIsProcessLoader(false);
+          setIsPopupModalVisible(true);
+        }, 500);
+        console.error("Error fetching :", error);
+      });
   };
 
   return (
     <Modal
-      isVisible={isModalVisible}
+      isVisible={isBasicModal}
       onBackButtonPress={toggleModal}
       onBackdropPress={toggleModal}
       onSwipeComplete={toggleModal}
@@ -80,7 +103,7 @@ const ProfileUpdateModal = ({
     >
       {isPopupModalVisible && (
         <PopupModal
-          message="Batch Created Successful"
+          message="The profile information has been successfully updated."
           icon={"checkmark-circle"}
           color={"green"}
           iconSize={40}
@@ -102,7 +125,7 @@ const ProfileUpdateModal = ({
             <View
               style={[cardStyle.j_row, { padding: 12, alignItems: "center" }]}
             >
-              <Text style={common.h3Title}>Update Profile</Text>
+              <Text style={common.h3Title}>Update Professional Info</Text>
               <Button
                 onPress={toggleModal}
                 icon={
@@ -124,60 +147,16 @@ const ProfileUpdateModal = ({
             <View style={{ paddingHorizontal: 12 }}>
               <Controller
                 control={control}
-                name="education"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        minHeight: 95,
-                        textAlignVertical: "top",
-                        borderColor: errors.education ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Education"
-                    multiline
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="experience"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: errors.experience ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Year of Experience"
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
                 name="about"
-                rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
                     style={[
                       styles.input,
                       {
-                        minHeight: 95,
+                        height: 75,
                         textAlignVertical: "top",
-                        borderColor: errors.about ? "red" : "#ccc",
+                        borderColor: "#ccc",
                       },
                     ]}
                     placeholderTextColor={YoColors.placeholderText}
@@ -187,12 +166,55 @@ const ProfileUpdateModal = ({
                   />
                 )}
               />
+              <Controller
+                control={control}
+                name="education"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: "#ccc",
+                      },
+                    ]}
+                    placeholderTextColor={YoColors.placeholderText}
+                    value={value}
+                    placeholder="Education"
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="experience"
+                render={({ field: { onChange, value } }) => (
+                  <View style={[cardStyle.row]}>
+                    <TextInput
+                      onChangeText={onChange}
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: "#ccc",
+                          width: 100,
+                        },
+                      ]}
+                      placeholderTextColor={YoColors.placeholderText}
+                      value={value}
+                      placeholder="Experience"
+                      keyboardType="numeric"
+                      maxLength={2}
+                    />
+                    <Text style={{ marginLeft: 10 }}>Years of experience</Text>
+                  </View>
+                )}
+              />
 
-              <View style={{ marginTop: 30 }}>
+              <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
-                  title="Update Profile"
+                  title="Update"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
+                  containerStyle={{ width: 180 }}
                 />
               </View>
             </View>

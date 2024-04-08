@@ -262,22 +262,23 @@ const UserDetails = ({ route }: { route: any }) => {
                   )}
                 </View>
 
-                {userDetailList?.education && (
+                {userDetailList?.teacherProfile?.education && (
                   <View style={[cardStyle.row, common.mb5]}>
                     <Icon name="user-graduate" size={12} />
                     <Text style={common.rText} numberOfLines={2}>
                       {" "}
-                      {userDetailList?.education}
+                      {userDetailList?.teacherProfile?.education}
                     </Text>
                   </View>
                 )}
 
-                {userDetailList?.experience && (
+                {userDetailList?.teacherProfile?.experience && (
                   <View style={[cardStyle.row, common.mb5]}>
                     <Icon name="info-circle" size={12} />
                     <Text style={common.rText} numberOfLines={2}>
                       {" "}
-                      {userDetailList?.experience + " years of experience"}
+                      {userDetailList?.teacherProfile?.experience +
+                        " years of experience"}
                     </Text>
                   </View>
                 )}
@@ -300,18 +301,27 @@ const UserDetails = ({ route }: { route: any }) => {
               </View>
             </View>
             <View style={common.my10}>
-              {userDetailList?.about && (
+              {userDetailList?.teacherProfile?.about && (
                 <Text style={[common.rText, { textAlign: "justify" }]}>
-                  {userDetailList?.about}
+                  {userDetailList?.teacherProfile?.about}
                 </Text>
               )}
 
-              {userDetailList?.address && (
+              {userDetailList?.userAddress?.address1 && (
                 <View style={[common.mtop10, common.row]}>
                   <Ionicons name="location-sharp" size={12} />
                   <Text style={[common.rText]} numberOfLines={2}>
                     {" "}
-                    {userDetailList?.address}
+                    {userDetailList?.userAddress?.address1}
+                  </Text>
+                </View>
+              )}
+              {userDetailList?.userAddress?.address2 && (
+                <View style={[common.mtop10, common.row]}>
+                  <Ionicons name="location-sharp" size={12} />
+                  <Text style={[common.rText]} numberOfLines={2}>
+                    {" "}
+                    {userDetailList?.userAddress?.address2}
                   </Text>
                 </View>
               )}

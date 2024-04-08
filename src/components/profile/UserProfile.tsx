@@ -136,7 +136,7 @@ const UserProfile = () => {
             <View>
               <View style={[cardStyle.j_row]}>
                 <Text style={[common.h1Title]}>
-                  {userDetails?.firstname + " " + userDetails?.lastname}
+                  {userDetails?.firstName + " " + userDetails?.lastName}
                 </Text>
                 <Button
                   onPress={() => setIsBasicModal(true)}
@@ -291,20 +291,31 @@ const UserProfile = () => {
         </>
       )}
 
-      <ProfileUpdateModal
+      {/* <ProfileUpdateModal
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
+
+      {isModalVisible && (
+        <ProfileUpdateModal
+          isBasicModal={isModalVisible}
+          setIsBasicModal={setModalVisible}
+          dataToEdit={userDetails}
+        />
+      )}
 
       <SpecialityModal
         isSpecilityModal={isSpecilityModal}
         setIsSpecilityModal={setIsSpecilityModal}
       />
 
-      <BasicInfoUpdateModal
-        isBasicModal={isBasicModal}
-        setIsBasicModal={setIsBasicModal}
-      />
+      {isBasicModal && (
+        <BasicInfoUpdateModal
+          isBasicModal={isBasicModal}
+          setIsBasicModal={setIsBasicModal}
+          dataToEdit={userDetails}
+        />
+      )}
     </ScrollView>
   );
 };

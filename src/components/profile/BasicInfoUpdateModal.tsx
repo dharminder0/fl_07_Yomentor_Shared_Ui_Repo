@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -15,16 +16,22 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import { addBatch } from "../../apiconfig/SharedApis";
+import {
+  addBatch,
+  getGradeList,
+  upsertUserInfo,
+} from "../../apiconfig/SharedApis";
 import ProcessLoader from "../../screens/ProcessLoader";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PopupModal from "../common/PopupModal";
+import SelectModal from "../common/SelectModal";
+import DatePicker from "react-native-date-picker";
+import moment from "moment";
 
 const BasicInfoUpdateModal = ({
-  userId = "",
-  onClose = () => {},
-  setIsBasicModal = (value: any) => {},
   isBasicModal = false,
+  setIsBasicModal = (value: any) => {},
+  dataToEdit = {},
 }) => {
   const YoColors = useThemeColor();
 
@@ -32,14 +39,21 @@ const BasicInfoUpdateModal = ({
 
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
-
-  const { isPopupModal, setIsPopupModal }: any = useStore();
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [dataToPreset, setDataToPreset]: any = useState(dataToEdit);
+  const [gradeList, setGradeList]: any = useState([]);
+  const genderOptions = [
+    { name: "Male", id: "male" },
+    { name: "Female", id: "female" },
+    { name: "Other", id: "other" },
+  ];
 
   const {
     control,
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -49,24 +63,58 @@ const BasicInfoUpdateModal = ({
   };
 
   useEffect(() => {
-    setValue("teacherId", userId);
+    getGradeList().then((result: any) => {
+      setGradeList([]);
+      if (result.data && result.data.length > 0) {
+        setGradeList(result.data);
+      }
+    });
+
+    reset({
+      id: dataToPreset.id,
+      firstName: dataToPreset.firstName,
+      lastName: dataToPreset.lastName,
+      phone: dataToPreset.phone,
+      email: dataToPreset.email,
+      type: dataToPreset.type,
+      dateOfBirth: new Date(dataToPreset.dateOfBirth),
+    });
   }, []);
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    addBatch(data).then((response: any) => {
-      if (response.data && response.data?.response) {
-        setIsPopupModalVisible(true);
-        onClose();
-        setIsPopupModal(true);
-        reset();
-      }
-      setTimeout(() => {
-        setIsPopupModalVisible(false);
-        setIsPopupModal(false);
-        setIsProcessLoader(false);
-      }, 500);
-    });
+    const payload: any = {
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phone: data.phone,
+      email: data.email,
+      type: data.type,
+      dateOfBirth: data.dateOfBirth,
+      gender: data.gender,
+      gradeId: data.gradeId,
+    };
+    upsertUserInfo(payload)
+      .then((response: any) => {
+        if (
+          response.data &&
+          response.data?.message === "Update_Suucessfully."
+        ) {
+          setIsPopupModalVisible(true);
+          toggleModal();
+        }
+        setTimeout(() => {
+          setIsPopupModalVisible(false);
+          setIsProcessLoader(false);
+        }, 500);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsProcessLoader(false);
+          setIsPopupModalVisible(true);
+        }, 500);
+        console.error("Error fetching :", error);
+      });
   };
 
   return (
@@ -80,7 +128,7 @@ const BasicInfoUpdateModal = ({
     >
       {isPopupModalVisible && (
         <PopupModal
-          message="Batch Created Successful"
+          message="The user information has been successfully updated."
           icon={"checkmark-circle"}
           color={"green"}
           iconSize={40}
@@ -124,7 +172,7 @@ const BasicInfoUpdateModal = ({
             <View style={{ paddingHorizontal: 12 }}>
               <Controller
                 control={control}
-                name="education"
+                name="firstName"
                 rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -132,67 +180,138 @@ const BasicInfoUpdateModal = ({
                     style={[
                       styles.input,
                       {
-                        minHeight: 95,
-                        textAlignVertical: "top",
-                        borderColor: errors.education ? "red" : "#ccc",
+                        borderColor: errors.firstName ? "red" : "#ccc",
                       },
                     ]}
                     placeholderTextColor={YoColors.placeholderText}
                     value={value}
-                    placeholder="Education"
-                    multiline
+                    placeholder="First Name"
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="lastName"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: errors.lastName ? "red" : "#ccc",
+                      },
+                    ]}
+                    placeholderTextColor={YoColors.placeholderText}
+                    value={value}
+                    placeholder="Last Name"
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: "#ccc",
+                      },
+                    ]}
+                    placeholderTextColor={YoColors.placeholderText}
+                    value={value}
+                    placeholder="Email"
+                    keyboardType="email-address"
                   />
                 )}
               />
 
               <Controller
                 control={control}
-                name="experience"
-                rules={{ required: true }}
+                name="gender"
                 render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: errors.experience ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Year of Experience"
+                  <SelectModal
+                    data={genderOptions}
+                    placeholder="Gender"
+                    defaultValue={genderOptions.find(
+                      (item) => item.id === dataToPreset.gender
+                    )}
+                    onChanged={(values: any) => {
+                      setValue("gender", values?.id);
+                    }}
                   />
                 )}
               />
 
               <Controller
                 control={control}
-                name="about"
-                rules={{ required: true }}
+                name="gradeId"
                 render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        minHeight: 95,
-                        textAlignVertical: "top",
-                        borderColor: errors.about ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="About"
-                    multiline
+                  <SelectModal
+                    data={gradeList}
+                    placeholder="Grade"
+                    defaultValue={gradeList.find((item:any) => item.id === dataToPreset.studentGradeId
+                    )}
+                    onChanged={(values: any) => {
+                      setValue("gradeId", values?.id);
+                    }}
                   />
                 )}
               />
 
-              <View style={{ marginTop: 30 }}>
+              <Controller
+                control={control}
+                name="dateOfBirth"
+                render={({ field: { onChange, value } }) => (
+                  <View style={cardStyle.row}>
+                    <Pressable
+                      onPress={() => setIsCalendarOpen(true)}
+                      style={[
+                        styles.input,
+                        cardStyle.row,
+                        { justifyContent: "space-between" },
+                      ]}
+                    >
+                      <Text>
+                        {getValues().dateOfBirth
+                          ? moment(getValues().dateOfBirth).format("DD-MM-YYYY")
+                          : "Date of birth"}
+                      </Text>
+                      <Icon
+                        name="calendar"
+                        size={13}
+                        color={YoColors.secondary}
+                      />
+                    </Pressable>
+                  </View>
+                )}
+              />
+
+              {isCalendarOpen && (
+                <DatePicker
+                  modal
+                  open={isCalendarOpen}
+                  date={getValues().dateOfBirth ?? new Date()}
+                  mode="date"
+                  maximumDate={new Date()}
+                  onConfirm={(value) => {
+                    setIsCalendarOpen(false);
+                    setValue("dateOfBirth", moment(value).format("YYYY-MM-DD"));
+                  }}
+                  onCancel={() => {
+                    setIsCalendarOpen(false);
+                  }}
+                />
+              )}
+
+              <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
-                  title="Update Personal Info"
+                  title="Update"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
+                  containerStyle={{ width: 180 }}
                 />
               </View>
             </View>
