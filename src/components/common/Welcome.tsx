@@ -18,46 +18,75 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
         alignItems: "center",
         justifyContent: "center",
         padding: 12,
+        backgroundColor: "#fff",
+        marginVertical: 20,
+        borderRadius: 6,
       }}
     >
-      <Image
-        source={image.icon}
-        style={{ height: 65, width: 100, marginBottom: 30 }}
-      />
-      <Text style={[common.h1Title, { marginVertical: 20 }]}>
-        Welcome to Yo!Mentor
-      </Text>
+      <Text style={[common.h1Title]}>Welcome to Yo!Mentor</Text>
 
       {userType === 3 && (
         <>
-          <Text style={[common.h3Title, { marginVertical: 15 }]}>
-            How does it work:{" "}
-          </Text>
-
           <Text style={[common.mb10]}>
             You have not joined any batches yet. You can find a suitable batch
             and request to join.
           </Text>
 
-          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
-            <Icon name="check" size={13} style={{ marginTop: 4 }} />
-            <Text style={{ paddingStart: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%",
+              marginVertical: 5,
+            }}
+          >
+            <Icon
+              name="check"
+              size={13}
+              style={{ position: "absolute", left: 0, top: 2 }}
+            />
+            <Text style={{ paddingLeft: 20 }}>
               Find a teacher as per your tuition needs, view the teacher
               profile, and read the feedback given by other students.
             </Text>
           </View>
 
-          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
-            <Icon name="check" size={13} style={{ marginTop: 4 }} />
-            <Text style={{ paddingStart: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%",
+              marginVertical: 5,
+            }}
+          >
+            <Icon
+              name="check"
+              size={13}
+              style={{ position: "absolute", left: 0, top: 2 }}
+            />
+            <Text style={{ paddingLeft: 20 }}>
               Shortlist the batches of your interest and discuss your tuition
               needs and fee details with the teacher.
             </Text>
           </View>
 
-          <View style={[common.row, common.mb5, { alignItems: "flex-start" }]}>
-            <Icon name="check" size={13} style={{ marginTop: 4 }} />
-            <Text style={{ paddingStart: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%",
+              marginVertical: 5,
+            }}
+          >
+            <Icon
+              name="check"
+              size={13}
+              style={{ position: "absolute", left: 0, top: 2 }}
+            />
+            <Text style={{ paddingLeft: 20 }}>
               Finally, enroll in the batch and keep going to excel in the
               subject.
             </Text>
@@ -78,37 +107,94 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
 
       {userType === 1 && (
         <>
-          <Text>
+          <Text style={[common.mb10]}>
             You don't have any active batches. Create your first batch to
             establish your presence on our platform.{" "}
           </Text>
-          <Text style={[common.h3Title, { marginVertical: 15 }]}>
+          {/* <Text style={[common.h3Title, { marginVertical: 15 }]}>
             How does it work:{" "}
-          </Text>
+          </Text> */}
 
           <View>
-            <View style={[common.row, { alignItems: "flex-start" }]}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                width: "100%",
+                marginVertical: 5,
+              }}
+            >
+              <Icon
+                name="check"
+                size={13}
+                style={{ position: "absolute", left: 0, top: 2 }}
+              />
+              <Text style={{ paddingLeft: 20 }}>
+                Students/Parents can find the best batch as per their needs and
+                enroll themselves in your batch.
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                width: "100%",
+                marginVertical: 5,
+              }}
+            >
+              <Icon
+                name="check"
+                size={13}
+                style={{ position: "absolute", left: 0, top: 2 }}
+              />
+              <Text style={{ paddingLeft: 20 }}>
+                For your batch, you can manage student, attendance, assignments,
+                assessments, and more.
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                width: "100%",
+                marginVertical: 5,
+              }}
+            >
+              <Icon
+                name="check"
+                size={13}
+                style={{ position: "absolute", left: 0, top: 2 }}
+              />
+              <Text style={{ paddingLeft: 20 }}>
+                Parents can monitor the daily progress of their children
+              </Text>
+            </View>
+
+            {/* <View style={[common.row, { alignItems: "flex-start" }]}>
               <Icon name="check" size={13} style={{ marginTop: 4 }} />
               <Text style={{ paddingStart: 5 }}>
                 Students/Parents can find the best batch as per their needs and
                 enroll themselves in your batch.
               </Text>
-            </View>
+            </View> */}
 
-            <View style={[common.row, { alignItems: "flex-start" }]}>
+            {/* <View style={[common.row, { alignItems: "flex-start" }]}>
               <Icon name="check" size={13} style={{ marginTop: 4 }} />
               <Text style={{ paddingStart: 5 }}>
                 For your batch, you can manage student, attendance, assignments,
                 assessments, and more.
               </Text>
-            </View>
-
+            </View> */}
+            {/* 
             <View style={[common.row, { alignItems: "flex-start" }]}>
               <Icon name="check" size={13} style={{ marginTop: 4 }} />
               <Text style={{ paddingStart: 5 }}>
                 Parents can monitor the daily progress of their children
               </Text>
-            </View>
+            </View> */}
           </View>
           <Button
             title="Create Your First Batch"

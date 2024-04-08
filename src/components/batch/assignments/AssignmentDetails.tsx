@@ -98,19 +98,21 @@ const AssignmentDetails = ({ route }: any) => {
               <View style={[cardStyle.j_row, { margin: 0 }]}>
                 <Text style={common.title}>{assignmentDetails?.title}</Text>
                 <View style={common.row}>
-                  <Button
-                    onPress={() => setModalVisible(true)}
-                    icon={
-                      <FontAwesomeIcon
-                        name="pencil-alt"
-                        size={12}
-                        color={YoColors.primary}
-                        onPress={() => setModalVisible(true)}
-                      />
-                    }
-                    buttonStyle={[btnStyle.btnEdit]}
-                    containerStyle={{ padding: 0 }}
-                  />
+                  {userInfo.type === 1 && (
+                    <Button
+                      onPress={() => setModalVisible(true)}
+                      icon={
+                        <FontAwesomeIcon
+                          name="pencil-alt"
+                          size={12}
+                          color={YoColors.primary}
+                          onPress={() => setModalVisible(true)}
+                        />
+                      }
+                      buttonStyle={[btnStyle.btnEdit]}
+                      containerStyle={{ padding: 0 }}
+                    />
+                  )}
                   <Text style={[common.rText, common.ph10]}>
                     {moment(assignmentDetails?.createdate).format(
                       "MMM DD, YYYY"

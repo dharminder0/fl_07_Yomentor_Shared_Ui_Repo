@@ -161,3 +161,11 @@ export async function uploadFileToBlob(
     fileData
   );
 }
+
+export async function upsertUserInfo(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`User/Upsert`, payload);
+}
+
+export async function upsertProfileInfo(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`User/ProfileUpsert`, payload);
+}

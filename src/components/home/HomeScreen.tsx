@@ -199,9 +199,9 @@ const HomeScreen = () => {
             ongoingBatchList?.length === 0 &&
             userInfo?.type === 1 && (
               <View
-                style={{
-                  height: Platform.OS === "ios" ? height - 185 : height - 135,
-                }}
+                // style={{
+                //   height: Platform.OS === "ios" ? height - 185 : height - 135,
+                // }}
               >
                 <Welcome
                   userType={userInfo?.type}
@@ -215,9 +215,9 @@ const HomeScreen = () => {
             shortlisted?.length === 0 &&
             userInfo?.type === 3 && (
               <View
-                style={{
-                  height: Platform.OS === "ios" ? height - 185 : height - 135,
-                }}
+                // style={{
+                //   height: Platform.OS === "ios" ? height - 185 : height - 135,
+                // }}
               >
                 <Welcome
                   userType={userInfo?.type}
