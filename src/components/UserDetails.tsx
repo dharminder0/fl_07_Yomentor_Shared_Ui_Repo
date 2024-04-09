@@ -231,7 +231,7 @@ const UserDetails = ({ route }: { route: any }) => {
               >
                 <View style={[cardStyle.j_row]}>
                   <Text style={[common.h3Title]}>
-                    {userDetailList?.firstname + " " + userDetailList?.lastname}
+                    {userDetailList?.firstName + " " + userDetailList?.lastName}
                   </Text>
 
                   {userDetailList?.averageRating > 0 && (

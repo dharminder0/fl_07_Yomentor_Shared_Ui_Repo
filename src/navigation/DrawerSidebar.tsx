@@ -68,7 +68,7 @@ const DrawerSidebar = () => {
               style={[common.h2Title, { color: YoColors.white }]}
               numberOfLines={1}
             >
-              {userInfo?.firstname + " " + userInfo?.lastname}
+              {userInfo?.firstName + " " + userInfo?.lastName}
             </Text>
             {userInfo?.email && (
               <Text

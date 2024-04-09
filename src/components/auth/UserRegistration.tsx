@@ -97,7 +97,7 @@ const UserRegistration = ({ route }: any) => {
           </Text>
           <Controller
             control={control}
-            name="firstname"
+            name="firstName"
             rules={{ required: "First Name is required" }}
             render={({ field: { onChange, value } }) => (
               <>
@@ -108,14 +108,14 @@ const UserRegistration = ({ route }: any) => {
                   style={[
                     common.input,
                     {
-                      borderColor: errors.firstname ? "red" : "#ccc",
+                      borderColor: errors.firstName ? "red" : "#ccc",
                     },
                   ]}
                   placeholderTextColor={YoColors.placeholderText}
                 />
-                {errors.firstname && (
+                {errors.firstName && (
                   <Text style={common.errorText}>
-                    {errors.firstname.message}
+                    {errors.firstName.message}
                   </Text>
                 )}
               </>
@@ -123,7 +123,7 @@ const UserRegistration = ({ route }: any) => {
           />
           <Controller
             control={control}
-            name="lastname"
+            name="lastName"
             render={({ field: { onChange, value } }) => (
               <TextInput
                 onChangeText={onChange}

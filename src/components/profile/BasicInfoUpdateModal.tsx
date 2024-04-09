@@ -27,10 +27,11 @@ import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
+import UserDetails from "../UserDetails";
 
 const BasicInfoUpdateModal = ({
   isBasicModal = false,
-  setIsBasicModal = (value: any) => {},
+  closeModal = (value: boolean) => {},
   dataToEdit = {},
 }) => {
   const YoColors = useThemeColor();
@@ -57,8 +58,8 @@ const BasicInfoUpdateModal = ({
     formState: { errors },
   } = useForm();
 
-  const toggleModal = () => {
-    setIsBasicModal(!isBasicModal); // Toggle the modal visibility state
+  const toggleModal = (isUpdated: boolean = false) => {
+    closeModal(isUpdated); // Toggle the modal visibility state
     reset();
   };
 
@@ -69,7 +70,7 @@ const BasicInfoUpdateModal = ({
         setGradeList(result.data);
       }
     });
-
+    
     reset({
       id: dataToPreset.id,
       firstName: dataToPreset.firstName,
@@ -101,7 +102,7 @@ const BasicInfoUpdateModal = ({
           response.data?.message === "Update_Suucessfully."
         ) {
           setIsPopupModalVisible(true);
-          toggleModal();
+          toggleModal(true);
         }
         setTimeout(() => {
           setIsPopupModalVisible(false);
@@ -120,9 +121,9 @@ const BasicInfoUpdateModal = ({
   return (
     <Modal
       isVisible={isBasicModal}
-      onBackButtonPress={toggleModal}
-      onBackdropPress={toggleModal}
-      onSwipeComplete={toggleModal}
+      onBackButtonPress={() => toggleModal(false)}
+      onBackdropPress={() => toggleModal(false)}
+      onSwipeComplete={() => toggleModal(false)}
       style={{ margin: 0, justifyContent: "flex-end" }}
       useNativeDriver
     >
@@ -134,7 +135,6 @@ const BasicInfoUpdateModal = ({
           iconSize={40}
         />
       )}
-      {isProcessLoader && <ProcessLoader />}
       <>
         <ScrollView
           style={{ maxHeight: height - 100 }}
@@ -152,7 +152,7 @@ const BasicInfoUpdateModal = ({
             >
               <Text style={common.h3Title}>Update Personal Info</Text>
               <Button
-                onPress={toggleModal}
+                onPress={() => toggleModal(false)}
                 icon={
                   <Ionicons
                     name="close-sharp"
@@ -245,21 +245,24 @@ const BasicInfoUpdateModal = ({
                 )}
               />
 
-              <Controller
-                control={control}
-                name="gradeId"
-                render={({ field: { onChange, value } }) => (
-                  <SelectModal
-                    data={gradeList}
-                    placeholder="Grade"
-                    defaultValue={gradeList.find((item:any) => item.id === dataToPreset.studentGradeId
-                    )}
-                    onChanged={(values: any) => {
-                      setValue("gradeId", values?.id);
-                    }}
-                  />
-                )}
-              />
+              {dataToPreset.type === 3 && (
+                <Controller
+                  control={control}
+                  name="gradeId"
+                  render={({ field: { onChange, value } }) => (
+                    <SelectModal
+                      data={gradeList}
+                      placeholder="Grade"
+                      defaultValue={gradeList.find(
+                        (item: any) => item.id === dataToPreset.studentGradeId
+                      )}
+                      onChanged={(values: any) => {
+                        setValue("gradeId", values?.id);
+                      }}
+                    />
+                  )}
+                />
+              )}
 
               <Controller
                 control={control}
@@ -309,6 +312,7 @@ const BasicInfoUpdateModal = ({
               <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
                   title="Update"
+                  loading={isProcessLoader}
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
                   containerStyle={{ width: 180 }}

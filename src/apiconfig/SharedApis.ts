@@ -12,6 +12,10 @@ export async function deleteMediaFile(payload: any): Promise<any> {
   return AxiosInterceptor.post("MediaFile/DeleteMediaFile", payload);
 }
 
+export async function deleteMediaFilev2(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`MediaFile/DeleteMediaFileV2?blobLink=${payload.bloblink}&entityId=${payload.entityId}&entityTypeId=${payload.entityTypeId}`, {});
+}
+
 export async function getUsersList(payload: any): Promise<any> {
   return AxiosInterceptor.post("User/UserSearch", payload);
 }

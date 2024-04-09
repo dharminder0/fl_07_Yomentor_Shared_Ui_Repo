@@ -26,7 +26,7 @@ import { upsertProfileInfo } from "../../apiconfig/SharedApis";
 
 const ProfileUpdateModal = ({
   isBasicModal = false,
-  setIsBasicModal = (value: any) => {},
+  closeModal = (value: boolean) => {},
   dataToEdit = {},
 }) => {
   const YoColors = useThemeColor();
@@ -45,8 +45,8 @@ const ProfileUpdateModal = ({
     formState: { errors },
   } = useForm();
 
-  const toggleModal = () => {
-    setIsBasicModal(!isBasicModal);
+  const toggleModal = (isUpdated: boolean = false) => {
+    closeModal(isUpdated); // Toggle the modal visibility state
     reset();
   };
 
@@ -69,13 +69,11 @@ const ProfileUpdateModal = ({
       education: data.education,
       experience: data.experience,
     };
-    console.log(payload);
     upsertProfileInfo(payload)
       .then((response: any) => {
-        console.log(response.data);
         if (response.data && response.data.success) {
           setIsPopupModalVisible(true);
-          toggleModal();
+          toggleModal(true);
         }
         setTimeout(() => {
           setIsPopupModalVisible(false);
@@ -95,9 +93,9 @@ const ProfileUpdateModal = ({
   return (
     <Modal
       isVisible={isBasicModal}
-      onBackButtonPress={toggleModal}
-      onBackdropPress={toggleModal}
-      onSwipeComplete={toggleModal}
+      onBackButtonPress={() => toggleModal(false)}
+      onBackdropPress={() => toggleModal(false)}
+      onSwipeComplete={() => toggleModal(false)}
       style={{ margin: 0, justifyContent: "flex-end" }}
       useNativeDriver
     >
@@ -109,7 +107,6 @@ const ProfileUpdateModal = ({
           iconSize={40}
         />
       )}
-      {isProcessLoader && <ProcessLoader />}
       <>
         <ScrollView
           style={{ maxHeight: height - 100 }}
@@ -127,7 +124,7 @@ const ProfileUpdateModal = ({
             >
               <Text style={common.h3Title}>Update Professional Info</Text>
               <Button
-                onPress={toggleModal}
+                onPress={() => toggleModal(false)}
                 icon={
                   <Ionicons
                     name="close-sharp"
@@ -212,6 +209,7 @@ const ProfileUpdateModal = ({
               <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
                   title="Update"
+                  loading={isProcessLoader}
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={handleSubmit(onSubmit)}
                   containerStyle={{ width: 180 }}
