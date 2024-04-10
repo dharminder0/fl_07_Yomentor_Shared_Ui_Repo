@@ -41,15 +41,14 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const { height, width } = Dimensions.get("window");
 
   const { setModalVisible, isModalVisible }: any = useStore();
-  const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isClassTime, setIsClassTime] = useState(false);
+  const [isToggled, setIsToggled] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
-  const [gradeId, setGradeId] = useState<any>();
 
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
@@ -57,14 +56,14 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     control,
     handleSubmit,
     setValue,
+    getValues,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
     reset();
-    setDate(new Date());
     setTime(new Date());
   };
 
@@ -76,32 +75,55 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (gradeId) {
-      setValue("teacherId", userId);
-      getSubjectByGradeId(gradeId).then((result: any) => {
-        if (!!result.data) {
-          setSubjectList(result.data);
-        }
-      });
-    }
-  }, [gradeId]);
+  const handleGradeChange = (grade: any) => {
+    setSubjectList([]);
+    setValue("subjectId", "");
+    setIsToggled(!isToggled);
+    getSubjectByGradeId(grade).then((result: any) => {
+      if (result?.data && result.data.length > 0) {
+        setSubjectList(result.data);
+      }
+    });
+  };
 
   const onSubmit = (data: any) => {
-    setIsProcessLoader(true);
-    addBatch(data).then((response: any) => {
-      if (response.data && response.data?.response) {
-        setIsPopupModalVisible(true);
-        onClose();
-        setIsPopupModal(true);
-        reset();
-      }
-      setTimeout(() => {
-        setIsPopupModalVisible(false);
-        setIsPopupModal(false);
-        setIsProcessLoader(false);
-      }, 500);
-    });
+    let paylaod: any = { ...data };
+    paylaod["id"] = 0;
+    paylaod["teacherId"] = userId;
+    console.log(paylaod);
+    if (
+      paylaod.gradeId &&
+      paylaod.classTime &&
+      paylaod.date &&
+      paylaod.days &&
+      paylaod.name &&
+      paylaod.numberOfStudents &&
+      paylaod.fee &&
+      paylaod.feeType &&
+      paylaod.subjectId &&
+      paylaod.teacherId
+    ) {
+      setIsProcessLoader(true);
+      addBatch(data)
+        .then((response: any) => {
+          console.log("response", response.data);
+          if (response.data && response.data?.response) {
+            setIsPopupModalVisible(true);
+            onClose();
+            setIsPopupModal(true);
+            reset();
+          }
+          setTimeout(() => {
+            setIsPopupModalVisible(false);
+            setIsPopupModal(false);
+            setIsProcessLoader(false);
+          }, 500);
+        })
+        .catch((error: any) => {
+          setIsPopupModalVisible(false);
+          setIsProcessLoader(false);
+        });
+    }
   };
 
   return (
@@ -169,65 +191,57 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   />
                 )}
               />
-              {/* {errors.name && <Text>This field is required</Text>} */}
-
-              <Controller
-                control={control}
-                name="description"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        height: 75,
-                        textAlignVertical: "top",
-                        borderColor: errors.description ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Description"
-                    multiline
-                  />
-                )}
-              />
               <View style={cardStyle.j_row}>
                 <View style={{ width: "48%" }}>
                   <Controller
                     control={control}
                     name="gradeId"
                     rules={{ required: true }}
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field }) => (
                       <SelectModal
+                        fieldError={errors.gradeId ? true : false}
                         data={classList}
                         placeholder="Class"
-                        onChanged={(values: any) => {
-                          setValue("gradeId", values?.id);
-                          setGradeId(values?.id);
+                        onChanged={(value: any) => {
+                          field.onChange(value?.id);
+                          //setValue("gradeId", values?.id);
+                          handleGradeChange(value?.id);
                         }}
-                        // fieldError={errors.gradeId ? true : false}
                       />
                     )}
                   />
                 </View>
                 <View style={{ width: "48%" }}>
-                  <Controller
-                    control={control}
-                    name="subjectId"
-                    rules={{ required: true }}
-                    render={({ field: { onChange, value } }) => (
-                      <SelectModal
-                        data={subjectList}
-                        placeholder={"Subject"}
-                        onChanged={(value: any) =>
-                          setValue("subjectId", value?.id)
-                        }
-                        // fieldError={errors.subjectId ? true : false}
-                      />
-                    )}
-                  />
+                  {isToggled && (
+                    <Controller
+                      control={control}
+                      name="subjectId"
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <SelectModal
+                          fieldError={errors.subjectId ? true : false}
+                          data={subjectList}
+                          placeholder={"Subject"}
+                          onChanged={(value: any) => field.onChange(value?.id)}
+                        />
+                      )}
+                    />
+                  )}
+                  {!isToggled && (
+                    <Controller
+                      control={control}
+                      name="subjectId"
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <SelectModal
+                          data={subjectList}
+                          fieldError={errors.subjectId ? true : false}
+                          placeholder={"Subject"}
+                          onChanged={(value: any) => field.onChange(value?.id)}
+                        />
+                      )}
+                    />
+                  )}
                 </View>
               </View>
 
@@ -238,41 +252,55 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                 render={({ field: { onChange, value } }) => (
                   <SelectModal
                     data={days}
+                    fieldError={errors.days ? true : false}
                     placeholder="Select Days"
                     onChanged={(value: any) => setValue("days", value)}
                     isMulti={true}
-                    // fieldError={errors.days ? true : false}
                   />
                 )}
               />
 
-              <View style={cardStyle.row}>
-                <Pressable
-                  onPress={() => setIsClassTime(true)}
-                  style={[
-                    styles.input,
-                    cardStyle.row,
-                    {
-                      justifyContent: "space-between",
-                      borderColor: errors.classTime ? "red" : "#ccc",
-                    },
-                  ]}
-                >
-                  <Text> {moment(time).format("HH:mm")}</Text>
-                  <Icon name="calendar" size={13} color={YoColors.secondary} />
-                </Pressable>
-              </View>
+              <Controller
+                control={control}
+                name="classTime"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <View style={cardStyle.row}>
+                    <Pressable
+                      onPress={() => setIsClassTime(true)}
+                      style={[
+                        styles.input,
+                        cardStyle.row,
+                        {
+                          justifyContent: "space-between",
+                          borderColor: errors.classTime ? "red" : "#ccc",
+                        },
+                      ]}
+                    >
+                      <Text>
+                        {getValues().classTime
+                          ? getValues().classTime
+                          : "Time (HH:mm)"}
+                      </Text>
+                      <Icon name="clock" size={13} color={YoColors.secondary} />
+                    </Pressable>
+                  </View>
+                )}
+              />
 
               {isClassTime && (
                 <DatePicker
                   modal
                   open={isClassTime}
-                  date={time}
+                  date={
+                    getValues().classTime
+                      ? moment(getValues().classTime, "HH:mm").toDate()
+                      : new Date()
+                  }
                   mode="time"
                   minuteInterval={15}
                   onConfirm={(value) => {
                     setIsClassTime(false);
-                    setTime(value);
                     setValue("classTime", moment(value).format("HH:mm"));
                   }}
                   onCancel={() => {
@@ -292,7 +320,9 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                         onChangeText={onChange}
                         style={[
                           styles.input,
+                          cardStyle.row,
                           {
+                            justifyContent: "space-between",
                             borderColor: errors.fee ? "red" : "#ccc",
                           },
                         ]}
@@ -345,36 +375,51 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                 )}
               />
 
-              <View style={cardStyle.row}>
-                <Pressable
-                  onPress={() => setIsCalendarOpen(true)}
-                  style={[
-                    styles.input,
-                    cardStyle.row,
-                    { justifyContent: "space-between" },
-                  ]}
-                >
-                  <Text>
-                    {" "}
-                    {moment(new Date()).format("DD-MM-YYYY") ===
-                    moment(date).format("DD-MM-YYYY")
-                      ? "Batch Start Date (DD-MM-YYYY)"
-                      : moment(date).format("DD-MM-YYYY")}
-                  </Text>
-                  <Icon name="calendar" size={13} color={YoColors.secondary} />
-                </Pressable>
-              </View>
+              <Controller
+                control={control}
+                name="date"
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <View style={cardStyle.row}>
+                    <Pressable
+                      onPress={() => setIsCalendarOpen(true)}
+                      style={[
+                        styles.input,
+                        cardStyle.row,
+                        {
+                          justifyContent: "space-between",
+                          borderColor: errors.date ? "red" : "#ccc",
+                        },
+                      ]}
+                    >
+                      <Text>
+                        {getValues().date
+                          ? getValues().date
+                          : "Batch Start Date (DD-MM-YYYY)"}
+                      </Text>
+                      <Icon
+                        name="calendar"
+                        size={13}
+                        color={YoColors.secondary}
+                      />
+                    </Pressable>
+                  </View>
+                )}
+              />
 
               {isCalendarOpen && (
                 <DatePicker
                   modal
                   open={isCalendarOpen}
-                  date={date}
+                  date={
+                    getValues().date &&
+                    moment(getValues().date, "YYYY-MM-DD").isValid()
+                      ? new Date(getValues().date)
+                      : new Date()
+                  }
                   mode="date"
-                  minimumDate={new Date()}
                   onConfirm={(value) => {
                     setIsCalendarOpen(false);
-                    setDate(value);
                     setValue("date", moment(value).format("YYYY-MM-DD"));
                   }}
                   onCancel={() => {
@@ -382,7 +427,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   }}
                 />
               )}
-
               <View style={{ marginTop: 30 }}>
                 <Button
                   title="Create Batch"

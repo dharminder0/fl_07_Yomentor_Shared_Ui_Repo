@@ -215,82 +215,73 @@ const UserProfile = () => {
               )}
             </View>
           </View>
-          <View
-            style={[
-              common.p12,
-              { borderBottomWidth: 8, borderBottomColor: "#ccc" },
-            ]}
-          >
+          {(userDetails?.userAddress?.address1 ||
+            userDetails?.userAddress?.address2) && (
             <View
               style={[
-                common.j_row,
-                {
-                  alignItems: "flex-start",
-                },
+                common.p12,
+                { borderBottomWidth: 8, borderBottomColor: "#ccc" },
               ]}
             >
-              <Text style={[common.mb5, common.h2Title]}>Address</Text>
-
-              {/* <Button
-                    onPress={() => setModalVisible(true)}
-                    icon={<Icon name="pencil-alt" size={16} />}
-                    buttonStyle={[
-                      btnStyle.btnCross,
-                      {
-                        paddingHorizontal: 1,
-                        paddingStart: 15,
-                      },
-                    ]}
-                  /> */}
-            </View>
-            <View>
-              {(userDetails?.userAddress?.address1 ||
-                userDetails?.userAddress?.address2) && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Ionicons
-                    name="location"
-                    size={14}
-                    color={YoColors.primary}
-                    style={{ marginTop: 3 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      width: "95%",
-                    }}
-                  >
-                    {userDetails?.userAddress?.address1 && (
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetails?.userAddress?.address1}
-                      </Text>
-                    )}
-                    {userDetails?.userAddress?.address1 &&
-                      userDetails?.userAddress?.address2 && <Text>, </Text>}
-                    {userDetails?.userAddress?.address2 && (
-                      <Text>{userDetails?.userAddress?.address2}</Text>
-                    )}
-                    {userDetails?.userAddress?.address2 &&
-                      userDetails?.userAddress?.city && <Text>, </Text>}
-                    {userDetails?.userAddress?.city && (
-                      <Text>{userDetails?.userAddress?.city}</Text>
-                    )}
-                    {userDetails?.userAddress?.city &&
-                      userDetails?.userAddress?.stateName && <Text>, </Text>}
-                    {userDetails?.userAddress?.stateName && (
-                      <Text>{userDetails?.userAddress?.stateName}</Text>
-                    )}
-                    {userDetails?.userAddress?.stateName &&
-                      userDetails?.userAddress?.pincode && <Text>, </Text>}
-                    {userDetails?.userAddress?.pincode && (
-                      <Text>{userDetails?.userAddress?.pincode}</Text>
-                    )}
+              <View
+                style={[
+                  common.j_row,
+                  {
+                    alignItems: "flex-start",
+                  },
+                ]}
+              >
+                <Text style={[common.mb5, common.h2Title]}>Address</Text>
+              </View>
+              <View>
+                {(userDetails?.userAddress?.address1 ||
+                  userDetails?.userAddress?.address2) && (
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Ionicons
+                      name="location"
+                      size={14}
+                      color={YoColors.primary}
+                      style={{ marginTop: 3 }}
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        width: "95%",
+                      }}
+                    >
+                      {userDetails?.userAddress?.address1 && (
+                        <Text style={{ paddingStart: 5 }}>
+                          {userDetails?.userAddress?.address1}
+                        </Text>
+                      )}
+                      {userDetails?.userAddress?.address1 &&
+                        userDetails?.userAddress?.address2 && <Text>, </Text>}
+                      {userDetails?.userAddress?.address2 && (
+                        <Text>{userDetails?.userAddress?.address2}</Text>
+                      )}
+                      {userDetails?.userAddress?.address2 &&
+                        userDetails?.userAddress?.city && <Text>, </Text>}
+                      {userDetails?.userAddress?.city && (
+                        <Text>{userDetails?.userAddress?.city}</Text>
+                      )}
+                      {userDetails?.userAddress?.city &&
+                        userDetails?.userAddress?.stateName && <Text>, </Text>}
+                      {userDetails?.userAddress?.stateName && (
+                        <Text>{userDetails?.userAddress?.stateName}</Text>
+                      )}
+                      {userDetails?.userAddress?.stateName &&
+                        userDetails?.userAddress?.pincode && <Text>, </Text>}
+                      {userDetails?.userAddress?.pincode && (
+                        <Text>{userDetails?.userAddress?.pincode}</Text>
+                      )}
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
+              </View>
             </View>
-          </View>
+          )}
 
           {userInfo?.type === 1 && (
             <>

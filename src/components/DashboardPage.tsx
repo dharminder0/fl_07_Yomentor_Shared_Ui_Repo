@@ -68,12 +68,11 @@ const DashboardPage = () => {
 
   useFocusEffect(
     useCallback(() => {
-      getOpenBatchDatabyTeacherId(1);
-      getOpenBatchDatabyTeacherId(2);
-    }, [userInfo?.id, index])
+      getOpenBatchDatabyTeacherId();
+    }, [userInfo?.id, index, routes])
   );
 
-  const getOpenBatchDatabyTeacherId = (statusId?: number) => {
+  const getOpenBatchDatabyTeacherId = () => {
     setIsLoading(true);
     const payload: any = {
       userid: userInfo?.id,
@@ -82,7 +81,7 @@ const DashboardPage = () => {
       pageIndex: 1,
     };
 
-    if (userInfo?.type === 1 || routes[index]?.key == "ongoing") {
+    if (routes[index]?.key == "ongoing") {
       payload["statusId"] = [2];
     }
 
@@ -100,17 +99,19 @@ const DashboardPage = () => {
     getBatchListbyUserid(payload)
       .then((response: any) => {
         if (response?.data && response?.data?.length) {
-          if (routes[index]?.key == "open") {
-            setOpenBatchList(response?.data);
-          }
-          if (routes[index]?.key == "enrolled" && userInfo?.type === 3) {
-            setOpenBatchList(response?.data);
-          }
-          if (routes[index]?.key == "shortlisted") {
-            setShortlistedBatchList(response?.data);
-          }
-          if (statusId === 2) {
+          if (routes[index]?.key == "ongoing") {
             setOngoingBatchList(response?.data);
+          }
+
+          if (
+            routes[index]?.key == "enrolled" ||
+            routes[index]?.key == "open"
+          ) {
+            setOpenBatchList(response?.data);
+          }
+
+          if (userInfo?.type === 3 && routes[index]?.key == "shortlisted") {
+            setShortlistedBatchList(response?.data);
           }
         }
         setTimeout(() => {
@@ -124,8 +125,7 @@ const DashboardPage = () => {
   };
 
   const relaodPage = () => {
-    getOpenBatchDatabyTeacherId(1);
-    getOpenBatchDatabyTeacherId(2);
+    getOpenBatchDatabyTeacherId();
   };
 
   const renderScene = ({ route }: any) => {
@@ -193,8 +193,7 @@ const DashboardPage = () => {
   const onCloseUpdate = () => {
     setModalVisible(false);
     setTimeout(() => {
-      getOpenBatchDatabyTeacherId(1);
-      getOpenBatchDatabyTeacherId(2);
+      getOpenBatchDatabyTeacherId();
     }, 500);
   };
 

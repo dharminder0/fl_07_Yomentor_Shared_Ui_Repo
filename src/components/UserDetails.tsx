@@ -37,8 +37,9 @@ import { Card } from "@rneui/base";
 import Loading from "../screens/Loading";
 import ConfirmationPopup from "./common/ConfirmationPopup";
 import { useToast } from "react-native-toast-notifications";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-const UserDetails = ({ route }: { route: any }) => {
+const userDetailList = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("window");
   const userId: any = route.params.userId;
   const navigation: any = useNavigation();
@@ -264,8 +265,15 @@ const UserDetails = ({ route }: { route: any }) => {
 
                 {userDetailList?.teacherProfile?.education && (
                   <View style={[cardStyle.row, common.mb5]}>
-                    <Icon name="user-graduate" size={12} />
-                    <Text style={common.rText} numberOfLines={2}>
+                    <Icon
+                      name="user-graduate"
+                      size={12}
+                      style={{ marginEnd: 3 }}
+                    />
+                    <Text
+                      style={[common.rText, { textAlign: "justify" }]}
+                      numberOfLines={2}
+                    >
                       {" "}
                       {userDetailList?.teacherProfile?.education}
                     </Text>
@@ -274,7 +282,11 @@ const UserDetails = ({ route }: { route: any }) => {
 
                 {userDetailList?.teacherProfile?.experience && (
                   <View style={[cardStyle.row, common.mb5]}>
-                    <Icon name="info-circle" size={12} />
+                    <FontAwesome5
+                      name="chalkboard-teacher"
+                      size={12}
+                      style={{ marginTop: 3 }}
+                    />
                     <Text style={common.rText} numberOfLines={2}>
                       {" "}
                       {userDetailList?.teacherProfile?.experience +
@@ -287,42 +299,81 @@ const UserDetails = ({ route }: { route: any }) => {
                   <View style={[cardStyle.row, common.mb5]}>
                     <MaterialCommunityIcons name="phone" size={12} />
                     <Text style={common.rText}> {userDetailList?.phone}</Text>
-                    {userDetailList?.gender && (
-                      <>
-                        <MaterialCommunityIcons name="phone" size={12} />
-                        <Text style={common.rText}>
-                          {" "}
-                          {userDetailList?.gender}
-                        </Text>
-                      </>
-                    )}
+                  </View>
+                )}
+
+                {userDetailList?.gender && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <FontAwesome5
+                      name="transgender"
+                      size={14}
+                      style={{ marginTop: 3 }}
+                    />
+                    <Text style={common.rText}> {userDetailList?.gender}</Text>
                   </View>
                 )}
               </View>
             </View>
             <View style={common.my10}>
               {userDetailList?.teacherProfile?.about && (
-                <Text style={[common.rText, { textAlign: "justify" }]}>
-                  {userDetailList?.teacherProfile?.about}
-                </Text>
-              )}
-
-              {userDetailList?.userAddress?.address1 && (
-                <View style={[common.mtop10, common.row]}>
-                  <Ionicons name="location-sharp" size={12} />
-                  <Text style={[common.rText]} numberOfLines={2}>
-                    {" "}
-                    {userDetailList?.userAddress?.address1}
-                  </Text>
+                <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <Icon name="info-circle" size={12} style={{ marginTop: 3 }} />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      width: "95%",
+                      marginLeft: 2,
+                    }}
+                  >
+                    <Text>{userDetailList?.teacherProfile?.about}</Text>
+                  </View>
                 </View>
               )}
-              {userDetailList?.userAddress?.address2 && (
-                <View style={[common.mtop10, common.row]}>
-                  <Ionicons name="location-sharp" size={12} />
-                  <Text style={[common.rText]} numberOfLines={2}>
-                    {" "}
-                    {userDetailList?.userAddress?.address2}
-                  </Text>
+              {(userDetailList?.userAddress?.address1 ||
+                userDetailList?.userAddress?.address2) && (
+                <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <Ionicons
+                    name="location"
+                    size={14}
+                    //  color={YoColors.primary}
+                    style={{ marginTop: 3 }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      width: "95%",
+                    }}
+                  >
+                    {userDetailList?.userAddress?.address1 && (
+                      <Text style={{ paddingStart: 5 }}>
+                        {userDetailList?.userAddress?.address1}
+                      </Text>
+                    )}
+                    {userDetailList?.userAddress?.address1 &&
+                      userDetailList?.userAddress?.address2 && <Text>, </Text>}
+                    {userDetailList?.userAddress?.address2 && (
+                      <Text>{userDetailList?.userAddress?.address2}</Text>
+                    )}
+                    {userDetailList?.userAddress?.address2 &&
+                      userDetailList?.userAddress?.city && <Text>, </Text>}
+                    {userDetailList?.userAddress?.city && (
+                      <Text>{userDetailList?.userAddress?.city}</Text>
+                    )}
+                    {userDetailList?.userAddress?.city &&
+                      userDetailList?.userAddress?.stateName && <Text>, </Text>}
+                    {userDetailList?.userAddress?.stateName && (
+                      <Text>{userDetailList?.userAddress?.stateName}</Text>
+                    )}
+                    {userDetailList?.userAddress?.stateName &&
+                      userDetailList?.userAddress?.pincode && <Text>, </Text>}
+                    {userDetailList?.userAddress?.pincode && (
+                      <Text>{userDetailList?.userAddress?.pincode}</Text>
+                    )}
+                  </View>
                 </View>
               )}
             </View>
@@ -545,6 +596,6 @@ const UserDetails = ({ route }: { route: any }) => {
   );
 };
 
-export default UserDetails;
+export default userDetailList;
 
 const styles = StyleSheet.create({});
