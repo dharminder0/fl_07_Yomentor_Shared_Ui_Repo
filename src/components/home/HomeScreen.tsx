@@ -35,9 +35,11 @@ const HomeScreen = () => {
   const [ongoingBatchList, setOngoingBatchList] = useState([]);
   const [shortlisted, setShortlisted] = useState([]);
   const [teacherList, setTeacherList] = useState<any>([]);
+  const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
+      setIsContentLoaded(false);
       setMainIsLoading(true);
       getOpenBatchDatabyTeacherId(1);
       getOpenBatchDatabyTeacherId(2);
@@ -45,6 +47,12 @@ const HomeScreen = () => {
       getTeacherList();
     }, [userInfo?.id, refreshLoader])
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsContentLoaded(true);
+    }, 3000);
+  },[openBatchList, ongoingBatchList, shortlisted])
 
   const getOpenBatchDatabyTeacherId = (statusId: number) => {
     setIsLoading(true);
@@ -195,7 +203,7 @@ const HomeScreen = () => {
             </>
           )}
 
-          {openBatchList?.length === 0 &&
+          {isContentLoaded && openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
             userInfo?.type === 1 && (
               <View
@@ -210,7 +218,7 @@ const HomeScreen = () => {
               </View>
             )}
 
-          {openBatchList?.length === 0 &&
+          {isContentLoaded && openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
             shortlisted?.length === 0 &&
             userInfo?.type === 3 && (

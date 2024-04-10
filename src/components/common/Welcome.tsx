@@ -111,10 +111,6 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
             You don't have any active batches. Create your first batch to
             establish your presence on our platform.{" "}
           </Text>
-          {/* <Text style={[common.h3Title, { marginVertical: 15 }]}>
-            How does it work:{" "}
-          </Text> */}
-
           <View>
             <View
               style={{
@@ -172,29 +168,6 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
                 Parents can monitor the daily progress of their children
               </Text>
             </View>
-
-            {/* <View style={[common.row, { alignItems: "flex-start" }]}>
-              <Icon name="check" size={13} style={{ marginTop: 4 }} />
-              <Text style={{ paddingStart: 5 }}>
-                Students/Parents can find the best batch as per their needs and
-                enroll themselves in your batch.
-              </Text>
-            </View> */}
-
-            {/* <View style={[common.row, { alignItems: "flex-start" }]}>
-              <Icon name="check" size={13} style={{ marginTop: 4 }} />
-              <Text style={{ paddingStart: 5 }}>
-                For your batch, you can manage student, attendance, assignments,
-                assessments, and more.
-              </Text>
-            </View> */}
-            {/* 
-            <View style={[common.row, { alignItems: "flex-start" }]}>
-              <Icon name="check" size={13} style={{ marginTop: 4 }} />
-              <Text style={{ paddingStart: 5 }}>
-                Parents can monitor the daily progress of their children
-              </Text>
-            </View> */}
           </View>
           <Button
             title="Create Your First Batch"
