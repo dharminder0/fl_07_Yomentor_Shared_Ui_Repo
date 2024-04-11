@@ -26,6 +26,7 @@ import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 import LoginPage from "../auth/LoginPage";
 import { Button } from "react-native-elements";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 const BooksList = () => {
   const { height, width } = Dimensions.get("window");
@@ -148,14 +149,14 @@ const BooksList = () => {
 
             {item?.author && (
               <View style={[cardStyle.row, common.mb5]}>
-                <Icon name="info-circle" size={12} />
+                <Icon name="user" size={12} />
                 <Text style={common.rText}> {item?.author}</Text>
               </View>
             )}
 
             {item?.gradeName && (
               <View style={[cardStyle.row, common.mb5]}>
-                <Icon name="user-graduate" size={12} />
+                <FontAwesome5Icon name="laptop" size={10} />
                 <Text style={common.rText}> {item?.gradeName}</Text>
               </View>
             )}
