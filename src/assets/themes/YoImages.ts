@@ -3,5 +3,6 @@ export const YoImages = () => {
     logo: require('../images/YoMentorLogo.png'),
     icon: require('../images/YoMentorAppIcon.png'),
     DefaultUser: require('../images/DefaultUser.png'),
+    DefaultBook: require('../images/BookPlaceholder.png'),
   };
 };
