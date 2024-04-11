@@ -3,7 +3,6 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Platform,
   RefreshControl,
   StyleSheet,
   Text,
@@ -12,11 +11,11 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { getUserInfo } from "../../shared/sharedDetails";
-import { getBooksList, getUsersList } from "../../apiconfig/SharedApis";
+import { getBooksList } from "../../apiconfig/SharedApis";
 import { Card } from "@rneui/base";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -24,15 +23,17 @@ import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
-import LoginPage from "../auth/LoginPage";
 import { Button } from "react-native-elements";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import CreateBookRequest from "./CreateBookRequest";
+import useStore from "../../store/useStore";
 
 const BooksList = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
+  const { isModalVisible, setModalVisible }: any = useStore();
   const image: any = YoImages();
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
@@ -81,7 +82,13 @@ const BooksList = () => {
           setBooksList([]);
         }
         if (response.data && response.data.length > 0) {
-          setBooksList((prevList: any) => [...prevList, ...response.data]);
+          //   setBooksList((prevList: any) => [...prevList, ...response.data]);
+          setBooksList((prevList: any) => {
+            const filteredData = response.data.filter((newItem: any) => {
+              return !prevList.some((item: any) => item.id === newItem.id);
+            });
+            return [...prevList, ...filteredData];
+          });
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -123,6 +130,13 @@ const BooksList = () => {
       setIsBottomLoader(true);
       setPageIndex(pageIndex + 1);
     }
+  };
+
+  const onCloseUpdate = () => {
+    setModalVisible(false);
+    setTimeout(() => {
+      getBooksData();
+    }, 500);
   };
 
   const renderItem = ({ item, index }: any) => (
@@ -201,6 +215,35 @@ const BooksList = () => {
       </View>
 
       <View style={common.container}>
+        {selectedActionTab === "offers" && (
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-end",
+              marginVertical: 10,
+            }}
+          >
+            <Button
+              title=" Create Book"
+              onPress={() => setModalVisible(true)}
+              icon={
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={12}
+                  color={YoColors.primary}
+                />
+              }
+              buttonStyle={[
+                btnStyle.outline,
+                {
+                  width: 100,
+                },
+              ]}
+              titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            />
+          </View>
+        )}
         {selectedActionTab === "booksList" && (
           <View style={[common.row, common.mtop10]}>
             <TextInput
@@ -268,6 +311,8 @@ const BooksList = () => {
           <NoDataView />
         )}
       </View>
+
+      <CreateBookRequest userId={userInfo?.id} onClose={onCloseUpdate} />
     </View>
   );
 };

@@ -240,7 +240,7 @@ const HomeScreen = () => {
         </>
       )}
 
-      <AddBatchModalForm userId={userInfo?.id} onClose={onCloseUpdate} />
+      <AddBatchModalForm userId={userInfo?.id} onClose={onCloseUpdate} /> 
     </ScrollView>
   );
 };
