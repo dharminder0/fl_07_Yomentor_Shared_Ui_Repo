@@ -21,6 +21,7 @@ import TeacherAssessmentList from "../components/teacher/TeacherAssessmentList";
 import DashboardPage from "../components/DashboardPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TeachersList from "../components/TeachersList";
+import BooksList from "../components/books/BooksList";
 
 const Tab = createBottomTabNavigator();
 // Ionicons.loadFont();
@@ -76,6 +77,7 @@ export const BottomNavigation = () => {
   const TeacherAssignmentTab = "TeacherAssignmentList";
   const TeacherAssessmentTab = "TeacherAssessmentList";
   const TeachersListTab = "TeachersList";
+  const BooksListTab = "BooksList"
 
   const pageOptions: any = {
     homeTab: {
@@ -101,6 +103,11 @@ export const BottomNavigation = () => {
     TeachersListTab: {
       headerTintColor: "#fff",
       title: "Teachers",
+      headerLeft: headerDrawer,
+    },
+    BooksListTab: {
+      headerTintColor: "#fff",
+      title: "Book Exchange",
       headerLeft: headerDrawer,
     },
   };
@@ -136,6 +143,11 @@ export const BottomNavigation = () => {
               {rn === TeachersListTab && (
                 <View style={{ alignItems: "center" }}>
                   <Ionicons name="person" size={21} color={color} />
+                </View>
+              )}
+              {rn === BooksListTab && (
+                <View style={{ alignItems: "center" }}>
+                  <Ionicons name="book" size={21} color={color} />
                 </View>
               )}
             </View>
@@ -183,6 +195,12 @@ export const BottomNavigation = () => {
           options={pageOptions["TeachersListTab"]}
         />
       )}
+
+      <Tab.Screen
+        name={BooksListTab}
+        component={BooksList}
+        options={pageOptions["BooksListTab"]}
+      />
     </Tab.Navigator>
   );
 };

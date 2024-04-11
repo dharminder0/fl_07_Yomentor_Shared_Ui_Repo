@@ -173,3 +173,7 @@ export async function upsertUserInfo(payload: any): Promise<any> {
 export async function upsertProfileInfo(payload: any): Promise<any> {
   return AxiosInterceptor.post(`User/ProfileUpsert`, payload);
 }
+
+export async function getBooksList(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Books/BooKList`, payload);
+}
