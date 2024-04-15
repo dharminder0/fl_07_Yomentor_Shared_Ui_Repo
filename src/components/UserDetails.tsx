@@ -39,7 +39,7 @@ import ConfirmationPopup from "./common/ConfirmationPopup";
 import { useToast } from "react-native-toast-notifications";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-const userDetailList = ({ route }: { route: any }) => {
+const UserDetailList = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("window");
   const userId: any = route.params.userId;
   const navigation: any = useNavigation();
@@ -596,6 +596,6 @@ const userDetailList = ({ route }: { route: any }) => {
   );
 };
 
-export default userDetailList;
+export default UserDetailList;
 
 const styles = StyleSheet.create({});

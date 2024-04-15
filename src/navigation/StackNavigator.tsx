@@ -10,6 +10,7 @@ import AssesmentDetails from "../components/batch/assessments/AssesmentDetails";
 import UserDetails from "../components/UserDetails";
 import Reviews from "../components/Reviews";
 import UserProfile from "../components/profile/UserProfile";
+import BookDetails from "../components/books/BookDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -116,6 +117,16 @@ export function StackNavigator() {
         options={{
           headerShown: false,
           title: "Reviews",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="BookDetails"
+        component={BookDetails}
+        options={{
+          headerShown: false,
+          title: "Book Details",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}
