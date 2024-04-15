@@ -44,6 +44,12 @@ const SelectModal = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (data && data?.length === 0) {
+      setSelectedValue([]);
+    }
+  }, [data]);
+
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);
     setSelectedValue([value.name]);

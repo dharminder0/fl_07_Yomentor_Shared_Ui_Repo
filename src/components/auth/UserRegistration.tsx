@@ -287,13 +287,17 @@ const UserRegistration = ({ route }: any) => {
             style={[
               common.row,
               {
-                marginTop: 20,
+                marginTop: 12,
                 justifyContent: "flex-end",
               },
             ]}
           >
             <Text style={common.rText}>Already have an account</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Login")}
+              activeOpacity={0.7}
+              style={{ paddingVertical: 6 }}
+            >
               <Text style={[common.rText, { color: YoColors.primary }]}>
                 {" "}
                 Log in

@@ -111,6 +111,10 @@ const UserDetailList = ({ route }: { route: any }) => {
       };
       assignFavouriteBatch(payload).then((response: any) => {
         if (response.data && response.data.response) {
+          toast.show("Batch shortlisted successfully", {
+            type: "success",
+            duration: 2000,
+          });
           getBatchesListbyEntity();
         }
       });
@@ -146,6 +150,7 @@ const UserDetailList = ({ route }: { route: any }) => {
               type: "success",
               duration: 2000,
             });
+            getBatchesListbyEntity();
           }
         })
         .catch((error: any) => {
@@ -390,12 +395,15 @@ const UserDetailList = ({ route }: { route: any }) => {
                       key={index}
                     >
                       <View style={[cardStyle.j_row, { margin: 0 }]}>
-                        <Text style={cardStyle.headTitle}>
+                        <Text
+                          style={[cardStyle.headTitle, { width: "72%" }]}
+                          numberOfLines={2}
+                        >
                           {item?.batchName}
                         </Text>
 
                         {item?.statusId === 1 && (
-                          <Text>
+                          <Text style={{ width: 90 }}>
                             {moment(item?.startDate).format("MMM DD, YYYY")}
                           </Text>
                         )}

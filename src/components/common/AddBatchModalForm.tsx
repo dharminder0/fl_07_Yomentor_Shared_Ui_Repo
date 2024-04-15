@@ -46,7 +46,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isClassTime, setIsClassTime] = useState(false);
-  const [isToggled, setIsToggled] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
 
@@ -78,7 +77,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const handleGradeChange = (grade: any) => {
     setSubjectList([]);
     setValue("subjectId", "");
-    setIsToggled(!isToggled);
     getSubjectByGradeId(grade).then((result: any) => {
       if (result?.data && result.data.length > 0) {
         setSubjectList(result.data);
@@ -90,7 +88,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
     let paylaod: any = { ...data };
     paylaod["id"] = 0;
     paylaod["teacherId"] = userId;
-    console.log(paylaod);
     if (
       paylaod.gradeId &&
       paylaod.classTime &&
@@ -104,9 +101,13 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
       paylaod.teacherId
     ) {
       setIsProcessLoader(true);
-      addBatch(data)
+      // console.log("paylaod");
+      // console.log(paylaod);
+      // console.log("data");
+      // console.log(data);
+      addBatch(paylaod)
         .then((response: any) => {
-          console.log("response", response.data);
+          // console.log("response", response.data);
           if (response.data && response.data?.response) {
             setIsPopupModalVisible(true);
             onClose();
@@ -191,6 +192,27 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   />
                 )}
               />
+              <Controller
+                control={control}
+                name="description"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: "#ccc",
+                        minHeight: 80,
+                        height: "auto",
+                        verticalAlign: "top",
+                      },
+                    ]}
+                    placeholderTextColor={YoColors.placeholderText}
+                    value={value}
+                    placeholder="Description (optional)"
+                  />
+                )}
+              />
               <View style={cardStyle.j_row}>
                 <View style={{ width: "48%" }}>
                   <Controller
@@ -204,7 +226,6 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                         placeholder="Class"
                         onChanged={(value: any) => {
                           field.onChange(value?.id);
-                          //setValue("gradeId", values?.id);
                           handleGradeChange(value?.id);
                         }}
                       />
@@ -212,36 +233,19 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   />
                 </View>
                 <View style={{ width: "48%" }}>
-                  {isToggled && (
-                    <Controller
-                      control={control}
-                      name="subjectId"
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <SelectModal
-                          fieldError={errors.subjectId ? true : false}
-                          data={subjectList}
-                          placeholder={"Subject"}
-                          onChanged={(value: any) => field.onChange(value?.id)}
-                        />
-                      )}
-                    />
-                  )}
-                  {!isToggled && (
-                    <Controller
-                      control={control}
-                      name="subjectId"
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <SelectModal
-                          data={subjectList}
-                          fieldError={errors.subjectId ? true : false}
-                          placeholder={"Subject"}
-                          onChanged={(value: any) => field.onChange(value?.id)}
-                        />
-                      )}
-                    />
-                  )}
+                  <Controller
+                    control={control}
+                    name="subjectId"
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <SelectModal
+                        fieldError={errors.subjectId ? true : false}
+                        data={subjectList}
+                        placeholder={"Subject"}
+                        onChanged={(value: any) => field.onChange(value?.id)}
+                      />
+                    )}
+                  />
                 </View>
               </View>
 

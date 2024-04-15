@@ -88,6 +88,10 @@ const ProfileBatchCard = ({
       };
       assignFavouriteBatch(payload).then((response: any) => {
         if (response.data && response.data.response) {
+          toast.show("Batch shortlisted successfully", {
+            type: "success",
+            duration: 2000,
+          });
           reloadPage();
         }
       });
@@ -133,7 +137,17 @@ const ProfileBatchCard = ({
       key={index}
     >
       <View style={[cardStyle.j_row, { margin: 0 }]}>
-        <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
+        <Text
+          style={[
+            cardStyle.headTitle,
+            {
+              width: item?.statusId === 1 ? "74%" : "80%",
+            },
+          ]}
+          numberOfLines={2}
+        >
+          {item?.batchName}
+        </Text>
 
         {item?.statusId === 1 && (
           <Text>{moment(item?.startDate).format("MMM DD, YYYY")}</Text>

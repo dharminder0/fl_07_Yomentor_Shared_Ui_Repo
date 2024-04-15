@@ -66,7 +66,7 @@ const AssesmentCardView = ({
         {userType === 1 && (
           <>
             <Button
-              title=" Assign from my List"
+              title=" Select from favorite list"
               onPress={() => useForm("selectForm")}
               icon={
                 <MaterialCommunityIcons
@@ -80,7 +80,7 @@ const AssesmentCardView = ({
             />
 
             <Button
-              title=" Create Assessment"
+              title=" Create new Assessment"
               onPress={() => useForm("addForm")}
               icon={
                 <MaterialCommunityIcons

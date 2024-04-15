@@ -8,6 +8,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  useColorScheme,
 } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { useForm, Controller } from "react-hook-form";
@@ -18,9 +19,11 @@ import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { userLogin } from "../../apiconfig/AuthService";
 import { YoImages } from "../../assets/themes/YoImages";
+import COLORS from "../../assets/themes/colors";
 
 const { height, width } = Dimensions.get("window");
 const LoginPage = () => {
+  const isDarkMode = useColorScheme() === "dark";
   const image: any = YoImages();
   const YoColors = useThemeColor();
   const scrollViewRef: any = useRef();
@@ -74,7 +77,12 @@ const LoginPage = () => {
               <>
                 <Input
                   placeholder="Phone Number"
-                  leftIcon={{ type: "Ionicons", name: "phone" }}
+                  leftIcon={{
+                    type: "Ionicons",
+                    name: "phone",
+                    color: isDarkMode ? "#fff" : "#000",
+                  }}
+                  style={{ color: isDarkMode ? "#fff" : "#000" }}
                   onChangeText={onChange}
                   value={value}
                   placeholderTextColor={YoColors.placeholderText}
@@ -92,7 +100,12 @@ const LoginPage = () => {
               <>
                 <Input
                   placeholder="Password"
-                  leftIcon={{ type: "Ionicons", name: "lock" }}
+                  leftIcon={{
+                    type: "Ionicons",
+                    name: "lock",
+                    color: YoColors.inputText,
+                  }}
+                  style={{ color: YoColors.inputText }}
                   secureTextEntry
                   onChangeText={onChange}
                   value={value}
@@ -130,9 +143,13 @@ const LoginPage = () => {
               },
             ]}
           >
-            <Text style={common.rText}>Create a new account</Text>
+            <Text style={[common.rText, { color: YoColors.text }]}>
+              Create a new account
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("SelectUserType")}
+              activeOpacity={0.7}
+              style={{ paddingVertical: 6 }}
             >
               <Text style={[common.rText, { color: YoColors.primary }]}>
                 {" "}

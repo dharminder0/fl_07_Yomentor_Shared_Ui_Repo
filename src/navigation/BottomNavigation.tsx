@@ -77,7 +77,7 @@ export const BottomNavigation = () => {
   const TeacherAssignmentTab = "TeacherAssignmentList";
   const TeacherAssessmentTab = "TeacherAssessmentList";
   const TeachersListTab = "TeachersList";
-  const BooksListTab = "BooksList"
+  const BooksListTab = "BooksList";
 
   const pageOptions: any = {
     homeTab: {
@@ -123,43 +123,62 @@ export const BottomNavigation = () => {
               {rn === HomeTab && (
                 <View style={{ alignItems: "center" }}>
                   <Ionicons name="home" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    Home
+                  </Text>
                 </View>
               )}
               {rn === DashboardTab && (
                 <View style={{ alignItems: "center" }}>
                   <Ionicons name="laptop" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    My {"\n"} Batches
+                  </Text>
                 </View>
               )}
               {rn === TeacherAssignmentTab && (
                 <View style={{ alignItems: "center" }}>
                   <MaterialCommunityIcons name="book" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    My {"\n"} Assignments
+                  </Text>
                 </View>
               )}
               {rn === TeacherAssessmentTab && (
                 <View style={{ alignItems: "center" }}>
                   <Icon name="book" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    My {"\n"} Assessments
+                  </Text>
                 </View>
               )}
               {rn === TeachersListTab && (
                 <View style={{ alignItems: "center" }}>
                   <Ionicons name="person" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    Teachers
+                  </Text>
                 </View>
               )}
               {rn === BooksListTab && (
                 <View style={{ alignItems: "center" }}>
                   <Ionicons name="book" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    Book {"\n"} Exchange
+                  </Text>
                 </View>
               )}
             </View>
           );
         },
         headerShown: true,
-        tabBarItemStyle: { padding: 5 },
+        tabBarItemStyle: { paddingTop: 5 },
         tabBarActiveTintColor: YoColors.primary,
         headerLeftContainerStyle: { paddingStart: 12 },
         headerTitleAlign: "center",
         headerRightContainerStyle: { paddingEnd: 12 },
         headerStyle: { backgroundColor: YoColors.primary },
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen
@@ -216,5 +235,9 @@ const styles = StyleSheet.create({
   backIcon: {
     alignSelf: "center",
     paddingVertical: 2,
+  },
+  labelTitle: {
+    fontSize: 10,
+    textAlign: "center",
   },
 });

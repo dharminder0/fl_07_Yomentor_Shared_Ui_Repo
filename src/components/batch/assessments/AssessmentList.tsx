@@ -104,21 +104,44 @@ const AssessmentList = ({ batchInfo }: any) => {
           )}
           {userInfo.type === 1 && (
             <>
-              <Text style={[common.h3Title, common.mb10]}>
-                You don't have any Assessment given to this batch
+              <Text
+                style={[common.h3Title, common.mb10, { textAlign: "center" }]}
+              >
+                No assessment has been given to this batch.
               </Text>
-              <View style={[common.j_row, common.my10]}>
+
+              <Text
+                style={[common.rText, common.mb10, { textAlign: "center" }]}
+              >
+                Create a new assessment for this batch now. You can save it in
+                your favorites list to use again later.
+              </Text>
+
+              <View style={[common.my10]}>
                 <Button
-                  title="Create New"
+                  title="Create new Assessment"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
-                  containerStyle={{ width: "45%" }}
+                  containerStyle={common.mb10}
                   onPress={() => useForm("addForm")}
                 />
+
+                <Text
+                  style={[common.h3Title, common.mb10, { textAlign: "center" }]}
+                >
+                  OR
+                </Text>
+
+                <Text
+                  style={[common.rText, common.mb10, { textAlign: "center" }]}
+                >
+                  You can select an existing assessment from your favorites
+                  list.
+                </Text>
+
                 <Button
-                  title="Select Existing"
+                  title="Select from favorite list"
                   buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={() => useForm("selectForm")}
-                  containerStyle={{ width: "45%" }}
                 />
               </View>
             </>
