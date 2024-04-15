@@ -29,22 +29,24 @@ import {
 } from "../../apiconfig/SharedApis";
 import ProcessLoader from "../../screens/ProcessLoader";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
+import { useToast } from "react-native-toast-notifications";
 
-const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
+const CreateBookRequest = ({
+  userId = "",
+  isModalVisible = false,
+  onClose = (value: boolean) => {},
+  dataToEdit = {},
+}) => {
   const YoColors = useThemeColor();
-
+  const toast = useToast();
   const { height, width } = Dimensions.get("window");
-
-  const { setModalVisible, isModalVisible }: any = useStore();
-  const [time, setTime] = useState(new Date());
-  const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [classList, setClassList] = useState<any>([]);
-
-  const { isPopupModal, setIsPopupModal }: any = useStore();
+  const [subjectList, setSubjectList] = useState<any>([]);
+  const [bookDetails, setBookDetails] = useState<any>({});
 
   const {
     control,
@@ -55,12 +57,6 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
     formState: { errors, isValid },
   } = useForm();
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible); // Toggle the modal visibility state
-    reset();
-    setTime(new Date());
-  };
-
   useEffect(() => {
     getGradeList().then((result: any) => {
       if (!!result.data) {
@@ -69,9 +65,37 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (dataToEdit && Object.keys(dataToEdit).length > 0) {
+      const bookInfo: any = { ...dataToEdit };
+      setBookDetails(dataToEdit);
+      setIsEditMode(true);
+      reset({
+        "id": bookInfo.id,
+        "title": bookInfo.title,
+        "author": bookInfo.author,
+        "gradeId": bookInfo.gradeId,
+        "subjectId": bookInfo.subjectId,
+        "remark": bookInfo.remark
+      });
+      handleGradeChange(bookInfo.gradeId, bookInfo.subjectId);
+    }
+
+  },[dataToEdit])
+
+  const handleGradeChange = (grade: any, subjectId = "") => {
+    setSubjectList([]);
+    setValue("subjectId", subjectId);
+    setIsToggled(!isToggled);
+    getSubjectByGradeId(grade).then((result: any) => {
+      if (result?.data && result.data.length > 0) {
+        setSubjectList(result.data);
+      }
+    });
+  };
+
   const onSubmit = (data: any) => {
     let paylaod: any = { ...data };
-    paylaod["id"] = 0;
     console.log("paylaod");
     console.log(paylaod);
     if (paylaod.title && paylaod.author && paylaod.gradeId) {
@@ -80,19 +104,32 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
         .then((response: any) => {
           console.log("response", response.data);
           if (response.data && response.data?.success) {
-            setIsPopupModalVisible(true);
-            onClose();
-            setIsPopupModal(true);
+            toast.show(
+              isEditMode ? "The book info updated" : "A new book created",
+              {
+                type: "success",
+                duration: 2000,
+                placement: "top",
+              }
+            );
+            onClose(true);
             reset();
           }
           setTimeout(() => {
-            setIsPopupModalVisible(false);
-            setIsPopupModal(false);
             setIsProcessLoader(false);
           }, 500);
         })
         .catch((error: any) => {
-          setIsPopupModalVisible(false);
+          toast.show(
+            isEditMode
+              ? "The book info updation failed"
+              : "A new book creation failed",
+            {
+              type: "danger",
+              duration: 2000,
+              placement: "top",
+            }
+          );
           setIsProcessLoader(false);
         });
     }
@@ -101,20 +138,12 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
   return (
     <Modal
       isVisible={isModalVisible}
-      onBackButtonPress={toggleModal}
-      onBackdropPress={toggleModal}
-      onSwipeComplete={toggleModal}
+      onBackButtonPress={() => onClose(false)}
+      onBackdropPress={() => onClose(false)}
+      onSwipeComplete={() => onClose(false)}
       style={{ margin: 0, justifyContent: "flex-end" }}
       useNativeDriver
     >
-      {isPopupModalVisible && (
-        <PopupModal
-          message="Book Created Successfully"
-          icon={"checkmark-circle"}
-          color={"green"}
-          iconSize={40}
-        />
-      )}
       <>
         <ScrollView
           style={{ maxHeight: height - 100 }}
@@ -133,9 +162,11 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
               <View
                 style={[cardStyle.j_row, { padding: 12, alignItems: "center" }]}
               >
-                <Text style={cardStyle.headTitle}>Create New Book</Text>
+                <Text style={cardStyle.headTitle}>
+                  {isEditMode ? "Update book details" : "Create new book"}
+                </Text>
                 <Button
-                  onPress={toggleModal}
+                  onPress={() => onClose(false)}
                   icon={
                     <Ionicons
                       name="close-sharp"
@@ -183,22 +214,58 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
                     />
                   )}
                 />
-
-                <Controller
-                  control={control}
-                  name="gradeId"
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <SelectModal
-                      fieldError={errors.gradeId ? true : false}
-                      data={classList}
-                      placeholder="Class"
-                      onChanged={(value: any) => {
-                        field.onChange(value?.id);
-                      }}
+                <View style={cardStyle.j_row}>
+                  <View style={{ width: "48%" }}>
+                    <Controller
+                      control={control}
+                      name="gradeId"
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        
+                        <SelectModal
+                        {...field}
+                          defaultValue={{
+                            name: bookDetails.gradeName,
+                            id: bookDetails.gradeId,
+                          }}
+                          value={field.value}
+                          fieldError={errors.gradeId ? true : false}
+                          data={classList}
+                          placeholder="Class"
+                          onChanged={(value: any) => {
+                            if(value?.id){
+                              field.onChange(value.id);
+                              handleGradeChange(value.id);
+                            }
+                          }}
+                        />
+                      )}
                     />
-                  )}
-                />
+                  </View>
+                  <View style={{ width: "48%" }}>
+                    <Controller
+                      control={control}
+                      name="subjectId"
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <SelectModal
+                          defaultValue={{
+                            name: bookDetails.subjectName,
+                            id: bookDetails.subjectId,
+                          }}
+                          fieldError={errors.subjectId ? true : false}
+                          data={subjectList}
+                          placeholder={"Subject"}
+                          onChanged={(value: any) => {
+                            if(value?.id){
+                              field.onChange(value.id);
+                            }
+                          }}
+                        />
+                      )}
+                    />
+                  </View>
+                </View>
 
                 <Controller
                   control={control}
@@ -224,7 +291,7 @@ const CreateBookRequest = ({ userId = "", onClose = () => {} }) => {
 
                 <View style={{ marginTop: 30 }}>
                   <Button
-                    title="Create Book"
+                    title={isEditMode ? "Update Book" : "Create Book"}
                     buttonStyle={{ backgroundColor: YoColors.primary }}
                     onPress={handleSubmit(onSubmit)}
                   />

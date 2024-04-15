@@ -37,15 +37,17 @@ const SelectModal = ({
   // useEffect to set the default value when the component mounts
   useEffect(() => {
     if (defaultValue && Object.keys(defaultValue).length > 0) {
-      setSelectedValue([defaultValue.name]);
-      onChanged(defaultValue);
+      handleSelectChange(defaultValue);
+      if (onChanged && defaultValue) {
+        onChanged(defaultValue);
+      }
     }
-  }, [defaultValue]);
+  }, []);
 
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);
     setSelectedValue([value.name]);
-    if (onChanged) {
+    if (onChanged && value) {
       onChanged(value);
     }
   };

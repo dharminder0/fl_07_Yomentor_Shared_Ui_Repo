@@ -27,13 +27,14 @@ import { Button } from "react-native-elements";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import CreateBookRequest from "./CreateBookRequest";
 import useStore from "../../store/useStore";
+import moment from "moment";
 
 const BooksList = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
-  const { isModalVisible, setModalVisible }: any = useStore();
+  const [isModalVisible, setModalVisible] = useState(false);
   const image: any = YoImages();
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
@@ -72,12 +73,8 @@ const BooksList = () => {
       pageSize: pageSize,
       pageIndex: index ?? pageIndex,
     };
-    console.log("payload");
-    console.log(payload);
     getBooksList(payload)
       .then((response: any) => {
-        console.log("response");
-        console.log(response.data);
         if (pageIndex === 1) {
           setBooksList([]);
         }
@@ -140,9 +137,9 @@ const BooksList = () => {
   };
 
   const renderItem = ({ item, index }: any) => (
-    <TouchableOpacity activeOpacity={0.7}>
+    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("BookDetails", { selectedBookDetails: item })}>
       <Card containerStyle={cardStyle.container} key={index}>
-        <View style={cardStyle.row}>
+        <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Image
             source={item.imageUrl ? { uri: item?.imageUrl } : image.DefaultBook}
             style={{
@@ -159,6 +156,14 @@ const BooksList = () => {
           >
             <View style={[cardStyle.j_row]}>
               <Text style={[common.title]}>{item?.title}</Text>
+              <View>
+                <Text style={{ fontSize: 12 }}>
+                  {moment(item?.createDate).format("MMM DD, YYYY")}
+                </Text>
+                {selectedActionTab === "booksList" && item?.statusName && (
+                  <Text style={{ fontSize: 12, color: item.status == 1 || item.status == 2 ? 'green':  'red' }}>{item?.statusName}</Text>
+                )}
+              </View>
             </View>
 
             {item?.author && (
@@ -247,7 +252,7 @@ const BooksList = () => {
         {selectedActionTab === "booksList" && (
           <View style={[common.row, common.mtop10]}>
             <TextInput
-              placeholder="Search Books"
+              placeholder="Search book title or author"
               onChangeText={handleSearch}
               value={searchText}
               style={[common.input, common.mb5]}
@@ -312,7 +317,7 @@ const BooksList = () => {
         )}
       </View>
 
-      <CreateBookRequest userId={userInfo?.id} onClose={onCloseUpdate} />
+      <CreateBookRequest userId={userInfo?.id} isModalVisible={isModalVisible} onClose={onCloseUpdate} />
     </View>
   );
 };
