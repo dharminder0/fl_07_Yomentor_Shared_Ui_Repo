@@ -114,7 +114,7 @@ const AssignmentDetails = ({ route }: any) => {
                     />
                   )}
                   <Text style={[common.rText, common.ph10]}>
-                    {moment(assignmentDetails?.createdate).format(
+                    {moment(assignmentDetails?.createDate).format(
                       "MMM DD, YYYY"
                     )}
                   </Text>

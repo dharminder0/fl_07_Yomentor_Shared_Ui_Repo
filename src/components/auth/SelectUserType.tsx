@@ -61,7 +61,7 @@ const SelectUserType = () => {
               containerStyle={styles.card}
               wrapperStyle={{ alignItems: "center" }}
             >
-              <Icon name="chalkboard-teacher" size={50} />
+              <Icon name="chalkboard-teacher" size={50} color={"gray"} />
               <Text style={[common.h3Title, { marginTop: 15 }]}>Teacher</Text>
             </Card>
           </Pressable>
@@ -75,7 +75,7 @@ const SelectUserType = () => {
               containerStyle={styles.card}
               wrapperStyle={{ alignItems: "center" }}
             >
-              <Icon name="users" size={50} />
+              <Icon name="users" size={50} color={"gray"}/>
               <Text style={[common.h3Title, { marginTop: 15 }]}>Parent</Text>
             </Card>
           </Pressable> */}
@@ -90,7 +90,7 @@ const SelectUserType = () => {
               containerStyle={styles.card}
               wrapperStyle={{ alignItems: "center" }}
             >
-              <Icon name="user-graduate" size={50} />
+              <Icon name="user-graduate" size={50} color={"gray"} />
               <Text style={[common.h3Title, { marginTop: 15 }]}>Student</Text>
             </Card>
           </Pressable>
@@ -104,8 +104,14 @@ const SelectUserType = () => {
           },
         ]}
       >
-        <Text style={common.rText}>Already have an account </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={[common.rText, { color: YoColors.text }]}>
+          Already have an account{" "}
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          activeOpacity={0.7}
+          style={{ paddingVertical: 6 }}
+        >
           <Text style={[common.rText, { color: YoColors.primary }]}>Login</Text>
         </TouchableOpacity>
       </View>

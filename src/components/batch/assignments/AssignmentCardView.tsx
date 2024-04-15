@@ -66,14 +66,14 @@ const AssignmentCardView = ({
         {userType === 1 && (
           <>
             <Button
-              title=" Assign from my List"
+              title=" Select from favorite list"
               onPress={() => useForm("selectForm")}
               buttonStyle={[btnStyle.outline]}
               titleStyle={[btnStyle.outlineTitle, common.fs12]}
             />
 
             <Button
-              title=" Create Assignment"
+              title=" Create new Assignment"
               onPress={() => useForm("addForm")}
               icon={
                 <MaterialCommunityIcons

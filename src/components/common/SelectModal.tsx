@@ -40,7 +40,13 @@ const SelectModal = ({
       setSelectedValue([defaultValue.name]);
       onChanged(defaultValue);
     }
-  }, [defaultValue]);
+  }, []);
+
+  useEffect(() => {
+    if (data && data?.length === 0) {
+      setSelectedValue([]);
+    }
+  }, [data]);
 
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);

@@ -15,6 +15,7 @@ import MainNavigator from "./src/navigation/MainNavigator";
 import InternetConnectionStatus from "./src/screens/InternetConnectionStatus";
 import { ToastProvider } from "react-native-toast-notifications";
 import { useThemeColor } from "./src/assets/themes/useThemeColor";
+import { ThemeProvider } from "./src/assets/themes/ThemeContext";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -27,20 +28,22 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <ToastProvider>
-        <StatusBar
-          barStyle={isDarkMode ? "light-content" : "light-content"}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <NavigationContainer
-          theme={useColorScheme() === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <MainNavigator />
-        </NavigationContainer>
-        {/* <InternetConnectionStatus /> */}
-      </ToastProvider>
-    </SafeAreaView>
+    <ThemeProvider>
+      <SafeAreaView style={backgroundStyle}>
+        <ToastProvider>
+          <StatusBar
+            barStyle={isDarkMode ? "light-content" : "light-content"}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+          <NavigationContainer
+            theme={useColorScheme() === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <MainNavigator />
+          </NavigationContainer>
+          {/* <InternetConnectionStatus /> */}
+        </ToastProvider>
+      </SafeAreaView>
+    </ThemeProvider>
   );
 }
 

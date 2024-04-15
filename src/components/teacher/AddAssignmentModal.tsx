@@ -95,8 +95,9 @@ const AddAssignmentModal = ({
     setValue("teacherId", userId);
     setValue("isFavorite", true);
     if (gradeId) {
+      setValue("subjectId", "");
       getSubjectByGradeId(gradeId).then((result: any) => {
-        if (!!result.data) {
+        if (result.data) {
           setSubjectList(result.data);
         }
       });
