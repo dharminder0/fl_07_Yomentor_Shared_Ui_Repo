@@ -31,7 +31,7 @@ import ProcessLoader from "../../screens/ProcessLoader";
 
 const UpdatePhoto = ({
   setUploadedFilesList = (value: any) => {},
-  userId = 0,
+  entityId = 0,
   mediaType = 1,
   entityType = 3,
   profileUrl = "",
@@ -75,20 +75,20 @@ const UpdatePhoto = ({
       setIsLoading(true);
       const payload: any = {
         entityTypeId: entityType,
-        entityId: userId,
+        entityId: entityId,
         bloblink: profileUrl,
       };
       deleteMediaFile(payload)
         .then((response: any) => {
           if (response.data.success) {
-            toast.show("Profile image deleted successfully", {
+            toast.show("Image deleted successfully", {
               type: "success",
               duration: 2000,
               placement: "top",
             });
             updateInfo(true);
           } else {
-            toast.show("Failed to delete profile image", {
+            toast.show("Failed to delete image", {
               type: "danger",
               duration: 2000,
               placement: "top",
@@ -101,7 +101,7 @@ const UpdatePhoto = ({
         })
         .catch((error: any) => {
           console.log(error);
-          toast.show("Failed to delete profile image", {
+          toast.show("Failed to delete image", {
             type: "danger",
             duration: 3000,
             placement: "top",
@@ -208,12 +208,26 @@ const UpdatePhoto = ({
     const fData: any = new FormData();
     fData.append("file", data);
     setIsLoading(true);
-    uploadFileToBlob(fData, 3).then((result: any) => {
-      if (result.data && result.data.message == "Upload success") {
-        setUploadedFilesList(result.data.data);
-        uploadMediaImage(result.data.data);
-      } else {
-        toast.show(result.data.message, {
+    uploadFileToBlob(fData, entityType)
+      .then((result: any) => {
+        if (result.data && result.data.message == "Upload success") {
+          setUploadedFilesList(result.data.data);
+          uploadMediaImage(result.data.data);
+        } else {
+          toast.show(result.data.message, {
+            type: "danger",
+            duration: 2000,
+            placement: "top",
+          });
+          setTimeout(() => {
+            setIsBrowseFile(false);
+            setIsLoading(false);
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.show(error, {
           type: "danger",
           duration: 2000,
           placement: "top",
@@ -222,32 +236,44 @@ const UpdatePhoto = ({
           setIsBrowseFile(false);
           setIsLoading(false);
         }, 1000);
-      }
-    });
+      });
   };
 
   const uploadMediaImage = (file: any) => {
     const payload: any = {
       entityTypeId: entityType,
       mediaTypeId: mediaType,
-      entityId: userId,
+      entityId: entityId,
       fileName: file?.fileName,
       bloblink: file?.fileLink,
     };
-    addMediaImage(payload).then((response: any) => {
-      if (response.data) {
-        toast.show("Profile image updated successfully", {
-          type: "success",
+    addMediaImage(payload)
+      .then((response: any) => {
+        if (response.data) {
+          toast.show("Profile image updated successfully", {
+            type: "success",
+            duration: 2000,
+            placement: "top",
+          });
+          updateInfo(true);
+        }
+        setTimeout(() => {
+          setIsBrowseFile(false);
+          setIsLoading(false);
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.show(error, {
+          type: "danger",
           duration: 2000,
           placement: "top",
         });
-        updateInfo(true);
-      }
-      setTimeout(() => {
-        setIsBrowseFile(false);
-        setIsLoading(false);
-      }, 1000);
-    });
+        setTimeout(() => {
+          setIsBrowseFile(false);
+          setIsLoading(false);
+        }, 1000);
+      });
   };
 
   return (

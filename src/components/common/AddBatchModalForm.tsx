@@ -101,13 +101,8 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
       paylaod.teacherId
     ) {
       setIsProcessLoader(true);
-      // console.log("paylaod");
-      // console.log(paylaod);
-      // console.log("data");
-      // console.log(data);
       addBatch(paylaod)
         .then((response: any) => {
-          // console.log("response", response.data);
           if (response.data && response.data?.response) {
             setIsPopupModalVisible(true);
             onClose();

@@ -42,7 +42,6 @@ const CreateBookRequest = ({
   const toast = useToast();
   const { height, width } = Dimensions.get("window");
   const [isProcessLoader, setIsProcessLoader] = useState(false);
-  const [isToggled, setIsToggled] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
@@ -68,7 +67,7 @@ const CreateBookRequest = ({
   useEffect(() => {
     if (dataToEdit && Object.keys(dataToEdit).length > 0) {
       const bookInfo: any = { ...dataToEdit };
-      setBookDetails(dataToEdit);
+      setBookDetails(bookInfo);
       setIsEditMode(true);
       reset({
         "id": bookInfo.id,
@@ -83,10 +82,11 @@ const CreateBookRequest = ({
 
   },[dataToEdit])
 
-  const handleGradeChange = (grade: any, subjectId = "") => {
+  const handleGradeChange = (grade: any, subjectId?: any) => {
     setSubjectList([]);
-    setValue("subjectId", subjectId);
-    setIsToggled(!isToggled);
+    if(!subjectId){
+      setValue("subjectId", "");
+    }
     getSubjectByGradeId(grade).then((result: any) => {
       if (result?.data && result.data.length > 0) {
         setSubjectList(result.data);
@@ -96,13 +96,11 @@ const CreateBookRequest = ({
 
   const onSubmit = (data: any) => {
     let paylaod: any = { ...data };
-    console.log("paylaod");
-    console.log(paylaod);
+    paylaod["userId"] = userId;
     if (paylaod.title && paylaod.author && paylaod.gradeId) {
       setIsProcessLoader(true);
-      upsertBookDetails(data)
+      upsertBookDetails(paylaod)
         .then((response: any) => {
-          console.log("response", response.data);
           if (response.data && response.data?.success) {
             toast.show(
               isEditMode ? "The book info updated" : "A new book created",
@@ -221,14 +219,11 @@ const CreateBookRequest = ({
                       name="gradeId"
                       rules={{ required: true }}
                       render={({ field }) => (
-                        
                         <SelectModal
-                        {...field}
                           defaultValue={{
                             name: bookDetails.gradeName,
                             id: bookDetails.gradeId,
                           }}
-                          value={field.value}
                           fieldError={errors.gradeId ? true : false}
                           data={classList}
                           placeholder="Class"
