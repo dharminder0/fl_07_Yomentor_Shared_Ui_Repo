@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
@@ -22,7 +22,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../../assets/themes/YoImages";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import CreateBookRequest from "./CreateBookRequest";
@@ -54,9 +54,15 @@ const BooksList = () => {
   const [loadMoreTimeout, setLoadMoreTimeout] = useState<any>(null);
   //   let loadMoreTimeout: any = null;
 
-  useEffect(() => {
-    getBooksData();
-  }, [refreshLoader, selectedActionTab, isBottomLoader]);
+  useFocusEffect(
+    useCallback(() => {
+      getBooksData();
+    }, [refreshLoader, selectedActionTab, isBottomLoader])
+  );
+  
+  // useEffect(() => {
+  //   getBooksData();
+  // }, [refreshLoader, selectedActionTab, isBottomLoader]);
 
   const getBooksData = (searchedText?: string, index?: number) => {
     setIsLoading(true);
@@ -79,7 +85,6 @@ const BooksList = () => {
           setBooksList([]);
         }
         if (response.data && response.data.length > 0) {
-          //   setBooksList((prevList: any) => [...prevList, ...response.data]);
           setBooksList((prevList: any) => {
             const filteredData = response.data.filter((newItem: any) => {
               return !prevList.some((item: any) => item.id === newItem.id);
@@ -137,7 +142,12 @@ const BooksList = () => {
   };
 
   const renderItem = ({ item, index }: any) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("BookDetails", { selectedBookDetails: item })}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() =>
+        navigation.navigate("BookDetails", { selectedBookDetails: item, selectedActionTab: selectedActionTab })
+      }
+    >
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Image
@@ -160,8 +170,16 @@ const BooksList = () => {
                 <Text style={{ fontSize: 12 }}>
                   {moment(item?.createDate).format("MMM DD, YYYY")}
                 </Text>
-                {selectedActionTab === "booksList" && item?.statusName && (
-                  <Text style={{ fontSize: 12, color: item.status == 1 || item.status == 2 ? 'green':  'red' }}>{item?.statusName}</Text>
+                {selectedActionTab == "booksList" && item?.statusName && (
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color:
+                        item.status == 1 || item.status == 2 ? "green" : "red",
+                    }}
+                  >
+                    {item?.statusName}
+                  </Text>
                 )}
               </View>
             </View>
@@ -175,8 +193,14 @@ const BooksList = () => {
 
             {item?.gradeName && (
               <View style={[cardStyle.row, common.mb5]}>
-                <FontAwesome5Icon name="laptop" size={10} />
+                <Icon name="laptop" size={10} />
                 <Text style={common.rText}> {item?.gradeName}</Text>
+              </View>
+            )}
+            {item?.subjectName && (
+              <View style={[cardStyle.row, common.mb5]}>
+                <Icon name="book" size={10} />
+                <Text style={common.rText}> {item?.subjectName}</Text>
               </View>
             )}
           </View>
@@ -230,7 +254,7 @@ const BooksList = () => {
             }}
           >
             <Button
-              title=" Create Book"
+              title="Add a Book to Share"
               onPress={() => setModalVisible(true)}
               icon={
                 <MaterialCommunityIcons
@@ -242,7 +266,8 @@ const BooksList = () => {
               buttonStyle={[
                 btnStyle.outline,
                 {
-                  width: 100,
+                  width: 150,
+                  height: 30
                 },
               ]}
               titleStyle={[btnStyle.outlineTitle, common.fs12]}
@@ -313,11 +338,30 @@ const BooksList = () => {
         ) : isLoading ? (
           <Loading />
         ) : (
-          <NoDataView />
+          <View
+            style={{
+              height: 500,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ textAlign: "center", lineHeight: 22 }}>
+            {selectedActionTab === "booksList" &&
+                "No avaiable books"}
+              {selectedActionTab === "requests" &&
+                "You haven't requested any books yet. Start exploring the available book list and request a book as per your need."}
+              {selectedActionTab === "offers" &&
+                "Share your books with others by creating an offer. Let fellow users borrow your books and help spread knowledge."}
+            </Text>
+          </View>
         )}
       </View>
 
-      <CreateBookRequest userId={userInfo?.id} isModalVisible={isModalVisible} onClose={onCloseUpdate} />
+      <CreateBookRequest
+        userId={userInfo?.id}
+        isModalVisible={isModalVisible}
+        onClose={onCloseUpdate}
+      />
     </View>
   );
 };

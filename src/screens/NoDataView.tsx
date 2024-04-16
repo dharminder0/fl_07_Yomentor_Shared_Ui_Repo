@@ -6,7 +6,7 @@ const NoDataView = ({ message = "No Records Available" }) => {
   return (
     <View
       style={{
-        height: "94%",
+        height: "85%",
         justifyContent: "center",
         alignItems: "center",
       }}
