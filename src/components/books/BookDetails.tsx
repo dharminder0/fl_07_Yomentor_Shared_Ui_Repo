@@ -13,7 +13,7 @@ import { Card } from "@rneui/themed";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import HeaderView from "../common/HeaderView";
 import moment from "moment";
-import { getBookDetailsById } from "../../apiconfig/SharedApis";
+import { deleteBookById, getBookDetailsById } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { getUserInfo } from "../../shared/sharedDetails";
@@ -21,17 +21,25 @@ import { useThemeColor } from "../../assets/themes/useThemeColor";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import { Button, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { YoImages } from "../../assets/themes/YoImages";
 import CreateBookRequest from "./CreateBookRequest";
 import UpdatePhoto from "../common/UpdatePhoto";
+import { useToast } from "react-native-toast-notifications";
+import ConfirmationPopup from "../common/ConfirmationPopup";
+import { useNavigation } from "@react-navigation/native";
 
 const BookDetails = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
   const image: any = YoImages();
+  const toast = useToast();
+  const navigation: any = useNavigation();
   const selectedBookDetails = route?.params?.selectedBookDetails ?? {};
+  const selectedActionTab = route?.params?.selectedActionTab ?? "";
   const [bookDetails, setBookDetails] = useState<any>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleteModalVissible, setIsDeleteModalVissible] =
+    useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const userInfo: any = getUserInfo();
   const YoColors = useThemeColor();
@@ -67,14 +75,41 @@ const BookDetails = ({ route }: any) => {
     if (isUpdated) {
       getDetails();
     }
-    // setIsBasicModal(false);
-    // setModalVisible(false);
+  };
+
+  const handleBookDelete = () => {
+    deleteBookById(selectedBookDetails.id)
+      .then((response: any) => {
+        setIsDeleteModalVissible(false);
+        if (response) {
+          toast.show("The book has been deleted successfully", {
+            type: "success",
+            duration: 2000,
+            placement: "top",
+          });
+        } else {
+          toast.show("Deleting book failed", {
+            type: "danger",
+            duration: 2000,
+            placement: "top",
+          });
+        }
+        navigation.navigate("BooksList");
+      })
+      .catch((error: any) => {
+        setIsDeleteModalVissible(false);
+        toast.show("Deleting book failed", {
+          type: "danger",
+          duration: 2000,
+          placement: "top",
+        });
+      });
   };
 
   return (
     <>
       <HeaderView title={selectedBookDetails?.title} />
-      <View style={[{ padding: 20}]}>
+      <View style={[{ padding: 20 }]}>
         {isLoading ? (
           <Loading />
         ) : bookDetails && Object.keys(bookDetails).length > 0 ? (
@@ -86,9 +121,8 @@ const BookDetails = ({ route }: any) => {
                 alignItems: "center",
                 marginBottom: 25,
                 paddingBottom: 20,
-                borderBottomWidth:1,
-                borderColor: '#ccc'
-
+                borderBottomWidth: 1,
+                borderColor: "#ccc",
               }}
             >
               <Image
@@ -100,7 +134,7 @@ const BookDetails = ({ route }: any) => {
                 style={{
                   width: 70,
                   height: 70,
-                  borderRadius: 6
+                  borderRadius: 6,
                 }}
               />
               <View
@@ -126,14 +160,32 @@ const BookDetails = ({ route }: any) => {
               </View>
             </View>
             <View style={[cardStyle.j_row, { margin: 0 }]}>
-                <View
-                  style={{
-                    width: width - 40,
-                  }}
-                >
-                  <View style={[cardStyle.j_row]}>
-                    <Text style={common.title}>{bookDetails?.title}</Text>
-                    <View style={common.row}>
+              <View
+                style={{
+                  width: width - 40,
+                }}
+              >
+                <View style={[cardStyle.j_row]}>
+                  <Text style={common.title}>{bookDetails?.title}</Text>
+                  <View style={common.row}>
+                      {selectedActionTab == "offers" && (
+                        <Button
+                          onPress={() => setModalVisible(true)}
+                          icon={
+                            <MaterialCommunityIcons
+                              name="delete"
+                              size={16}
+                              color={YoColors.primary}
+                              onPress={() => setIsDeleteModalVissible(true)}
+                            />
+                          }
+                          buttonStyle={[
+                            btnStyle.btnEdit,
+                            { backgroundColor: "transparent" },
+                          ]}
+                          containerStyle={{ padding: 0, marginHorizontal: 5 }}
+                        />
+                      )}
                       <Button
                         onPress={() => setModalVisible(true)}
                         icon={
@@ -144,81 +196,42 @@ const BookDetails = ({ route }: any) => {
                             onPress={() => setModalVisible(true)}
                           />
                         }
-                        buttonStyle={[btnStyle.btnEdit, {backgroundColor: 'transparent'}]}
-                        containerStyle={{ padding: 0, marginHorizontal: 5 }}
+                        buttonStyle={[
+                          btnStyle.btnEdit,
+                          { backgroundColor: "transparent" },
+                        ]}
+                        containerStyle={{ padding: 0, marginHorizontal: 10 }}
                       />
                       <Text style={[common.rText]}>
                         {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
                       </Text>
                     </View>
-                  </View>
-
-                  {bookDetails?.author && (
-                    <View style={[cardStyle.row, common.mb5]}>
-                      <Icon name="user" size={12} />
-                      <Text style={common.rText}> {bookDetails?.author}</Text>
-                    </View>
-                  )}
-
-                  {bookDetails?.gradeName && (
-                    <View style={[cardStyle.row, common.mb5]}>
-                      <FontAwesome5Icon name="laptop" size={10} />
-                      <Text style={common.rText}>
-                        {" "}
-                        {bookDetails?.gradeName}
-                      </Text>
-                    </View>
-                  )}
                 </View>
-              </View>
-            {/* <Card containerStyle={cardStyle.container}>
-              <View style={[cardStyle.j_row, { margin: 0 }]}>
-                <View
-                  style={{
-                    width: width - 40,
-                  }}
-                >
-                  <View style={[cardStyle.j_row]}>
-                    <Text style={common.title}>{bookDetails?.title}</Text>
-                    <View style={common.row}>
-                      <Button
-                        onPress={() => setModalVisible(true)}
-                        icon={
-                          <FontAwesomeIcon
-                            name="pencil-alt"
-                            size={12}
-                            color={YoColors.primary}
-                            onPress={() => setModalVisible(true)}
-                          />
-                        }
-                        buttonStyle={[btnStyle.btnEdit]}
-                        containerStyle={{ padding: 0 }}
-                      />
-                      <Text style={[common.rText, common.ph10]}>
-                        {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
-                      </Text>
-                    </View>
+
+                {bookDetails?.author && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Icon name="user" size={12} />
+                    <Text style={common.rText}> {bookDetails?.author}</Text>
                   </View>
+                )}
 
-                  {bookDetails?.author && (
-                    <View style={[cardStyle.row, common.mb5]}>
-                      <Icon name="user" size={12} />
-                      <Text style={common.rText}> {bookDetails?.author}</Text>
-                    </View>
-                  )}
-
-                  {bookDetails?.gradeName && (
-                    <View style={[cardStyle.row, common.mb5]}>
-                      <FontAwesome5Icon name="laptop" size={10} />
-                      <Text style={common.rText}>
-                        {" "}
-                        {bookDetails?.gradeName}
-                      </Text>
-                    </View>
-                  )}
-                </View>
+                {bookDetails?.gradeName && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Icon name="laptop" size={10} />
+                    <Text style={common.rText}> {bookDetails?.gradeName}</Text>
+                  </View>
+                )}
+                {bookDetails?.subjectName && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Icon name="book" size={10} />
+                    <Text style={common.rText}>
+                      {" "}
+                      {bookDetails?.subjectName}
+                    </Text>
+                  </View>
+                )}
               </View>
-            </Card> */}
+            </View>
           </>
         ) : (
           <NoDataView />
@@ -229,6 +242,12 @@ const BookDetails = ({ route }: any) => {
         isModalVisible={isModalVisible}
         dataToEdit={bookDetails}
         onClose={(value: boolean) => onCloseUpdate(value)}
+      />
+      <ConfirmationPopup
+        message="Are you sure to want to delete this book?"
+        onSubmit={handleBookDelete}
+        isVisible={isDeleteModalVissible}
+        setIsVisible={setIsDeleteModalVissible}
       />
     </>
   );
