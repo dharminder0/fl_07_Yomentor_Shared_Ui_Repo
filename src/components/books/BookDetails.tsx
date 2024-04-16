@@ -167,8 +167,7 @@ const BookDetails = ({ route }: any) => {
               >
                 <View style={[cardStyle.j_row]}>
                   <Text style={common.title}>{bookDetails?.title}</Text>
-                  <View>
-                    <View style={common.row}>
+                  <View style={common.row}>
                       {selectedActionTab == "offers" && (
                         <Button
                           onPress={() => setModalVisible(true)}
@@ -207,38 +206,6 @@ const BookDetails = ({ route }: any) => {
                         {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
                       </Text>
                     </View>
-                    {selectedActionTab == "booksList" &&
-                      bookDetails?.statusName && (
-                        <View style={{ alignItems: "flex-end" }}>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color:
-                                bookDetails.status == 1 ||
-                                bookDetails.status == 2
-                                  ? "green"
-                                  : "red",
-                            }}
-                          >
-                            {bookDetails?.statusName}
-                          </Text>
-                        </View>
-                      )}
-                    {selectedActionTab == "offers" && (
-                      <View style={{ alignItems: "flex-end" }}>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: bookDetails.available ? "green" : "red",
-                          }}
-                        >
-                          {bookDetails.available
-                            ? "Available"
-                            : "Not available"}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
                 </View>
 
                 {bookDetails?.author && (
