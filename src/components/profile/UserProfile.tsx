@@ -1,6 +1,8 @@
 import {
+  Alert,
   Dimensions,
   Image,
+  Linking,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -13,7 +15,12 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 import { getUsersDetails } from "../../apiconfig/SharedApis";
-import { getUserInfo, saveAsyncData } from "../../shared/sharedDetails";
+import {
+  getLocation,
+  getUserInfo,
+  requestLocationPermission,
+  saveAsyncData,
+} from "../../shared/sharedDetails";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -27,6 +34,7 @@ import BasicInfoUpdateModal from "./BasicInfoUpdateModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
+import Geolocation from "@react-native-community/geolocation";
 
 const UserProfile = () => {
   const { height } = Dimensions.get("window");
@@ -41,10 +49,53 @@ const UserProfile = () => {
   const [isBasicModal, setIsBasicModal] = useState<boolean>(false);
   const [isSpecilityModal, setIsSpecilityModal] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<any>({});
+  const [location, setLocation] = useState<any>({});
 
   useEffect(() => {
+    requestLocationPermission();
+    // getLocationValues();
     getUserDetails();
   }, [userInfo?.id]);
+
+  // const getLocationValues = () => {
+  //   Geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const { longitude, latitude } = position.coords;
+  //       console.log("Longitude:", longitude);
+  //       console.log("Latitude:", latitude);
+  //       setLocation({ longitude: longitude, latitude: latitude });
+  //     },
+  //     (error) => {
+  //       console.log("Error getting location:", error.message);
+  //       if (error.code === 2) {
+  //         Alert.alert(
+  //           "Turn on Location",
+  //           "Please enable location services to use this feature.",
+  //           [
+  //             {
+  //               text: "Cancel",
+  //               style: "cancel",
+  //             },
+  //             {
+  //               text: "Open Settings",
+  //               onPress: () => Linking.openSettings(),
+  //             },
+  //           ],
+  //           { cancelable: false }
+  //         );
+  //       }
+  //     },
+  //     { enableHighAccuracy: false, timeout: 3000, maximumAge: 1000 }
+  //   );
+  // };
+
+  getLocation()
+    .then((location) => {
+      console.log(location);
+    })
+    .catch((error) => {
+      console.log("Error getting location:", error.message);
+    });
 
   const updateInfo = (isUpdated: boolean) => {
     if (isUpdated) {

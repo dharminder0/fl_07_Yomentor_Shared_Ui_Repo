@@ -111,8 +111,8 @@ const UpdatePhoto = ({
         });
     } else if (type === "image") {
       ImagePicker.openPicker({
-        width: 100,
-        height: 100,
+        height: 512,
+        width: 512,
         cropping: true,
         mediaType: "photo",
         // compressImageMaxWidth: 200,
@@ -126,10 +126,9 @@ const UpdatePhoto = ({
         // cropperStatusBarTranslucent: true, // Make the status bar translucent on Android
         // cropperToolbarWidgetTitle: 'Done', // Change the title of the toolbar button
         // cropperToolbarCancelTitle: 'Cancel', // Change the title of the cancel button
-        // freeStyleCropEnabled: true, // Enable free-style crop
+        freeStyleCropEnabled: true, // Enable free-style crop
       })
         .then((result) => {
-          console.log(result);
           if (result && result.path) {
             payload = {
               fileCopyUri: null,
@@ -144,22 +143,10 @@ const UpdatePhoto = ({
         .catch((error) => {
           console.log(error);
         });
-      // openPicker(options).then((result: any) => {
-      //   if (result && result.path) {
-      //     payload = {
-      //       fileCopyUri: null,
-      //       name: result.modificationDate,
-      //       size: result.size,
-      //       type: result.mime,
-      //       uri: result.path,
-      //     };
-      //     uploadFileToDB(payload);
-      //   }
-      // });
     } else if (type === "camera") {
       ImagePicker.openCamera({
-        width: 100,
-        height: 100,
+        height: 512,
+        width: 512,
         cropping: true,
         mediaType: "photo",
         //cropperCircleOverlay: true,
@@ -171,10 +158,9 @@ const UpdatePhoto = ({
         // cropperStatusBarTranslucent: true, // Make the status bar translucent on Android
         // cropperToolbarWidgetTitle: 'Done', // Change the title of the toolbar button
         // cropperToolbarCancelTitle: 'Cancel', // Change the title of the cancel button
-        // freeStyleCropEnabled: true, // Enable free-style crop
+        freeStyleCropEnabled: true, // Enable free-style crop
       })
         .then((result) => {
-          console.log(result);
           if (result && result.path) {
             payload = {
               fileCopyUri: null,
@@ -189,18 +175,6 @@ const UpdatePhoto = ({
         .catch((error) => {
           console.log(error);
         });
-      // openCamera(options).then((result: any) => {
-      //   if (result && result.path) {
-      //     payload = {
-      //       fileCopyUri: null,
-      //       name: result.modificationDate,
-      //       size: result.size,
-      //       type: result.mime,
-      //       uri: result.path,
-      //     };
-      //     uploadFileToDB(payload);
-      //   }
-      // });
     }
   };
 

@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform } from "react-native";
+import Geolocation from "@react-native-community/geolocation";
+import { Platform, PermissionsAndroid, Permission } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
+import configData from "../../config.json";
 
 export const saveAsyncData = async (key: string, data: any) => {
   try {
@@ -297,4 +299,61 @@ export const downloadFile = (file: any, setLoading: any) => {
 const getFileExtension = (fileUrl: any) => {
   // To get the file extension
   return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
+};
+
+export async function requestLocationPermission() {
+  if (Platform.OS === "android") {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Location Permission",
+          message:
+            "This app needs access to your location to provide relevant information.",
+          buttonPositive: "OK",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Location permission granted");
+      } else {
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+}
+
+export const getLocation = () => {
+  return new Promise((resolve, reject) => {
+    Geolocation.getCurrentPosition(
+      async (position) => {
+        const { longitude, latitude } = position.coords;
+        // resolve({ longitude, latitude });
+        // getGeocodeFromCoordinates(latitude, longitude);
+        // const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${configData.MapBoxToken}`;
+
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data.features && data.features.length > 0) {
+            const address = data.features[1]?.place_name;
+            // console.log("address");
+            // console.log(address);
+            resolve(address);
+          } else {
+            throw new Error("Unable to retrieve address");
+          }
+        } catch (error) {
+          console.error("Error fetching address:", error);
+          throw error;
+        }
+      },
+      (error) => {
+        reject(error);
+      },
+      { enableHighAccuracy: false, timeout: 5000, maximumAge: 1000 }
+    );
+  });
 };
