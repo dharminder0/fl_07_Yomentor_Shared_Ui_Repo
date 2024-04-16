@@ -132,7 +132,7 @@ const UserProfile = () => {
               }}
             >
               <UpdatePhoto
-                userId={userInfo?.id}
+                entityId={userInfo?.id}
                 mediaType={1}
                 entityType={3}
                 profileUrl={userDetails?.image}

@@ -24,6 +24,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { YoImages } from "../../assets/themes/YoImages";
 import CreateBookRequest from "./CreateBookRequest";
+import UpdatePhoto from "../common/UpdatePhoto";
 
 const BookDetails = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
@@ -41,7 +42,6 @@ const BookDetails = ({ route }: any) => {
 
   const getDetails = () => {
     setIsLoading(true);
-    console.log("book id", selectedBookDetails.id);
     getBookDetailsById(selectedBookDetails.id)
       .then((response: any) => {
         setBookDetails({});
@@ -63,15 +63,34 @@ const BookDetails = ({ route }: any) => {
     }
   };
 
+  const updateInfo = (isUpdated: boolean) => {
+    if (isUpdated) {
+      getDetails();
+    }
+    // setIsBasicModal(false);
+    // setModalVisible(false);
+  };
+
   return (
     <>
       <HeaderView title={selectedBookDetails?.title} />
-      <View style={[common.container, common.mtop10]}>
+      <View style={[{ padding: 20}]}>
         {isLoading ? (
           <Loading />
         ) : bookDetails && Object.keys(bookDetails).length > 0 ? (
-          <Card containerStyle={cardStyle.container}>
-            <View style={[cardStyle.j_row, { margin: 0 }]}>
+          <>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 25,
+                paddingBottom: 20,
+                borderBottomWidth:1,
+                borderColor: '#ccc'
+
+              }}
+            >
               <Image
                 source={
                   bookDetails?.imageUrl
@@ -79,55 +98,128 @@ const BookDetails = ({ route }: any) => {
                     : image.DefaultBook
                 }
                 style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 6,
+                  width: 70,
+                  height: 70,
+                  borderRadius: 6
                 }}
               />
               <View
                 style={{
-                  width: width - 95,
-                  paddingStart: 10,
+                  height: 36,
+                  width: 36,
+                  borderRadius: 18,
+                  right: (width - 40) / 2 - 45,
+                  top: 45,
+                  position: "absolute",
+                  backgroundColor: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <View style={[cardStyle.j_row]}>
-                  <Text style={common.title}>{bookDetails?.title}</Text>
-                  <View style={common.row}>
-                    <Button
-                      onPress={() => setModalVisible(true)}
-                      icon={
-                        <FontAwesomeIcon
-                          name="pencil-alt"
-                          size={12}
-                          color={YoColors.primary}
-                          onPress={() => setModalVisible(true)}
-                        />
-                      }
-                      buttonStyle={[btnStyle.btnEdit]}
-                      containerStyle={{ padding: 0 }}
-                    />
-                    <Text style={[common.rText, common.ph10]}>
-                      {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
-                    </Text>
-                  </View>
-                </View>
-
-                {bookDetails?.author && (
-                  <View style={[cardStyle.row, common.mb5]}>
-                    <Icon name="user" size={12} />
-                    <Text style={common.rText}> {bookDetails?.author}</Text>
-                  </View>
-                )}
-
-                {bookDetails?.gradeName && (
-                  <View style={[cardStyle.row, common.mb5]}>
-                    <FontAwesome5Icon name="laptop" size={10} />
-                    <Text style={common.rText}> {bookDetails?.gradeName}</Text>
-                  </View>
-                )}
+                <UpdatePhoto
+                  entityId={bookDetails?.id}
+                  mediaType={1}
+                  entityType={4}
+                  profileUrl={bookDetails?.imageUrl}
+                  updateInfo={(value) => updateInfo(value)}
+                />
               </View>
             </View>
-          </Card>
+            <View style={[cardStyle.j_row, { margin: 0 }]}>
+                <View
+                  style={{
+                    width: width - 40,
+                  }}
+                >
+                  <View style={[cardStyle.j_row]}>
+                    <Text style={common.title}>{bookDetails?.title}</Text>
+                    <View style={common.row}>
+                      <Button
+                        onPress={() => setModalVisible(true)}
+                        icon={
+                          <FontAwesomeIcon
+                            name="pencil-alt"
+                            size={12}
+                            color={YoColors.primary}
+                            onPress={() => setModalVisible(true)}
+                          />
+                        }
+                        buttonStyle={[btnStyle.btnEdit, {backgroundColor: 'transparent'}]}
+                        containerStyle={{ padding: 0, marginHorizontal: 5 }}
+                      />
+                      <Text style={[common.rText]}>
+                        {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {bookDetails?.author && (
+                    <View style={[cardStyle.row, common.mb5]}>
+                      <Icon name="user" size={12} />
+                      <Text style={common.rText}> {bookDetails?.author}</Text>
+                    </View>
+                  )}
+
+                  {bookDetails?.gradeName && (
+                    <View style={[cardStyle.row, common.mb5]}>
+                      <FontAwesome5Icon name="laptop" size={10} />
+                      <Text style={common.rText}>
+                        {" "}
+                        {bookDetails?.gradeName}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            {/* <Card containerStyle={cardStyle.container}>
+              <View style={[cardStyle.j_row, { margin: 0 }]}>
+                <View
+                  style={{
+                    width: width - 40,
+                  }}
+                >
+                  <View style={[cardStyle.j_row]}>
+                    <Text style={common.title}>{bookDetails?.title}</Text>
+                    <View style={common.row}>
+                      <Button
+                        onPress={() => setModalVisible(true)}
+                        icon={
+                          <FontAwesomeIcon
+                            name="pencil-alt"
+                            size={12}
+                            color={YoColors.primary}
+                            onPress={() => setModalVisible(true)}
+                          />
+                        }
+                        buttonStyle={[btnStyle.btnEdit]}
+                        containerStyle={{ padding: 0 }}
+                      />
+                      <Text style={[common.rText, common.ph10]}>
+                        {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {bookDetails?.author && (
+                    <View style={[cardStyle.row, common.mb5]}>
+                      <Icon name="user" size={12} />
+                      <Text style={common.rText}> {bookDetails?.author}</Text>
+                    </View>
+                  )}
+
+                  {bookDetails?.gradeName && (
+                    <View style={[cardStyle.row, common.mb5]}>
+                      <FontAwesome5Icon name="laptop" size={10} />
+                      <Text style={common.rText}>
+                        {" "}
+                        {bookDetails?.gradeName}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            </Card> */}
+          </>
         ) : (
           <NoDataView />
         )}
