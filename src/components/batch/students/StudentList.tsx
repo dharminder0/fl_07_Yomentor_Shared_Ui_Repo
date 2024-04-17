@@ -17,12 +17,14 @@ import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { getStudentsListByBatchId } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
+import { useNavigation } from "@react-navigation/native";
 
 const StudentList = ({ batchInfo }: any) => {
   const [selectedBatch, setSelectedBatch] = useState(batchInfo ?? {});
   const [isLoading, setIsLoading] = useState(false);
   const [studentsList, setStudentsList] = useState([]);
   const YoColors = useThemeColor();
+  const navigation: any = useNavigation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -116,18 +118,28 @@ const StudentList = ({ batchInfo }: any) => {
             />
             <Text style={common.rText}> Assessments</Text>
           </View>
-          <View style={cardStyle.row}>
-            <Icon name="history" size={12} color={YoColors.primary} />
-            <Text style={common.rText}> Att. History</Text>
-          </View>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() =>
+              navigation.navigate("StudentAttendanceDetails", {
+                selectedStudent: item,
+                selectedBatch: selectedBatch
+              })
+            }
+          >
+            <View style={cardStyle.row}>
+              <Icon name="history" size={12} color={YoColors.primary} />
+              <Text style={common.rText}> Att. History</Text>
+            </View>
+          </TouchableOpacity>
           {/* <View style={cardStyle.row}>
             <Ionicons name="person" size={12} color={YoColors.primary} />
             <Text style={common.rText}> Profile</Text>
           </View> */}
-          <View style={cardStyle.row}>
+          {/* <View style={cardStyle.row}>
             <Ionicons name="chatbubble" size={12} color={YoColors.primary} />
             <Text style={common.rText}> Chat</Text>
-          </View>
+          </View> */}
         </View>
       </Card>
     </TouchableOpacity>

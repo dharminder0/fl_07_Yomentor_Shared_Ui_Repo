@@ -145,9 +145,8 @@ const BooksList = () => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() =>
-        navigation.navigate("BookDetails", {
-          selectedBookDetails: item,
-          selectedActionTab: selectedActionTab,
+        navigation.navigate(selectedActionTab === 'offers' ? "OffersBookDetails":"BookDetails", {
+          selectedBookDetails: item
         })
       }
     >
@@ -175,7 +174,7 @@ const BooksList = () => {
                 {item?.statusName}
               </Text>
             )}
-            {selectedActionTab == "offers" && (
+            {/* {selectedActionTab == "offers" && (
               <Text
                 style={{
                   fontSize: 12,
@@ -185,7 +184,7 @@ const BooksList = () => {
               >
                 {item.available ? "Available" : "Not available"}
               </Text>
-            )}
+            )} */}
           </View>
           <View
             style={{
