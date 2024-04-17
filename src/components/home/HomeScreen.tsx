@@ -11,7 +11,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { common } from "../../assets/styles/Common";
 import SlideView from "../common/SlideView";
 import { getUserInfo } from "../../shared/sharedDetails";
-import { getBatchListbyUserid, getUsersList } from "../../apiconfig/SharedApis";
+import {
+  getBatchListbyUserid,
+  getSkilsList,
+  getUsersList,
+} from "../../apiconfig/SharedApis";
 import TopTeachers from "./TopTeachers";
 import BatchSlideCard from "../common/BatchSlideCard";
 import { Button } from "react-native-elements";
@@ -22,6 +26,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Welcome from "../common/Welcome";
 import AddBatchModalForm from "../common/AddBatchModalForm";
 import useStore from "../../store/useStore";
+import TopSkills from "../skillsTest/TopSkills";
 
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -35,6 +40,7 @@ const HomeScreen = () => {
   const [ongoingBatchList, setOngoingBatchList] = useState([]);
   const [shortlisted, setShortlisted] = useState([]);
   const [teacherList, setTeacherList] = useState<any>([]);
+  const [skillsList, setSkillsList] = useState<any>([]);
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
 
   useFocusEffect(
@@ -45,6 +51,7 @@ const HomeScreen = () => {
       getOpenBatchDatabyTeacherId(2);
       getOpenBatchDatabyTeacherId(3);
       getTeacherList();
+      getSkillList();
     }, [userInfo?.id, refreshLoader])
   );
 
@@ -52,7 +59,7 @@ const HomeScreen = () => {
     setTimeout(() => {
       setIsContentLoaded(true);
     }, 3000);
-  },[openBatchList, ongoingBatchList, shortlisted])
+  }, [openBatchList, ongoingBatchList, shortlisted]);
 
   const getOpenBatchDatabyTeacherId = (statusId: number) => {
     setIsLoading(true);
@@ -112,6 +119,25 @@ const HomeScreen = () => {
         setTeacherList([]);
         if (response.data && response.data.length > 0) {
           setTeacherList(response.data);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching :", error);
+      });
+  };
+
+  const getSkillList = () => {
+    const payload: any = {
+      gradeId: 0,
+      subjectId: !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId,
+      pageSize: 5,
+      pageIndex: 1,
+    };
+    getSkilsList(payload)
+      .then((response: any) => {
+        setSkillsList([]);
+        if (response.data && response.data.length > 0) {
+          setSkillsList(response.data);
         }
         setTimeout(() => {
           setMainIsLoading(false);
@@ -203,13 +229,14 @@ const HomeScreen = () => {
             </>
           )}
 
-          {isContentLoaded && openBatchList?.length === 0 &&
+          {isContentLoaded &&
+            openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
             userInfo?.type === 1 && (
               <View
-                // style={{
-                //   height: Platform.OS === "ios" ? height - 185 : height - 135,
-                // }}
+              // style={{
+              //   height: Platform.OS === "ios" ? height - 185 : height - 135,
+              // }}
               >
                 <Welcome
                   userType={userInfo?.type}
@@ -218,14 +245,15 @@ const HomeScreen = () => {
               </View>
             )}
 
-          {isContentLoaded && openBatchList?.length === 0 &&
+          {isContentLoaded &&
+            openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
             shortlisted?.length === 0 &&
             userInfo?.type === 3 && (
               <View
-                // style={{
-                //   height: Platform.OS === "ios" ? height - 185 : height - 135,
-                // }}
+              // style={{
+              //   height: Platform.OS === "ios" ? height - 185 : height - 135,
+              // }}
               >
                 <Welcome
                   userType={userInfo?.type}
@@ -237,10 +265,14 @@ const HomeScreen = () => {
           {userInfo?.type === 3 && teacherList && teacherList?.length > 0 && (
             <TopTeachers title="Top Teachers" data={teacherList} />
           )}
+
+          {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && (
+            <TopSkills title="Top Skills" data={skillsList} />
+          )}
         </>
       )}
 
-      <AddBatchModalForm userId={userInfo?.id} onClose={onCloseUpdate} /> 
+      <AddBatchModalForm userId={userInfo?.id} onClose={onCloseUpdate} />
     </ScrollView>
   );
 };

@@ -172,7 +172,7 @@ export const BottomNavigation = () => {
           );
         },
         headerShown: true,
-        tabBarItemStyle: { paddingTop: 5 },
+        tabBarItemStyle: { paddingTop: 5, paddingBottom: 3 },
         tabBarActiveTintColor: YoColors.primary,
         headerLeftContainerStyle: { paddingStart: 12 },
         headerTitleAlign: "center",

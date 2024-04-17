@@ -1,30 +1,32 @@
 import {
   Dimensions,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import { getGradeList, upsertUserInfo } from "../../apiconfig/SharedApis";
+import {
+  getAddress,
+  getStates,
+  upsertAddress,
+} from "../../apiconfig/SharedApis";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
+import { getLocation } from "../../shared/sharedDetails";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddressUpdateModal = ({
-  isBasicModal = false,
+  isAddressModal = false,
   closeModal = (value: boolean) => {},
-  dataToEdit = {},
+  userId = 0,
 }) => {
   const YoColors = useThemeColor();
 
@@ -32,15 +34,9 @@ const AddressUpdateModal = ({
 
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [dataToPreset, setDataToPreset]: any = useState(dataToEdit);
-  const [gradeList, setGradeList]: any = useState([]);
-
-  const genderOptions = [
-    { name: "Male", id: "male" },
-    { name: "Female", id: "female" },
-    { name: "Other", id: "other" },
-  ];
+  const [stateList, setStateList] = useState<any>([]);
+  const [location, setLocation] = useState<any>({});
+  const [userAddress, setUserAddress] = useState<any>();
 
   const {
     control,
@@ -56,56 +52,101 @@ const AddressUpdateModal = ({
     reset();
   };
 
-  useEffect(() => {
-    getGradeList().then((result: any) => {
-      setGradeList([]);
-      if (result.data && result.data.length > 0) {
-        setGradeList(result.data);
+  useFocusEffect(
+    useCallback(() => {
+      getAddressDetail();
+      getStateList();
+    }, [])
+  );
+
+  const getAddressDetail = async () => {
+    getAddress(userId).then((result: any) => {
+      if (!!result.data) {
+        setUserAddress(result.data);
       }
     });
+  };
 
+  useEffect(() => {
     reset({
-      id: dataToPreset.id,
-      firstName: dataToPreset.firstName,
-      lastName: dataToPreset.lastName,
-      phone: dataToPreset.phone,
-      email: dataToPreset.email,
-      type: dataToPreset.type,
-      dateOfBirth: new Date(dataToPreset.dateOfBirth),
+      id: userAddress?.id,
+      address1: userAddress?.address1,
+      city: userAddress?.city,
+      stateId: userAddress?.stateId,
+      pincode: userAddress?.pincode,
+      latitude: userAddress?.latitude,
+      longitude: userAddress?.longitude,
     });
-  }, []);
+  }, [userAddress]);
+
+  const getCurrentLocation = () => {
+    setIsProcessLoader(true);
+    getLocation()
+      .then((location: any) => {
+        setLocation(location);
+        const fetchState: any = stateList.find(
+          (item: any) => item.name == location.state
+        );
+        reset({
+          address1: location.place,
+          city: location.city,
+          pincode: location.pincode,
+          state: location.state,
+          stateId: fetchState?.id,
+        });
+
+        setTimeout(() => {
+          setIsProcessLoader(false);
+        }, 500);
+      })
+      .catch((error) => {
+        console.log("Error getting location:", error);
+        setTimeout(() => {
+          setIsProcessLoader(false);
+        }, 1000);
+      });
+  };
+
+  const getStateList = () => {
+    getStates().then((response: any) => {
+      if (response.data) {
+        setStateList(response.data);
+      }
+    });
+  };
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
     const payload: any = {
-      id: data.id,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      phone: data.phone,
-      email: data.email,
-      type: data.type,
-      dateOfBirth: data.dateOfBirth,
-      gender: data.gender,
-      gradeId: data.gradeId,
+      id: !userAddress?.id ? 0 : userAddress?.id,
+      userId: userId,
+      address1: data?.address1,
+      city: data.city,
+      stateId: data.stateId,
+      pincode: data.pincode,
+      latitude: !location?.latitude
+        ? userAddress?.longitude
+        : location?.latitude,
+      longitude: !location?.longitude
+        ? userAddress?.longitude
+        : location?.longitude,
     };
-    upsertUserInfo(payload)
+
+    upsertAddress(payload)
       .then((response: any) => {
-        if (
-          response.data &&
-          response.data?.message === "Update_Suucessfully."
-        ) {
+        if (response.data && response.data?.message === "Upsert Successfully") {
           setIsPopupModalVisible(true);
           toggleModal(true);
         }
         setTimeout(() => {
           setIsPopupModalVisible(false);
           setIsProcessLoader(false);
-        }, 500);
+        }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
           setIsProcessLoader(false);
-          setIsPopupModalVisible(true);
+          setIsPopupModalVisible(false);
         }, 500);
         console.error("Error fetching :", error);
       });
@@ -113,7 +154,7 @@ const AddressUpdateModal = ({
 
   return (
     <Modal
-      isVisible={isBasicModal}
+      isVisible={isAddressModal}
       onBackButtonPress={() => toggleModal(false)}
       onBackdropPress={() => toggleModal(false)}
       onSwipeComplete={() => toggleModal(false)}
@@ -122,7 +163,7 @@ const AddressUpdateModal = ({
     >
       {isPopupModalVisible && (
         <PopupModal
-          message="The user information has been successfully updated."
+          message="Address has been successfully updated."
           icon={"checkmark-circle"}
           color={"green"}
           iconSize={40}
@@ -143,7 +184,7 @@ const AddressUpdateModal = ({
             <View
               style={[cardStyle.j_row, { padding: 12, alignItems: "center" }]}
             >
-              <Text style={common.h3Title}>Update Personal Info</Text>
+              <Text style={common.h3Title}>Update Address</Text>
               <Button
                 onPress={() => toggleModal(false)}
                 icon={
@@ -163,9 +204,30 @@ const AddressUpdateModal = ({
               />
             </View>
             <View style={{ paddingHorizontal: 12 }}>
+              <Button
+                onPress={getCurrentLocation}
+                title={"Use Current Location"}
+                icon={
+                  <Ionicons
+                    name="location"
+                    size={12}
+                    color={YoColors.primary}
+                  />
+                }
+                iconPosition="right"
+                containerStyle={[common.mb10, { width: 130 }]}
+                titleStyle={{ color: YoColors.primary, fontSize: 12 }}
+                buttonStyle={{
+                  backgroundColor: YoColors.white,
+                  borderWidth: 1,
+                  borderColor: YoColors.primary,
+                  padding: 4,
+                }}
+              />
+
               <Controller
                 control={control}
-                name="firstName"
+                name="address1"
                 rules={{ required: true }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -173,37 +235,22 @@ const AddressUpdateModal = ({
                     style={[
                       styles.input,
                       {
-                        borderColor: errors.firstName ? "red" : "#ccc",
+                        borderColor: errors.address1 ? "red" : "#ccc",
+                        height: 80,
+                        verticalAlign: "top",
                       },
                     ]}
                     placeholderTextColor={YoColors.placeholderText}
                     value={value}
-                    placeholder="First Name"
+                    multiline={true}
+                    placeholder="Address 1"
                   />
                 )}
               />
+
               <Controller
                 control={control}
-                name="lastName"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: errors.lastName ? "red" : "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Last Name"
-                  />
-                )}
-              />
-              <Controller
-                control={control}
-                name="email"
+                name="city"
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     onChangeText={onChange}
@@ -215,94 +262,52 @@ const AddressUpdateModal = ({
                     ]}
                     placeholderTextColor={YoColors.placeholderText}
                     value={value}
-                    placeholder="Email"
-                    keyboardType="email-address"
+                    placeholder="City"
                   />
                 )}
               />
 
               <Controller
                 control={control}
-                name="gender"
+                name="pincode"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: "#ccc",
+                      },
+                    ]}
+                    placeholderTextColor={YoColors.placeholderText}
+                    value={value}
+                    placeholder="Pin Code"
+                  />
+                )}
+              />
+
+              <Controller
+                control={control}
+                name="stateId"
                 render={({ field: { onChange, value } }) => (
                   <SelectModal
-                    data={genderOptions}
-                    placeholder="Gender"
-                    defaultValue={genderOptions.find(
-                      (item) => item.id === dataToPreset.gender
+                    data={stateList}
+                    placeholder="Select State"
+                    defaultValue={stateList.find(
+                      (item: any) =>
+                        item.id ==
+                        (!userAddress?.stateId
+                          ? getValues("stateId")
+                          : userAddress?.stateId)
                     )}
                     onChanged={(values: any) => {
-                      setValue("gender", values?.id);
+                      setValue("stateId", values?.id);
                     }}
                   />
                 )}
               />
 
-              {dataToPreset.type === 3 && (
-                <Controller
-                  control={control}
-                  name="gradeId"
-                  render={({ field: { onChange, value } }) => (
-                    <SelectModal
-                      data={gradeList}
-                      placeholder="Grade"
-                      defaultValue={gradeList.find(
-                        (item: any) => item.id === dataToPreset.studentGradeId
-                      )}
-                      onChanged={(values: any) => {
-                        setValue("gradeId", values?.id);
-                      }}
-                    />
-                  )}
-                />
-              )}
-
-              <Controller
-                control={control}
-                name="dateOfBirth"
-                render={({ field: { onChange, value } }) => (
-                  <View style={cardStyle.row}>
-                    <Pressable
-                      onPress={() => setIsCalendarOpen(true)}
-                      style={[
-                        styles.input,
-                        cardStyle.row,
-                        { justifyContent: "space-between" },
-                      ]}
-                    >
-                      <Text>
-                        {getValues().dateOfBirth
-                          ? moment(getValues().dateOfBirth).format("DD-MM-YYYY")
-                          : "Date of birth"}
-                      </Text>
-                      <Icon
-                        name="calendar"
-                        size={13}
-                        color={YoColors.secondary}
-                      />
-                    </Pressable>
-                  </View>
-                )}
-              />
-
-              {isCalendarOpen && (
-                <DatePicker
-                  modal
-                  open={isCalendarOpen}
-                  date={getValues().dateOfBirth ?? new Date()}
-                  mode="date"
-                  maximumDate={new Date()}
-                  onConfirm={(value) => {
-                    setIsCalendarOpen(false);
-                    setValue("dateOfBirth", moment(value).format("YYYY-MM-DD"));
-                  }}
-                  onCancel={() => {
-                    setIsCalendarOpen(false);
-                  }}
-                />
-              )}
-
-              <View style={{ marginTop: 30, alignItems: "center" }}>
+              <View style={{ marginTop: 20, alignItems: "center" }}>
                 <Button
                   title="Update"
                   loading={isProcessLoader}

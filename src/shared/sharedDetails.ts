@@ -338,7 +338,15 @@ export const getLocation = () => {
           const response = await fetch(url);
           const data = await response.json();
           if (data.features && data.features.length > 0) {
-            const address = data.features[1]?.place_name;
+            const address: any = {
+              latitude: latitude,
+              longitude: longitude,
+              place: data.features[1].place_name,
+              pincode: data.features[2].text,
+              city: data.features[4].text,
+              dist: data.features[5].text,
+              state: data.features[6].text,
+            };
             // console.log("address");
             // console.log(address);
             resolve(address);
@@ -353,7 +361,7 @@ export const getLocation = () => {
       (error) => {
         reject(error);
       },
-      { enableHighAccuracy: false, timeout: 5000, maximumAge: 1000 }
+      { enableHighAccuracy: false, timeout: 3000, maximumAge: 10000 }
     );
   });
 };

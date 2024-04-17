@@ -42,7 +42,7 @@ const SelectModal = ({
         onChanged(defaultValue);
       }
     }
-  }, []);
+  }, [defaultValue]);
 
   // useEffect(() => {
   //   if (data && data?.length === 0) {

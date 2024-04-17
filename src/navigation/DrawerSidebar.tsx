@@ -16,6 +16,7 @@ import { useThemeColor } from "../assets/themes/useThemeColor";
 import { common } from "../assets/styles/Common";
 import { YoImages } from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-elements";
 
 const DrawerSidebar = () => {
   const YoColors = useThemeColor();
@@ -37,31 +38,22 @@ const DrawerSidebar = () => {
         style={{
           minHeight: 70,
           paddingVertical: 15,
-          paddingHorizontal: 12,
+          paddingStart: 12,
           backgroundColor: YoColors.primary,
         }}
       >
         <View style={common.row}>
           <View style={{ width: 70 }}>
-            {!userInfo.image ? (
-              <Image
-                source={image.DefaultUser}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                }}
-              />
-            ) : (
-              <Image
-                source={{ uri: userInfo.image }}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                }}
-              />
-            )}
+            <Image
+              source={
+                !userInfo.image ? image.DefaultUser : { uri: userInfo.image }
+              }
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+              }}
+            />
           </View>
           <View style={{ width: width - 205 }}>
             <Text
@@ -92,14 +84,27 @@ const DrawerSidebar = () => {
               </View>
             )}
           </View>
+          <View style={{ width: 30 }}>
+            <Button
+              onPress={() => goToProfilePage()}
+              buttonStyle={{
+                padding: 0,
+                height: 60,
+                backgroundColor: "none",
+              }}
+              icon={
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  size={25}
+                  color={YoColors.white}
+                />
+              }
+              containerStyle={{
+                justifyContent: "center",
+              }}
+            />
+          </View>
         </View>
-        <TouchableOpacity
-          style={common.mtop10}
-          activeOpacity={0.7}
-          onPress={() => goToProfilePage()}
-        >
-          <Text style={{ color: "#fff" }}>View Profile</Text>
-        </TouchableOpacity>
       </View>
 
       <View
@@ -127,16 +132,41 @@ const DrawerSidebar = () => {
             bottom: 12,
           }}
         >
-          <TouchableOpacity style={common.row} onPress={logoutUser}>
-            <MaterialCommunityIcons
-              name="logout"
-              size={12}
-              color={YoColors.primary}
-            />
-            <Text style={[common.fs12, { color: YoColors.primary }]}>
-              Logout
-            </Text>
-          </TouchableOpacity>
+          {/* <Button
+            onPress={logoutUser}
+            title={"Logout"}
+            titleStyle={[common.fs12, { color: YoColors.primary }]}
+            icon={
+              <MaterialCommunityIcons
+                name="logout"
+                size={12}
+                color={YoColors.primary}
+              />
+            }
+            buttonStyle={{
+              backgroundColor: "none",
+            }}
+          /> */}
+          <Button
+            onPress={logoutUser}
+            buttonStyle={{
+              padding: 0,
+              paddingEnd: 12,
+              backgroundColor: "none",
+            }}
+            title="Logout"
+            titleStyle={[common.fs12, { color: YoColors.primary }]}
+            icon={
+              <MaterialCommunityIcons
+                name="logout"
+                size={12}
+                color={YoColors.primary}
+              />
+            }
+            containerStyle={{
+              justifyContent: "center",
+            }}
+          />
         </View>
       </View>
     </View>
