@@ -14,7 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
-import { getUsersDetails } from "../../apiconfig/SharedApis";
+import { getAddress, getUsersDetails } from "../../apiconfig/SharedApis";
 import {
   getLocation,
   getUserInfo,
@@ -35,6 +35,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
 import Geolocation from "@react-native-community/geolocation";
+import AddressUpdateModal from "./AddressUpdateModal";
 
 const UserProfile = () => {
   const { height } = Dimensions.get("window");
@@ -46,56 +47,15 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isAddressModal, setIsAddressModal] = useState<boolean>(false);
   const [isBasicModal, setIsBasicModal] = useState<boolean>(false);
   const [isSpecilityModal, setIsSpecilityModal] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<any>({});
-  const [location, setLocation] = useState<any>({});
 
   useEffect(() => {
     requestLocationPermission();
-    // getLocationValues();
     getUserDetails();
   }, [userInfo?.id]);
-
-  // const getLocationValues = () => {
-  //   Geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const { longitude, latitude } = position.coords;
-  //       console.log("Longitude:", longitude);
-  //       console.log("Latitude:", latitude);
-  //       setLocation({ longitude: longitude, latitude: latitude });
-  //     },
-  //     (error) => {
-  //       console.log("Error getting location:", error.message);
-  //       if (error.code === 2) {
-  //         Alert.alert(
-  //           "Turn on Location",
-  //           "Please enable location services to use this feature.",
-  //           [
-  //             {
-  //               text: "Cancel",
-  //               style: "cancel",
-  //             },
-  //             {
-  //               text: "Open Settings",
-  //               onPress: () => Linking.openSettings(),
-  //             },
-  //           ],
-  //           { cancelable: false }
-  //         );
-  //       }
-  //     },
-  //     { enableHighAccuracy: false, timeout: 3000, maximumAge: 1000 }
-  //   );
-  // };
-
-  getLocation()
-    .then((location) => {
-      console.log(location);
-    })
-    .catch((error) => {
-      console.log("Error getting location:", error.message);
-    });
 
   const updateInfo = (isUpdated: boolean) => {
     if (isUpdated) {
@@ -103,6 +63,7 @@ const UserProfile = () => {
     }
     setIsBasicModal(false);
     setModalVisible(false);
+    setIsAddressModal(false);
   };
 
   const getUserDetails = () => {
@@ -151,25 +112,18 @@ const UserProfile = () => {
               marginVertical: 25,
             }}
           >
-            {userDetails?.image ? (
-              <Image
-                source={{ uri: userDetails?.image }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                }}
-              />
-            ) : (
-              <Image
-                source={image.DefaultUser}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                }}
-              />
-            )}
+            <Image
+              source={
+                userDetails?.image
+                  ? { uri: userDetails?.image }
+                  : image.DefaultUser
+              }
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+              }}
+            />
             <View
               style={{
                 height: 36,
@@ -191,12 +145,7 @@ const UserProfile = () => {
               />
             </View>
           </View>
-          <View
-            style={[
-              common.p12,
-              { borderBottomWidth: 8, borderBottomColor: "#ccc" },
-            ]}
-          >
+          <View style={[common.p12]}>
             <View>
               <View style={[cardStyle.j_row]}>
                 <Text style={[common.h1Title]}>
@@ -266,80 +215,69 @@ const UserProfile = () => {
               )}
             </View>
           </View>
-          {(userDetails?.userAddress?.address1 ||
-            userDetails?.userAddress?.address2) && (
+
+          <View
+            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
+          >
             <View
               style={[
-                common.p12,
-                { borderBottomWidth: 8, borderBottomColor: "#ccc" },
+                common.j_row,
+                {
+                  alignItems: "flex-start",
+                },
               ]}
             >
-              <View
-                style={[
-                  common.j_row,
+              <Text style={[common.mb5, common.h2Title]}>Address</Text>
+              <Button
+                onPress={() => setIsAddressModal(true)}
+                icon={<Icon name="pencil-alt" size={16} />}
+                buttonStyle={[
+                  btnStyle.btnCross,
                   {
-                    alignItems: "flex-start",
+                    paddingHorizontal: 1,
+                    paddingStart: 15,
                   },
                 ]}
-              >
-                <Text style={[common.mb5, common.h2Title]}>Address</Text>
-              </View>
-              <View>
-                {(userDetails?.userAddress?.address1 ||
-                  userDetails?.userAddress?.address2) && (
-                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                    <Ionicons
-                      name="location"
-                      size={14}
-                      color={YoColors.primary}
-                      style={{ marginTop: 3 }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        width: "95%",
-                      }}
-                    >
-                      {userDetails?.userAddress?.address1 && (
-                        <Text style={{ paddingStart: 5 }}>
-                          {userDetails?.userAddress?.address1}
-                        </Text>
-                      )}
-                      {userDetails?.userAddress?.address1 &&
-                        userDetails?.userAddress?.address2 && <Text>, </Text>}
-                      {userDetails?.userAddress?.address2 && (
-                        <Text>{userDetails?.userAddress?.address2}</Text>
-                      )}
-                      {userDetails?.userAddress?.address2 &&
-                        userDetails?.userAddress?.city && <Text>, </Text>}
-                      {userDetails?.userAddress?.city && (
-                        <Text>{userDetails?.userAddress?.city}</Text>
-                      )}
-                      {userDetails?.userAddress?.city &&
-                        userDetails?.userAddress?.stateName && <Text>, </Text>}
-                      {userDetails?.userAddress?.stateName && (
-                        <Text>{userDetails?.userAddress?.stateName}</Text>
-                      )}
-                      {userDetails?.userAddress?.stateName &&
-                        userDetails?.userAddress?.pincode && <Text>, </Text>}
-                      {userDetails?.userAddress?.pincode && (
-                        <Text>{userDetails?.userAddress?.pincode}</Text>
-                      )}
+              />
+            </View>
+            <View>
+              <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    width: "95%",
+                  }}
+                >
+                  {userDetails?.userAddress?.address1 && (
+                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                      <Ionicons
+                        name="location"
+                        size={14}
+                        color={YoColors.primary}
+                        style={{ marginTop: 3 }}
+                      />
+                      <Text style={{ paddingStart: 5 }}>
+                        {userDetails?.userAddress?.address1}{" "}
+                        {userDetails?.userAddress?.pincode}
+                      </Text>
                     </View>
-                  </View>
-                )}
+                  )}
+                  {userDetails?.userAddress?.address2 && (
+                    <Text>{userDetails?.userAddress?.address2} </Text>
+                  )}
+                </View>
               </View>
             </View>
-          )}
+          </View>
 
           {userInfo?.type === 1 && (
             <>
               <View
                 style={[
                   common.p12,
-                  { borderBottomWidth: 8, borderBottomColor: "#ccc" },
+                  { borderTopWidth: 8, borderTopColor: "#ccc" },
                 ]}
               >
                 <View
@@ -460,6 +398,14 @@ const UserProfile = () => {
           isBasicModal={isModalVisible}
           closeModal={(value) => updateInfo(value)}
           dataToEdit={userDetails}
+        />
+      )}
+
+      {isAddressModal && (
+        <AddressUpdateModal
+          isAddressModal={isAddressModal}
+          closeModal={(value) => updateInfo(value)}
+          userId={userInfo?.id}
         />
       )}
 

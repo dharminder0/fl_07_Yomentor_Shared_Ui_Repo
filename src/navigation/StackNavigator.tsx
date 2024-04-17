@@ -13,6 +13,8 @@ import UserProfile from "../components/profile/UserProfile";
 import BookDetails from "../components/books/BookDetails";
 import OffersBookDetails from "../components/books/OffersBookDetails";
 import StudentAttendanceDetails from "../components/batch/students/StudentAttendanceDetails";
+import SkillTestDetails from "../components/skillsTest/SkillTestDetails";
+import SkillsTestList from "../components/skillsTest/SkillsTestList";
 
 const Stack = createNativeStackNavigator();
 
@@ -143,12 +145,32 @@ export function StackNavigator() {
           headerTitleStyle: { color: "#fff" },
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="StudentAttendanceDetails"
         component={StudentAttendanceDetails}
         options={{
           headerShown: false,
           title: "Student Attendance Details",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="SkillTestDetails"
+        component={SkillTestDetails}
+        options={{
+          headerShown: true,
+          title: "Skill Test Details",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="SkillsTestList"
+        component={SkillsTestList}
+        options={{
+          headerShown: true,
+          title: "Skill Test List",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

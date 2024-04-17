@@ -63,8 +63,11 @@ const AddAssessmentModal = ({
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
+
+  console.log(dataToEdit);
 
   useEffect(() => {
     reset(dataToEdit);
@@ -90,14 +93,14 @@ const AddAssessmentModal = ({
   useEffect(() => {
     setValue("teacherId", userId);
     setValue("isFavorite", true);
-    if (gradeId) {
-      getSubjectByGradeId(gradeId).then((result: any) => {
+    if (getValues("gradeId")) {
+      getSubjectByGradeId(getValues("gradeId")).then((result: any) => {
         if (!!result.data) {
           setSubjectList(result.data);
         }
       });
     }
-  }, [gradeId]);
+  }, [getValues("gradeId")]);
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
@@ -232,7 +235,6 @@ const AddAssessmentModal = ({
                       placeholder="Class"
                       onChanged={(value: any) => {
                         setValue("gradeId", value?.id);
-                        setGradeId(value?.id);
                       }}
                       defaultValue={
                         dataToEdit.gradeId

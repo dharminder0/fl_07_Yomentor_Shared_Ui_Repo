@@ -13,7 +13,10 @@ export async function deleteMediaFile(payload: any): Promise<any> {
 }
 
 export async function deleteMediaFilev2(payload: any): Promise<any> {
-  return AxiosInterceptor.post(`MediaFile/DeleteMediaFileV2?blobLink=${payload.bloblink}&entityId=${payload.entityId}&entityTypeId=${payload.entityTypeId}`, {});
+  return AxiosInterceptor.post(
+    `MediaFile/DeleteMediaFileV2?blobLink=${payload.bloblink}&entityId=${payload.entityId}&entityTypeId=${payload.entityTypeId}`,
+    {}
+  );
 }
 
 export async function getUsersList(payload: any): Promise<any> {
@@ -182,14 +185,37 @@ export async function upsertBookDetails(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Books/Upsert`, payload);
 }
 
-export async function getBookDetailsById(id:number): Promise<any> {
+export async function getBookDetailsById(id: number): Promise<any> {
   return AxiosInterceptor.get(`Books/BookInfo?id=${id}`);
 }
 
-export async function deleteBookById(id:number): Promise<any> {
+export async function deleteBookById(id: number): Promise<any> {
   return AxiosInterceptor.get(`Books/DeleteBook?id=${id}`);
 }
 
 export async function upsertBookExchange(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Books/UpsertBookExchange`, payload);
+}
+export async function getAddress(userId: number): Promise<any> {
+  return AxiosInterceptor.get(`Address/GetAddress?userId=${userId}`);
+}
+
+export async function upsertAddress(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Address/Upsert`, payload);
+}
+
+export async function getStates(): Promise<any> {
+  return AxiosInterceptor.get(`Address/StateList`);
+}
+
+export async function getSkilsList(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/List`, payload);
+}
+
+export async function getSkilDetailById(id: any): Promise<any> {
+  return AxiosInterceptor.get(`SkillTest/SkillTest/Id?id=${id}`);
+}
+
+export async function questionsAnswersBySkillId(id: any): Promise<any> {
+  return AxiosInterceptor.get(`SkillTest/QuestionsAnswers?skillTestId=${id}`);
 }
