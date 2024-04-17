@@ -50,7 +50,7 @@ const StudentAttendanceDetails = ({ route }: any) => {
           response.data.forEach((item: any) => {
             markedAttendance[moment(item?.date).format("YYYY-MM-DD")] = {
               selected: true,
-              selectedColor: YoColors.primary,
+              selectedColor: item.status == 1 ? "green":  item.status == 2 ? "red":"",
             };
           });
           setMarkedAttendances(markedAttendance);
