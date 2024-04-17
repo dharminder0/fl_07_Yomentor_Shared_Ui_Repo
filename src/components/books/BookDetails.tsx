@@ -1,48 +1,28 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Card } from "@rneui/themed";
+import { Dimensions, Text, View } from "react-native";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import HeaderView from "../common/HeaderView";
 import moment from "moment";
-import { deleteBookById, getBookDetailsById } from "../../apiconfig/SharedApis";
+import {
+  getBookDetailsById,
+  upsertBookExchange,
+} from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
-import { getUserInfo } from "../../shared/sharedDetails";
-import { useThemeColor } from "../../assets/themes/useThemeColor";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import { Button, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { YoImages } from "../../assets/themes/YoImages";
-import CreateBookRequest from "./CreateBookRequest";
-import UpdatePhoto from "../common/UpdatePhoto";
-import { useToast } from "react-native-toast-notifications";
-import ConfirmationPopup from "../common/ConfirmationPopup";
-import { useNavigation } from "@react-navigation/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { getUserInfo } from "../../shared/sharedDetails";
 
 const BookDetails = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
   const image: any = YoImages();
-  const toast = useToast();
-  const navigation: any = useNavigation();
+  const userInfo: any = getUserInfo();
   const selectedBookDetails = route?.params?.selectedBookDetails ?? {};
-  const selectedActionTab = route?.params?.selectedActionTab ?? "";
   const [bookDetails, setBookDetails] = useState<any>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDeleteModalVissible, setIsDeleteModalVissible] =
-    useState<boolean>(false);
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const userInfo: any = getUserInfo();
-  const YoColors = useThemeColor();
+  const [isLoadingRequest, setIsLoadingRequest] = useState<boolean>(false);
 
   useEffect(() => {
     getDetails();
@@ -50,6 +30,7 @@ const BookDetails = ({ route }: any) => {
 
   const getDetails = () => {
     setIsLoading(true);
+    console.log(selectedBookDetails.id);
     getBookDetailsById(selectedBookDetails.id)
       .then((response: any) => {
         setBookDetails({});
@@ -64,148 +45,94 @@ const BookDetails = ({ route }: any) => {
       });
   };
 
-  const onCloseUpdate = (isSubmitted: boolean) => {
-    setModalVisible(false);
-    if (isSubmitted) {
-      getDetails();
-    }
-  };
-
-  const updateInfo = (isUpdated: boolean) => {
-    if (isUpdated) {
-      getDetails();
-    }
-  };
-
-  const handleBookDelete = () => {
-    deleteBookById(selectedBookDetails.id)
+  const handleBookRequest = (statusId: number) => {
+    const payload = {
+      senderId: bookDetails?.userId,
+      receiverId: userInfo.id,
+      bookId: selectedBookDetails.id,
+      status: statusId, ///Requested and Cancel
+    };
+    console.log("payload", payload);
+    setIsLoadingRequest(true);
+    upsertBookExchange(payload)
       .then((response: any) => {
-        setIsDeleteModalVissible(false);
-        if (response) {
-          toast.show("The book has been deleted successfully", {
-            type: "success",
-            duration: 2000,
-            placement: "top",
-          });
-        } else {
-          toast.show("Deleting book failed", {
-            type: "danger",
-            duration: 2000,
-            placement: "top",
-          });
+        setBookDetails({});
+        console.log("response", response.data);
+        if (response.data && response.data.success) {
+          setTimeout(() => {
+            setIsLoadingRequest(false);
+            getDetails();
+          }, 500);
         }
-        navigation.navigate("BooksList");
+        else{
+          setTimeout(() => {
+            setIsLoadingRequest(false);
+          }, 500);
+        }
       })
       .catch((error: any) => {
-        setIsDeleteModalVissible(false);
-        toast.show("Deleting book failed", {
-          type: "danger",
-          duration: 2000,
-          placement: "top",
-        });
+        setIsLoadingRequest(false);
+        console.error("Error in request: ", error);
       });
   };
 
   return (
     <>
       <HeaderView title={selectedBookDetails?.title} />
-      <View style={[{ padding: 20 }]}>
-        {isLoading ? (
-          <Loading />
-        ) : bookDetails && Object.keys(bookDetails).length > 0 ? (
-          <>
+      {isLoading ? (
+        <Loading />
+      ) : bookDetails && Object.keys(bookDetails).length > 0 ? (
+        <>
+          <View style={{ paddingHorizontal: 10, paddingVertical: 20, flex: 1 }}>
             <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: 25,
-                paddingBottom: 20,
-                borderBottomWidth: 1,
-                borderColor: "#ccc",
-              }}
+              style={[
+                common.row,
+                {
+                  alignItems: "flex-start",
+                  paddingBottom: 10,
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: "#ccc",
+                  marginBottom: 10,
+                },
+              ]}
             >
-              <Image
-                source={
-                  bookDetails?.imageUrl
-                    ? { uri: bookDetails?.imageUrl }
-                    : image.DefaultBook
-                }
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderRadius: 6,
-                }}
-              />
-              <View
-                style={{
-                  height: 36,
-                  width: 36,
-                  borderRadius: 18,
-                  right: (width - 40) / 2 - 45,
-                  top: 45,
-                  position: "absolute",
-                  backgroundColor: "#fff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <UpdatePhoto
-                  entityId={bookDetails?.id}
-                  mediaType={1}
-                  entityType={4}
-                  profileUrl={bookDetails?.imageUrl}
-                  updateInfo={(value) => updateInfo(value)}
+              <View style={common.mr10}>
+                <Image
+                  source={
+                    bookDetails?.imageUrl
+                      ? { uri: bookDetails?.imageUrl }
+                      : image.DefaultBook
+                  }
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 6,
+                  }}
                 />
+                {bookDetails?.statusName && (
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      marginTop: 5,
+                      textAlign: "center",
+                      color:
+                        bookDetails.status == 1 || bookDetails.status == 2
+                          ? "green"
+                          : "red",
+                    }}
+                  >
+                    {bookDetails?.statusName}
+                  </Text>
+                )}
               </View>
-            </View>
-            <View style={[cardStyle.j_row, { margin: 0 }]}>
-              <View
-                style={{
-                  width: width - 40,
-                }}
-              >
-                <View style={[cardStyle.j_row]}>
-                  <Text style={common.title}>{bookDetails?.title}</Text>
+              <View>
+                <View style={[common.j_row, { width: width - 100 }]}>
+                  <Text style={[common.title]}>{bookDetails?.title}</Text>
                   <View style={common.row}>
-                      {selectedActionTab == "offers" && (
-                        <Button
-                          onPress={() => setModalVisible(true)}
-                          icon={
-                            <MaterialCommunityIcons
-                              name="delete"
-                              size={16}
-                              color={YoColors.primary}
-                              onPress={() => setIsDeleteModalVissible(true)}
-                            />
-                          }
-                          buttonStyle={[
-                            btnStyle.btnEdit,
-                            { backgroundColor: "transparent" },
-                          ]}
-                          containerStyle={{ padding: 0, marginHorizontal: 5 }}
-                        />
-                      )}
-                      <Button
-                        onPress={() => setModalVisible(true)}
-                        icon={
-                          <FontAwesomeIcon
-                            name="pencil-alt"
-                            size={12}
-                            color={YoColors.primary}
-                            onPress={() => setModalVisible(true)}
-                          />
-                        }
-                        buttonStyle={[
-                          btnStyle.btnEdit,
-                          { backgroundColor: "transparent" },
-                        ]}
-                        containerStyle={{ padding: 0, marginHorizontal: 10 }}
-                      />
-                      <Text style={[common.rText]}>
-                        {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
-                      </Text>
-                    </View>
+                    <Text style={[common.rText]}>
+                      {moment(bookDetails?.createDate).format("MMM DD, YYYY")}
+                    </Text>
+                  </View>
                 </View>
 
                 {bookDetails?.author && (
@@ -232,23 +159,179 @@ const BookDetails = ({ route }: any) => {
                 )}
               </View>
             </View>
-          </>
-        ) : (
-          <NoDataView />
-        )}
-      </View>
-      <CreateBookRequest
-        userId={userInfo?.id}
-        isModalVisible={isModalVisible}
-        dataToEdit={bookDetails}
-        onClose={(value: boolean) => onCloseUpdate(value)}
-      />
-      <ConfirmationPopup
-        message="Are you sure to want to delete this book?"
-        onSubmit={handleBookDelete}
-        isVisible={isDeleteModalVissible}
-        setIsVisible={setIsDeleteModalVissible}
-      />
+            <View
+              style={[
+                common.j_row,
+                {
+                  alignItems: "flex-start",
+                },
+              ]}
+            >
+              <Text style={[common.mb5, common.h3Title]}>
+                Offerer Information
+              </Text>
+            </View>
+            <View
+              style={[
+                common.row,
+                {
+                  alignItems: "flex-start",
+                  paddingBottom: 10,
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: "#ccc",
+                  marginBottom: 10,
+                },
+              ]}
+            >
+              <View style={common.mr10}>
+                <Image
+                  source={
+                    bookDetails?.userInfo?.userImage
+                      ? { uri: bookDetails?.userInfo?.userImage }
+                      : image.DefaultUser
+                  }
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 30,
+                  }}
+                />
+              </View>
+              <View>
+                <Text style={[common.title, common.mb5]}>
+                  {bookDetails?.userInfo?.firstName}{" "}
+                  {bookDetails?.userInfo?.lastName}
+                </Text>
+                {bookDetails?.userInfo?.phone && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Icon name="phone-alt" size={12} />
+                    <Text style={common.rText}>
+                      {" "}
+                      {bookDetails?.userInfo?.phone}
+                    </Text>
+                  </View>
+                )}
+
+                {bookDetails?.userInfo?.email && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Icon name="envelope" size={12} />
+                    <Text style={common.rText}>
+                      {" "}
+                      {bookDetails?.userInfo?.email}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+            <View>
+              <Text style={[common.mb5, common.h3Title]}>
+                Pickup Instructions
+              </Text>
+              {bookDetails?.remark && (
+                <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <Icon
+                    name="comment"
+                    size={12}
+                    style={{ width: 12, marginTop: 1 }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      width: "95%",
+                    }}
+                  >
+                    <Text style={[common.rText, { paddingStart: 5 }]}>
+                      {bookDetails?.remark}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              {(bookDetails?.userInfo?.userAddress?.address1 ||
+                bookDetails?.userInfo?.userAddress?.address2) && (
+                <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <Ionicons name="location" size={14} style={{ width: 12 }} />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      width: "95%",
+                    }}
+                  >
+                    {bookDetails?.userInfo?.userAddress?.address1 && (
+                      <Text style={[common.rText, { paddingStart: 5 }]}>
+                        {bookDetails?.userInfo?.userAddress?.address1}
+                      </Text>
+                    )}
+                    {bookDetails?.userInfo?.userAddress?.address1 &&
+                      bookDetails?.userInfo?.userAddress?.address2 && (
+                        <Text>, </Text>
+                      )}
+                    {bookDetails?.userInfo?.userAddress?.address2 && (
+                      <Text style={[common.rText]}>
+                        {bookDetails?.userInfo?.userAddress?.address2}
+                      </Text>
+                    )}
+                    {bookDetails?.userInfo?.userAddress?.address2 &&
+                      bookDetails?.userInfo?.userAddress?.city && (
+                        <Text>, </Text>
+                      )}
+                    {bookDetails?.userInfo?.userAddress?.city && (
+                      <Text style={[common.rText]}>
+                        {bookDetails?.userInfo?.userAddress?.city}
+                      </Text>
+                    )}
+                    {bookDetails?.userInfo?.userAddress?.city &&
+                      bookDetails?.userInfo?.userAddress?.stateName && (
+                        <Text>, </Text>
+                      )}
+                    {bookDetails?.userInfo?.userAddress?.stateName && (
+                      <Text style={[common.rText]}>
+                        {bookDetails?.userInfo?.userAddress?.stateName}
+                      </Text>
+                    )}
+                    {bookDetails?.userInfo?.userAddress?.stateName &&
+                      bookDetails?.userInfo?.userAddress?.pincode && (
+                        <Text>, </Text>
+                      )}
+                    {bookDetails?.userInfo?.userAddress?.pincode && (
+                      <Text style={[common.rText]}>
+                        {bookDetails?.userInfo?.userAddress?.pincode}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              )}
+            </View>
+            <View style={{ marginTop: 50, alignItems: "center" }}>
+              {!bookDetails.status && (
+                <Button
+                  title="Borrow book"
+                  loading={isLoadingRequest}
+                  onPress={() => handleBookRequest(1)}
+                  buttonStyle={[btnStyle.solid]}
+                  containerStyle={{ width: 150 }}
+                  titleStyle={[btnStyle.solidTitle]}
+                />
+              )}
+              {bookDetails.status === 1 && (
+                <Button
+                  title="Cancel request"
+                  loading={isLoadingRequest}
+                  onPress={() => handleBookRequest(5)}
+                  buttonStyle={[btnStyle.solid]}
+                  containerStyle={{ width: 150 }}
+                  titleStyle={[btnStyle.solidTitle]}
+                />
+              )}
+            </View>
+          </View>
+        </>
+      ) : (
+        <NoDataView />
+      )}
     </>
   );
 };

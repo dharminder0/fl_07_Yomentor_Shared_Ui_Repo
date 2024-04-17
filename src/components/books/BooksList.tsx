@@ -145,9 +145,8 @@ const BooksList = () => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() =>
-        navigation.navigate("BookDetails", {
-          selectedBookDetails: item,
-          selectedActionTab: selectedActionTab,
+        navigation.navigate(selectedActionTab === 'offers' ? "OffersBookDetails":"BookDetails", {
+          selectedBookDetails: item
         })
       }
     >

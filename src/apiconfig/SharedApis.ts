@@ -189,3 +189,7 @@ export async function getBookDetailsById(id:number): Promise<any> {
 export async function deleteBookById(id:number): Promise<any> {
   return AxiosInterceptor.get(`Books/DeleteBook?id=${id}`);
 }
+
+export async function upsertBookExchange(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`Books/UpsertBookExchange`, payload);
+}

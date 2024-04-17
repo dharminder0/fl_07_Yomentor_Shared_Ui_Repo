@@ -80,6 +80,7 @@ export const common = StyleSheet.create({
   mb5: { marginBottom: 5 },
   mb10: { marginBottom: 10 },
   my10: { marginVertical: 10 },
+  mr10: { marginEnd: 10 },
   ptop10: { paddingTop: 10 },
   pb5: { paddingBottom: 5 },
   pb10: { paddingBottom: 10 },
