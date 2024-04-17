@@ -57,7 +57,35 @@ const OffersBookDetails = ({ route }: any) => {
         setBookDetails({});
         console.log(response.data);
         if (response.data && Object.keys(response.data)) {
-          setBookDetails(response.data);
+          let UpdatedData = { ...response.data };
+          UpdatedData["requestsList"] = [
+            {
+              email: "Testwalking12@yopmail.com",
+              firstName: "Naveen",
+              lastName: "Student1",
+              phone: "88888",
+              userAddress: {
+                address1: "6th Floor, Graphix tower-1",
+                address2: "Sector-62",
+                city: "Noida",
+                createDate: "0001-01-01T00:00:00",
+                id: 3,
+                isDeleted: false,
+                latitude: 28.6382948,
+                longitude: 77.3760847,
+                pincode: "132103",
+                stateId: 1,
+                stateName: "Andhra Pradesh",
+                updateDate: "2024-04-17T06:57:49",
+                userId: 48,
+              },
+              userImage:
+                "https://yomentortest.blob.core.windows.net/images/823b6b18-48e2-1713280660212",
+            },
+          ];
+
+          setBookDetails(UpdatedData);
+          // setBookDetails(response.data);
         }
         setIsLoading(false);
       })
@@ -178,7 +206,7 @@ const OffersBookDetails = ({ route }: any) => {
                     {bookDetails?.statusName}
                   </Text>
                 )} */}
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 12,
                     marginTop: 20,
@@ -187,7 +215,7 @@ const OffersBookDetails = ({ route }: any) => {
                   }}
                 >
                   {bookDetails.available ? "Available" : "Not available"}
-                </Text>
+                </Text> */}
               </View>
               <View>
                 <View style={[common.j_row, { width: width - 100 }]}>
@@ -255,6 +283,65 @@ const OffersBookDetails = ({ route }: any) => {
                 )}
               </View>
             </View>
+            <View
+              style={[
+                common.j_row,
+                {
+                  alignItems: "flex-start",
+                },
+              ]}
+            >
+              <Text style={[common.mb5, common.h3Title]}>Request LIst</Text>
+            </View>
+            {bookDetails?.requestsList &&
+              bookDetails?.requestsList.length > 0 &&
+              bookDetails?.requestsList.map((item: any) => (
+                <View
+                  style={[
+                    common.row,
+                    {
+                      alignItems: "flex-start",
+                      paddingBottom: 10,
+                      borderBottomWidth: 0.5,
+                      borderBottomColor: "#ccc",
+                      marginBottom: 10,
+                    },
+                  ]}
+                >
+                  <View style={common.mr10}>
+                    <Image
+                      source={
+                        item.userImage
+                          ? { uri: item.userImage }
+                          : image.DefaultUser
+                      }
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 30,
+                      }}
+                    />
+                  </View>
+                  <View>
+                    <Text style={[common.title, common.mb5]}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    {item.phone && (
+                      <View style={[cardStyle.row, common.mb5]}>
+                        <Icon name="phone-alt" size={12} />
+                        <Text style={common.rText}> {item.phone}</Text>
+                      </View>
+                    )}
+
+                    {item.email && (
+                      <View style={[cardStyle.row, common.mb5]}>
+                        <Icon name="envelope" size={12} />
+                        <Text style={common.rText}> {item.email}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              ))}
           </View>
         </>
       ) : (

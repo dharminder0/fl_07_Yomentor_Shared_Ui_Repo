@@ -174,7 +174,7 @@ const BooksList = () => {
                 {item?.statusName}
               </Text>
             )}
-            {selectedActionTab == "offers" && (
+            {/* {selectedActionTab == "offers" && (
               <Text
                 style={{
                   fontSize: 12,
@@ -184,7 +184,7 @@ const BooksList = () => {
               >
                 {item.available ? "Available" : "Not available"}
               </Text>
-            )}
+            )} */}
           </View>
           <View
             style={{
