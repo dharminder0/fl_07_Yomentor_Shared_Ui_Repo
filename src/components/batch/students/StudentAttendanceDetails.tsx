@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View } from "react-native";
 import moment from "moment";
 import { useThemeColor } from "../../../assets/themes/useThemeColor";
-import NoDataView from "../../../screens/NoDataView";
 import HeaderView from "../../common/HeaderView";
-import Loading from "../../../screens/Loading";
-import { getStudentsAttendance } from "../../../apiconfig/SharedApis";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { getStudentsAttendanceHistory } from "../../../apiconfig/SharedApis";
+import { Calendar } from "react-native-calendars";
+import { getUserInfo } from "../../../shared/sharedDetails";
 
-const StudentAttendanceDetails = ({ route }: any) => {
+const StudentAttendanceDetails = ({ route, batchDetail = {} }: any) => {
   const YoColors = useThemeColor();
+  const userInfo: any = getUserInfo();
   const selectedStudent = route?.params?.selectedStudent ?? {};
-  const selectedBatch = route?.params?.selectedBatch ?? {};
+  const selectedBatch = !route?.params?.selectedBatch
+    ? batchDetail
+    : route?.params?.selectedBatch;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [attendanceList, setAttendanceList] = useState<any>([]);
   const [markedAttendances, setMarkedAttendances] = useState<any>({});
@@ -34,23 +30,25 @@ const StudentAttendanceDetails = ({ route }: any) => {
 
     const payload: any = {
       batchId: selectedBatch.id,
-      studentId: selectedStudent.studentId,
+      studentId:
+        !selectedStudent.studentId && userInfo.type == 3
+          ? userInfo.id
+          : selectedStudent.studentId,
       fromDate: startDate,
       toDate: endDate,
       pageSize: 50,
       pageIndex: 1,
     };
-    console.log("payload", payload);
-    getStudentsAttendance(payload)
+    getStudentsAttendanceHistory(payload)
       .then((response: any) => {
         setAttendanceList([]);
         let markedAttendance: any = {};
-        console.log(response.data);
         if (response.data && response.data.length > 0) {
           response.data.forEach((item: any) => {
             markedAttendance[moment(item?.date).format("YYYY-MM-DD")] = {
               selected: true,
-              selectedColor: item.status == 1 ? "green":  item.status == 2 ? "red":"",
+              selectedColor:
+                item.status == 1 ? "green" : item.status == 2 ? "red" : "",
             };
           });
           setMarkedAttendances(markedAttendance);
@@ -66,18 +64,26 @@ const StudentAttendanceDetails = ({ route }: any) => {
 
   return (
     <>
-      <HeaderView title={selectedStudent?.name} />
+      {selectedStudent && selectedStudent?.name && (
+        <HeaderView title={selectedStudent?.name} />
+      )}
+
       <View style={{ paddingHorizontal: 10, paddingVertical: 20, flex: 1 }}>
         <Calendar
           onDayPress={(day) => {
             console.log("selected day", day);
           }}
           onMonthChange={(month) => {
-            console.log("month", month.dateString);
             setSelectedMonth(month.dateString);
           }}
+          theme={{
+            arrowColor: YoColors.primary,
+          }}
           markedDates={markedAttendances}
-          //maxDate={moment().clone().add(1, 'month').format("YYYY-MM-DD")}
+          disableArrowRight={
+            moment(selectedMonth).year() === moment().year() &&
+            moment(selectedMonth).month() === moment().month()
+          }
         />
       </View>
     </>

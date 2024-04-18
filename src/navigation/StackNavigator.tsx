@@ -15,6 +15,8 @@ import OffersBookDetails from "../components/books/OffersBookDetails";
 import StudentAttendanceDetails from "../components/batch/students/StudentAttendanceDetails";
 import SkillTestDetails from "../components/skillsTest/SkillTestDetails";
 import SkillsTestList from "../components/skillsTest/SkillsTestList";
+import AssignedAssignmentList from "../components/batch/students/AssignedAssignmentList";
+import AssignedAssessmentList from "../components/batch/students/AssignedAssessmentList";
 
 const Stack = createNativeStackNavigator();
 
@@ -171,6 +173,26 @@ export function StackNavigator() {
         options={{
           headerShown: true,
           title: "Skill Test List",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssignedAssignmentList"
+        component={AssignedAssignmentList}
+        options={{
+          headerShown: true,
+          title: "Assigned Assignments",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+        }}
+      />
+      <Stack.Screen
+        name="AssignedAssessmentList"
+        component={AssignedAssessmentList}
+        options={{
+          headerShown: true,
+          title: "Assigned Assignments",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

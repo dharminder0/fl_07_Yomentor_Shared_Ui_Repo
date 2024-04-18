@@ -8,6 +8,7 @@ import HeaderView from "./common/HeaderView";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import { getUserInfo } from "../shared/sharedDetails";
 import AddReview from "./common/AddReview";
+import StudentAttendanceDetails from "./batch/students/StudentAttendanceDetails";
 
 const BatchDetailTab = ({ route }: any) => {
   const batchInfo = route?.params?.batchItem ?? {};
@@ -22,7 +23,7 @@ const BatchDetailTab = ({ route }: any) => {
     { key: "student", title: "Students" },
     { key: "assignment", title: "Assignments" },
     { key: "assessment", title: "Assessments" },
-    // { key: "announcement", title: "Announcements" },
+    { key: "attendance", title: "Attendance" },
     { key: "review", title: "Review" },
   ];
 
@@ -32,8 +33,7 @@ const BatchDetailTab = ({ route }: any) => {
         if (
           route.key === "student" ||
           route.key === "assignment" ||
-          route.key === "assessment" ||
-          route.key === "announcement"
+          route.key === "assessment"
         ) {
           return true;
         }
@@ -44,7 +44,7 @@ const BatchDetailTab = ({ route }: any) => {
           route.key === "review" ||
           route.key === "assignment" ||
           route.key === "assessment" ||
-          route.key === "announcement"
+          route.key === "attendance"
         ) {
           return true;
         }
@@ -64,8 +64,8 @@ const BatchDetailTab = ({ route }: any) => {
         return <AssignmentList batchInfo={selectedBatch} />;
       case "assessment":
         return <AssessmentList batchInfo={selectedBatch} />;
-      // case "announcement":
-      //   return <AnnouncementList />;
+      case "attendance":
+        return <StudentAttendanceDetails batchDetail={selectedBatch} />;
       case "review":
         return <AddReview batchDetail={selectedBatch} />;
       default:
