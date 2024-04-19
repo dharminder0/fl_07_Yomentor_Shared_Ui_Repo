@@ -23,7 +23,7 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
         borderRadius: 6,
       }}
     >
-      <Text style={[common.h1Title]}>Welcome to Yo!Mentor</Text>
+      <Text style={[common.h1Title, common.mb10]}>Welcome to Yo!Mentor</Text>
 
       {userType === 3 && (
         <>

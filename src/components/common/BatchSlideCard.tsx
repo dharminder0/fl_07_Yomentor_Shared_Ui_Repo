@@ -374,11 +374,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   setDots: {
-    top: 20,
+    top: 30,
     backgroundColor: "#D9D9D9",
   },
   activeDotStyle: {
-    top: 20,
+    top: 30,
     backgroundColor: "#124076",
   },
 });

@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import {
   questionsAnswersBySkillId,
   upsertBulkAttempt,
 } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
+import { common } from "../../assets/styles/Common";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
+import { Button } from "react-native-elements";
+import useStore from "../../store/useStore";
+import PopupModal from "../common/PopupModal";
+import AlertModal from "../common/AlertModal";
 
 const AttemptSkillTest = ({ route, navigation }: any) => {
   const skillTestId = route.params?.skillTestId;
   const attemptId = route.params?.attemptId;
+  const YoColors: any = useThemeColor();
   const [questions, setQuestions] = useState<any>([]);
+  const [message, setMessage] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const { isAlertModal, setIsAlertModal }: any = useStore();
 
   useEffect(() => {
     setIsLoading(true);
@@ -20,7 +30,6 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
   const getQuestionAnswerBySkillTestId = () => {
     questionsAnswersBySkillId(skillTestId)
       .then((response: any) => {
-        console.log(response.data);
         if (response.data && response.data?.length > 0) {
           setQuestions(response.data);
         }
@@ -62,15 +71,27 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
       attemptId: attemptId,
       attemptedQuestions: submittedAnswers,
     };
-    console.log("Submitted answers:", payload);
-    upsertBulkAttempt(payload).then((response: any) => {
-      console.log(response.data);
-      if (response.data && response.data.success) {
-        navigation.goBack(null);
-      }
-    });
-    // You can send this payload to your backend or perform any other action here
+    upsertBulkAttempt(payload)
+      .then((response: any) => {
+        setIsAlertModal(true);
+        if (response.data && response.data.success) {
+          setMessage(response.data?.content);
+          setTimeout(() => {
+            setIsAlertModal(false);
+            navigation.goBack(null);
+          }, 4000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsAlertModal(false);
+        }, 500);
+        console.log("Error : ", error);
+      });
   };
+
+  const isNextButtonDisabled =
+    selectedAnswers[currentQuestionIndex] === undefined;
 
   return (
     <>
@@ -85,7 +106,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
             {currentQuestionIndex + 1}.{" "}
             {questions[currentQuestionIndex].questionTitle}
           </Text>
-          <Text style={styles.questionDescription}>
+          <Text style={common.title}>
             {questions[currentQuestionIndex].questionDescription}
           </Text>
           <View style={styles.optionsContainer}>
@@ -100,7 +121,14 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
                   ]}
                   onPress={() => handleOptionClick(index)}
                 >
-                  <Text>
+                  <Text
+                    style={[
+                      common.title,
+                      selectedAnswers[currentQuestionIndex] === index && {
+                        color: "#fff",
+                      },
+                    ]}
+                  >
                     {String.fromCharCode(65 + index)}. {option.title}
                   </Text>
                 </TouchableOpacity>
@@ -108,11 +136,24 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
             )}
           </View>
           {currentQuestionIndex === questions.length - 1 ? (
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button
+              title="Submit"
+              buttonStyle={{ backgroundColor: YoColors.primary }}
+              titleStyle={{ fontWeight: "600", fontSize: 16 }}
+              onPress={handleSubmit}
+              disabled={isNextButtonDisabled}
+              containerStyle={{ width: 140, alignSelf: "flex-end" }}
+              disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
+            />
           ) : (
             <Button
               title="Next"
+              buttonStyle={{ backgroundColor: YoColors.primary }}
               onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+              titleStyle={{ fontWeight: "600", fontSize: 18 }}
+              disabled={isNextButtonDisabled}
+              containerStyle={{ width: 140, alignSelf: "flex-end" }}
+              disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
             />
           )}
         </View>
@@ -120,6 +161,15 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
 
       {questions?.length === 0 && !isLoading && (
         <Text>There is no questions for this skill test</Text>
+      )}
+
+      {isAlertModal && (
+        <AlertModal
+          message={`You have attempted ${message?.totalQuestions} questions \n Your correct answers: ${message?.totalCorrectAnswers} \n Score: ${message?.percentageCorrect}%`}
+          icon={"checkmark-circle"}
+          color={"green"}
+          iconSize={40}
+        />
       )}
     </>
   );
@@ -134,22 +184,27 @@ const styles = StyleSheet.create({
   question: {
     fontSize: 20,
     marginBottom: 10,
+    fontWeight: "600",
+    color: "#124076",
   },
   questionDescription: {
-    fontSize: 16,
+    fontSize: 12,
     marginBottom: 20,
   },
   optionsContainer: {
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 30,
   },
   option: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
+    backgroundColor: "#e4e5f1",
+    paddingHorizontal: 12,
+    paddingVertical: 15,
     marginVertical: 5,
-    width: "80%",
+    width: "100%",
+    borderRadius: 6,
   },
   selectedOption: {
-    backgroundColor: "lightblue",
+    backgroundColor: "#124076",
   },
 });
 

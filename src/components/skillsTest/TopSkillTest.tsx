@@ -109,7 +109,7 @@ export default TopSkillTest;
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#fff",
-    width: width - 25,
+    width: "100%",
     marginEnd: 8,
     marginBottom: 8,
     padding: 10,

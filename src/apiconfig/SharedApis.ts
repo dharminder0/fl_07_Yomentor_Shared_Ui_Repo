@@ -222,8 +222,15 @@ export async function getSkilDetailById(id: any, userId: any): Promise<any> {
   );
 }
 
-export async function questionsAnswersBySkillId(id: any): Promise<any> {
-  return AxiosInterceptor.get(`SkillTest/QuestionsAnswers?skillTestId=${id}`);
+export async function questionsAnswersBySkillId(
+  id: any,
+  attemptId?: number
+): Promise<any> {
+  let url: any = `SkillTest/QuestionsAnswers?skillTestId=${id}`;
+  if (attemptId) {
+    url = `${url}&attemptId=${attemptId}`;
+  }
+  return AxiosInterceptor.get(url);
 }
 
 export async function upsertTestAttempt(payload: any): Promise<any> {

@@ -267,7 +267,7 @@ const HomeScreen = () => {
           )}
 
           {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && (
-            <TopSkillTest title="Top Skills" data={skillsList} />
+            <TopSkillTest title="Top Skill Tests" data={skillsList} />
           )}
         </>
       )}

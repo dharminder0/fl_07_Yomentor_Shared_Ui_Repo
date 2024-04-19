@@ -55,7 +55,7 @@ const DrawerSidebar = () => {
               }}
             />
           </View>
-          <View style={{ width: width - 210 }}>
+          <View style={{ width: "60%" }}>
             <Text
               style={[common.h2Title, { color: YoColors.white }]}
               numberOfLines={1}
@@ -122,6 +122,22 @@ const DrawerSidebar = () => {
             <Ionicons name="home" size={19} color={YoColors.primary} />
             <Text style={styles.tabTitle}>Home</Text>
           </TouchableOpacity>
+
+          {userInfo?.type === 3 && (
+            <>
+              <TouchableOpacity
+                style={styles.tabView}
+                onPress={() => navigation.navigate("SkillsTestList")}
+              >
+                <MaterialCommunityIcons
+                  name="clipboard-text"
+                  size={19}
+                  color={YoColors.primary}
+                />
+                <Text style={styles.tabTitle}>Skill Tests</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
 
         <View
@@ -132,21 +148,6 @@ const DrawerSidebar = () => {
             bottom: 12,
           }}
         >
-          {/* <Button
-            onPress={logoutUser}
-            title={"Logout"}
-            titleStyle={[common.fs12, { color: YoColors.primary }]}
-            icon={
-              <MaterialCommunityIcons
-                name="logout"
-                size={12}
-                color={YoColors.primary}
-              />
-            }
-            buttonStyle={{
-              backgroundColor: "none",
-            }}
-          /> */}
           <Button
             onPress={logoutUser}
             buttonStyle={{
@@ -180,12 +181,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 5,
-    marginBottom: 5,
+    //marginBottom: 2,
     borderRadius: 8,
   },
   tabTitle: {
     paddingHorizontal: 8,
-    fontSize: 19,
+    fontSize: 16,
     color: "#124076",
   },
 });
