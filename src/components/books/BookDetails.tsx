@@ -30,10 +30,15 @@ const BookDetails = ({ route }: any) => {
 
   const getDetails = () => {
     setIsLoading(true);
-    console.log(selectedBookDetails.id);
-    getBookDetailsById(selectedBookDetails.id)
+    const paylaod: any = {
+      id: selectedBookDetails.id,
+      userId: userInfo.id
+    };
+    console.log('paylaod', paylaod)
+    getBookDetailsById(paylaod)
       .then((response: any) => {
         setBookDetails({});
+        console.log('response', response.data)
         if (response.data && Object.keys(response.data)) {
           setBookDetails(response.data);
         }
@@ -52,12 +57,11 @@ const BookDetails = ({ route }: any) => {
       bookId: selectedBookDetails.id,
       status: statusId, ///Requested and Cancel
     };
-    console.log("payload", payload);
+    console.log('handleBookRequest',payload)
     setIsLoadingRequest(true);
     upsertBookExchange(payload)
       .then((response: any) => {
         setBookDetails({});
-        console.log("response", response.data);
         if (response.data && response.data.success) {
           setTimeout(() => {
             setIsLoadingRequest(false);
@@ -305,7 +309,7 @@ const BookDetails = ({ route }: any) => {
                 </View>
               )}
             </View>
-            <View style={{ marginTop: 50, alignItems: "center" }}>
+            {/* <View style={{ marginTop: 50, alignItems: "center" }}>
               {!bookDetails.status && (
                 <Button
                   title="Borrow book"
@@ -326,7 +330,7 @@ const BookDetails = ({ route }: any) => {
                   titleStyle={[btnStyle.solidTitle]}
                 />
               )}
-            </View>
+            </View> */}
           </View>
         </>
       ) : (
