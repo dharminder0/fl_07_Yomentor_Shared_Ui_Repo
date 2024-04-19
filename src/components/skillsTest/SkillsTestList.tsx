@@ -111,17 +111,39 @@ const SkillsTestList = () => {
               width: width - 50,
             }}
           >
-            <View style={[cardStyle.j_row]}>
+            <View style={[cardStyle.row]}>
               {item?.title && (
                 <Text
-                  style={[common.title, { width: "92%" }]}
+                  style={[common.title, { width: "100%" }]}
                   numberOfLines={2}
                 >
                   {item?.title}
                 </Text>
               )}
+            </View>
+
+            <View style={[common.row, common.my5]}>
+              <View style={cardStyle.row}>
+                <Icon name="laptop" size={12} />
+                <Text style={common.rText}>{item?.gradeName}</Text>
+              </View>
+              <View style={[cardStyle.row, common.ps5]}>
+                <Icon name="book" size={12} />
+                <Text style={common.rText}> {item?.subjectName}</Text>
+              </View>
               {item?.averageMarks > 0 && (
-                <Text style={[common.rText]}>{item?.averageMarks}</Text>
+                <View style={[cardStyle.row, common.ps5]}>
+                  <Text style={common.rText}>
+                    Avg Score: {item?.averageMarks}
+                  </Text>
+                </View>
+              )}
+              {item?.attemptCount > 0 && (
+                <View style={[cardStyle.row, common.ps5]}>
+                  <Text style={common.rText}>
+                    Attempted By: {item?.attemptCount}
+                  </Text>
+                </View>
               )}
             </View>
 

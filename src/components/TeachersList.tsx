@@ -164,7 +164,10 @@ const TeachersList = () => {
             {item?.education && (
               <View style={[cardStyle.row, common.mb5]}>
                 <Icon name="user-graduate" size={12} />
-                <Text style={common.rText}> {item?.education}</Text>
+                <Text style={common.rText} numberOfLines={1}>
+                  {" "}
+                  {item?.education}
+                </Text>
               </View>
             )}
 

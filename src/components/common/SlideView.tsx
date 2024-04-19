@@ -10,7 +10,6 @@ import { Card } from "@rneui/base";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-
 const SlideView = ({
   title = "",
   viewTo = "",
@@ -187,11 +186,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   setDots: {
-    top: 20,
+    top: 30,
     backgroundColor: "#D9D9D9",
   },
   activeDotStyle: {
-    top: 20,
-    backgroundColor: '#124076',
+    top: 30,
+    backgroundColor: "#124076",
   },
 });

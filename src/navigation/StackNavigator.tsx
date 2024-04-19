@@ -18,6 +18,7 @@ import SkillsTestList from "../components/skillsTest/SkillsTestList";
 import AssignedAssignmentList from "../components/batch/students/AssignedAssignmentList";
 import AssignedAssessmentList from "../components/batch/students/AssignedAssessmentList";
 import AttemptSkillTest from "../components/skillsTest/AttempSkillTest";
+import AttemptedQuestionsPreview from "../components/skillsTest/AttemptedQuestionsPreview";
 
 const Stack = createNativeStackNavigator();
 
@@ -204,6 +205,17 @@ export function StackNavigator() {
         options={{
           headerShown: true,
           title: "Attempt Skill Test",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+          headerBackVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="AttemptedQuestionsPreview"
+        component={AttemptedQuestionsPreview}
+        options={{
+          headerShown: true,
+          title: "Attempt Preview",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
         }}

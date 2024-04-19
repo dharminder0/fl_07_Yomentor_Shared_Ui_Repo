@@ -1,5 +1,12 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   getSkilDetailById,
   upsertTestAttempt,
@@ -9,7 +16,7 @@ import { cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import ConfirmationPopup from "../common/ConfirmationPopup";
 import { getUserInfo } from "../../shared/sharedDetails";
 import moment from "moment";
@@ -25,9 +32,11 @@ const SkillDetails = ({ route }: any) => {
   const [skillDetails, setSkillDetails] = useState<any>([]);
   const [attemptId, setAttemptId] = useState<any>();
 
-  useEffect(() => {
-    getSkillDetail();
-  }, [skillTestId]);
+  useFocusEffect(
+    useCallback(() => {
+      getSkillDetail();
+    }, [skillTestId])
+  );
 
   const getSkillDetail = () => {
     setIsLoader(true);
@@ -45,12 +54,12 @@ const SkillDetails = ({ route }: any) => {
       userId: userInfo.id,
       skillTestId: skillTestId,
       status: "0",
-      // score: 10,
     };
     upsertTestAttempt(payload)
       .then((response: any) => {
         setAttemptId(response.data.content);
         if (response.data && response.data.success) {
+          setIsAttempModal(false);
           navigation.navigate("AttemptSkillTest", {
             skillTestId: skillTestId,
             attemptId: response.data.content,
@@ -95,7 +104,7 @@ const SkillDetails = ({ route }: any) => {
           {skillDetails?.averageMarks > 0 && (
             <View style={[cardStyle.row, common.ps5]}>
               <Text style={common.rText}>
-                Attempted By: {skillDetails?.averageMarks}
+                Attempted By: {skillDetails?.attemptCount}
               </Text>
             </View>
           )}
@@ -110,32 +119,31 @@ const SkillDetails = ({ route }: any) => {
         <View style={[common.my10, { alignItems: "center" }]}>
           <Button
             title="Attempt Now"
-            // loading={isProcessLoader}
             buttonStyle={{ backgroundColor: YoColors.primary }}
-            // onPress={() =>
-            //   navigation.navigate("AttemptSkillTest", { skillTestId: skillId })
-            // }
             onPress={() => setIsAttempModal(true)}
             containerStyle={{ width: 180 }}
           />
         </View>
 
+        <Text style={[common.h3Title, common.my10]}>Attempt History</Text>
         {skillDetails.attemptHistory &&
-          skillDetails.attemptHistory?.length > 0 && (
-            <>
-              <Text style={[common.h3Title, common.mb10]}>
-                Attempted History
-              </Text>
-              {skillDetails.attemptHistory?.map((item: any, index: number) => (
-                <View style={styles.item} key={index}>
-                  <Text>Score: {item.score}</Text>
-                  <Text>
-                    {moment(item.attemptDate).format("DD, MMM, YYYY")}
-                  </Text>
-                </View>
-              ))}
-            </>
-          )}
+          skillDetails.attemptHistory?.length > 0 &&
+          skillDetails.attemptHistory?.map((item: any, index: number) => (
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() =>
+                navigation.navigate("AttemptedQuestionsPreview", {
+                  skillTestId: skillTestId,
+                  attemptId: item.attemptId,
+                })
+              }
+            >
+              <View style={styles.item} key={index}>
+                <Text>{moment(item.attemptDate).format("DD, MMM, YYYY")}</Text>
+                <Text>Score: {item.score}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
       </ScrollView>
       {isAttempModal && (
         <ConfirmationPopup

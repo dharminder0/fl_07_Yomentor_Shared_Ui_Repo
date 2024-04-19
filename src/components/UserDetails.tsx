@@ -50,6 +50,7 @@ const UserDetailList = ({ route }: { route: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [openBatchList, setOpenBatchList] = useState<any>([]);
+  const [ongoingBatchList, setOngoingBatchList] = useState<any>([]);
   const [userDetailList, setUserDetailList] = useState<any>({});
 
   const [isEnrollModal, setIsEnrollModal] = useState<boolean>(false);
@@ -58,7 +59,8 @@ const UserDetailList = ({ route }: { route: any }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getBatchesListbyEntity();
+    getBatchesListbyEntity(1);
+    getBatchesListbyEntity(2);
     getUserDetail();
   }, [userInfo?.id]);
 
@@ -75,21 +77,27 @@ const UserDetailList = ({ route }: { route: any }) => {
       });
   };
 
-  const getBatchesListbyEntity = () => {
+  const getBatchesListbyEntity = (statusId: number) => {
     const payload: any = {
       teacherId: userId,
       studentId: userInfo?.id,
-      statusId: [1],
+      statusId: [statusId],
       pageSize: 10,
       pageIndex: 1,
       isFavourite: true,
     };
     setOpenBatchList([]);
+    setOngoingBatchList([]);
     getBatchListbyEntity(payload)
       .then((response: any) => {
         setIsLoading(true);
         if (response?.data && response?.data?.length) {
-          setOpenBatchList(response?.data);
+          if (statusId === 1) {
+            setOpenBatchList(response?.data);
+          }
+          if (statusId === 2) {
+            setOngoingBatchList(response?.data);
+          }
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -115,14 +123,14 @@ const UserDetailList = ({ route }: { route: any }) => {
             type: "success",
             duration: 2000,
           });
-          getBatchesListbyEntity();
+          getBatchesListbyEntity(1);
         }
       });
     } else {
       updateFavouriteStatus(userInfo?.id, batchId)
         .then((response: any) => {
           if (response.data && response.data.response) {
-            getBatchesListbyEntity();
+            getBatchesListbyEntity(1);
           }
         })
         .catch((error: any) => {
@@ -150,7 +158,7 @@ const UserDetailList = ({ route }: { route: any }) => {
               type: "success",
               duration: 2000,
             });
-            getBatchesListbyEntity();
+            getBatchesListbyEntity(1);
           }
         })
         .catch((error: any) => {
@@ -173,7 +181,7 @@ const UserDetailList = ({ route }: { route: any }) => {
               type: "success",
               duration: 2000,
             });
-            getBatchesListbyEntity();
+            getBatchesListbyEntity(1);
           }
         })
         .catch((error: any) => {
@@ -197,7 +205,8 @@ const UserDetailList = ({ route }: { route: any }) => {
             refreshing={refreshLoader}
             onRefresh={() => {
               setIsLoading(true);
-              getBatchesListbyEntity();
+              getBatchesListbyEntity(1);
+              getBatchesListbyEntity(2);
               getUserDetail();
             }}
           />
@@ -382,11 +391,12 @@ const UserDetailList = ({ route }: { route: any }) => {
                 </View>
               )}
             </View>
-            <View style={common.mtop10}>
-              <Text style={common.title}>Batches Open for Enrollment</Text>
-              <View style={[common.mtop10]}>
-                {openBatchList && openBatchList?.length > 0 ? (
-                  openBatchList.map((item: any, index: number) => (
+
+            {openBatchList && openBatchList?.length > 0 && (
+              <View style={common.mtop10}>
+                <Text style={common.title}>Batches Open for Enrollment</Text>
+                <View style={[common.mtop10]}>
+                  {openBatchList.map((item: any, index: number) => (
                     <Card
                       containerStyle={[
                         cardStyle.container,
@@ -571,18 +581,115 @@ const UserDetailList = ({ route }: { route: any }) => {
                         </View>
                       )}
                     </Card>
-                  ))
-                ) : (
-                  <View
-                    style={{ height: height / 3, justifyContent: "center" }}
-                  >
-                    <Text style={[common.title, { textAlign: "center" }]}>
+                  ))}
+
+                  {/* <View style={{ justifyContent: "center" }}>
+                    <Text style={[common.rText, { textAlign: "center" }]}>
                       Sorry, there is no batch for Enrollment
                     </Text>
-                  </View>
-                )}
+                  </View> */}
+                </View>
               </View>
-            </View>
+            )}
+
+            {ongoingBatchList && ongoingBatchList?.length > 0 && (
+              <View style={common.mtop10}>
+                <Text style={common.title}>Ongoing Batches</Text>
+                <View style={[common.mtop10]}>
+                  {ongoingBatchList.map((item: any, index: number) => (
+                    <Card
+                      containerStyle={[
+                        cardStyle.container,
+                        { paddingBottom: 5 },
+                      ]}
+                      key={index}
+                    >
+                      <View style={[cardStyle.j_row, { margin: 0 }]}>
+                        <Text
+                          style={[cardStyle.headTitle, { width: "72%" }]}
+                          numberOfLines={2}
+                        >
+                          {item?.batchName}
+                        </Text>
+
+                        {item?.statusId === 1 && (
+                          <Text style={{ width: 90 }}>
+                            {moment(item?.startDate).format("MMM DD, YYYY")}
+                          </Text>
+                        )}
+                      </View>
+
+                      {item?.description && (
+                        <Text style={{ marginBottom: 10 }} numberOfLines={2}>
+                          {item?.description}
+                        </Text>
+                      )}
+
+                      <View style={cardStyle.j_row}>
+                        <View style={cardStyle.row3}>
+                          <Icon name="laptop" size={12} />
+                          <Text style={common.rText}>{item?.gradeName}</Text>
+                        </View>
+                        <View style={cardStyle.row3}>
+                          <MaterialCommunityIcons
+                            name="clock-time-four-outline"
+                            size={13}
+                          />
+                          <Text style={common.rText}>
+                            {" "}
+                            {moment(item?.tuitionTime, "HH:mm:ss").format(
+                              "h:mm A"
+                            )}
+                          </Text>
+                        </View>
+                        <View style={cardStyle.row3}>
+                          <Icon name="money-bill-wave" size={12} />
+                          <Text style={common.rText}>
+                            {" "}
+                            {item?.fee.replace(".00", "")} / {item?.feeType}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={cardStyle.j_row}>
+                        <View style={cardStyle.row3}>
+                          <Icon name="book" size={12} />
+                          <Text style={common.rText}> {item?.subjectName}</Text>
+                        </View>
+                        <View style={cardStyle.row3}>
+                          <Icon
+                            name="calendar-day"
+                            size={12}
+                            style={{ marginEnd: 6 }}
+                          />
+                          {!!item?.days &&
+                            Array.isArray(item.days) &&
+                            item.days.map((dayItem: any, key: number) => (
+                              <Text
+                                style={[
+                                  common.rText,
+                                  { textTransform: "uppercase" },
+                                ]}
+                                key={key}
+                              >
+                                {key !== 0 && "/"}
+                                {dayItem}
+                              </Text>
+                            ))}
+                        </View>
+                        <View style={cardStyle.row3}>
+                          <Icon name="users" size={13} />
+                          <Text style={common.rText}>
+                            {" "}
+                            {item?.studentCount}
+                          </Text>
+                        </View>
+                      </View>
+                    </Card>
+                  ))}
+                </View>
+              </View>
+            )}
           </>
         )}
       </ScrollView>
