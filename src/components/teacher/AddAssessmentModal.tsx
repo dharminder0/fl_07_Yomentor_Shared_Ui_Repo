@@ -57,6 +57,7 @@ const AddAssessmentModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
+  const [isRefreshSelectModal, setIsRefreshSelectModal] = useState<number>(0);
 
   const {
     control,
@@ -67,8 +68,6 @@ const AddAssessmentModal = ({
     formState: { errors },
   } = useForm();
 
-  console.log(dataToEdit);
-
   useEffect(() => {
     reset(dataToEdit);
     if (dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0) {
@@ -76,6 +75,7 @@ const AddAssessmentModal = ({
     } else {
       setUploadedFilesList([]);
     }
+    setIsRefreshSelectModal(0);
   }, [isModalVisible, reset]);
 
   const toggleModal = () => {
@@ -93,14 +93,17 @@ const AddAssessmentModal = ({
   useEffect(() => {
     setValue("teacherId", userId);
     setValue("isFavorite", true);
-    if (getValues("gradeId")) {
-      getSubjectByGradeId(getValues("gradeId")).then((result: any) => {
+    if (gradeId) {
+      setValue("gradeId", gradeId);
+      setValue("subjectId", "");
+      getSubjectByGradeId(gradeId).then((result: any) => {
         if (!!result.data) {
           setSubjectList(result.data);
         }
       });
+      setIsRefreshSelectModal(isRefreshSelectModal+1);
     }
-  }, [getValues("gradeId")]);
+  }, [gradeId]);
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
@@ -203,7 +206,6 @@ const AddAssessmentModal = ({
                   />
                 )}
               />
-              {/* {errors.name && <Text>This field is required</Text>} */}
 
               <Controller
                 control={control}
@@ -234,7 +236,10 @@ const AddAssessmentModal = ({
                       data={classList}
                       placeholder="Class"
                       onChanged={(value: any) => {
-                        setValue("gradeId", value?.id);
+                        console.log('onChanged', value)
+                        if(value?.id){
+                          setGradeId(value?.id);
+                        }
                       }}
                       defaultValue={
                         dataToEdit.gradeId
@@ -248,6 +253,7 @@ const AddAssessmentModal = ({
                   </View>
                   <View style={{ width: "48%" }}>
                     <SelectModal
+                      refreshModal={isRefreshSelectModal}
                       data={subjectList}
                       placeholder="Subject"
                       onChanged={(value: any) =>
@@ -280,7 +286,7 @@ const AddAssessmentModal = ({
                     placeholderTextColor={YoColors.placeholderText}
                     value={value}
                     placeholder="Max Mark"
-                    keyboardType="number-pad"
+                    keyboardType="numeric"
                   />
                 )}
               />

@@ -61,6 +61,7 @@ const AddAssignmentModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadedFilesList, setUploadedFilesList] = useState<any>([]);
   const { isPopupModal, setIsPopupModal }: any = useStore();
+  const [isRefreshSelectModal, setIsRefreshSelectModal] = useState<number>(0);
 
   const {
     control,
@@ -77,6 +78,7 @@ const AddAssignmentModal = ({
     } else {
       setUploadedFilesList([]);
     }
+    setIsRefreshSelectModal(0);
   }, [isModalVisible, reset]);
 
   const toggleModal = () => {
@@ -95,19 +97,31 @@ const AddAssignmentModal = ({
     setValue("teacherId", userId);
     setValue("isFavorite", true);
     if (gradeId) {
+      setValue("gradeId", gradeId);
       setValue("subjectId", "");
       getSubjectByGradeId(gradeId).then((result: any) => {
-        if (result.data) {
+        if (!!result.data) {
           setSubjectList(result.data);
         }
       });
+      setIsRefreshSelectModal(isRefreshSelectModal + 1);
     }
   }, [gradeId]);
 
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
-    let payload: any = { ...data };
-    payload.uploadedFiles = [...uploadedFilesList];
+    const payload: any = {
+      id: data.id,
+      teacherId: data.teacherId,
+      title: data.title,
+      description: data.description,
+      gradeId: data.gradeId,
+      subjectId: data.subjectId,
+      isFavorite: data.isFavorite,
+      isDeleted: data.isDeleted,
+      uploadedFiles: [...uploadedFilesList],
+    };
+    console.log("payload", payload);
     upsertAssignments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -236,8 +250,10 @@ const AddAssignmentModal = ({
                       data={classList}
                       placeholder="Class"
                       onChanged={(value: any) => {
-                        setValue("gradeId", value?.id);
-                        setGradeId(value?.id);
+                        console.log("onChanged", value);
+                        if (value?.id) {
+                          setGradeId(value?.id);
+                        }
                       }}
                       defaultValue={
                         dataToEdit.gradeId
@@ -251,6 +267,7 @@ const AddAssignmentModal = ({
                   </View>
                   <View style={{ width: "48%" }}>
                     <SelectModal
+                      refreshModal={isRefreshSelectModal}
                       data={subjectList}
                       placeholder="Subject"
                       onChanged={(value: any) =>
