@@ -236,7 +236,6 @@ const AddAssessmentModal = ({
                       data={classList}
                       placeholder="Class"
                       onChanged={(value: any) => {
-                        console.log('onChanged', value)
                         if(value?.id){
                           setGradeId(value?.id);
                         }

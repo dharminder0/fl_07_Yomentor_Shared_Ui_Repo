@@ -20,7 +20,6 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
   const getQuestionAnswerBySkillTestId = () => {
     questionsAnswersBySkillId(skillTestId)
       .then((response: any) => {
-        console.log(response.data);
         if (response.data && response.data?.length > 0) {
           setQuestions(response.data);
         }
@@ -62,9 +61,8 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
       attemptId: attemptId,
       attemptedQuestions: submittedAnswers,
     };
-    console.log("Submitted answers:", payload);
+
     upsertBulkAttempt(payload).then((response: any) => {
-      console.log(response.data);
       if (response.data && response.data.success) {
         navigation.goBack(null);
       }

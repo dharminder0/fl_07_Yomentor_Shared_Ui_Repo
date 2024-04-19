@@ -121,7 +121,7 @@ const AddAssignmentModal = ({
       isDeleted: data.isDeleted,
       uploadedFiles: [...uploadedFilesList],
     };
-    console.log("payload", payload);
+  
     upsertAssignments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -250,7 +250,6 @@ const AddAssignmentModal = ({
                       data={classList}
                       placeholder="Class"
                       onChanged={(value: any) => {
-                        console.log("onChanged", value);
                         if (value?.id) {
                           setGradeId(value?.id);
                         }
