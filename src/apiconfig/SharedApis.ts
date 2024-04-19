@@ -189,8 +189,8 @@ export async function upsertBookDetails(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Books/Upsert`, payload);
 }
 
-export async function getBookDetailsById(id: number): Promise<any> {
-  return AxiosInterceptor.get(`Books/BookInfo?id=${id}`);
+export async function getBookDetailsById(id: number, type?:number): Promise<any> {
+  return AxiosInterceptor.get(`Books/BookInfo?id=${id}${type ? `&type=${type}`:''}`);
 }
 
 export async function deleteBookById(id: number): Promise<any> {

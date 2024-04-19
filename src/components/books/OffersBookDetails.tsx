@@ -52,40 +52,12 @@ const OffersBookDetails = ({ route }: any) => {
   const getDetails = () => {
     setIsLoading(true);
     console.log(selectedBookDetails.id);
-    getBookDetailsById(selectedBookDetails.id)
+    getBookDetailsById(selectedBookDetails.id, 2)
       .then((response: any) => {
         setBookDetails({});
         console.log(response.data);
         if (response.data && Object.keys(response.data)) {
-          let UpdatedData = { ...response.data };
-          UpdatedData["requestsList"] = [
-            {
-              email: "Testwalking12@yopmail.com",
-              firstName: "Naveen",
-              lastName: "Student1",
-              phone: "88888",
-              userAddress: {
-                address1: "6th Floor, Graphix tower-1",
-                address2: "Sector-62",
-                city: "Noida",
-                createDate: "0001-01-01T00:00:00",
-                id: 3,
-                isDeleted: false,
-                latitude: 28.6382948,
-                longitude: 77.3760847,
-                pincode: "132103",
-                stateId: 1,
-                stateName: "Andhra Pradesh",
-                updateDate: "2024-04-17T06:57:49",
-                userId: 48,
-              },
-              userImage:
-                "https://yomentortest.blob.core.windows.net/images/823b6b18-48e2-1713280660212",
-            },
-          ];
-
-          setBookDetails(UpdatedData);
-          // setBookDetails(response.data);
+          setBookDetails(response.data);
         }
         setIsLoading(false);
       })
@@ -291,11 +263,11 @@ const OffersBookDetails = ({ route }: any) => {
                 },
               ]}
             >
-              <Text style={[common.mb5, common.h3Title]}>Request LIst</Text>
+              <Text style={[common.mb5, common.h3Title]}>Request List</Text>
             </View>
-            {bookDetails?.requestsList &&
-              bookDetails?.requestsList.length > 0 &&
-              bookDetails?.requestsList.map((item: any) => (
+            {bookDetails?.receiverUsers &&
+              bookDetails?.receiverUsers.length > 0 &&
+              bookDetails?.receiverUsers.map((item: any) => (
                 <View
                   style={[
                     common.row,
@@ -326,20 +298,72 @@ const OffersBookDetails = ({ route }: any) => {
                     <Text style={[common.title, common.mb5]}>
                       {item.firstName} {item.lastName}
                     </Text>
-                    {item.phone && (
+                    {item?.phone && (
                       <View style={[cardStyle.row, common.mb5]}>
                         <Icon name="phone-alt" size={12} />
                         <Text style={common.rText}> {item.phone}</Text>
                       </View>
                     )}
 
-                    {item.email && (
+                    {item?.email && (
                       <View style={[cardStyle.row, common.mb5]}>
                         <Icon name="envelope" size={12} />
                         <Text style={common.rText}> {item.email}</Text>
                       </View>
                     )}
                   </View>
+                  {(item?.userAddress?.address1 ||
+                    item?.userAddress?.address2) && (
+                    <View style={{ flexDirection: "row", marginTop: 5 }}>
+                      <Ionicons
+                        name="location"
+                        size={14}
+                        style={{ width: 12 }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          width: "95%",
+                        }}
+                      >
+                        {item?.userAddress?.address1 && (
+                          <Text style={[common.rText, { paddingStart: 5 }]}>
+                            {item?.userAddress?.address1}
+                          </Text>
+                        )}
+                        {item?.userAddress?.address1 &&
+                          item?.userAddress?.address2 && <Text>, </Text>}
+                        {item?.userAddress?.address2 && (
+                          <Text style={[common.rText]}>
+                            {item?.userAddress?.address2}
+                          </Text>
+                        )}
+                        {item?.userAddress?.address2 &&
+                          item?.userAddress?.city && <Text>, </Text>}
+                        {item?.userAddress?.city && (
+                          <Text style={[common.rText]}>
+                            {item?.userAddress?.city}
+                          </Text>
+                        )}
+                        {item?.userAddress?.city &&
+                          item?.userAddress?.stateName && <Text>, </Text>}
+                        {item?.userAddress?.stateName && (
+                          <Text style={[common.rText]}>
+                            {item?.userAddress?.stateName}
+                          </Text>
+                        )}
+                        {item?.userAddress?.stateName &&
+                          item?.userAddress?.pincode && <Text>, </Text>}
+                        {item?.userAddress?.pincode && (
+                          <Text style={[common.rText]}>
+                            {item?.userAddress?.pincode}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  )}
                 </View>
               ))}
           </View>

@@ -26,6 +26,7 @@ const SelectModal = ({
   isDisabled = false,
   fieldError = false,
   defaultValue = null,
+  refreshModal = false,
 }: any) => {
   const YoColors = useThemeColor();
   const { width, height } = Dimensions.get("window");
@@ -42,13 +43,14 @@ const SelectModal = ({
         onChanged(defaultValue);
       }
     }
-  }, [defaultValue]);
+  }, []);
 
-  // useEffect(() => {
-  //   if (data && data?.length === 0) {
-  //     setSelectedValue([]);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (refreshModal > 1) {
+      console.log("isRefreshSelectModal", refreshModal);
+      setSelectedValue([]);
+    }
+  }, [refreshModal]);
 
   const handleSelectChange = (value: any) => {
     setIsSelectModal(false);
