@@ -26,7 +26,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Welcome from "../common/Welcome";
 import AddBatchModalForm from "../common/AddBatchModalForm";
 import useStore from "../../store/useStore";
-import TopSkills from "../skillsTest/TopSkills";
+import TopSkillTest from "../skillsTest/TopSkillTest";
 
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -120,6 +120,9 @@ const HomeScreen = () => {
         if (response.data && response.data.length > 0) {
           setTeacherList(response.data);
         }
+        setTimeout(() => {
+          setMainIsLoading(false);
+        }, 1000);
       })
       .catch((error: any) => {
         console.error("Error fetching :", error);
@@ -139,9 +142,6 @@ const HomeScreen = () => {
         if (response.data && response.data.length > 0) {
           setSkillsList(response.data);
         }
-        setTimeout(() => {
-          setMainIsLoading(false);
-        }, 1000);
       })
       .catch((error: any) => {
         console.error("Error fetching :", error);
@@ -267,7 +267,7 @@ const HomeScreen = () => {
           )}
 
           {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && (
-            <TopSkills title="Top Skills" data={skillsList} />
+            <TopSkillTest title="Top Skills" data={skillsList} />
           )}
         </>
       )}

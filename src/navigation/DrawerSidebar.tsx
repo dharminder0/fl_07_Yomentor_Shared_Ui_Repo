@@ -55,7 +55,7 @@ const DrawerSidebar = () => {
               }}
             />
           </View>
-          <View style={{ width: width - 205 }}>
+          <View style={{ width: width - 210 }}>
             <Text
               style={[common.h2Title, { color: YoColors.white }]}
               numberOfLines={1}

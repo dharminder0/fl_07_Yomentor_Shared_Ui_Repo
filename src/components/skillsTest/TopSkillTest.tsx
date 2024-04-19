@@ -17,7 +17,7 @@ import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
-const TopSkills = ({ title = "", data = [] }) => {
+const TopSkillTest = ({ title = "", data = [] }) => {
   const image: any = YoImages();
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
@@ -35,24 +35,35 @@ const TopSkills = ({ title = "", data = [] }) => {
         <View style={styles.item} key={index}>
           <View>
             {item.title && (
-              <View style={cardStyle.j_row}>
-                <Text style={[common.title]} numberOfLines={2}>
+              <View style={cardStyle.row}>
+                <Text style={[common.title]} numberOfLines={1}>
                   {item.title}
                 </Text>
-                {item.averageMarks && (
-                  <Text style={[common.rText]}>{item.averageMarks}</Text>
-                )}
               </View>
             )}
-            <View style={[common.row, common.mb5]}>
+            <View style={[common.row, common.my5]}>
               <View style={cardStyle.row}>
                 <Icon name="laptop" size={12} />
                 <Text style={common.rText}>{item?.gradeName}</Text>
               </View>
-              <View style={[cardStyle.row, common.ph10]}>
+              <View style={[cardStyle.row, common.ps5]}>
                 <Icon name="book" size={12} />
                 <Text style={common.rText}> {item?.subjectName}</Text>
               </View>
+              {item?.averageMarks > 0 && (
+                <View style={[cardStyle.row, common.ps5]}>
+                  <Text style={common.rText}>
+                    Avg Score: {item?.averageMarks}
+                  </Text>
+                </View>
+              )}
+              {item?.attemptCount > 0 && (
+                <View style={[cardStyle.row, common.ps5]}>
+                  <Text style={common.rText}>
+                    Attempted By: {item?.attemptCount}
+                  </Text>
+                </View>
+              )}
             </View>
 
             {item?.description && (
@@ -81,12 +92,8 @@ const TopSkills = ({ title = "", data = [] }) => {
       </View>
 
       <VirtualizedList
-        contentContainerStyle={{ flexDirection: "row", marginBottom: 10 }}
-        scrollEnabled={true}
-        horizontal
+        contentContainerStyle={{ marginBottom: 10 }}
         data={data}
-        showsHorizontalScrollIndicator={false}
-        nestedScrollEnabled={true}
         initialNumToRender={5}
         renderItem={renderItem}
         keyExtractor={(item) => item?.id}
@@ -97,13 +104,12 @@ const TopSkills = ({ title = "", data = [] }) => {
   );
 };
 
-export default TopSkills;
+export default TopSkillTest;
 
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#fff",
-    height: 100,
-    width: width - 30,
+    width: width - 25,
     marginEnd: 8,
     marginBottom: 8,
     padding: 10,

@@ -1,24 +1,37 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getSkilDetailById } from "../../apiconfig/SharedApis";
+import {
+  getSkilDetailById,
+  upsertTestAttempt,
+} from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
+import { Button } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import ConfirmationPopup from "../common/ConfirmationPopup";
+import { getUserInfo } from "../../shared/sharedDetails";
+import moment from "moment";
 
+const { width } = Dimensions.get("window");
 const SkillDetails = ({ route }: any) => {
-  const skillId: any = route.params?.skillId;
+  const skillTestId: any = route.params?.skillId;
   const YoColors = useThemeColor();
+  const userInfo: any = getUserInfo();
+  const navigation: any = useNavigation();
   const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isAttempModal, setIsAttempModal] = useState<boolean>(false);
   const [skillDetails, setSkillDetails] = useState<any>([]);
+  const [attemptId, setAttemptId] = useState<any>();
 
   useEffect(() => {
     getSkillDetail();
-  }, [skillId]);
+  }, [skillTestId]);
 
   const getSkillDetail = () => {
     setIsLoader(true);
-    getSkilDetailById(skillId).then((response: any) => {
+    getSkilDetailById(skillTestId, userInfo.id).then((response: any) => {
       if (response.data) {
         setSkillDetails(response.data);
         setIsLoader(false);
@@ -26,9 +39,36 @@ const SkillDetails = ({ route }: any) => {
     });
   };
 
+  const handleAttempTest = () => {
+    const payload: any = {
+      attemptCode: "1",
+      userId: userInfo.id,
+      skillTestId: skillTestId,
+      status: "0",
+      // score: 10,
+    };
+    upsertTestAttempt(payload)
+      .then((response: any) => {
+        setAttemptId(response.data.content);
+        if (response.data && response.data.success) {
+          navigation.navigate("AttemptSkillTest", {
+            skillTestId: skillTestId,
+            attemptId: response.data.content,
+          });
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
-      {isLoader && <Loading />}
+      {isLoader && (
+        <View style={{ height: "100%" }}>
+          <Loading />
+        </View>
+      )}
       <ScrollView style={common.px12}>
         {skillDetails?.title && (
           <Text style={[common.h3Title, common.mtop10]}>
@@ -37,37 +77,89 @@ const SkillDetails = ({ route }: any) => {
         )}
 
         <View style={[common.row, common.mtop10]}>
-          {skillDetails?.averageMarks && (
-            <>
-              <Text style={[common.rText, { color: YoColors.primary }]}>
-                Average Marks -{" "}
-              </Text>
-              <Text style={common.rText}>{skillDetails?.averageMarks}</Text>
-            </>
-          )}
-        </View>
-
-        <View style={[common.row, common.my10]}>
           <View style={cardStyle.row}>
             <Icon name="laptop" size={12} />
             <Text style={common.rText}>{skillDetails?.gradeName}</Text>
           </View>
-          <View style={[cardStyle.row, common.ph10]}>
+          <View style={[cardStyle.row, common.ps5]}>
             <Icon name="book" size={12} />
             <Text style={common.rText}> {skillDetails?.subjectName}</Text>
           </View>
+          {skillDetails?.averageMarks > 0 && (
+            <View style={[cardStyle.row, common.ps5]}>
+              <Text style={common.rText}>
+                Avg Score: {skillDetails?.averageMarks}
+              </Text>
+            </View>
+          )}
+          {skillDetails?.averageMarks > 0 && (
+            <View style={[cardStyle.row, common.ps5]}>
+              <Text style={common.rText}>
+                Attempted By: {skillDetails?.averageMarks}
+              </Text>
+            </View>
+          )}
         </View>
 
         {skillDetails?.description && (
-          <Text style={[common.rText, common.mtop10]}>
+          <Text style={[common.rText, common.my10]}>
             {skillDetails?.description}
           </Text>
         )}
+
+        <View style={[common.my10, { alignItems: "center" }]}>
+          <Button
+            title="Attempt Now"
+            // loading={isProcessLoader}
+            buttonStyle={{ backgroundColor: YoColors.primary }}
+            // onPress={() =>
+            //   navigation.navigate("AttemptSkillTest", { skillTestId: skillId })
+            // }
+            onPress={() => setIsAttempModal(true)}
+            containerStyle={{ width: 180 }}
+          />
+        </View>
+
+        {skillDetails.attemptHistory &&
+          skillDetails.attemptHistory?.length > 0 && (
+            <>
+              <Text style={[common.h3Title, common.mb10]}>
+                Attempted History
+              </Text>
+              {skillDetails.attemptHistory?.map((item: any, index: number) => (
+                <View style={styles.item} key={index}>
+                  <Text>Score: {item.score}</Text>
+                  <Text>
+                    {moment(item.attemptDate).format("DD, MMM, YYYY")}
+                  </Text>
+                </View>
+              ))}
+            </>
+          )}
       </ScrollView>
+      {isAttempModal && (
+        <ConfirmationPopup
+          message="Are you sure to want to attempt this skill test?"
+          onSubmit={handleAttempTest}
+          isVisible={isAttempModal}
+          setIsVisible={setIsAttempModal}
+        />
+      )}
     </>
   );
 };
 
 export default SkillDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  item: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    width: width - 25,
+    marginEnd: 8,
+    marginBottom: 8,
+    padding: 10,
+    borderRadius: 6,
+  },
+});

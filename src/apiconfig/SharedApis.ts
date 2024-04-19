@@ -216,10 +216,20 @@ export async function getSkilsList(payload: any): Promise<any> {
   return AxiosInterceptor.post(`SkillTest/List`, payload);
 }
 
-export async function getSkilDetailById(id: any): Promise<any> {
-  return AxiosInterceptor.get(`SkillTest/SkillTest/Id?id=${id}`);
+export async function getSkilDetailById(id: any, userId: any): Promise<any> {
+  return AxiosInterceptor.get(
+    `SkillTest/SkillTest/Id?id=${id}&userId=${userId}`
+  );
 }
 
 export async function questionsAnswersBySkillId(id: any): Promise<any> {
   return AxiosInterceptor.get(`SkillTest/QuestionsAnswers?skillTestId=${id}`);
+}
+
+export async function upsertTestAttempt(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/UpsertAttempt`, payload);
+}
+
+export async function upsertBulkAttempt(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/BulkAttemptDetail`, payload);
 }

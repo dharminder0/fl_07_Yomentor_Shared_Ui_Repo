@@ -120,7 +120,7 @@ const SkillsTestList = () => {
                   {item?.title}
                 </Text>
               )}
-              {item?.averageMarks && (
+              {item?.averageMarks > 0 && (
                 <Text style={[common.rText]}>{item?.averageMarks}</Text>
               )}
             </View>

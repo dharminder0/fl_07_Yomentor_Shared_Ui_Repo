@@ -4,7 +4,6 @@ import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import useStore from "../../store/useStore";
 
 const ConfirmationPopup = ({
   message = "",
@@ -14,7 +13,6 @@ const ConfirmationPopup = ({
 }) => {
   const YoColors = useThemeColor();
   const { width } = Dimensions.get("screen");
-  // const { isConfirmModal, setIsConfirmModal }: any = useStore();
 
   const closeModal = () => {
     setIsVisible(false);
@@ -27,6 +25,7 @@ const ConfirmationPopup = ({
       swipeDirection="down"
       onBackdropPress={closeModal}
       style={{ margin: 0, alignItems: "center" }}
+      animationInTiming={300}
       useNativeDriver
     >
       <View
@@ -44,8 +43,8 @@ const ConfirmationPopup = ({
         <View style={[common.row, { alignSelf: "flex-end", marginEnd: 10 }]}>
           <Pressable
             style={{
-              paddingHorizontal: 20,
-              marginEnd: 10,
+              paddingHorizontal: 15,
+              marginEnd: 7,
             }}
             onPress={onSubmit}
           >
@@ -53,7 +52,7 @@ const ConfirmationPopup = ({
               Yes
             </Text>
           </Pressable>
-          <Pressable style={{ paddingHorizontal: 10 }} onPress={closeModal}>
+          <Pressable style={{ paddingHorizontal: 15 }} onPress={closeModal}>
             <Text style={{ fontWeight: "600" }}>No</Text>
           </Pressable>
         </View>
