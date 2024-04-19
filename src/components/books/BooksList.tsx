@@ -145,9 +145,12 @@ const BooksList = () => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() =>
-        navigation.navigate(selectedActionTab === 'offers' ? "OffersBookDetails":"BookDetails", {
-          selectedBookDetails: item
-        })
+        navigation.navigate(
+          selectedActionTab === "offers" ? "OffersBookDetails" : "BookDetails",
+          {
+            selectedBookDetails: item,
+          }
+        )
       }
     >
       <Card containerStyle={cardStyle.container} key={index}>
@@ -259,36 +262,38 @@ const BooksList = () => {
       </View>
 
       <View style={common.container}>
-        {selectedActionTab === "offers" && (
-          <View
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "flex-end",
-              marginVertical: 10,
-            }}
-          >
-            <Button
-              title="Add a Book to Share"
-              onPress={() => setModalVisible(true)}
-              icon={
-                <MaterialCommunityIcons
-                  name="plus"
-                  size={12}
-                  color={YoColors.primary}
-                />
-              }
-              buttonStyle={[
-                btnStyle.outline,
-                {
-                  width: 150,
-                  height: 30,
-                },
-              ]}
-              titleStyle={[btnStyle.outlineTitle, common.fs12]}
-            />
-          </View>
-        )}
+        {booksList &&
+          booksList.length > 0 &&
+          selectedActionTab === "offers" && (
+            <View
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "flex-end",
+                marginVertical: 10,
+              }}
+            >
+              <Button
+                title="Add a Book to Share"
+                onPress={() => setModalVisible(true)}
+                icon={
+                  <MaterialCommunityIcons
+                    name="plus"
+                    size={12}
+                    color={YoColors.primary}
+                  />
+                }
+                buttonStyle={[
+                  btnStyle.outline,
+                  {
+                    width: 150,
+                    height: 30,
+                  },
+                ]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+              />
+            </View>
+          )}
         {selectedActionTab === "booksList" && (
           <View style={[common.row, common.mtop10]}>
             <TextInput
@@ -367,6 +372,28 @@ const BooksList = () => {
               {selectedActionTab === "offers" &&
                 "Share your books with others by creating an offer. Let fellow users borrow your books and help spread knowledge."}
             </Text>
+            {selectedActionTab === "offers" && (
+              <Button
+                title="Add a Book to Share"
+                onPress={() => setModalVisible(true)}
+                icon={
+                  <MaterialCommunityIcons
+                    name="plus"
+                    size={12}
+                    color={YoColors.primary}
+                  />
+                }
+                buttonStyle={[
+                  btnStyle.outline,
+                  {
+                    width: 150,
+                    height: 30,
+                    marginTop: 10,
+                  },
+                ]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+              />
+            )}
           </View>
         )}
       </View>

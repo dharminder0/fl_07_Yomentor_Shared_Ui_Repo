@@ -51,13 +51,17 @@ const OffersBookDetails = ({ route }: any) => {
 
   const getDetails = () => {
     setIsLoading(true);
-    console.log(selectedBookDetails.id);
-    getBookDetailsById(selectedBookDetails.id, 2)
+    const paylaod: any = {
+      id: selectedBookDetails.id,
+      type: 2
+    };
+    console.log('paylaod', paylaod)
+    getBookDetailsById(paylaod)
       .then((response: any) => {
         setBookDetails({});
-        console.log(response.data);
         if (response.data && Object.keys(response.data)) {
           setBookDetails(response.data);
+          console.log('response', response.data)
         }
         setIsLoading(false);
       })
@@ -123,7 +127,7 @@ const OffersBookDetails = ({ route }: any) => {
                 {
                   alignItems: "flex-start",
                   paddingBottom: 10,
-                  borderBottomWidth: 0.5,
+                  //borderBottomWidth: 0.5,
                   borderBottomColor: "#ccc",
                   marginBottom: 10,
                 },
@@ -255,7 +259,7 @@ const OffersBookDetails = ({ route }: any) => {
                 )}
               </View>
             </View>
-            <View
+            {/* <View
               style={[
                 common.j_row,
                 {
@@ -365,7 +369,7 @@ const OffersBookDetails = ({ route }: any) => {
                     </View>
                   )}
                 </View>
-              ))}
+              ))} */}
           </View>
         </>
       ) : (

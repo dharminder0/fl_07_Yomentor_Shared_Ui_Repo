@@ -47,7 +47,6 @@ const SelectModal = ({
 
   useEffect(() => {
     if (refreshModal > 1) {
-      console.log("isRefreshSelectModal", refreshModal);
       setSelectedValue([]);
     }
   }, [refreshModal]);
