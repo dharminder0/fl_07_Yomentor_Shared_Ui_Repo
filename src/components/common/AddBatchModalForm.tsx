@@ -48,7 +48,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
   const [isClassTime, setIsClassTime] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
-
+  const [isRefreshSelectModal, setIsRefreshSelectModal] = useState<number>(0);
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
   const {
@@ -72,6 +72,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
         setClassList(result.data);
       }
     });
+    setIsRefreshSelectModal(0);
   }, []);
 
   const handleGradeChange = (grade: any) => {
@@ -82,6 +83,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
         setSubjectList(result.data);
       }
     });
+    setIsRefreshSelectModal(isRefreshSelectModal + 1);
   };
 
   const onSubmit = (data: any) => {
@@ -228,18 +230,11 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   />
                 </View>
                 <View style={{ width: "48%" }}>
-                  <Controller
-                    control={control}
-                    name="subjectId"
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <SelectModal
-                        fieldError={errors.subjectId ? true : false}
-                        data={subjectList}
-                        placeholder={"Subject"}
-                        onChanged={(value: any) => field.onChange(value?.id)}
-                      />
-                    )}
+                  <SelectModal
+                    refreshModal={isRefreshSelectModal}
+                    data={subjectList}
+                    placeholder="Subject"
+                    onChanged={(value: any) => setValue("subjectId", value?.id)}
                   />
                 </View>
               </View>
