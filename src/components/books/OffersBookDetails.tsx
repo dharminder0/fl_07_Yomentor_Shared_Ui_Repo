@@ -13,7 +13,11 @@ import { Card } from "@rneui/themed";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import HeaderView from "../common/HeaderView";
 import moment from "moment";
-import { deleteBookById, getBookDetailsById } from "../../apiconfig/SharedApis";
+import {
+  deleteBookById,
+  getBookDetailsById,
+  updateBookStatus,
+} from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { getUserInfo } from "../../shared/sharedDetails";
@@ -44,6 +48,7 @@ const OffersBookDetails = ({ route }: any) => {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const userInfo: any = getUserInfo();
   const YoColors = useThemeColor();
+  const [isLoadingAccept, setIsLoadingAccept] = useState<boolean>(false);
 
   useEffect(() => {
     getDetails();
@@ -53,15 +58,13 @@ const OffersBookDetails = ({ route }: any) => {
     setIsLoading(true);
     const paylaod: any = {
       id: selectedBookDetails.id,
-      type: 2
+      type: 2,
     };
-    console.log('paylaod', paylaod)
     getBookDetailsById(paylaod)
       .then((response: any) => {
         setBookDetails({});
         if (response.data && Object.keys(response.data)) {
           setBookDetails(response.data);
-          console.log('response', response.data)
         }
         setIsLoading(false);
       })
@@ -113,6 +116,21 @@ const OffersBookDetails = ({ route }: any) => {
       });
   };
 
+  const handleUpdateStatus = (statusId: number, userId: number) => {
+    setIsLoadingAccept(true);
+    updateBookStatus(selectedBookDetails.id, statusId, userId)
+      .then((response: any) => {
+        setTimeout(() => {
+          setIsLoadingAccept(false);
+          getDetails();
+        }, 500);
+      })
+      .catch((error: any) => {
+        setIsLoadingAccept(false);
+        console.error("Error in request: ", error);
+      });
+  };
+
   return (
     <>
       <HeaderView title={selectedBookDetails?.title} />
@@ -127,7 +145,7 @@ const OffersBookDetails = ({ route }: any) => {
                 {
                   alignItems: "flex-start",
                   paddingBottom: 10,
-                  //borderBottomWidth: 0.5,
+                  borderBottomWidth: 0.5,
                   borderBottomColor: "#ccc",
                   marginBottom: 10,
                 },
@@ -167,31 +185,6 @@ const OffersBookDetails = ({ route }: any) => {
                     updateInfo={(value) => updateInfo(value)}
                   />
                 </View>
-                {/* {bookDetails?.statusName && (
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      marginTop: 5,
-                      textAlign: "center",
-                      color:
-                        bookDetails.status == 1 || bookDetails.status == 2
-                          ? "green"
-                          : "red",
-                    }}
-                  >
-                    {bookDetails?.statusName}
-                  </Text>
-                )} */}
-                {/* <Text
-                  style={{
-                    fontSize: 12,
-                    marginTop: 20,
-                    textAlign: "center",
-                    color: bookDetails.available ? "green" : "red",
-                  }}
-                >
-                  {bookDetails.available ? "Available" : "Not available"}
-                </Text> */}
               </View>
               <View>
                 <View style={[common.j_row, { width: width - 100 }]}>
@@ -259,117 +252,222 @@ const OffersBookDetails = ({ route }: any) => {
                 )}
               </View>
             </View>
-            {/* <View
-              style={[
-                common.j_row,
-                {
-                  alignItems: "flex-start",
-                },
-              ]}
-            >
-              <Text style={[common.mb5, common.h3Title]}>Request List</Text>
-            </View>
-            {bookDetails?.receiverUsers &&
-              bookDetails?.receiverUsers.length > 0 &&
-              bookDetails?.receiverUsers.map((item: any) => (
-                <View
-                  style={[
-                    common.row,
-                    {
-                      alignItems: "flex-start",
-                      paddingBottom: 10,
-                      borderBottomWidth: 0.5,
-                      borderBottomColor: "#ccc",
-                      marginBottom: 10,
-                    },
-                  ]}
-                >
-                  <View style={common.mr10}>
-                    <Image
-                      source={
-                        item.userImage
-                          ? { uri: item.userImage }
-                          : image.DefaultUser
-                      }
-                      style={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: 30,
-                      }}
-                    />
-                  </View>
-                  <View>
-                    <Text style={[common.title, common.mb5]}>
-                      {item.firstName} {item.lastName}
+            <View>
+              {bookDetails?.receiverUsers &&
+                bookDetails?.receiverUsers.length > 0 && (
+                  <>
+                    <Text style={[common.mb10, common.h3Title]}>
+                      Request List
                     </Text>
-                    {item?.phone && (
-                      <View style={[cardStyle.row, common.mb5]}>
-                        <Icon name="phone-alt" size={12} />
-                        <Text style={common.rText}> {item.phone}</Text>
-                      </View>
-                    )}
+                    <View>
+                      {bookDetails?.receiverUsers.map((item: any) => (
+                        <View
+                          style={[
+                            common.row,
+                            {
+                              alignItems: "flex-start",
+                              paddingBottom: 10,
+                              borderBottomWidth: 0.5,
+                              borderBottomColor: "#ccc",
+                              marginBottom: 10,
+                            },
+                          ]}
+                        >
+                          <View style={common.mr10}>
+                            <Image
+                              source={
+                                item.userImage
+                                  ? { uri: item.userImage }
+                                  : image.DefaultUser
+                              }
+                              style={{
+                                width: 60,
+                                height: 60,
+                                borderRadius: 30,
+                              }}
+                            />
+                          </View>
+                          <View>
+                            <View
+                              style={[common.j_row, { width: width - 100 }]}
+                            >
+                              <Text style={[common.title]}>
+                                {item.firstName} {item.lastName}
+                              </Text>
+                              <View style={common.row}>
+                                <Text
+                                  style={[
+                                    {
+                                      color:
+                                        item.receiverStatusId === 1 ||
+                                        item.receiverStatusId === 2
+                                          ? YoColors.success
+                                          : YoColors.danger,
+                                      fontWeight: "bold",
+                                      fontSize: 10,
+                                    },
+                                  ]}
+                                >
+                                  {item.receiverStatus}{" "}
+                                </Text>
+                                <Icon
+                                  name={
+                                    item.receiverStatusId === 1 ||
+                                    item.receiverStatusId === 2
+                                      ? "check"
+                                      : "times"
+                                  }
+                                  size={10}
+                                  color={
+                                    item.receiverStatusId === 1 ||
+                                    item.receiverStatusId === 2
+                                      ? YoColors.success
+                                      : YoColors.danger
+                                  }
+                                />
+                              </View>
+                            </View>
+                            {item?.phone && (
+                              <View style={[cardStyle.row, common.mb5]}>
+                                <Icon name="phone-alt" size={12} />
+                                <Text style={common.rText}> {item.phone}</Text>
+                              </View>
+                            )}
 
-                    {item?.email && (
-                      <View style={[cardStyle.row, common.mb5]}>
-                        <Icon name="envelope" size={12} />
-                        <Text style={common.rText}> {item.email}</Text>
-                      </View>
-                    )}
-                  </View>
-                  {(item?.userAddress?.address1 ||
-                    item?.userAddress?.address2) && (
-                    <View style={{ flexDirection: "row", marginTop: 5 }}>
-                      <Ionicons
-                        name="location"
-                        size={14}
-                        style={{ width: 12 }}
-                      />
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          alignItems: "center",
-                          width: "95%",
-                        }}
-                      >
-                        {item?.userAddress?.address1 && (
-                          <Text style={[common.rText, { paddingStart: 5 }]}>
-                            {item?.userAddress?.address1}
-                          </Text>
-                        )}
-                        {item?.userAddress?.address1 &&
-                          item?.userAddress?.address2 && <Text>, </Text>}
-                        {item?.userAddress?.address2 && (
-                          <Text style={[common.rText]}>
-                            {item?.userAddress?.address2}
-                          </Text>
-                        )}
-                        {item?.userAddress?.address2 &&
-                          item?.userAddress?.city && <Text>, </Text>}
-                        {item?.userAddress?.city && (
-                          <Text style={[common.rText]}>
-                            {item?.userAddress?.city}
-                          </Text>
-                        )}
-                        {item?.userAddress?.city &&
-                          item?.userAddress?.stateName && <Text>, </Text>}
-                        {item?.userAddress?.stateName && (
-                          <Text style={[common.rText]}>
-                            {item?.userAddress?.stateName}
-                          </Text>
-                        )}
-                        {item?.userAddress?.stateName &&
-                          item?.userAddress?.pincode && <Text>, </Text>}
-                        {item?.userAddress?.pincode && (
-                          <Text style={[common.rText]}>
-                            {item?.userAddress?.pincode}
-                          </Text>
-                        )}
-                      </View>
+                            {item?.email && (
+                              <View style={[cardStyle.row, common.mb5]}>
+                                <Icon name="envelope" size={12} />
+                                <Text style={common.rText}> {item.email}</Text>
+                              </View>
+                            )}
+                          </View>
+                          {(item?.userAddress?.address1 ||
+                            item?.userAddress?.address2) && (
+                            <View
+                              style={{ flexDirection: "row", marginTop: 5 }}
+                            >
+                              <Ionicons
+                                name="location"
+                                size={14}
+                                style={{ width: 12 }}
+                              />
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  flexWrap: "wrap",
+                                  alignItems: "center",
+                                  width: "95%",
+                                }}
+                              >
+                                {item?.userAddress?.address1 && (
+                                  <Text
+                                    style={[common.rText, { paddingStart: 5 }]}
+                                  >
+                                    {item?.userAddress?.address1}
+                                  </Text>
+                                )}
+                                {item?.userAddress?.address1 &&
+                                  item?.userAddress?.address2 && (
+                                    <Text>, </Text>
+                                  )}
+                                {item?.userAddress?.address2 && (
+                                  <Text style={[common.rText]}>
+                                    {item?.userAddress?.address2}
+                                  </Text>
+                                )}
+                                {item?.userAddress?.address2 &&
+                                  item?.userAddress?.city && <Text>, </Text>}
+                                {item?.userAddress?.city && (
+                                  <Text style={[common.rText]}>
+                                    {item?.userAddress?.city}
+                                  </Text>
+                                )}
+                                {item?.userAddress?.city &&
+                                  item?.userAddress?.stateName && (
+                                    <Text>, </Text>
+                                  )}
+                                {item?.userAddress?.stateName && (
+                                  <Text style={[common.rText]}>
+                                    {item?.userAddress?.stateName}
+                                  </Text>
+                                )}
+                                {item?.userAddress?.stateName &&
+                                  item?.userAddress?.pincode && <Text>, </Text>}
+                                {item?.userAddress?.pincode && (
+                                  <Text style={[common.rText]}>
+                                    {item?.userAddress?.pincode}
+                                  </Text>
+                                )}
+                              </View>
+                            </View>
+                          )}
+
+                          {item?.receiverStatusId === 1 && (
+                            <View
+                              style={[
+                                cardStyle.row,
+                                common.mtop10,
+                                {
+                                  justifyContent: "flex-end",
+                                  width: width - 20,
+                                },
+                              ]}
+                            >
+                              <Button
+                                title="Accept"
+                                onPress={() =>
+                                  handleUpdateStatus(2, item?.userId)
+                                }
+                                buttonStyle={{
+                                  backgroundColor: YoColors.success,
+                                  marginEnd: 10,
+                                  paddingHorizontal: 10,
+                                  paddingVertical: 5,
+                                }}
+                                titleStyle={{
+                                  fontWeight: "bold",
+                                  fontSize: 10,
+                                }}
+                              />
+                              <Button
+                                title="Decline"
+                                onPress={() =>
+                                  handleUpdateStatus(3, item?.userId)
+                                }
+                                buttonStyle={{
+                                  backgroundColor: YoColors.danger,
+                                  paddingHorizontal: 10,
+                                  paddingVertical: 5,
+                                }}
+                                titleStyle={{
+                                  fontWeight: "bold",
+                                  fontSize: 10,
+                                }}
+                              />
+                            </View>
+                          )}
+                        </View>
+                      ))}
                     </View>
-                  )}
-                </View>
-              ))} */}
+                  </>
+                )}
+            </View>
+            {isLoadingAccept && (
+              <View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              >
+                <ActivityIndicator size="large" color="#fff" />
+              </View>
+            )}
           </View>
         </>
       ) : (
