@@ -36,7 +36,15 @@ const CardAssessment = ({
       activeOpacity={0.7}
       onPress={() => gotoAssessmentDetail(item)}
     >
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text numberOfLines={2} style={[common.title, { width: "72%" }]}>
             {item?.title}

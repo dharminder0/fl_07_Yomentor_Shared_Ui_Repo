@@ -30,7 +30,7 @@ const ConfirmationPopup = ({
     >
       <View
         style={{
-          backgroundColor: "white",
+          backgroundColor: YoColors.background,
           minHeight: 120,
           maxHeight: 300,
           width: width - 30,

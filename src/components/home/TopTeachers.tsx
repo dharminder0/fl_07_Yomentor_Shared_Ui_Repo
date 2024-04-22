@@ -29,7 +29,10 @@ const TopTeachers = ({ title = "", data = [] }) => {
       <Pressable
         onPress={() => navigation.navigate("UserDetails", { userId: item?.id })}
       >
-        <View style={styles.item} key={index}>
+        <View
+          style={[styles.item, { backgroundColor: YoColors.background }]}
+          key={index}
+        >
           <View>
             <View style={[common.mb10, { alignItems: "center" }]}>
               {item?.profilePicture ? (
@@ -122,7 +125,6 @@ export default TopTeachers;
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: "#fff",
     height: 150,
     width: 130,
     marginEnd: 8,

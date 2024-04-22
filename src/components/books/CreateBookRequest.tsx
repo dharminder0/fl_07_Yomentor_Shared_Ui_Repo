@@ -70,21 +70,20 @@ const CreateBookRequest = ({
       setBookDetails(bookInfo);
       setIsEditMode(true);
       reset({
-        "id": bookInfo.id,
-        "title": bookInfo.title,
-        "author": bookInfo.author,
-        "gradeId": bookInfo.gradeId,
-        "subjectId": bookInfo.subjectId,
-        "remark": bookInfo.remark
+        id: bookInfo.id,
+        title: bookInfo.title,
+        author: bookInfo.author,
+        gradeId: bookInfo.gradeId,
+        subjectId: bookInfo.subjectId,
+        remark: bookInfo.remark,
       });
       handleGradeChange(bookInfo.gradeId, bookInfo.subjectId);
     }
-
-  },[dataToEdit])
+  }, [dataToEdit]);
 
   const handleGradeChange = (grade: any, subjectId?: any) => {
     setSubjectList([]);
-    if(!subjectId){
+    if (!subjectId) {
       setValue("subjectId", "");
     }
     getSubjectByGradeId(grade).then((result: any) => {
@@ -152,7 +151,7 @@ const CreateBookRequest = ({
           ) : (
             <View
               style={{
-                backgroundColor: "#fff",
+                backgroundColor: YoColors.background,
                 height: height,
                 minHeight: 150,
               }}
@@ -172,7 +171,10 @@ const CreateBookRequest = ({
                       color={YoColors.primary}
                     />
                   }
-                  buttonStyle={btnStyle.btnCross}
+                  buttonStyle={[
+                    btnStyle.btnCross,
+                    { backgroundColor: YoColors.background },
+                  ]}
                   containerStyle={{ padding: 0 }}
                 />
               </View>
@@ -228,7 +230,7 @@ const CreateBookRequest = ({
                           data={classList}
                           placeholder="Class"
                           onChanged={(value: any) => {
-                            if(value?.id){
+                            if (value?.id) {
                               field.onChange(value.id);
                               handleGradeChange(value.id);
                             }
@@ -252,7 +254,7 @@ const CreateBookRequest = ({
                           data={subjectList}
                           placeholder={"Subject"}
                           onChanged={(value: any) => {
-                            if(value?.id){
+                            if (value?.id) {
                               field.onChange(value.id);
                             }
                           }}

@@ -146,7 +146,10 @@ const BatchSlideCard = ({
         >
           {data?.map((item: any, index: number) => (
             <Card
-              containerStyle={[cardStyle.container, { paddingBottom: 5 }]}
+              containerStyle={[
+                cardStyle.container,
+                { paddingBottom: 5, backgroundColor: YoColors.background },
+              ]}
               key={index}
             >
               <View style={[cardStyle.j_row, { margin: 0 }]}>

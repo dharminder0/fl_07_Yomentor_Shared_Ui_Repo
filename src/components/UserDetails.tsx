@@ -1,7 +1,6 @@
 import {
   Dimensions,
   Image,
-  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -13,21 +12,17 @@ import React, { useEffect, useState } from "react";
 import HeaderView from "./common/HeaderView";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { cardStyle, common } from "../assets/styles/Common";
-import { AccordionItem, AccordionList } from "react-native-accordion-list-view";
 import { YoImages } from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 import {
   assignFavouriteBatch,
   assignStudentBatch,
   getBatchListbyEntity,
-  getBatchListbyUserid,
   getUsersDetails,
   updateEnrollmentStatus,
   updateFavouriteStatus,
 } from "../apiconfig/SharedApis";
 import { getUserInfo } from "../shared/sharedDetails";
-import BatchCardView from "./common/BatchCardView";
-import ProfileBatchCard from "./common/ProfileBatchCard";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -400,7 +395,10 @@ const UserDetailList = ({ route }: { route: any }) => {
                     <Card
                       containerStyle={[
                         cardStyle.container,
-                        { paddingBottom: 5 },
+                        {
+                          paddingBottom: 5,
+                          backgroundColor: YoColors.background,
+                        },
                       ]}
                       key={index}
                     >
@@ -600,7 +598,10 @@ const UserDetailList = ({ route }: { route: any }) => {
                     <Card
                       containerStyle={[
                         cardStyle.container,
-                        { paddingBottom: 5 },
+                        {
+                          paddingBottom: 5,
+                          backgroundColor: YoColors.background,
+                        },
                       ]}
                       key={index}
                     >

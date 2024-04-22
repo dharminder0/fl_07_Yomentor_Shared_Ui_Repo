@@ -56,7 +56,15 @@ const SlideView = ({
         >
           {data?.map((item: any, index: number) => (
             <Pressable onPress={() => gotoBatchDetail(item)}>
-              <Card containerStyle={cardStyle.container} key={index}>
+              <Card
+                containerStyle={[
+                  cardStyle.container,
+                  {
+                    backgroundColor: YoColors.background,
+                  },
+                ]}
+                key={index}
+              >
                 <View style={[cardStyle.j_row, { margin: 0 }]}>
                   <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
 
@@ -186,11 +194,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   setDots: {
-    top: 30,
+    top: 25,
     backgroundColor: "#D9D9D9",
   },
   activeDotStyle: {
-    top: 30,
+    top: 25,
     backgroundColor: "#124076",
   },
 });

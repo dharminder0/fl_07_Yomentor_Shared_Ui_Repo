@@ -111,7 +111,7 @@ const DrawerSidebar = () => {
         style={{
           padding: 8,
           flex: 1,
-          backgroundColor: YoColors.bgColor,
+          backgroundColor: YoColors.background,
         }}
       >
         <View>

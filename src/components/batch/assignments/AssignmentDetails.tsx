@@ -94,7 +94,14 @@ const AssignmentDetails = ({ route }: any) => {
           <Loading />
         ) : assignmentDetails && Object.keys(assignmentDetails).length > 0 ? (
           <>
-            <Card containerStyle={cardStyle.container}>
+            <Card
+              containerStyle={[
+                cardStyle.container,
+                {
+                  backgroundColor: YoColors.background,
+                },
+              ]}
+            >
               <View style={[cardStyle.j_row, { margin: 0 }]}>
                 <Text style={common.title}>{assignmentDetails?.title}</Text>
                 <View style={common.row}>

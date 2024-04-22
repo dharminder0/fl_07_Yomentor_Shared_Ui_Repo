@@ -74,10 +74,16 @@ const AddReview = ({ batchDetail }: any) => {
 
   return (
     <>
-      {reviewList && reviewList?.length > 0 ? (
+      {reviewList && reviewList?.length < 0 ? (
         <View style={[common.container]}>
           {reviewList?.map((item: any, key: number) => (
-            <Card containerStyle={cardStyle.container} key={key}>
+            <Card
+              containerStyle={[
+                cardStyle.container,
+                { backgroundColor: YoColors.background },
+              ]}
+              key={key}
+            >
               <View style={common.j_row}>
                 <Text style={[common.title, common.mb5]}>
                   {item?.batchTitle}

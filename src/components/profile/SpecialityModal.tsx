@@ -94,7 +94,7 @@ const SpecialityModal = ({
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -117,6 +117,7 @@ const SpecialityModal = ({
                   {
                     paddingHorizontal: 1,
                     paddingStart: 15,
+                    backgroundColor: YoColors.background,
                   },
                 ]}
               />

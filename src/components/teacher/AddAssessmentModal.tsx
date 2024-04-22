@@ -101,7 +101,7 @@ const AddAssessmentModal = ({
           setSubjectList(result.data);
         }
       });
-      setIsRefreshSelectModal(isRefreshSelectModal+1);
+      setIsRefreshSelectModal(isRefreshSelectModal + 1);
     }
   }, [gradeId]);
 
@@ -167,7 +167,7 @@ const AddAssessmentModal = ({
           <View
             style={{
               padding: 12,
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -184,7 +184,10 @@ const AddAssessmentModal = ({
                     color={YoColors.primary}
                   />
                 }
-                buttonStyle={btnStyle.btnCross}
+                buttonStyle={[
+                  btnStyle.btnCross,
+                  { backgroundColor: YoColors.background },
+                ]}
                 containerStyle={{ padding: 0 }}
               />
             </View>
@@ -236,7 +239,7 @@ const AddAssessmentModal = ({
                       data={classList}
                       placeholder="Class"
                       onChanged={(value: any) => {
-                        if(value?.id){
+                        if (value?.id) {
                           setGradeId(value?.id);
                         }
                       }}

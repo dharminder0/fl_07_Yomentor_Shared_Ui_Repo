@@ -45,7 +45,15 @@ const StudentList = ({ batchInfo }: any) => {
   const image: any = YoImages();
 
   const renderItem = ({ item, index }: any) => (
-    <Card containerStyle={cardStyle.container} key={index}>
+    <Card
+      containerStyle={[
+        cardStyle.container,
+        {
+          backgroundColor: YoColors.background,
+        },
+      ]}
+      key={index}
+    >
       <View style={cardStyle.row}>
         <View
           style={{

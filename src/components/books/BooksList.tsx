@@ -153,7 +153,15 @@ const BooksList = () => {
         )
       }
     >
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <View>
             <Image

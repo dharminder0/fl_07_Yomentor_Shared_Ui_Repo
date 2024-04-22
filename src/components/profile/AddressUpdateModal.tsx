@@ -176,7 +176,7 @@ const AddressUpdateModal = ({
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -199,6 +199,7 @@ const AddressUpdateModal = ({
                   {
                     paddingHorizontal: 1,
                     paddingStart: 15,
+                    backgroundColor: YoColors.background,
                   },
                 ]}
               />

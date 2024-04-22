@@ -21,7 +21,7 @@ const AlertModal: React.FC<ModelProps> = ({
   iconSize = 40,
 }) => {
   const { isAlertModal, setIsAlertModal }: any = useStore();
-
+  const YoColors: any = useThemeColor();
   useEffect(() => {
     setTimeout(() => {
       setIsAlertModal(false);
@@ -40,7 +40,7 @@ const AlertModal: React.FC<ModelProps> = ({
       >
         <View
           style={{
-            backgroundColor: "white",
+            backgroundColor: YoColors.background,
             minHeight: 150,
             maxHeight: 300,
             width: width - 40,

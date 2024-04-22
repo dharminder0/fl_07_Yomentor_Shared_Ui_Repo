@@ -115,6 +115,7 @@ const OpenBatchDetails = ({ route }: any) => {
           padding: 8,
           borderRadius: 6,
           marginBottom: 5,
+          backgroundColor: YoColors.background,
         }}
         key={index}
       >

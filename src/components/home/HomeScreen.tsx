@@ -188,6 +188,7 @@ const HomeScreen = () => {
               data={ongoingBatchList}
               usedStatusId={2}
               userInfo={userInfo}
+              height={150}
             />
           )}
 
@@ -198,6 +199,7 @@ const HomeScreen = () => {
               data={openBatchList}
               usedStatusId={1}
               userInfo={userInfo}
+              height={145}
             />
           )}
 

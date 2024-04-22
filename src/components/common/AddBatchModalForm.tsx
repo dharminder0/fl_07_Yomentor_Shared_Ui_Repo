@@ -147,7 +147,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -165,7 +165,10 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                     color={YoColors.primary}
                   />
                 }
-                buttonStyle={btnStyle.btnCross}
+                buttonStyle={[
+                  btnStyle.btnCross,
+                  { backgroundColor: YoColors.background },
+                ]}
                 containerStyle={{ padding: 0 }}
               />
             </View>

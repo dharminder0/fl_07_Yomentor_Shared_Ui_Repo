@@ -1,8 +1,6 @@
 import {
-  Alert,
   Dimensions,
   Image,
-  Linking,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -10,13 +8,11 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
-import { getAddress, getUsersDetails } from "../../apiconfig/SharedApis";
+import { getUsersDetails } from "../../apiconfig/SharedApis";
 import {
-  getLocation,
   getUserInfo,
   requestLocationPermission,
   saveAsyncData,
@@ -34,7 +30,6 @@ import BasicInfoUpdateModal from "./BasicInfoUpdateModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
-import Geolocation from "@react-native-community/geolocation";
 import AddressUpdateModal from "./AddressUpdateModal";
 
 const UserProfile = () => {
@@ -96,7 +91,7 @@ const UserProfile = () => {
           }}
         />
       }
-      style={{ backgroundColor: "#fff" }}
+      style={{ backgroundColor: YoColors.background }}
     >
       {isLoading ? (
         <View style={{ height: height }}>
@@ -159,6 +154,7 @@ const UserProfile = () => {
                     {
                       paddingHorizontal: 1,
                       paddingStart: 15,
+                      backgroundColor: YoColors.background,
                     },
                   ]}
                 />
@@ -236,6 +232,7 @@ const UserProfile = () => {
                   {
                     paddingHorizontal: 1,
                     paddingStart: 15,
+                    backgroundColor: YoColors.background,
                   },
                 ]}
               />
@@ -298,6 +295,7 @@ const UserProfile = () => {
                       {
                         paddingHorizontal: 1,
                         paddingStart: 15,
+                        backgroundColor: YoColors.background,
                       },
                     ]}
                   />

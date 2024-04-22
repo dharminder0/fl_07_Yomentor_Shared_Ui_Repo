@@ -130,9 +130,9 @@ const LoginPage = () => {
           <Button
             title="Login"
             onPress={handleSubmit(onSubmit)}
-            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
+            buttonStyle={{ backgroundColor: YoColors.primary }}
             titleStyle={{ fontWeight: "600" }}
-            containerStyle={{ width: "100%" }}
+            containerStyle={{ width: "100%", marginTop: 20 }}
           />
           <View
             style={[

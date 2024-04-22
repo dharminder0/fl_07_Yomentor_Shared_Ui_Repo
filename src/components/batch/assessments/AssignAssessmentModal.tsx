@@ -112,6 +112,7 @@ const AssignAssessmentModal = ({
           containerStyle={[
             cardStyle.container,
             selectedId === item.id && common.highLight,
+            { backgroundColor: YoColors.background },
           ]}
         >
           <View style={[cardStyle.j_row, { margin: 0 }]}>
@@ -175,7 +176,10 @@ const AssignAssessmentModal = ({
                   color={YoColors.primary}
                 />
               }
-              buttonStyle={btnStyle.btnCross}
+              buttonStyle={[
+                btnStyle.btnCross,
+                { backgroundColor: YoColors.background },
+              ]}
               containerStyle={{ padding: 0 }}
             />
           </View>

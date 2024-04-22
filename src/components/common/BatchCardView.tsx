@@ -44,7 +44,15 @@ const BatchCardView = ({
 
   const renderItem = ({ item, index }: any) => (
     <Pressable onPress={() => gotoBatchDetail(item)}>
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
 

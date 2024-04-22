@@ -30,7 +30,15 @@ const AssesmentCardView = ({ title = "", data = [], isOpenEnroll = false }) => {
 
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity activeOpacity={0.7} onPress={() => gotoBatchDetail(item)}>
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text
             numberOfLines={2}
