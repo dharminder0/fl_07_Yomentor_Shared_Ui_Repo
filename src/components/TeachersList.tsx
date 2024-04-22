@@ -105,7 +105,13 @@ const TeachersList = () => {
       activeOpacity={0.7}
       onPress={() => navigation.navigate("UserDetails", { userId: item?.id })}
     >
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          { backgroundColor: YoColors.background },
+        ]}
+        key={index}
+      >
         <View style={cardStyle.row}>
           {item?.profilePicture ? (
             <Image

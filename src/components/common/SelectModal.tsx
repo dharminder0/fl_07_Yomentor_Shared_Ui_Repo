@@ -102,7 +102,14 @@ const SelectModal = ({
           )}
           <Button
             onPress={() => setIsSelectModal(true)}
-            buttonStyle={[styles.selectBtn, fieldError && styles.borderRed]}
+            buttonStyle={[
+              styles.selectBtn,
+              fieldError && styles.borderRed,
+              { backgroundColor: YoColors.background },
+            ]}
+            containerStyle={{
+              marginBottom: 10,
+            }}
             disabledStyle={{
               opacity: 0.7,
               backgroundColor: "#fff",
@@ -148,7 +155,7 @@ const SelectModal = ({
       >
         <View
           style={{
-            backgroundColor: "white",
+            backgroundColor: YoColors.background,
             width: width,
             maxHeight: height - 200,
             position: "absolute",
@@ -252,7 +259,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "#ccc",
     borderRadius: 8,
-    marginBottom: 10,
     width: "100%",
     justifyContent: "space-between",
   },

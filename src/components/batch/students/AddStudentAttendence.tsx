@@ -110,7 +110,15 @@ const AddStudentAttendance = ({ route }: any) => {
 
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity activeOpacity={0.7}>
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={cardStyle.row}>
           <View style={{ marginRight: 10 }}>
             {item?.image ? (

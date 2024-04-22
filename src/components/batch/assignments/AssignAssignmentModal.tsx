@@ -112,6 +112,7 @@ const AssignAssignmentModal = ({
           containerStyle={[
             cardStyle.container,
             selectedId === item.id && common.highLight,
+            { backgroundColor: YoColors.background },
           ]}
         >
           <View style={[cardStyle.j_row, { margin: 0 }]}>
@@ -159,9 +160,9 @@ const AssignAssignmentModal = ({
       <>
         <View
           style={{
-            backgroundColor: "#fff",
             height: height - 30,
             minHeight: 150,
+            backgroundColor: YoColors.background,
           }}
         >
           <View style={[cardStyle.j_row, common.px12, common.py10]}>
@@ -175,7 +176,10 @@ const AssignAssignmentModal = ({
                   color={YoColors.primary}
                 />
               }
-              buttonStyle={btnStyle.btnCross}
+              buttonStyle={[
+                btnStyle.btnCross,
+                { backgroundColor: YoColors.background },
+              ]}
               containerStyle={{ padding: 0 }}
             />
           </View>

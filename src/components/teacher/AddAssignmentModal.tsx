@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,19 +9,11 @@ import {
 import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import useStore from "../../store/useStore";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import DatePicker from "react-native-date-picker";
-import moment from "moment";
-import {
-  getDayList,
-  getFeeTypes,
-  getUserData,
-  getUserInfo,
-} from "../../shared/sharedDetails";
+import { getDayList, getFeeTypes } from "../../shared/sharedDetails";
 import {
   getAssignStudentAssignments,
   getGradeList,
@@ -121,7 +112,7 @@ const AddAssignmentModal = ({
       isDeleted: data.isDeleted,
       uploadedFiles: [...uploadedFilesList],
     };
-  
+
     upsertAssignments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -180,7 +171,7 @@ const AddAssignmentModal = ({
           <View
             style={{
               padding: 12,
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -196,7 +187,12 @@ const AddAssignmentModal = ({
                     color={YoColors.primary}
                   />
                 }
-                buttonStyle={btnStyle.btnCross}
+                buttonStyle={[
+                  btnStyle.btnCross,
+                  {
+                    backgroundColor: YoColors.background,
+                  },
+                ]}
                 containerStyle={{ padding: 0 }}
               />
             </View>

@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 
 const CardAssignment = ({
   data = [],
@@ -24,6 +25,7 @@ const CardAssignment = ({
   refreshLoader = false,
 }) => {
   const { height } = Dimensions.get("window");
+  const YoColors: any = useThemeColor();
   const navigation: any = useNavigation();
 
   const gotoAssignmentDetail = (item: any) => {
@@ -35,7 +37,15 @@ const CardAssignment = ({
       activeOpacity={0.7}
       onPress={() => gotoAssignmentDetail(item)}
     >
-      <Card containerStyle={cardStyle.container} key={index}>
+      <Card
+        containerStyle={[
+          cardStyle.container,
+          {
+            backgroundColor: YoColors.background,
+          },
+        ]}
+        key={index}
+      >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
           <Text numberOfLines={2} style={[common.title, { width: "72%" }]}>
             {item?.title}

@@ -273,7 +273,12 @@ const UpdatePhoto = ({
         {isLoading ? (
           <ProcessLoader />
         ) : (
-          <View style={uploadStyles.browseWrapper}>
+          <View
+            style={[
+              uploadStyles.browseWrapper,
+              { backgroundColor: YoColors.background },
+            ]}
+          >
             <View style={{ alignItems: "center" }}>
               <TouchableOpacity
                 activeOpacity={0.8}

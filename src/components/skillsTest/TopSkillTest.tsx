@@ -32,7 +32,10 @@ const TopSkillTest = ({ title = "", data = [] }) => {
           navigation.navigate("SkillTestDetails", { skillId: item?.id })
         }
       >
-        <View style={styles.item} key={index}>
+        <View
+          style={[styles.item, { backgroundColor: YoColors.background }]}
+          key={index}
+        >
           <View>
             {item.title && (
               <View style={cardStyle.row}>
@@ -108,7 +111,6 @@ export default TopSkillTest;
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: "#fff",
     width: "100%",
     marginEnd: 8,
     marginBottom: 8,

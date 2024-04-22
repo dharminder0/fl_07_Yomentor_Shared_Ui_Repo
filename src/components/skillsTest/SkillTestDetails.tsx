@@ -138,7 +138,10 @@ const SkillDetails = ({ route }: any) => {
                 })
               }
             >
-              <View style={styles.item} key={index}>
+              <View
+                style={[styles.item, { backgroundColor: YoColors.background }]}
+                key={index}
+              >
                 <Text>{moment(item.attemptDate).format("DD, MMM, YYYY")}</Text>
                 <Text>Score: {item.score}</Text>
               </View>

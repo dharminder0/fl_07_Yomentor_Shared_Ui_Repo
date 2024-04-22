@@ -70,7 +70,7 @@ const BasicInfoUpdateModal = ({
         setGradeList(result.data);
       }
     });
-    
+
     reset({
       id: dataToPreset.id,
       firstName: dataToPreset.firstName,
@@ -142,7 +142,7 @@ const BasicInfoUpdateModal = ({
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: YoColors.background,
               height: height,
               minHeight: 150,
             }}
@@ -165,6 +165,7 @@ const BasicInfoUpdateModal = ({
                   {
                     paddingHorizontal: 1,
                     paddingStart: 15,
+                    backgroundColor: YoColors.background,
                   },
                 ]}
               />
