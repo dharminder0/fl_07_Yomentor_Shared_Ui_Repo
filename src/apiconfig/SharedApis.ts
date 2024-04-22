@@ -240,3 +240,7 @@ export async function upsertTestAttempt(payload: any): Promise<any> {
 export async function upsertBulkAttempt(payload: any): Promise<any> {
   return AxiosInterceptor.post(`SkillTest/BulkAttemptDetail`, payload);
 }
+
+export async function updateBookStatus(id: number, statusId: number, receiverId: number): Promise<any> {
+  return AxiosInterceptor.get(`Books/updateStatus?id=${id}&statusId=${statusId}&receiverId=${receiverId}`);
+}

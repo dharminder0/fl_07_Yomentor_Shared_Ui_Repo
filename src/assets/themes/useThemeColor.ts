@@ -12,6 +12,8 @@ export const useThemeColor = () => {
       star: "#f0ca02",
       placeholderText: "#A0A0A0",
       inputText: "#000",
+      success: "#198754",
+      danger: "#dc3545"
     },
     dark: {
       primary: "#345678", // Example dark mode color
@@ -23,6 +25,8 @@ export const useThemeColor = () => {
       star: "#f0ca02",
       placeholderText: "#707070",
       inputText: "#fff",
+      success: "#198754",
+      danger: "#dc3545"
     },
   };
 

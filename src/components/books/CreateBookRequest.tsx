@@ -46,6 +46,7 @@ const CreateBookRequest = ({
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
   const [bookDetails, setBookDetails] = useState<any>({});
+  const [isRefreshSelectModal, setIsRefreshSelectModal] = useState<number>(0);
 
   const {
     control,
@@ -78,6 +79,7 @@ const CreateBookRequest = ({
         "remark": bookInfo.remark
       });
       handleGradeChange(bookInfo.gradeId, bookInfo.subjectId);
+      setIsRefreshSelectModal(0);
     }
 
   },[dataToEdit])
@@ -92,6 +94,7 @@ const CreateBookRequest = ({
         setSubjectList(result.data);
       }
     });
+    setIsRefreshSelectModal(isRefreshSelectModal + 1);
   };
 
   const onSubmit = (data: any) => {
@@ -238,26 +241,21 @@ const CreateBookRequest = ({
                     />
                   </View>
                   <View style={{ width: "48%" }}>
-                    <Controller
-                      control={control}
-                      name="subjectId"
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <SelectModal
-                          defaultValue={{
-                            name: bookDetails.subjectName,
-                            id: bookDetails.subjectId,
-                          }}
-                          fieldError={errors.subjectId ? true : false}
-                          data={subjectList}
-                          placeholder={"Subject"}
-                          onChanged={(value: any) => {
-                            if(value?.id){
-                              field.onChange(value.id);
+                    <SelectModal
+                      refreshModal={isRefreshSelectModal}
+                      data={subjectList}
+                      placeholder="Subject"
+                      onChanged={(value: any) =>
+                        setValue("subjectId", value?.id)
+                      }
+                      defaultValue={
+                        bookDetails.subjectId
+                          ? {
+                              id: bookDetails.subjectId,
+                              name: bookDetails.subjectName,
                             }
-                          }}
-                        />
-                      )}
+                          : null
+                      }
                     />
                   </View>
                 </View>
