@@ -19,11 +19,48 @@ import AssignedAssignmentList from "../components/batch/students/AssignedAssignm
 import AssignedAssessmentList from "../components/batch/students/AssignedAssessmentList";
 import AttemptSkillTest from "../components/skillsTest/AttempSkillTest";
 import AttemptedQuestionsPreview from "../components/skillsTest/AttemptedQuestionsPreview";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { cardStyle } from "../assets/styles/Common";
+import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
 export function StackNavigator() {
   const YoColors = useThemeColor();
+  const navigation: any = useNavigation();
+
+  const leftBackBtn = () => (
+    <MaterialCommunityIcons
+      name="arrow-left"
+      size={25}
+      color={"#fff"}
+      style={{ borderRadius: 15 }}
+      onPress={() => navigation.goBack()}
+    />
+  );
+
+  const options: any = {
+    DrawerNavigation: {
+      headerShown: false,
+      headerStyle: { backgroundColor: YoColors.primary },
+      headerTitleStyle: { color: "#fff" },
+      headerLeft: leftBackBtn,
+    },
+    BatchStudentList: {
+      headerShown: false,
+      title: "Batch Detail",
+      headerStyle: { backgroundColor: YoColors.primary },
+      headerTitleStyle: { color: "#fff" },
+    },
+    UserProfile: {
+      headerShown: true,
+      title: "My Profile",
+      headerStyle: { backgroundColor: YoColors.primary },
+      headerTitleStyle: { color: "#fff" },
+      headerLeft: leftBackBtn,
+    },
+  };
 
   return (
     <Stack.Navigator
@@ -33,21 +70,12 @@ export function StackNavigator() {
       <Stack.Screen
         name="DrawerNavigation"
         component={DrawerNavigation}
-        options={{
-          headerShown: false,
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
+        options={options["DrawerNavigation"]}
       />
       <Stack.Screen
         name="BatchStudentList"
         component={StudentList}
-        options={{
-          headerShown: false,
-          title: "Batch Detail",
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
+        options={options["BatchStudentList"]}
       />
       <Stack.Screen
         name="OpenBatchDetails"
@@ -82,12 +110,7 @@ export function StackNavigator() {
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}
-        options={{
-          headerShown: true,
-          title: "My Profile",
-          headerStyle: { backgroundColor: YoColors.primary },
-          headerTitleStyle: { color: "#fff" },
-        }}
+        options={options["UserProfile"]}
       />
       <Stack.Screen
         name="AssignmentDetails"
@@ -167,6 +190,7 @@ export function StackNavigator() {
           title: "Skill Test Details",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -177,6 +201,7 @@ export function StackNavigator() {
           title: "Skill Test List",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -187,6 +212,7 @@ export function StackNavigator() {
           title: "Assigned Assignments",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -197,6 +223,7 @@ export function StackNavigator() {
           title: "Assigned Assignments",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -208,6 +235,7 @@ export function StackNavigator() {
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
           headerBackVisible: false,
+          headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -218,6 +246,7 @@ export function StackNavigator() {
           title: "Attempt Preview",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
         }}
       />
     </Stack.Navigator>

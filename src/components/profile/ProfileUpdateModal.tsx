@@ -211,9 +211,9 @@ const ProfileUpdateModal = ({
                 <Button
                   title="Update"
                   loading={isProcessLoader}
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  buttonStyle={btnStyle.solid}
+                  titleStyle={btnStyle.solidTitle}
                   onPress={handleSubmit(onSubmit)}
-                  containerStyle={{ width: 180 }}
                 />
               </View>
             </View>

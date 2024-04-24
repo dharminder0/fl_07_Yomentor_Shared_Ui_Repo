@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { useThemeColor } from "../themes/useThemeColor";
 
 const { width } = Dimensions.get("window");
+const YoColors: any = useThemeColor();
 export const common = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
@@ -26,26 +28,31 @@ export const common = StyleSheet.create({
   },
   rText: {
     fontSize: 12,
+    color: YoColors.textTheme,
+  },
+  msgText: {
+    color: YoColors.textTheme,
+    textAlign: "center",
   },
   h1Title: {
     fontSize: 21,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   h2Title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   h3Title: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   title: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   j_row: {
     flexDirection: "row",
@@ -73,7 +80,7 @@ export const common = StyleSheet.create({
     marginBottom: 5,
   },
   highLight: {
-    borderColor: "#124076",
+    borderColor: YoColors.primary,
     borderWidth: 1,
   },
   mtop10: { marginTop: 10 },
@@ -97,23 +104,26 @@ export const common = StyleSheet.create({
 export const btnStyle = StyleSheet.create({
   outline: {
     backgroundColor: "#fff",
-    paddingHorizontal: 7,
+    paddingHorizontal: 15,
     paddingVertical: 3,
     borderWidth: 0.7,
-    borderColor: "#124076",
+    borderColor: YoColors.primary,
   },
   outlineTitle: {
-    color: "#124076",
+    color: YoColors.primary,
   },
   solid: {
-    backgroundColor: "#124076",
-    paddingHorizontal: 7,
-    paddingVertical: 3,
+    backgroundColor: YoColors.primary,
+    height: 40,
+    paddingHorizontal: 15,
     borderWidth: 0.7,
-    borderColor: "#124076",
+    borderColor: YoColors.primary,
+    borderRadius: 6,
   },
   solidTitle: {
     color: "#fff",
+    fontSize: 15,
+    fontWeight: "600",
   },
   btnCross: {
     paddingHorizontal: 15,
@@ -157,17 +167,17 @@ export const cardStyle = StyleSheet.create({
     fontSize: 18,
     marginVertical: 10,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   title1: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#124076",
+    color: YoColors.primary,
   },
   headTitle: {
     fontWeight: "600",
     // marginBottom: 5,
-    color: "#124076",
+    color: YoColors.primary,
   },
   subTitle: {
     marginStart: 5,

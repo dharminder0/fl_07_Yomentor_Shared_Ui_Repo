@@ -66,7 +66,9 @@ const SlideView = ({
                 key={index}
               >
                 <View style={[cardStyle.j_row, { margin: 0 }]}>
-                  <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
+                  <Text style={[cardStyle.headTitle, { width: "75%" }]}>
+                    {item?.batchName}
+                  </Text>
 
                   {item?.statusId === 1 && (
                     <Text>
@@ -81,13 +83,14 @@ const SlideView = ({
                           batchItem: item,
                         })
                       }
-                      style={{ padding: 4 }}
+                      style={[common.row, { paddingHorizontal: 5 }]}
                     >
                       <Icon
                         name="user-check"
-                        size={16}
+                        size={12}
                         color={YoColors.primary}
                       />
+                      <Text style={{ color: YoColors.textTheme }}> Att. </Text>
                     </Pressable>
                   )}
                 </View>
@@ -164,8 +167,9 @@ const SlideView = ({
                     <Icon name="users" size={13} />
                     <Text style={common.rText}>
                       {" "}
-                      {item?.studentCount}
-                      {usedStatusId === 1 && `/` + item?.actualStudents}
+                      {usedStatusId === 2
+                        ? item?.actualStudents
+                        : item?.actualStudents + `/` + item?.studentCount}
                     </Text>
                   </View>
                 </View>

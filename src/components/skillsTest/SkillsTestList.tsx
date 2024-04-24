@@ -200,10 +200,10 @@ const SkillsTestList = () => {
           keyExtractor={(item: any) => item?.id}
           renderItem={renderItem}
           style={{
-            height: Platform.OS === "ios" ? height - 250 : height - 165,
+            height: "90%",
             marginTop: 5,
           }}
-          windowSize={Platform.OS === "ios" ? height - 250 : height - 165}
+          windowSize={Platform.OS === "ios" ? height - 205 : height - 165}
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={handleLoadMore}
           onEndReachedThreshold={0.5}

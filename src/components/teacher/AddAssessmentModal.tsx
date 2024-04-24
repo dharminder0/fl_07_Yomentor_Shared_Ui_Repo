@@ -13,7 +13,7 @@ import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "react-native-elements";
+import { Button, CheckBox } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import DatePicker from "react-native-date-picker";
 import moment from "moment";
@@ -50,6 +50,9 @@ const AddAssessmentModal = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(
+    !dataToEdit?.isFavorite ? false : true
+  );
   const [isClassTime, setIsClassTime] = useState(false);
   const [classList, setClassList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
@@ -92,7 +95,6 @@ const AddAssessmentModal = ({
 
   useEffect(() => {
     setValue("teacherId", userId);
-    setValue("isFavorite", true);
     if (gradeId) {
       setValue("gradeId", gradeId);
       setValue("subjectId", "");
@@ -109,6 +111,7 @@ const AddAssessmentModal = ({
     setIsProcessLoader(true);
     const payload: any = { ...data };
     payload.uploadedFiles = [...uploadedFilesList];
+    payload.isFavorite = isFavorite;
     upsertAssessments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
@@ -293,6 +296,23 @@ const AddAssessmentModal = ({
                 )}
               />
 
+              {batchId && (
+                <View style={{ alignItems: "center" }}>
+                  <CheckBox
+                    key={0}
+                    title={"Save for later"}
+                    checked={isFavorite}
+                    checkedColor={YoColors.primary}
+                    onPress={() => setIsFavorite(!isFavorite)}
+                    containerStyle={{
+                      marginBottom: 20,
+                      width: "100%",
+                    }}
+                    textStyle={{ fontWeight: "500", fontSize: 12 }}
+                  />
+                </View>
+              )}
+
               <View>
                 <FileUploadModal
                   setIsLoading={setIsLoading}
@@ -301,11 +321,12 @@ const AddAssessmentModal = ({
                 />
               </View>
 
-              <View style={{ marginTop: 30 }}>
+              <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
                   loading={isLoading}
-                  title={title}
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  title="Save Assessment"
+                  buttonStyle={btnStyle.solid}
+                  titleStyle={btnStyle.solidTitle}
                   onPress={handleSubmit(onSubmit)}
                 />
               </View>

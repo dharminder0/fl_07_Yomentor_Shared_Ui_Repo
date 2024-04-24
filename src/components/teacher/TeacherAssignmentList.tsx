@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import HeaderView from "../common/HeaderView";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { getAssignmentsListByTeacherId } from "../../apiconfig/SharedApis";
@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CardAssignment from "./CardAssignment";
 import AddAssignmentModal from "./AddAssignmentModal";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useFocusEffect } from "@react-navigation/native";
 
 const TeacherAssignmentList = () => {
   const userInfo: any = getUserInfo();
@@ -22,10 +23,12 @@ const TeacherAssignmentList = () => {
   const [pageIndex, setPageIndex] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getAssignmentList();
-  }, [userInfo?.id]);
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      getAssignmentList();
+    }, [userInfo?.id])
+  );
 
   const getAssignmentList = () => {
     const payload: any = {
@@ -89,13 +92,17 @@ const TeacherAssignmentList = () => {
             { alignItems: "center", justifyContent: "center", height: "90%" },
           ]}
         >
-          <Text style={common.h3Title}>You don't have any Assignment</Text>
+          <Text style={common.msgText}>
+            Your assignments/notes list is empty. Create tailored content for
+            your curriculum. Share with students & reuse across batches for
+            efficiency!
+          </Text>
           <Button
             title="Create Your First Assignment"
             onPress={() => setModalVisible(true)}
-            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 50 }}
-            titleStyle={{ fontWeight: "600" }}
-            containerStyle={{ width: "80%" }}
+            buttonStyle={[btnStyle.outline, common.px12]}
+            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            containerStyle={[common.my10]}
           />
         </View>
       )}

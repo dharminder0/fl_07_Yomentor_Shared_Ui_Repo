@@ -373,7 +373,7 @@ const BooksList = () => {
               justifyContent: "center",
             }}
           >
-            <Text style={{ textAlign: "center", lineHeight: 22 }}>
+            <Text style={common.msgText}>
               {selectedActionTab === "booksList" && "No avaiable books"}
               {selectedActionTab === "requests" &&
                 "You haven't requested any books yet. Start exploring the available book list and request a book as per your need."}
@@ -391,15 +391,9 @@ const BooksList = () => {
                     color={YoColors.primary}
                   />
                 }
-                buttonStyle={[
-                  btnStyle.outline,
-                  {
-                    width: 150,
-                    height: 30,
-                    marginTop: 10,
-                  },
-                ]}
+                buttonStyle={[btnStyle.outline]}
                 titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={common.mtop10}
               />
             )}
           </View>

@@ -162,14 +162,22 @@ const TeachersList = () => {
 
             {item?.phone && (
               <View style={[cardStyle.row, common.mb5]}>
-                <MaterialCommunityIcons name="phone" size={12} />
+                <MaterialCommunityIcons
+                  name="phone"
+                  size={12}
+                  color={YoColors.textTheme}
+                />
                 <Text style={common.rText}> {item?.phone}</Text>
               </View>
             )}
 
             {item?.education && (
               <View style={[cardStyle.row, common.mb5]}>
-                <Icon name="user-graduate" size={12} />
+                <Icon
+                  name="user-graduate"
+                  size={12}
+                  color={YoColors.textTheme}
+                />
                 <Text style={common.rText} numberOfLines={1}>
                   {" "}
                   {item?.education}
@@ -179,7 +187,7 @@ const TeachersList = () => {
 
             {item?.experience && (
               <View style={[cardStyle.row, common.mb5]}>
-                <Icon name="info-circle" size={12} />
+                <Icon name="info-circle" size={12} color={YoColors.textTheme} />
                 <Text style={common.rText}>
                   {" "}
                   {item?.experience + " years of experience"}
@@ -199,7 +207,7 @@ const TeachersList = () => {
           placeholder="Search Teacher"
           onChangeText={(text: any) => setSearchText(text)}
           value={searchText}
-          style={[common.input, common.mb5]}
+          style={[common.input, common.mb5, { color: YoColors.inputText }]}
           onSubmitEditing={handleSearch}
           placeholderTextColor={YoColors.placeholderText}
         />
@@ -208,12 +216,14 @@ const TeachersList = () => {
             onPress={() => setSearchText("")}
             name="close-sharp"
             size={21}
+            color={YoColors.textTheme}
             style={{ position: "absolute", right: 10, top: 12 }}
           />
         ) : (
           <Ionicons
             name="search-outline"
             size={21}
+            color={YoColors.textTheme}
             style={{ position: "absolute", right: 10, top: 12 }}
           />
         )}

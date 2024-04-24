@@ -277,7 +277,13 @@ const BatchSlideCard = ({
                           paddingVertical: 3,
                         }}
                         containerStyle={{ padding: 0 }}
-                        titleStyle={common.rText}
+                        titleStyle={[
+                          common.rText,
+                          {
+                            color: YoColors.white,
+                            fontWeight: "400",
+                          },
+                        ]}
                       />
                     )}
 

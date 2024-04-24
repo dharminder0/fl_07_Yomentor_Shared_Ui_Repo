@@ -332,11 +332,11 @@ const UserProfile = () => {
 
                   {userDetails?.teacherProfile?.about && (
                     <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <FontAwesome5
-                        name="chalkboard-teacher"
+                      <Icon
+                        name="info-circle"
                         size={12}
+                        style={{ marginTop: 2 }}
                         color={YoColors.primary}
-                        style={{ marginTop: 3 }}
                       />
                       <Text style={{ paddingStart: 5 }}>
                         {userDetails?.teacherProfile?.about}

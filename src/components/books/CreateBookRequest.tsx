@@ -281,10 +281,11 @@ const CreateBookRequest = ({
                   )}
                 />
 
-                <View style={{ marginTop: 30 }}>
+                <View style={{ marginTop: 30, alignItems: "center" }}>
                   <Button
                     title={isEditMode ? "Update Book" : "Create Book"}
-                    buttonStyle={{ backgroundColor: YoColors.primary }}
+                    buttonStyle={btnStyle.solid}
+                    titleStyle={btnStyle.solidTitle}
                     onPress={handleSubmit(onSubmit)}
                   />
                 </View>

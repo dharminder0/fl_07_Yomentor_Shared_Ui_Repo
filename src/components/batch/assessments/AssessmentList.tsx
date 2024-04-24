@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getAssessmentsListByBatchId } from "../../../apiconfig/SharedApis";
-import { common } from "../../../assets/styles/Common";
+import { btnStyle, common } from "../../../assets/styles/Common";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
 import AssesmentCardView from "./AssesmentCardView";
@@ -117,11 +117,19 @@ const AssessmentList = ({ batchInfo }: any) => {
                 your favorites list to use again later.
               </Text>
 
-              <View style={[common.my10]}>
+              <View
+                style={[
+                  common.my10,
+                  {
+                    alignItems: "center",
+                  },
+                ]}
+              >
                 <Button
                   title="Create new Assessment"
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
-                  containerStyle={common.mb10}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={[common.mb10, { width: 170 }]}
                   onPress={() => useForm("addForm")}
                 />
 
@@ -140,7 +148,9 @@ const AssessmentList = ({ batchInfo }: any) => {
 
                 <Button
                   title="Select from favorite list"
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={[common.mb10, { width: 170 }]}
                   onPress={() => useForm("selectForm")}
                 />
               </View>

@@ -216,14 +216,9 @@ const AddressUpdateModal = ({
                   />
                 }
                 iconPosition="right"
-                containerStyle={[common.mb10, { width: 130 }]}
-                titleStyle={{ color: YoColors.primary, fontSize: 12 }}
-                buttonStyle={{
-                  backgroundColor: YoColors.white,
-                  borderWidth: 1,
-                  borderColor: YoColors.primary,
-                  padding: 4,
-                }}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={[common.mb10, { width: 155 }]}
               />
 
               <Controller
@@ -312,9 +307,9 @@ const AddressUpdateModal = ({
                 <Button
                   title="Update"
                   loading={isProcessLoader}
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  buttonStyle={btnStyle.solid}
+                  titleStyle={btnStyle.solidTitle}
                   onPress={handleSubmit(onSubmit)}
-                  containerStyle={{ width: 180 }}
                 />
               </View>
             </View>

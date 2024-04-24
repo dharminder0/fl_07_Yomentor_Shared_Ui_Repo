@@ -12,7 +12,7 @@ import {
   upsertTestAttempt,
 } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
@@ -119,9 +119,10 @@ const SkillDetails = ({ route }: any) => {
         <View style={[common.my10, { alignItems: "center" }]}>
           <Button
             title="Attempt Now"
-            buttonStyle={{ backgroundColor: YoColors.primary }}
             onPress={() => setIsAttempModal(true)}
-            containerStyle={{ width: 180 }}
+            buttonStyle={[btnStyle.outline, common.px12]}
+            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            containerStyle={[common.my10]}
           />
         </View>
 

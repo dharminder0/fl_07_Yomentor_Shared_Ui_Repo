@@ -164,10 +164,7 @@ const AssignmentDetails = ({ route }: any) => {
                         index: number;
                       }) => {
                         return (
-                          <View
-                            key={index}
-                            style={uploadStyles.fileCardNoBorder}
-                          >
+                          <View key={index} style={[common.row, common.mb5]}>
                             <Ionicons
                               name="document-text"
                               size={18}

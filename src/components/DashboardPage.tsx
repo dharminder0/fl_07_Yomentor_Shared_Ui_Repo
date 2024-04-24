@@ -180,7 +180,7 @@ const DashboardPage = () => {
             refreshLoader={refreshLoader}
             setRefreshLoader={setRefreshLoader}
             reloadPage={relaodPage}
-            usedStatusId={1}
+            usedStatusId={0}
             withdraw={true}
           />
         );

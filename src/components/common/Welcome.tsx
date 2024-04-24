@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { common } from "../../assets/styles/Common";
+import { btnStyle, common } from "../../assets/styles/Common";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { YoImages } from "../../assets/themes/YoImages";
@@ -95,12 +95,9 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
           <Button
             title="Find Teacher"
             onPress={() => navigation.navigate("TeachersList")}
-            buttonStyle={{
-              backgroundColor: YoColors.primary,
-              marginTop: 20,
-            }}
-            titleStyle={{ fontWeight: "600" }}
-            containerStyle={{ width: "50%" }}
+            buttonStyle={[btnStyle.outline, common.px12]}
+            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            containerStyle={[common.my10]}
           />
         </>
       )}
@@ -172,9 +169,9 @@ const Welcome = ({ userType = 1, onAddModalOpen = () => {} }) => {
           <Button
             title="Create Your First Batch"
             onPress={onAddModalOpen}
-            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
-            titleStyle={{ fontWeight: "600" }}
-            containerStyle={{ width: "100%" }}
+            buttonStyle={[btnStyle.outline, common.px12]}
+            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            containerStyle={[common.my10]}
           />
         </>
       )}

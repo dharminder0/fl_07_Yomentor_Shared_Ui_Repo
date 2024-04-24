@@ -12,7 +12,7 @@ import { Card } from "@rneui/themed";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { getUserInfo } from "../../shared/sharedDetails";
@@ -262,7 +262,12 @@ const ProfileBatchCard = ({
                   paddingVertical: 3,
                 }}
                 containerStyle={{ padding: 0 }}
-                titleStyle={common.rText}
+                titleStyle={[
+                  common.rText,
+                  {
+                    color: YoColors.white,
+                  },
+                ]}
               />
             )}
 
@@ -357,46 +362,50 @@ const ProfileBatchCard = ({
         >
           {userInfo?.type === 3 && usedStatusId === 1 && (
             <>
-              <Text style={[common.h3Title, { textAlign: "center" }]}>
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
                 Sorry, you do not have any shortlisted batches. Search for a
                 teacher and enroll yourself.
               </Text>
               <Button
                 title="Find Teacher"
                 onPress={() => navigation.navigate("TeachersList")}
-                buttonStyle={{
-                  backgroundColor: YoColors.primary,
-                  marginTop: 20,
-                }}
-                titleStyle={{ fontWeight: "600" }}
-                containerStyle={{ width: "50%" }}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={[common.my10]}
               />
             </>
           )}
 
           {userInfo?.type === 3 && usedStatusId == 2 && (
             <>
-              <Text style={[common.h3Title, { textAlign: "center" }]}>
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
                 Sorry, you do not have any ongoing batches. Search for a teacher
                 and enroll yourself.
               </Text>
               <Button
                 title="Find Teacher"
                 onPress={() => navigation.navigate("TeachersList")}
-                buttonStyle={{
-                  backgroundColor: YoColors.primary,
-                  marginTop: 20,
-                }}
-                titleStyle={{ fontWeight: "600" }}
-                containerStyle={{ width: "50%" }}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={[common.my10]}
               />
             </>
           )}
 
           {userInfo?.type === 3 && usedStatusId === 0 && (
-            <Text style={[common.h3Title, { textAlign: "center" }]}>
-              Sorry, there is no batch for Enrollment
-            </Text>
+            <>
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
+                Sorry, you do not have any enrolled batches. Search for a
+                teacher and enroll yourself.
+              </Text>
+              <Button
+                title="Find Teacher"
+                onPress={() => navigation.navigate("TeachersList")}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={[common.my10]}
+              />
+            </>
           )}
         </View>
       )}

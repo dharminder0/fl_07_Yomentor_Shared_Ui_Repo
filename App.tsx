@@ -25,6 +25,7 @@ function App(): React.JSX.Element {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? YoColors.primary : YoColors.primary,
     height: height,
+    color: isDarkMode ? YoColors.white : "#000",
   };
 
   return (

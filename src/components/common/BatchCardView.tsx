@@ -4,7 +4,6 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import React from "react";
@@ -54,7 +53,12 @@ const BatchCardView = ({
         key={index}
       >
         <View style={[cardStyle.j_row, { margin: 0 }]}>
-          <Text style={cardStyle.headTitle}>{item?.batchName}</Text>
+          <Text
+            style={[cardStyle.headTitle, { width: "83%" }]}
+            numberOfLines={1}
+          >
+            {item?.batchName}
+          </Text>
 
           {item?.statusId === 1 && (
             <Text>{moment(item?.startDate).format("MMM DD, YYYY")}</Text>
@@ -65,9 +69,10 @@ const BatchCardView = ({
               onPress={() =>
                 navigation.navigate("AddStudentAttendence", { batchItem: item })
               }
-              style={{ padding: 4 }}
+              style={[common.row, { paddingHorizontal: 5 }]}
             >
-              <Icon name="user-check" size={16} color={YoColors.primary} />
+              <Icon name="user-check" size={12} color={YoColors.primary} />
+              <Text style={{ color: YoColors.textTheme }}> Att. </Text>
             </Pressable>
           )}
         </View>
@@ -136,8 +141,8 @@ const BatchCardView = ({
             <Icon name="users" size={13} />
             <Text style={common.rText}>
               {" "}
-              {item?.studentCount}
-              {usedStatusId === 1 && `/` + item?.actualStudents}
+              {item?.actualStudents}
+              {usedStatusId === 1 && `/` + item?.studentCount}
             </Text>
           </View>
         </View>
@@ -190,55 +195,61 @@ const BatchCardView = ({
         />
       ) : (
         <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "85%",
-          }}
+          style={[
+            common.container,
+            { alignItems: "center", justifyContent: "center", height: "90%" },
+          ]}
         >
           {usedStatusId === 1 && userInfo?.type === 1 && (
             <>
-              <Text style={common.h3Title}>
-                You don't have any batch to open for enrollment
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
+                You don't have any batch open for enrollment. Create a new batch
+                and share details with students to enroll.
               </Text>
               <Button
-                title="Create Open Batch"
+                title="Create New Batch"
                 onPress={onAddModalOpen}
-                buttonStyle={{
-                  backgroundColor: YoColors.primary,
-                  marginTop: 20,
-                }}
-                titleStyle={{ fontWeight: "600" }}
-                containerStyle={{ width: "100%" }}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={common.mtop10}
               />
             </>
           )}
 
           {usedStatusId === 2 && userInfo?.type === 1 && (
-            <Text style={common.h3Title}>You don't have any ongoing batch</Text>
+            <>
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
+                You don't have any ongoing batch. Create a new batch and share
+                details with students to enroll.
+              </Text>
+              <Button
+                title="Create New Batch"
+                onPress={onAddModalOpen}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={common.mtop10}
+              />
+            </>
           )}
 
           {usedStatusId === 1 && userInfo?.type === 3 && (
-            <Text style={common.h3Title}>
+            <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
               You don't have any opening batch for Enrollment
             </Text>
           )}
 
           {userInfo?.type === 3 && usedStatusId == 2 && (
             <>
-              <Text style={[common.h3Title, { textAlign: "center" }]}>
+              <Text style={{ textAlign: "center", color: YoColors.textTheme }}>
                 Sorry, you do not have any ongoing batches. Search for a teacher
                 and enroll yourself.
               </Text>
               <Button
                 title="Find Teacher"
                 onPress={() => navigation.navigate("TeachersList")}
-                buttonStyle={{
-                  backgroundColor: YoColors.primary,
-                  marginTop: 20,
-                }}
-                titleStyle={{ fontWeight: "600" }}
-                containerStyle={{ width: "50%" }}
+                buttonStyle={[btnStyle.outline, common.px12]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                containerStyle={common.mtop10}
               />
             </>
           )}

@@ -278,6 +278,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                       name="user-graduate"
                       size={12}
                       style={{ marginEnd: 3 }}
+                      color={YoColors.textTheme}
                     />
                     <Text
                       style={[common.rText, { textAlign: "justify" }]}
@@ -295,6 +296,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                       name="chalkboard-teacher"
                       size={12}
                       style={{ marginTop: 3 }}
+                      color={YoColors.textTheme}
                     />
                     <Text style={common.rText} numberOfLines={2}>
                       {" "}
@@ -306,7 +308,11 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                 {userDetailList?.phone && (
                   <View style={[cardStyle.row, common.mb5]}>
-                    <MaterialCommunityIcons name="phone" size={12} />
+                    <MaterialCommunityIcons
+                      name="phone"
+                      size={12}
+                      color={YoColors.textTheme}
+                    />
                     <Text style={common.rText}> {userDetailList?.phone}</Text>
                   </View>
                 )}
@@ -316,6 +322,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                     <FontAwesome5
                       name="transgender"
                       size={14}
+                      color={YoColors.textTheme}
                       style={{ marginTop: 3 }}
                     />
                     <Text style={common.rText}> {userDetailList?.gender}</Text>
@@ -325,8 +332,18 @@ const UserDetailList = ({ route }: { route: any }) => {
             </View>
             <View style={common.my10}>
               {userDetailList?.teacherProfile?.about && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Icon name="info-circle" size={12} style={{ marginTop: 3 }} />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                  }}
+                >
+                  <Icon
+                    name="info-circle"
+                    size={12}
+                    style={{ marginTop: 2 }}
+                    color={YoColors.textTheme}
+                  />
                   <View
                     style={{
                       flexDirection: "row",
@@ -336,7 +353,10 @@ const UserDetailList = ({ route }: { route: any }) => {
                       marginLeft: 2,
                     }}
                   >
-                    <Text>{userDetailList?.teacherProfile?.about}</Text>
+                    <Text style={common.rText}>
+                      {" "}
+                      {userDetailList?.teacherProfile?.about}
+                    </Text>
                   </View>
                 </View>
               )}
@@ -346,7 +366,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                   <Ionicons
                     name="location"
                     size={14}
-                    //  color={YoColors.primary}
+                    color={YoColors.textTheme}
                     style={{ marginTop: 3 }}
                   />
                   <View
@@ -425,13 +445,14 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                       <View style={cardStyle.j_row}>
                         <View style={cardStyle.row3}>
-                          <Icon name="laptop" size={12} />
+                          <Icon name="laptop" size={12} color={YoColors.icon} />
                           <Text style={common.rText}>{item?.gradeName}</Text>
                         </View>
                         <View style={cardStyle.row3}>
                           <MaterialCommunityIcons
                             name="clock-time-four-outline"
                             size={13}
+                            color={YoColors.icon}
                           />
                           <Text style={common.rText}>
                             {" "}
@@ -441,7 +462,11 @@ const UserDetailList = ({ route }: { route: any }) => {
                           </Text>
                         </View>
                         <View style={cardStyle.row3}>
-                          <Icon name="money-bill-wave" size={12} />
+                          <Icon
+                            name="money-bill-wave"
+                            size={12}
+                            color={YoColors.icon}
+                          />
                           <Text style={common.rText}>
                             {" "}
                             {item?.fee.replace(".00", "")} / {item?.feeType}
@@ -451,13 +476,14 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                       <View style={cardStyle.j_row}>
                         <View style={cardStyle.row3}>
-                          <Icon name="book" size={12} />
+                          <Icon name="book" size={12} color={YoColors.icon} />
                           <Text style={common.rText}> {item?.subjectName}</Text>
                         </View>
                         <View style={cardStyle.row3}>
                           <Icon
                             name="calendar-day"
                             size={12}
+                            color={YoColors.icon}
                             style={{ marginEnd: 6 }}
                           />
                           {!!item?.days &&
@@ -476,10 +502,10 @@ const UserDetailList = ({ route }: { route: any }) => {
                             ))}
                         </View>
                         <View style={cardStyle.row3}>
-                          <Icon name="users" size={13} />
+                          <Icon name="users" size={13} color={YoColors.icon} />
                           <Text style={common.rText}>
                             {" "}
-                            {item?.studentCount}
+                            {item?.actualStudents + `/` + item?.studentCount}
                           </Text>
                         </View>
                       </View>
@@ -516,7 +542,10 @@ const UserDetailList = ({ route }: { route: any }) => {
                                   paddingVertical: 3,
                                 }}
                                 containerStyle={{ padding: 0 }}
-                                titleStyle={common.rText}
+                                titleStyle={[
+                                  common.rText,
+                                  { color: YoColors.white },
+                                ]}
                               />
                             )}
 
@@ -628,13 +657,14 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                       <View style={cardStyle.j_row}>
                         <View style={cardStyle.row3}>
-                          <Icon name="laptop" size={12} />
+                          <Icon name="laptop" size={12} color={YoColors.icon} />
                           <Text style={common.rText}>{item?.gradeName}</Text>
                         </View>
                         <View style={cardStyle.row3}>
                           <MaterialCommunityIcons
                             name="clock-time-four-outline"
                             size={13}
+                            color={YoColors.icon}
                           />
                           <Text style={common.rText}>
                             {" "}
@@ -644,7 +674,11 @@ const UserDetailList = ({ route }: { route: any }) => {
                           </Text>
                         </View>
                         <View style={cardStyle.row3}>
-                          <Icon name="money-bill-wave" size={12} />
+                          <Icon
+                            name="money-bill-wave"
+                            size={12}
+                            color={YoColors.icon}
+                          />
                           <Text style={common.rText}>
                             {" "}
                             {item?.fee.replace(".00", "")} / {item?.feeType}
@@ -654,7 +688,7 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                       <View style={cardStyle.j_row}>
                         <View style={cardStyle.row3}>
-                          <Icon name="book" size={12} />
+                          <Icon name="book" size={12} color={YoColors.icon} />
                           <Text style={common.rText}> {item?.subjectName}</Text>
                         </View>
                         <View style={cardStyle.row3}>
@@ -662,6 +696,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                             name="calendar-day"
                             size={12}
                             style={{ marginEnd: 6 }}
+                            color={YoColors.icon}
                           />
                           {!!item?.days &&
                             Array.isArray(item.days) &&
@@ -679,7 +714,7 @@ const UserDetailList = ({ route }: { route: any }) => {
                             ))}
                         </View>
                         <View style={cardStyle.row3}>
-                          <Icon name="users" size={13} />
+                          <Icon name="users" size={13} color={YoColors.icon} />
                           <Text style={common.rText}>
                             {" "}
                             {item?.studentCount}

@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/themed";
-import { cardStyle, common } from "../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../assets/styles/Common";
 import { useNavigation } from "@react-navigation/native";
 import HeaderView from "./common/HeaderView";
 import { YoImages } from "../assets/themes/YoImages";
@@ -155,14 +155,14 @@ const OpenBatchDetails = ({ route }: any) => {
                 <Ionicons
                   name="location-sharp"
                   size={14}
-                  color={YoColors.primary}
+                  color={YoColors.icon}
                 />
                 <Text style={common.rText}> {item?.address}</Text>
               </View>
             )}
             {item?.phone && (
               <View style={cardStyle.row}>
-                <Icon name="phone-alt" size={13} color={YoColors.primary} />
+                <Icon name="phone-alt" size={13} color={YoColors.icon} />
                 <Text style={common.rText}> {item?.phone}</Text>
               </View>
             )}
@@ -209,37 +209,40 @@ const OpenBatchDetails = ({ route }: any) => {
       <HeaderView title={batchItem?.batchName} />
       <View style={[common.container, { marginTop: 5 }]}>
         {studentData && studentData.length > 0 ? (
-          <FlatList
-            data={studentData}
-            style={{ height: "85.5%" }}
-            keyExtractor={(item: any) => item?.id}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshLoader}
-                onRefresh={() => {
-                  setRefreshLoader(true);
-                  getStudentsDataByBatchId();
-                }}
-              />
-            }
-          />
-        ) : (
-          <NoDataView />
-        )}
+          <>
+            <FlatList
+              data={studentData}
+              style={{ height: "86.5%" }}
+              keyExtractor={(item: any) => item?.id}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshLoader}
+                  onRefresh={() => {
+                    setRefreshLoader(true);
+                    getStudentsDataByBatchId();
+                  }}
+                />
+              }
+            />
 
-        <Button
-          title="Start Batch"
-          onPress={() => setIsBatchModal(true)}
-          // onPress={startBatch}
-          buttonStyle={{
-            backgroundColor: YoColors.primary,
-            marginVertical: 10,
-          }}
-          titleStyle={{ fontWeight: "bold" }}
-          containerStyle={{ width: "100%" }}
-        />
+            <Button
+              title="Start Batch"
+              onPress={() => setIsBatchModal(true)}
+              buttonStyle={btnStyle.solid}
+              titleStyle={btnStyle.solidTitle}
+              containerStyle={[
+                common.my10,
+                { width: 120, alignSelf: "center" },
+              ]}
+            />
+          </>
+        ) : (
+          <View style={{ height: "100%" }}>
+            <NoDataView />
+          </View>
+        )}
 
         <ConfirmationPopup
           message="Are you sure to want to start this batch?"

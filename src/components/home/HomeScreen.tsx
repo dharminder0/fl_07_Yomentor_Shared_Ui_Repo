@@ -58,7 +58,7 @@ const HomeScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsContentLoaded(true);
-    }, 3000);
+    }, 2000);
   }, [openBatchList, ongoingBatchList, shortlisted]);
 
   const getOpenBatchDatabyTeacherId = (statusId: number) => {
@@ -188,7 +188,7 @@ const HomeScreen = () => {
               data={ongoingBatchList}
               usedStatusId={2}
               userInfo={userInfo}
-              height={150}
+              height={165}
             />
           )}
 

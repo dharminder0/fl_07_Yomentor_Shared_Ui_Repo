@@ -32,7 +32,7 @@ const BookDetails = ({ route }: any) => {
     setIsLoading(true);
     const paylaod: any = {
       id: selectedBookDetails.id,
-      userId: userInfo.id
+      userId: userInfo.id,
     };
     getBookDetailsById(paylaod)
       .then((response: any) => {
@@ -63,8 +63,7 @@ const BookDetails = ({ route }: any) => {
             setIsLoadingRequest(false);
             getDetails();
           }, 500);
-        }
-        else{
+        } else {
           setTimeout(() => {
             setIsLoadingRequest(false);
           }, 500);
@@ -168,7 +167,7 @@ const BookDetails = ({ route }: any) => {
               ]}
             >
               <Text style={[common.mb5, common.h3Title]}>
-                Offerer Information
+                Donar Information
               </Text>
             </View>
             <View
@@ -311,9 +310,9 @@ const BookDetails = ({ route }: any) => {
                   title="Borrow book"
                   loading={isLoadingRequest}
                   onPress={() => handleBookRequest(1)}
-                  buttonStyle={[btnStyle.solid]}
-                  containerStyle={{ width: 150 }}
-                  titleStyle={[btnStyle.solidTitle]}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={[common.my10]}
                 />
               )}
               {bookDetails.status === 1 && (
@@ -321,9 +320,9 @@ const BookDetails = ({ route }: any) => {
                   title="Cancel request"
                   loading={isLoadingRequest}
                   onPress={() => handleBookRequest(5)}
-                  buttonStyle={[btnStyle.solid]}
-                  containerStyle={{ width: 150 }}
-                  titleStyle={[btnStyle.solidTitle]}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={[common.my10]}
                 />
               )}
             </View>

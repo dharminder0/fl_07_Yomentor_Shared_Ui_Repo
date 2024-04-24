@@ -189,10 +189,11 @@ const SpecialityModal = ({
                 )}
               />
 
-              <View style={{ marginTop: 30 }}>
+              <View style={{ marginTop: 30, alignItems: "center" }}>
                 <Button
                   title="Update Speciality"
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  buttonStyle={btnStyle.solid}
+                  titleStyle={btnStyle.solidTitle}
                   onPress={handleSubmit(onSubmit)}
                 />
               </View>

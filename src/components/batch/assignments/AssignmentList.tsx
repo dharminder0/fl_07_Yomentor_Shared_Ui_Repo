@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { common } from "../../../assets/styles/Common";
+import { btnStyle, common } from "../../../assets/styles/Common";
 import { getAssignmentsListByBatchId } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
 import NoDataView from "../../../screens/NoDataView";
@@ -116,11 +116,12 @@ const AssignmentList = ({ batchInfo }: any) => {
                 your favorites list to use again later.
               </Text>
 
-              <View style={[common.my10]}>
+              <View style={[common.my10, { alignItems: "center" }]}>
                 <Button
                   title="Create new Assignment"
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
-                  containerStyle={common.mb10}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={[common.mb10, { width: 160 }]}
                   onPress={() => useForm("addForm")}
                 />
 
@@ -139,8 +140,10 @@ const AssignmentList = ({ batchInfo }: any) => {
 
                 <Button
                   title="Select from favorite list"
-                  buttonStyle={{ backgroundColor: YoColors.primary }}
                   onPress={() => useForm("selectForm")}
+                  buttonStyle={[btnStyle.outline, common.px12]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+                  containerStyle={{ width: 160 }}
                 />
               </View>
             </>

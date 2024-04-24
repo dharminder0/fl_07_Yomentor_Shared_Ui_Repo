@@ -1,6 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Geolocation from "@react-native-community/geolocation";
-import { Platform, PermissionsAndroid, Permission } from "react-native";
+import {
+  Platform,
+  PermissionsAndroid,
+  Permission,
+  useColorScheme,
+  Appearance,
+} from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import configData from "../../config.json";
 
