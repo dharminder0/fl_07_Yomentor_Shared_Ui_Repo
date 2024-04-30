@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -20,7 +21,10 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
-import { getLocation } from "../../shared/sharedDetails";
+import {
+  getLocation,
+  requestLocationPermission,
+} from "../../shared/sharedDetails";
 import { useFocusEffect } from "@react-navigation/native";
 
 const AddressUpdateModal = ({
@@ -100,6 +104,22 @@ const AddressUpdateModal = ({
         }, 500);
       })
       .catch((error) => {
+        if (error.code == 2) {
+          Alert.alert(
+            "Turn on Location",
+            "Please turn on location to get your current location",
+            [
+              {
+                text: "OK",
+                onPress: () => console.log("OK Pressed"),
+              },
+            ],
+            { cancelable: false }
+          );
+        }
+        if (error.code == 1) {
+          requestLocationPermission();
+        }
         console.log("Error getting location:", error);
         setTimeout(() => {
           setIsProcessLoader(false);

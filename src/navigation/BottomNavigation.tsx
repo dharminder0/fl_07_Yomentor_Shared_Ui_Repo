@@ -26,9 +26,9 @@ import BooksList from "../components/books/BooksList";
 const Tab = createBottomTabNavigator();
 // Ionicons.loadFont();
 // Icon.loadFont();
+const YoColors = useThemeColor();
 
 export const BottomNavigation = () => {
-  const YoColors = useThemeColor();
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
@@ -226,7 +226,7 @@ export const BottomNavigation = () => {
 
 const styles = StyleSheet.create({
   headerStyle: {
-    backgroundColor: "#124076",
+    backgroundColor: YoColors.primary,
   },
   iconContainer: {
     width: 65,

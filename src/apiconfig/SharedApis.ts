@@ -189,8 +189,12 @@ export async function upsertBookDetails(payload: any): Promise<any> {
   return AxiosInterceptor.post(`Books/Upsert`, payload);
 }
 
-export async function getBookDetailsById(data:any): Promise<any> {
-  return AxiosInterceptor.get(`Books/BookInfo?id=${data.id}${data.userId ? `&userId=${data.userId}`:''}${data.type ? `&type=${data.type}`:''}`);
+export async function getBookDetailsById(data: any): Promise<any> {
+  return AxiosInterceptor.get(
+    `Books/BookInfo?id=${data.id}${
+      data.userId ? `&userId=${data.userId}` : ""
+    }${data.type ? `&type=${data.type}` : ""}`
+  );
 }
 
 export async function deleteBookById(id: number): Promise<any> {
@@ -241,6 +245,20 @@ export async function upsertBulkAttempt(payload: any): Promise<any> {
   return AxiosInterceptor.post(`SkillTest/BulkAttemptDetail`, payload);
 }
 
-export async function updateBookStatus(id: number, statusId: number, receiverId: number): Promise<any> {
-  return AxiosInterceptor.get(`Books/updateStatus?id=${id}&statusId=${statusId}&receiverId=${receiverId}`);
+export async function updateBookStatus(
+  id: number,
+  statusId: number,
+  receiverId: number
+): Promise<any> {
+  return AxiosInterceptor.get(
+    `Books/updateStatus?id=${id}&statusId=${statusId}&receiverId=${receiverId}`
+  );
+}
+
+export async function addDeviceToken(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`User/AddUserDevices`, payload);
+}
+
+export async function removeDeviceToken(userToken: any): Promise<any> {
+  return AxiosInterceptor.get(`User/RemoveUserDevices?userToken=${userToken}`);
 }

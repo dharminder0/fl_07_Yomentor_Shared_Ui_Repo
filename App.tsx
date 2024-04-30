@@ -10,6 +10,7 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
+  useNavigation,
 } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigator";
 import InternetConnectionStatus from "./src/screens/InternetConnectionStatus";
@@ -19,7 +20,7 @@ import { ThemeProvider } from "./src/assets/themes/ThemeContext";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
-  const YoColors = useThemeColor();
+  let YoColors = useThemeColor();
   const { height } = Dimensions.get("window");
 
   const backgroundStyle = {
@@ -33,7 +34,7 @@ function App(): React.JSX.Element {
       <SafeAreaView style={backgroundStyle}>
         <ToastProvider>
           <StatusBar
-            barStyle={isDarkMode ? "light-content" : "light-content"}
+            barStyle={isDarkMode ? "dark-content" : "light-content"}
             backgroundColor={backgroundStyle.backgroundColor}
           />
           <NavigationContainer

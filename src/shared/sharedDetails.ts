@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import configData from "../../config.json";
+import { firebase } from "@react-native-firebase/messaging";
 
 export const saveAsyncData = async (key: string, data: any) => {
   try {
@@ -370,4 +371,67 @@ export const getLocation = () => {
       { enableHighAccuracy: false, timeout: 3000, maximumAge: 10000 }
     );
   });
+};
+
+export const requestNotificationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      {
+        title: "Notification Permission",
+        message: "App needs permission to show notifications",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK",
+      }
+    );
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("Notification permission granted");
+    } else {
+      console.log("Notification permission denied");
+    }
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+};
+
+export const GetFCMToken = () => {
+  AsyncStorage.getItem("fcmtoken").then((result: any) => {
+    if (!result) {
+      const messaging = firebase.messaging();
+      messaging
+        .requestPermission()
+        .then(() => {
+          messaging
+            .getToken()
+            .then((fcmtoken: any) => {
+              AsyncStorage.setItem("fcmtoken", fcmtoken);
+              return fcmtoken;
+            })
+            .catch((error: any) => {
+              console.log("Error retrieving FCM token:", error);
+            });
+        })
+        .catch((error: any) => {
+          console.log("Error requesting permission:", error);
+        });
+    } else if (result) {
+      return result;
+    }
+  });
+};
+
+const notifyInfo: any = {
+  channelId: "YomentorNotify",
+  channelName: "Yo!Mentor",
+  channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+  playSound: true, // (optional) default: true
+  soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
+  importance: 4, // (optional) default: 4. Int value of the Android notification importance
+  vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+};
+
+export const getNotifyInfo = () => {
+  return notifyInfo;
 };

@@ -288,13 +288,14 @@ const AddAssignmentModal = ({
                 <View style={{ alignItems: "center" }}>
                   <CheckBox
                     key={0}
-                    title={"Save for later"}
+                    title={"Save to your favourite list"}
                     checked={isFavorite}
                     checkedColor={YoColors.primary}
                     onPress={() => setIsFavorite(!isFavorite)}
                     containerStyle={{
                       marginBottom: 20,
                       width: "100%",
+                      borderWidth: 0,
                     }}
                     textStyle={{ fontWeight: "500", fontSize: 12 }}
                   />

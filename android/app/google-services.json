@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "199426178954",
+    "project_id": "yomentor-4e564",
+    "storage_bucket": "yomentor-4e564.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199426178954:android:afd164186ef6df730c5273",
+        "android_client_info": {
+          "package_name": "com.yomentor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnYWfttabjNvlnzQMRk4VQneKO1term20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
