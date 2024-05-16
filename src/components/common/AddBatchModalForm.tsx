@@ -33,7 +33,7 @@ import PopupModal from "./PopupModal";
 import ProcessLoader from "../../screens/ProcessLoader";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
+const AddBatchModalForm = ({ userId = "", onClose = () => { } }) => {
   const feeTypes: any = getFeeTypes();
   const days: any = getDayList();
   const YoColors = useThemeColor();
@@ -98,7 +98,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
       paylaod.name &&
       paylaod.numberOfStudents &&
       paylaod.fee &&
-      paylaod.feeType &&
+      paylaod.feeType >= 0 &&
       paylaod.subjectId &&
       paylaod.teacherId
     ) {
@@ -410,7 +410,7 @@ const AddBatchModalForm = ({ userId = "", onClose = () => {} }) => {
                   open={isCalendarOpen}
                   date={
                     getValues().date &&
-                    moment(getValues().date, "YYYY-MM-DD").isValid()
+                      moment(getValues().date, "YYYY-MM-DD").isValid()
                       ? new Date(getValues().date)
                       : new Date()
                   }

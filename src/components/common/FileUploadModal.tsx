@@ -18,16 +18,15 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import DocumentPicker from "react-native-document-picker";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { uploadStyles } from "../../assets/styles/UploadStyle";
-import { uploadFileToBlob } from "../../apiconfig/SharedApis";
+import { deleteMediaFile, uploadFileToBlob } from "../../apiconfig/SharedApis";
 import { useToast } from "react-native-toast-notifications";
-import RNFetchBlob from "rn-fetch-blob";
 
 const FileUploadModal = ({
   title = "",
   uploadedFilesList = [],
-  setUploadedFilesList = (value: any) => {},
+  setUploadedFilesList = (value: any) => { },
   isDisabled = false,
-  setIsLoading = (value: boolean) => {},
+  setIsLoading = (value: boolean) => { },
 }) => {
   const types = getTypes();
   const YoColors = useThemeColor();
@@ -132,13 +131,45 @@ const FileUploadModal = ({
     });
   };
 
-  const handleDelete = (indexToRemove: number) => {
+  const handleDelete = (url: string, indexToRemove: number) => {
+    console.log(url)
     // Filter out the object at the specified index
     const updatedList = uploadedFilesList.filter(
       (item: any, index: number) => index !== indexToRemove
     );
     // Update the state with the filtered array
     setUploadedFilesList(updatedList);
+
+    deleteMediaFile(url).then((response: any) => {
+      console.log(response.data)
+      if (response.data.success) {
+        toast.show("Image deleted successfully", {
+          type: "success",
+          duration: 2000,
+          placement: "top",
+        });
+      } else {
+        toast.show("Failed to delete image", {
+          type: "danger",
+          duration: 2000,
+          placement: "top",
+        });
+      }
+      setTimeout(() => {
+        setIsBrowseFile(false);
+        setIsLoading(false);
+      }, 1000);
+    })
+      .catch((error: any) => {
+        console.log(error);
+        toast.show("Failed to delete image", {
+          type: "danger",
+          duration: 3000,
+          placement: "top",
+        });
+        setIsBrowseFile(false);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -261,7 +292,7 @@ const FileUploadModal = ({
                   )}
                 </TouchableOpacity>
                 {!isDisabled && (
-                  <Pressable onPress={() => handleDelete(index)}>
+                  <Pressable onPress={() => handleDelete(item.fileLink, index)}>
                     <Ionicons name="trash" size={21} color={YoColors.primary} />
                   </Pressable>
                 )}

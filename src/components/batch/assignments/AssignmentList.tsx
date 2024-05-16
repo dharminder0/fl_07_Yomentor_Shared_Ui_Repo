@@ -156,7 +156,7 @@ const AssignmentList = ({ batchInfo }: any) => {
         onClose={() => onCloseUpdate()}
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        batchId={selectedBatch.id}
+        batchInfo={selectedBatch}
         title="Create new assignment"
       />
 

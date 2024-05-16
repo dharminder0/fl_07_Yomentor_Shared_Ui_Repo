@@ -6,7 +6,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import useStore from "../../store/useStore";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
@@ -25,13 +25,14 @@ import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import FileUploadModal from "../common/FileUploadModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddAssignmentModal = ({
   userId = "",
-  onClose = () => {},
+  onClose = () => { },
   isModalVisible = false,
-  setModalVisible = (value: any) => {},
-  batchId = null,
+  setModalVisible = (value: any) => { },
+  batchInfo = null,
   title = "",
   dataToEdit = {},
 }: any) => {
@@ -62,18 +63,23 @@ const AddAssignmentModal = ({
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     reset(dataToEdit);
     if (dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0) {
       setUploadedFilesList(dataToEdit.uploadedFiles);
     } else {
       setUploadedFilesList([]);
     }
+    if (batchInfo?.id) {
+      setValue("gradeId", batchInfo?.gradeId);
+      setValue("subjectId", batchInfo?.subjectId);
+    }
     setIsRefreshSelectModal(0);
-  }, [isModalVisible, reset]);
+  }, [isModalVisible, reset]));
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
@@ -89,10 +95,9 @@ const AddAssignmentModal = ({
 
   useEffect(() => {
     setValue("teacherId", userId);
-    // setValue("isFavorite", true);
     if (gradeId) {
       setValue("gradeId", gradeId);
-      setValue("subjectId", "");
+      setValue("subjectId", getValues('subjectId'));
       getSubjectByGradeId(gradeId).then((result: any) => {
         if (!!result.data) {
           setSubjectList(result.data);
@@ -105,23 +110,22 @@ const AddAssignmentModal = ({
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
     const payload: any = {
-      id: data.id,
-      teacherId: data.teacherId,
+      id: !data.id ? 0 : data.id,
+      teacherId: !data.teacherId || data.teacherId == 0 ? userId : data.teacherId,
       title: data.title,
       description: data.description,
       gradeId: data.gradeId,
       subjectId: data.subjectId,
       isFavorite: isFavorite,
-      isDeleted: data.isDeleted,
+      isDeleted: !data.isDeleted ? false : data.isDeleted,
       uploadedFiles: [...uploadedFilesList],
     };
-
     upsertAssignments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
-          if (batchId) {
+          if (batchInfo?.id) {
             getAssignStudentAssignments({
-              batchId: batchId,
+              batchId: batchInfo?.id,
               assignmentId: response.data?.content,
               status: 1,
             }).then((res: any) => {
@@ -242,7 +246,7 @@ const AddAssignmentModal = ({
                   />
                 )}
               />
-              {!batchId && (
+              {!batchInfo?.id && (
                 <View style={cardStyle.j_row}>
                   <View style={{ width: "48%" }}>
                     <SelectModal
@@ -256,9 +260,9 @@ const AddAssignmentModal = ({
                       defaultValue={
                         dataToEdit.gradeId
                           ? {
-                              id: dataToEdit.gradeId,
-                              name: dataToEdit.gradeName,
-                            }
+                            id: dataToEdit.gradeId,
+                            name: dataToEdit.gradeName,
+                          }
                           : null
                       }
                     />
@@ -274,9 +278,9 @@ const AddAssignmentModal = ({
                       defaultValue={
                         dataToEdit.subjectId
                           ? {
-                              id: dataToEdit.subjectId,
-                              name: dataToEdit.subjectName,
-                            }
+                            id: dataToEdit.subjectId,
+                            name: dataToEdit.subjectName,
+                          }
                           : null
                       }
                     />
@@ -284,7 +288,7 @@ const AddAssignmentModal = ({
                 </View>
               )}
 
-              {batchId && (
+              {batchInfo?.id && (
                 <View style={{ alignItems: "center" }}>
                   <CheckBox
                     key={0}

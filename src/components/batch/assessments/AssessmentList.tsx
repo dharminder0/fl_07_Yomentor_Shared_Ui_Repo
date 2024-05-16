@@ -164,7 +164,7 @@ const AssessmentList = ({ batchInfo }: any) => {
         onClose={() => onCloseUpdate()}
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-        batchId={selectedBatch?.id}
+        batchInfo={selectedBatch}
         title="Create new assessment"
       />
 

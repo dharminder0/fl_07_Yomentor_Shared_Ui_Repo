@@ -20,8 +20,8 @@ import { useThemeColor } from "../../assets/themes/useThemeColor";
 
 const CardAssignment = ({
   data = [],
-  reload = () => {},
-  setRefreshLoader = (value: any) => {},
+  reload = () => { },
+  setRefreshLoader = (value: any) => { },
   refreshLoader = false,
 }) => {
   const { height } = Dimensions.get("window");

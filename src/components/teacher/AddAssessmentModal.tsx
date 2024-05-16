@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import useStore from "../../store/useStore";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -29,13 +29,14 @@ import PopupModal from "../common/PopupModal";
 import SelectModal from "../common/SelectModal";
 import FileUploadModal from "../common/FileUploadModal";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddAssessmentModal = ({
   userId = "",
-  onClose = () => {},
+  onClose = () => { },
   isModalVisible = false,
-  setModalVisible = (value: any) => {},
-  batchId = null,
+  setModalVisible = (value: any) => { },
+  batchInfo = null,
   title = "",
   dataToEdit = {},
 }: any) => {
@@ -71,7 +72,7 @@ const AddAssessmentModal = ({
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     reset(dataToEdit);
     if (dataToEdit.uploadedFiles && dataToEdit.uploadedFiles.length > 0) {
       setUploadedFilesList(dataToEdit.uploadedFiles);
@@ -79,7 +80,7 @@ const AddAssessmentModal = ({
       setUploadedFilesList([]);
     }
     setIsRefreshSelectModal(0);
-  }, [isModalVisible, reset]);
+  }, [isModalVisible, reset]));
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible); // Toggle the modal visibility state
@@ -97,12 +98,16 @@ const AddAssessmentModal = ({
     setValue("teacherId", userId);
     if (gradeId) {
       setValue("gradeId", gradeId);
-      setValue("subjectId", "");
+      setValue("subjectId", getValues('subjectId'));
       getSubjectByGradeId(gradeId).then((result: any) => {
         if (!!result.data) {
           setSubjectList(result.data);
         }
       });
+      if (batchInfo?.id) {
+        setValue("gradeId", batchInfo?.gradeId);
+        setValue("subjectId", batchInfo?.subjectId);
+      }
       setIsRefreshSelectModal(isRefreshSelectModal + 1);
     }
   }, [gradeId]);
@@ -110,14 +115,15 @@ const AddAssessmentModal = ({
   const onSubmit = (data: any) => {
     setIsProcessLoader(true);
     const payload: any = { ...data };
+    payload.teacherId = !dataToEdit.teacherId ? userId : dataToEdit.teacherId;
     payload.uploadedFiles = [...uploadedFilesList];
     payload.isFavorite = isFavorite;
     upsertAssessments(payload)
       .then((response: any) => {
         if (response.data && response.data?.success) {
-          if (batchId) {
+          if (batchInfo?.id) {
             getAssignStudentAssessments({
-              batchId: batchId,
+              batchId: batchInfo?.id,
               assessmentId: response.data?.content,
               status: 1,
             }).then((res: any) => {
@@ -235,7 +241,7 @@ const AddAssessmentModal = ({
                   />
                 )}
               />
-              {!batchId && (
+              {!batchInfo?.id && (
                 <View style={cardStyle.j_row}>
                   <View style={{ width: "48%" }}>
                     <SelectModal
@@ -244,14 +250,15 @@ const AddAssessmentModal = ({
                       onChanged={(value: any) => {
                         if (value?.id) {
                           setGradeId(value?.id);
+                          setValue("gradeId", value?.id)
                         }
                       }}
                       defaultValue={
                         dataToEdit.gradeId
                           ? {
-                              id: dataToEdit.gradeId,
-                              name: dataToEdit.gradeName,
-                            }
+                            id: dataToEdit.gradeId,
+                            name: dataToEdit.gradeName,
+                          }
                           : null
                       }
                     />
@@ -267,9 +274,9 @@ const AddAssessmentModal = ({
                       defaultValue={
                         dataToEdit.subjectId
                           ? {
-                              id: dataToEdit.subjectId,
-                              name: dataToEdit.subjectName,
-                            }
+                            id: dataToEdit.subjectId,
+                            name: dataToEdit.subjectName,
+                          }
                           : null
                       }
                     />
@@ -289,14 +296,14 @@ const AddAssessmentModal = ({
                       { borderColor: errors.maxMark ? "red" : "#ccc" },
                     ]}
                     placeholderTextColor={YoColors.placeholderText}
-                    value={value}
+                    value={typeof value === 'number' ? value.toString() : value}
                     placeholder="Max Mark"
                     keyboardType="numeric"
                   />
                 )}
               />
 
-              {batchId && (
+              {batchInfo?.id && (
                 <View style={{ alignItems: "center" }}>
                   <CheckBox
                     key={0}
