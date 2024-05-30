@@ -3,14 +3,15 @@
  */
 
 import 'react-native-gesture-handler';
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import App from './App';
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import { NotificationListener, requestUserPermission } from './src/shared/pushnotification_helper';
+import firebase from '@react-native-firebase/app';
 
-
+firebase.initializeApp();
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Background message:', remoteMessage);
 });
