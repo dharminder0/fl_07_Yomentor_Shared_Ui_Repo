@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { questionsAnswersBySkillId } from "../../apiconfig/SharedApis";
-import { common } from "../../assets/styles/Common";
 
 const AttemptedQuestionsPreview = ({ route }: any) => {
   const skillTestId: any = route.params?.skillTestId;
@@ -27,39 +26,49 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
   return (
     <ScrollView style={styles.container}>
       {attemptedQuestions &&
-        attemptedQuestions?.length > 0 &&
-        attemptedQuestions.map((question: any, index: number) => (
-          <View key={index} style={styles.questionContainer}>
-            <Text style={styles.questionTitle}>{`${index + 1}. ${
-              question.questionTitle
-            }`}</Text>
-            <Text style={styles.questionDescription}>
-              {question.questionDescription}
-            </Text>
-            {question.answerOptions.map((option: any, optionIndex: number) => (
-              <View
-                key={option.id}
-                style={[
-                  styles.option,
-                  option.id === question.selectedAnswerId
-                    ? styles.incorrectOption
-                    : null,
-                  option.isCorrect ? styles.correctOption : null,
-                  option.id === question.selectedAnswerId && option.isCorrect
-                    ? styles.correctOption
-                    : null,
-                  option.id === question.selectedAnswerId && !option.isCorrect
-                    ? styles.incorrectOption
-                    : null,
-                ]}
-              >
-                <Text style={styles.optionText}>
-                  {String.fromCharCode(65 + optionIndex)}. {option.title}
+        attemptedQuestions.length > 0 &&
+        attemptedQuestions.map((question: any, index: number) => {
+          // Find the selected answer
+          const selectedOption = question.answerOptions.find(
+            (option: any) => option.id === question.selectedAnswerId
+          );
+
+          return (
+            <View key={index} style={styles.questionContainer}>
+              <Text style={styles.questionTitle}>
+                {`${index + 1}. ${question.questionTitle}`}
+              </Text>
+              <Text style={styles.questionDescription}>
+                {question.questionDescription}
+              </Text>
+              {question.answerOptions.map((option: any, optionIndex: number) => (
+                <View
+                  key={option.id}
+                  style={[
+                    styles.option,
+                    option.id === question.selectedAnswerId && !option.isCorrect
+                      ? styles.incorrectOption
+                      : null,
+                    option.isCorrect ? styles.correctOption : null,
+                    option.id === question.selectedAnswerId && option.isCorrect
+                      ? styles.correctOption
+                      : null,
+                  ]}
+                >
+                  <Text style={styles.optionText}>
+                    {option.title}
+                  </Text>
+                </View>
+              ))}
+              {selectedOption && selectedOption.explanations && (
+                <Text style={styles.questionDescription}>
+                  {selectedOption.explanations}
                 </Text>
-              </View>
-            ))}
-          </View>
-        ))}
+              )}
+            </View>
+          );
+        })}
+
     </ScrollView>
   );
 };
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
   },
   questionDescription: {
     fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 10
   },
   option: {
     padding: 10,

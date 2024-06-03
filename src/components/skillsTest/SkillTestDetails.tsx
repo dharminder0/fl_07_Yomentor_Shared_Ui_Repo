@@ -126,7 +126,10 @@ const SkillDetails = ({ route }: any) => {
           />
         </View>
 
-        <Text style={[common.h3Title, common.my10]}>Attempt History</Text>
+        {skillDetails.attemptHistory &&
+          skillDetails.attemptHistory?.length > 0 &&
+          <Text style={[common.h3Title, common.my10]}>Attempt History</Text>
+        }
         {skillDetails.attemptHistory &&
           skillDetails.attemptHistory?.length > 0 &&
           skillDetails.attemptHistory?.map((item: any, index: number) => (

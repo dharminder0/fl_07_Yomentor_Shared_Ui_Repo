@@ -80,3 +80,23 @@ export enum QuizStatus {
   Complete = 1,
   Failed = 2,
 }
+
+export enum Language {
+  HINDI = 1,
+  ENGLISH = 2,
+  URDU = 3,
+  PUNJABI = 4,
+  SANSKRIT = 5,
+}
+
+export enum ComplexityLevel {
+  Easy = 1,
+  Medium = 2,
+  Hard = 3,
+  Advanced = 4
+}
+
+export enum Category {
+  Academic = 1,
+  Competitive_Exams = 2
+}

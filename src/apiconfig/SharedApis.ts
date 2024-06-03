@@ -1,7 +1,8 @@
 import AxiosInterceptor from "./AxiosInterceptor";
 
-export async function getGradeList(): Promise<any> {
-  return AxiosInterceptor.get("Grade/list");
+export async function getGradeList(type?: number): Promise<any> {
+  let url = type ? `Grade/list?type=${type}` : `Grade/list`;
+  return AxiosInterceptor.get(url);
 }
 
 export async function addMediaImage(payload: any): Promise<any> {
@@ -191,8 +192,7 @@ export async function upsertBookDetails(payload: any): Promise<any> {
 
 export async function getBookDetailsById(data: any): Promise<any> {
   return AxiosInterceptor.get(
-    `Books/BookInfo?id=${data.id}${
-      data.userId ? `&userId=${data.userId}` : ""
+    `Books/BookInfo?id=${data.id}${data.userId ? `&userId=${data.userId}` : ""
     }${data.type ? `&type=${data.type}` : ""}`
   );
 }
@@ -261,4 +261,8 @@ export async function addDeviceToken(payload: any): Promise<any> {
 
 export async function removeDeviceToken(userToken: any): Promise<any> {
   return AxiosInterceptor.get(`User/RemoveUserDevices?userToken=${userToken}`);
+}
+
+export async function createSkillTest(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`ChatGPT/createPrompt`, payload);
 }

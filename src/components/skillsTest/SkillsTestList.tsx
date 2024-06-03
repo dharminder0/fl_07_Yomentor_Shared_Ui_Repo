@@ -12,17 +12,18 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Card } from "@rneui/base";
+import { Button, Card } from "@rneui/base";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
-import { cardStyle, common } from "../../assets/styles/Common";
+import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { getSkilsList } from "../../apiconfig/SharedApis";
+import AddSkillTestModal from "./AddSkillTestModal";
 
 const SkillsTestList = () => {
   const { height, width } = Dimensions.get("window");
@@ -30,6 +31,7 @@ const SkillsTestList = () => {
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
   const [refreshLoader, setRefreshLoader] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
@@ -170,30 +172,42 @@ const SkillsTestList = () => {
 
   return (
     <View style={common.container}>
-      <View style={[common.row, common.mtop10]}>
-        <TextInput
-          placeholder="Search Skill Test"
-          onChangeText={(text: any) => setSearchText(text)}
-          value={searchText}
-          style={[common.input, common.mb5]}
-          onSubmitEditing={handleSearch}
-          placeholderTextColor={YoColors.placeholderText}
-        />
-        {searchText && searchText?.length > 0 ? (
-          <Ionicons
-            onPress={() => setSearchText("")}
-            name="close-sharp"
-            size={21}
-            style={{ position: "absolute", right: 10, top: 12 }}
+      <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
+        <View style={{ width: '50%' }}>
+          <TextInput
+            placeholder="Search Skill Test"
+            onChangeText={(text: any) => setSearchText(text)}
+            value={searchText}
+            style={[common.input, { marginBottom: 0 }]}
+            onSubmitEditing={handleSearch}
+            placeholderTextColor={YoColors.placeholderText}
           />
-        ) : (
-          <Ionicons
-            name="search-outline"
-            size={21}
-            style={{ position: "absolute", right: 10, top: 12 }}
+          {searchText && searchText?.length > 0 ? (
+            <Ionicons
+              onPress={() => setSearchText("")}
+              name="close-sharp"
+              size={21}
+              style={{ position: "absolute", right: 10, top: 12 }}
+            />
+          ) : (
+            <Ionicons
+              name="search-outline"
+              size={21}
+              style={{ position: "absolute", right: 10, top: 12 }}
+            />
+          )}
+        </View>
+        <View style={{ width: '48%' }}>
+          <Button
+            title="Create AI Skill Test"
+            onPress={() => setIsOpenModal(true)}
+            buttonStyle={[btnStyle.outline, common.px12, { height: 45 }]}
+            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            containerStyle={[common.my10]}
           />
-        )}
+        </View>
       </View>
+
       {teacherList && teacherList.length > 0 ? (
         <FlatList
           data={teacherList}
@@ -231,6 +245,11 @@ const SkillsTestList = () => {
       ) : (
         <NoDataView />
       )}
+
+      {isOpenModal &&
+        <AddSkillTestModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+      }
+
     </View>
   );
 };

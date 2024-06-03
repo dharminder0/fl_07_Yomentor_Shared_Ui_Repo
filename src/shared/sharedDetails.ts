@@ -68,6 +68,81 @@ export const getFeeTypes = () => {
   return feeTypes;
 };
 
+export const getCategoryList = () => {
+  const Category: any = [
+    {
+      id: 1,
+      name: "Academic",
+    },
+    {
+      id: 2,
+      name: "Competitive Exams",
+    }
+  ];
+  return Category;
+};
+export const getNoQuestions = () => {
+  const Category: any = [
+    {
+      id: 5,
+      name: "5",
+    },
+    {
+      id: 10,
+      name: "10",
+    }
+  ];
+  return Category;
+};
+
+export const getComplexityLevel = () => {
+  const Category: any = [
+    {
+      id: 1,
+      name: "Easy",
+    },
+    {
+      id: 2,
+      name: "Medium",
+    },
+    {
+      id: 3,
+      name: "Hard",
+    },
+    {
+      id: 4,
+      name: "Advanced",
+    }
+  ];
+  return Category;
+};
+
+export const getLanguage = () => {
+  const Language: any = [
+    {
+      id: 1,
+      name: "Hindi",
+    },
+    {
+      id: 2,
+      name: "English",
+    },
+    {
+      id: 3,
+      name: "Urdu",
+    },
+    {
+      id: 4,
+      name: "Punjabi",
+    },
+    {
+      id: 5,
+      name: "Sanskrit",
+    }
+  ];
+  return Language;
+};
+
 export const getDayList = () => {
   const days: any = [
     {

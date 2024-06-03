@@ -117,7 +117,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
                   style={[
                     styles.option,
                     selectedAnswers[currentQuestionIndex] === index &&
-                      styles.selectedOption,
+                    styles.selectedOption,
                   ]}
                   onPress={() => handleOptionClick(index)}
                 >
