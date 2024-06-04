@@ -14,12 +14,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "@rneui/base";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
 import { getUserInfo } from "../../shared/sharedDetails";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { getSkilsList } from "../../apiconfig/SharedApis";
@@ -34,29 +34,35 @@ const SkillsTestList = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
   const [refreshLoader, setRefreshLoader] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [searchText, setSearchText] = useState<any>("");
-  const [teacherList, setTeacherList] = useState<any>([]);
+  const [skillTestList, setSkillTestList] = useState<any>([]);
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'Skill Test' },
+    { key: 'second', title: 'My Skill Test' },
+  ]);
 
   useEffect(() => {
     setIsLoading(true);
-    getUserList();
+    getSkilsListData();
   }, []);
 
   useEffect(() => {
-    getUserList();
+    getSkilsListData();
   }, [pageIndex]);
 
   useEffect(() => {
     if (searchText?.length > 3) {
-      getUserList();
+      getSkilsListData();
     }
     if (searchText?.length === 0) {
-      getUserList();
+      getSkilsListData();
     }
   }, [searchText]);
 
-  const getUserList = () => {
+  const getSkilsListData = () => {
     const payload: any = {
       searchText: searchText,
       subjectId: !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId,
@@ -66,10 +72,10 @@ const SkillsTestList = () => {
     getSkilsList(payload)
       .then((response: any) => {
         if (pageIndex === 1) {
-          setTeacherList([]);
+          setSkillTestList([]);
         }
         if (response.data && response.data.length > 0) {
-          setTeacherList((prevList: any) => [...prevList, ...response.data]);
+          setSkillTestList((prevList: any) => [...prevList, ...response.data]);
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -89,7 +95,7 @@ const SkillsTestList = () => {
 
   const handleSearch = () => {
     setPageIndex(1);
-    getUserList();
+    getSkilsListData();
   };
 
   const handleLoadMore = () => {
@@ -113,7 +119,7 @@ const SkillsTestList = () => {
             backgroundColor: YoColors.background,
           },
         ]}
-        key={index}
+        key={item?.id}
       >
         <View style={cardStyle.row}>
           <View
@@ -170,87 +176,133 @@ const SkillsTestList = () => {
     </TouchableOpacity>
   );
 
-  return (
-    <View style={common.container}>
-      <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
-        <View style={{ width: '50%' }}>
-          <TextInput
-            placeholder="Search Skill Test"
-            onChangeText={(text: any) => setSearchText(text)}
-            value={searchText}
-            style={[common.input, { marginBottom: 0 }]}
-            onSubmitEditing={handleSearch}
-            placeholderTextColor={YoColors.placeholderText}
-          />
-          {searchText && searchText?.length > 0 ? (
-            <Ionicons
-              onPress={() => setSearchText("")}
-              name="close-sharp"
-              size={21}
-              style={{ position: "absolute", right: 10, top: 12 }}
-            />
-          ) : (
-            <Ionicons
-              name="search-outline"
-              size={21}
-              style={{ position: "absolute", right: 10, top: 12 }}
-            />
-          )}
-        </View>
-        <View style={{ width: '48%' }}>
-          <Button
-            title="Create AI Skill Test"
-            onPress={() => setIsOpenModal(true)}
-            buttonStyle={[btnStyle.outline, common.px12, { height: 45 }]}
-            titleStyle={[btnStyle.outlineTitle, common.fs12]}
-            containerStyle={[common.my10]}
-          />
-        </View>
-      </View>
+  const renderScene = ({ route }: any) => {
+    return (
+      <View style={common.container}>
+        <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
+          {
+            route.key == "second" && !isSearchActive &&
+            <View style={{ width: '80%' }}>
+              <Button
+                title="Create AI Skill Test"
+                onPress={() => setIsOpenModal(true)}
+                buttonStyle={[btnStyle.outline, common.px12, { height: 45 }]}
+                titleStyle={[btnStyle.outlineTitle, common.fs12]}
 
-      {teacherList && teacherList.length > 0 ? (
-        <FlatList
-          data={teacherList}
-          keyExtractor={(item: any) => item?.id}
-          renderItem={renderItem}
-          style={{
-            height: "90%",
-            marginTop: 5,
-          }}
-          windowSize={Platform.OS === "ios" ? height - 205 : height - 165}
-          showsVerticalScrollIndicator={false}
-          onScrollEndDrag={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshLoader}
-              onRefresh={() => {
-                setRefreshLoader(true);
-                setPageIndex(1);
-              }}
-            />
+              />
+            </View>
           }
-          ListFooterComponent={
-            <>
-              {isBottomLoader && (
-                <View style={{ height: 50 }}>
-                  <ActivityIndicator size="large" />
-                </View>
+          <View style={{ width: route.key == "second" && !isSearchActive ? '20%' : '100%' }}>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+              {!isSearchActive && route.key == "second" ? (
+                <Button
+                  icon={<Ionicons
+                    name="search-outline"
+                    size={21}
+                  />}
+                  onPress={() => setIsSearchActive(true)}
+                  buttonStyle={[btnStyle.outline, common.px12, { height: 45 }]}
+                  titleStyle={[btnStyle.outlineTitle, common.fs12]}
+
+                />
+              ) : (
+                <>
+                  <TextInput
+                    placeholder="Search Skill Test"
+                    onChangeText={(text: any) => setSearchText(text)}
+                    value={searchText}
+                    style={[common.input, { marginBottom: 0 }]}
+                    onSubmitEditing={handleSearch}
+                    placeholderTextColor={YoColors.placeholderText}
+                    autoFocus={true} />
+                  {
+                    searchText ?
+                      <Ionicons
+                        onPress={() => {
+                          setSearchText("");
+                          setIsSearchActive(false);
+                        }}
+                        name="close-sharp"
+                        size={21}
+                        style={{ position: "absolute", right: 10 }} />
+                      :
+                      <Ionicons
+                        onPress={() => setIsSearchActive(true)}
+                        name="search-outline"
+                        size={21}
+                        style={{ position: "absolute", right: 10 }}
+                      />
+                  }
+                </>
               )}
-            </>
-          }
-        />
-      ) : isLoading ? (
-        <Loading />
-      ) : (
-        <NoDataView />
-      )}
+            </View>
+          </View>
 
-      {isOpenModal &&
-        <AddSkillTestModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
-      }
+        </View>
 
-    </View>
+        {skillTestList && skillTestList.length > 0 ? (
+          <FlatList
+            data={skillTestList}
+            keyExtractor={(item: any) => item?.id}
+            renderItem={renderItem}
+            style={{
+              height: "90%",
+              marginTop: 5,
+            }}
+            windowSize={Platform.OS === "ios" ? height - 205 : height - 165}
+            showsVerticalScrollIndicator={false}
+            onScrollEndDrag={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshLoader}
+                onRefresh={() => {
+                  setRefreshLoader(true);
+                  setPageIndex(1);
+                }}
+              />
+            }
+            ListFooterComponent={
+              <>
+                {isBottomLoader && (
+                  <View style={{ height: 50 }}>
+                    <ActivityIndicator size="large" />
+                  </View>
+                )}
+              </>
+            }
+          />
+        ) : isLoading ? (
+          <Loading />
+        ) : (
+          <NoDataView />
+        )}
+
+        {isOpenModal &&
+          <AddSkillTestModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+        }
+      </View>
+    );
+  };
+
+  return (
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: Dimensions.get('window').width }}
+      renderTabBar={props => <TabBar
+        {...props}
+        style={{ backgroundColor: 'white' }}
+        indicatorStyle={{ backgroundColor: YoColors.primary }}
+        renderLabel={({ route, focused, color }) => (
+          <Text style={{ color: focused ? YoColors.primary : 'gray' }}>
+            {route.title}
+          </Text>
+        )}
+      />}
+    />
   );
 };
 
