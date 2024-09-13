@@ -23,6 +23,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { cardStyle } from "../assets/styles/Common";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import CreateSkillTest from "../components/skillsTest/CreateSkillTest";
 
 const Stack = createNativeStackNavigator();
 
@@ -244,6 +245,17 @@ export function StackNavigator() {
         options={{
           headerShown: true,
           title: "Attempt Preview",
+          headerStyle: { backgroundColor: YoColors.primary },
+          headerTitleStyle: { color: "#fff" },
+          headerLeft: leftBackBtn,
+        }}
+      />
+      <Stack.Screen
+        name="CreateSkillTest"
+        component={CreateSkillTest}
+        options={{
+          headerShown: true,
+          title: "Create Skill Test",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
           headerLeft: leftBackBtn,

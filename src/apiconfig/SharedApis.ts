@@ -219,6 +219,9 @@ export async function getStates(): Promise<any> {
 export async function getSkilsList(payload: any): Promise<any> {
   return AxiosInterceptor.post(`SkillTest/List`, payload);
 }
+export async function getSkilsListByUser(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/ListByUser`, payload);
+}
 
 export async function getSkilDetailById(id: any, userId: any): Promise<any> {
   return AxiosInterceptor.get(
@@ -265,4 +268,8 @@ export async function removeDeviceToken(userToken: any): Promise<any> {
 
 export async function createSkillTest(payload: any): Promise<any> {
   return AxiosInterceptor.post(`ChatGPT/createPrompt`, payload);
+}
+
+export async function SkillTestStatics(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`ChatGPT/SkillTest-attempts/dailyCount`, payload);
 }

@@ -136,6 +136,17 @@ const DrawerSidebar = () => {
                 />
                 <Text style={styles.tabTitle}>Skill Tests</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.tabView}
+                onPress={() => navigation.navigate("SkillsTestList", { useFor: false })}
+              >
+                <MaterialCommunityIcons
+                  name="clipboard-text"
+                  size={19}
+                  color={YoColors.primary}
+                />
+                <Text style={styles.tabTitle}>My Skill Tests</Text>
+              </TouchableOpacity>
             </>
           )}
         </View>

@@ -147,7 +147,7 @@ const LoginPage = () => {
               Create a new account
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("SelectUserType")}
+              onPress={() => navigation.navigate("UserRegistration")}
               activeOpacity={0.7}
               style={{ paddingVertical: 6 }}
             >

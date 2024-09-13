@@ -90,6 +90,14 @@ export const getNoQuestions = () => {
     {
       id: 10,
       name: "10",
+    },
+    {
+      id: 15,
+      name: "15",
+    },
+    {
+      id: 20,
+      name: "20",
     }
   ];
   return Category;
@@ -120,24 +128,29 @@ export const getComplexityLevel = () => {
 export const getLanguage = () => {
   const Language: any = [
     {
-      id: 1,
-      name: "Hindi",
-    },
-    {
       id: 2,
       name: "English",
+      label: "English",
+    },
+    {
+      id: 1,
+      name: "Hindi",
+      label: "हिन्दी",
     },
     {
       id: 3,
       name: "Urdu",
+      label: "اردو",
     },
     {
       id: 4,
       name: "Punjabi",
+      label: "ਪੰਜਾਬੀ",
     },
     {
       id: 5,
       name: "Sanskrit",
+      label: "संस्कृत",
     }
   ];
   return Language;

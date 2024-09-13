@@ -96,16 +96,14 @@ const SkillDetails = ({ route }: any) => {
           </View>
           {skillDetails?.averageMarks > 0 && (
             <View style={[cardStyle.row, common.ps5]}>
-              <Text style={common.rText}>
-                Avg Score: {skillDetails?.averageMarks}
-              </Text>
+              <Icon name="shield-alt" size={12} />
+              <Text style={common.rText}> Avg Score: {skillDetails?.averageMarks}</Text>
             </View>
           )}
           {skillDetails?.averageMarks > 0 && (
             <View style={[cardStyle.row, common.ps5]}>
-              <Text style={common.rText}>
-                Attempted By: {skillDetails?.attemptCount}
-              </Text>
+              <Icon name="users" size={12} />
+              <Text style={common.rText}> Attempted By: {skillDetails?.attemptCount}</Text>
             </View>
           )}
         </View>
@@ -120,8 +118,8 @@ const SkillDetails = ({ route }: any) => {
           <Button
             title="Attempt Now"
             onPress={() => setIsAttempModal(true)}
-            buttonStyle={[btnStyle.outline, common.px12]}
-            titleStyle={[btnStyle.outlineTitle, common.fs12]}
+            buttonStyle={[btnStyle.solid, common.px12, { height: 'auto' }]}
+            titleStyle={[btnStyle.solidTitle, common.fs12]}
             containerStyle={[common.my10]}
           />
         </View>
@@ -146,7 +144,7 @@ const SkillDetails = ({ route }: any) => {
                 style={[styles.item, { backgroundColor: YoColors.background }]}
                 key={index}
               >
-                <Text>{moment(item.attemptDate).format("DD, MMM, YYYY")}</Text>
+                <Text>{moment(item.attemptDate).format("DD-MMM-YYYY")}</Text>
                 <Text>Score: {item.score}</Text>
               </View>
             </TouchableOpacity>

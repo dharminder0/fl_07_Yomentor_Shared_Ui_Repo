@@ -41,7 +41,7 @@ const Startup = () => {
             };
             addDeviceToken(payload)
               .then((response: any) => {
-                console.log("resspoinse", response);
+                // console.log("resspoinse", response);
                 new Promise((resolve) =>
                   setTimeout(() => {
                     resolve(true);
