@@ -186,11 +186,11 @@ export const BottomNavigation = () => {
         component={HomeScreen}
         options={pageOptions["homeTab"]}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={DashboardTab}
         component={DashboardPage}
         options={pageOptions["dashboardTab"]}
-      />
+      /> */}
 
       {userInfo?.type === 1 && (
         <>
@@ -207,19 +207,19 @@ export const BottomNavigation = () => {
         </>
       )}
 
-      {userInfo?.type === 3 && (
+      {/* {userInfo?.type === 3 && (
         <Tab.Screen
           name={TeachersListTab}
           component={TeachersList}
           options={pageOptions["TeachersListTab"]}
         />
-      )}
+      )} */}
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name={BooksListTab}
         component={BooksList}
         options={pageOptions["BooksListTab"]}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

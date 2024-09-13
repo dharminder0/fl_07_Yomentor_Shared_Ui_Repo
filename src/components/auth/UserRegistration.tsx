@@ -28,7 +28,7 @@ const UserRegistration = ({ route }: any) => {
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const image: any = YoImages();
-  const userType: any = route.params.userType;
+  const userType: any = !route.params?.userType ? 3 : route.params?.userType;
   const [regError, setRegError] = useState<string>();
 
   const {

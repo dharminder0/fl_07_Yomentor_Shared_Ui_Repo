@@ -79,7 +79,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
           setTimeout(() => {
             setIsAlertModal(false);
             navigation.goBack(null);
-          }, 4000);
+          }, 2000);
         }
       })
       .catch((error: any) => {
@@ -106,7 +106,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
             {currentQuestionIndex + 1}.{" "}
             {questions[currentQuestionIndex].questionTitle}
           </Text>
-          <Text style={common.title}>
+          <Text style={common.rText}>
             {questions[currentQuestionIndex].questionDescription}
           </Text>
           <View style={styles.optionsContainer}>
@@ -123,7 +123,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
                 >
                   <Text
                     style={[
-                      common.title,
+                      common.rText,
                       selectedAnswers[currentQuestionIndex] === index && {
                         color: "#fff",
                       },
@@ -139,10 +139,10 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
             <Button
               title="Submit"
               buttonStyle={{ backgroundColor: YoColors.primary }}
-              titleStyle={{ fontWeight: "600", fontSize: 16 }}
+              titleStyle={{ fontWeight: "600", fontSize: 12 }}
               onPress={handleSubmit}
               disabled={isNextButtonDisabled}
-              containerStyle={{ width: 140, alignSelf: "flex-end" }}
+              containerStyle={{ width: 100, alignSelf: "flex-end" }}
               disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
             />
           ) : (
@@ -150,9 +150,9 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
               title="Next"
               buttonStyle={{ backgroundColor: YoColors.primary }}
               onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-              titleStyle={{ fontWeight: "600", fontSize: 18 }}
+              titleStyle={{ fontSize: 12 }}
               disabled={isNextButtonDisabled}
-              containerStyle={{ width: 140, alignSelf: "flex-end" }}
+              containerStyle={{ width: 100, alignSelf: "flex-end" }}
               disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
             />
           )}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   question: {
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 10,
     fontWeight: "600",
     color: "#124076",

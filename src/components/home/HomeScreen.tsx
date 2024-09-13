@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  Image,
   Platform,
   RefreshControl,
   ScrollView,
@@ -8,12 +9,13 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { common } from "../../assets/styles/Common";
+import { btnStyle, common } from "../../assets/styles/Common";
 import SlideView from "../common/SlideView";
 import { getUserInfo } from "../../shared/sharedDetails";
 import {
   getBatchListbyUserid,
   getSkilsList,
+  getSkilsListByUser,
   getUsersList,
 } from "../../apiconfig/SharedApis";
 import TopTeachers from "./TopTeachers";
@@ -27,6 +29,9 @@ import Welcome from "../common/Welcome";
 import AddBatchModalForm from "../common/AddBatchModalForm";
 import useStore from "../../store/useStore";
 import TopSkillTest from "../skillsTest/TopSkillTest";
+import StudentOnBoard from "../auth/StudentOnBoard";
+import { YoImages } from "../../assets/themes/YoImages";
+import SkillStastics from "../skillsTest/SkillStastics";
 
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -41,7 +46,11 @@ const HomeScreen = () => {
   const [shortlisted, setShortlisted] = useState([]);
   const [teacherList, setTeacherList] = useState<any>([]);
   const [skillsList, setSkillsList] = useState<any>([]);
+  const [customSkillsList, setCustomSkillsList] = useState<any>([]);
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
+
+  const navigation: any = useNavigation();
+  const image: any = YoImages();
 
   useFocusEffect(
     useCallback(() => {
@@ -52,6 +61,7 @@ const HomeScreen = () => {
       getOpenBatchDatabyTeacherId(3);
       getTeacherList();
       getSkillList();
+      getCustomSkillList();
     }, [userInfo?.id, refreshLoader])
   );
 
@@ -131,8 +141,7 @@ const HomeScreen = () => {
 
   const getSkillList = () => {
     const payload: any = {
-      gradeId: 0,
-      subjectId: !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId,
+      gradeId: !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId,
       pageSize: 5,
       pageIndex: 1,
     };
@@ -141,6 +150,24 @@ const HomeScreen = () => {
         setSkillsList([]);
         if (response.data && response.data.length > 0) {
           setSkillsList(response.data);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching :", error);
+      });
+  };
+
+  const getCustomSkillList = () => {
+    const payload: any = {
+      userId: userInfo.id,
+      pageSize: 10,
+      pageIndex: 1,
+    };
+    getSkilsList(payload)
+      .then((response: any) => {
+        setCustomSkillsList([]);
+        if (response.data && response.data.length > 0) {
+          setCustomSkillsList(response.data);
         }
       })
       .catch((error: any) => {
@@ -247,7 +274,7 @@ const HomeScreen = () => {
               </View>
             )}
 
-          {isContentLoaded &&
+          {/* {isContentLoaded &&
             openBatchList?.length === 0 &&
             ongoingBatchList?.length === 0 &&
             shortlisted?.length === 0 &&
@@ -262,15 +289,34 @@ const HomeScreen = () => {
                   onAddModalOpen={() => setModalVisible(true)}
                 />
               </View>
-            )}
+            )} */}
 
-          {userInfo?.type === 3 && teacherList && teacherList?.length > 0 && (
+          {/* {userInfo?.type === 3 && teacherList && teacherList?.length > 0 && (
             <TopTeachers title="Top Teachers" data={teacherList} />
+          )} */}
+
+
+
+          {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && userInfo?.studentGradeId > 0 && (
+            <TopSkillTest title="Yo!Mentor Top Skill Tests" data={skillsList} />
           )}
 
-          {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && (
-            <TopSkillTest title="Top Skill Tests" data={skillsList} />
+          {userInfo?.type === 3 && userInfo?.studentGradeId <= 0 && (
+            <View style={{ justifyContent: 'center' }}>
+              <StudentOnBoard isRefresh={setRefreshLoader} />
+            </View>
           )}
+
+          {userInfo?.type === 3 && userInfo?.studentGradeId > 0 && (
+            <View style={common.my10}>
+              {
+                customSkillsList &&
+                <TopSkillTest title="My Skill Tests" data={customSkillsList} isTop={false} />
+              }
+              {/* <SkillStastics /> */}
+            </View>
+          )}
+
         </>
       )}
 
@@ -281,4 +327,12 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  item: {
+    width: "100%",
+    marginEnd: 8,
+    padding: 10,
+    borderRadius: 6,
+    backgroundColor: '#fff'
+  },
+});

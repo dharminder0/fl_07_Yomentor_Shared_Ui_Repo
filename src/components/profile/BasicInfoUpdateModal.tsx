@@ -31,13 +31,12 @@ import UserDetails from "../UserDetails";
 
 const BasicInfoUpdateModal = ({
   isBasicModal = false,
-  closeModal = (value: boolean) => {},
+  closeModal = (value: boolean) => { },
   dataToEdit = {},
 }) => {
   const YoColors = useThemeColor();
 
   const { height, width } = Dimensions.get("window");
-
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -77,6 +76,7 @@ const BasicInfoUpdateModal = ({
       lastName: dataToPreset.lastName,
       phone: dataToPreset.phone,
       email: dataToPreset.email,
+      gradeId: dataToPreset.studentGradeId,
       type: dataToPreset.type,
       dateOfBirth: new Date(dataToPreset.dateOfBirth),
     });
@@ -253,7 +253,7 @@ const BasicInfoUpdateModal = ({
                   render={({ field: { onChange, value } }) => (
                     <SelectModal
                       data={gradeList}
-                      placeholder="Grade"
+                      placeholder={!dataToPreset.studentGradeId ? "Grade" : dataToPreset.studentGradeId}
                       defaultValue={gradeList.find(
                         (item: any) => item.id === dataToPreset.studentGradeId
                       )}
