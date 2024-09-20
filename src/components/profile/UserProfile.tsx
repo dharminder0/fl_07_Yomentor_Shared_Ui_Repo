@@ -1,6 +1,7 @@
 import {
   Dimensions,
   Image,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -11,8 +12,9 @@ import React, { useEffect, useState } from "react";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
-import { getUsersDetails } from "../../apiconfig/SharedApis";
+import { getGradeList, getUsersDetails } from "../../apiconfig/SharedApis";
 import {
+  getCategoryList,
   getUserInfo,
   requestLocationPermission,
   saveAsyncData,
@@ -31,6 +33,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
 import AddressUpdateModal from "./AddressUpdateModal";
+import { Card } from "@rneui/base";
+import PreferencesModal from "./PreferencesModal";
 
 const UserProfile = () => {
   const { height } = Dimensions.get("window");
@@ -39,18 +43,36 @@ const UserProfile = () => {
   const toast: any = useToast();
   const image: any = YoImages();
   const userInfo: any = getUserInfo();
+  const categoryList: any = getCategoryList();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isAddressModal, setIsAddressModal] = useState<boolean>(false);
+  const [isPreferencesModal, setIsPreferencesModal] = useState<boolean>(false);
   const [isBasicModal, setIsBasicModal] = useState<boolean>(false);
   const [isSpecilityModal, setIsSpecilityModal] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<any>({});
+  const [selectedGrade, setSelectedGrade] = useState<any>({});
+  const [selectedCategory, setselectedCategory] = useState<any>({});
+  const [categoryType, setCategoryType] = useState<number>(
+    !userInfo?.category ? 1 : userInfo?.category
+  );
+  const [academicClass, setAcademicClass] = useState(userInfo.studentGradeId);
 
   useEffect(() => {
+    setselectedCategory(
+      categoryList.find((category: any) => category.id === categoryType)
+    );
+    getGradeList(categoryType).then((result: any) => {
+      if (result.data) {
+        setSelectedGrade(
+          result.data.find((grade: any) => grade.id === academicClass)
+        );
+      }
+    });
     requestLocationPermission();
     getUserDetails();
-  }, [userInfo?.id]);
+  }, []);
 
   const updateInfo = (isUpdated: boolean) => {
     if (isUpdated) {
@@ -59,6 +81,7 @@ const UserProfile = () => {
     setIsBasicModal(false);
     setModalVisible(false);
     setIsAddressModal(false);
+    setIsPreferencesModal(false);
   };
 
   const getUserDetails = () => {
@@ -69,6 +92,23 @@ const UserProfile = () => {
         if (response?.data) {
           setUserDetails(response?.data);
           saveAsyncData("userData", response?.data);
+          setCategoryType(response?.data?.category);
+          setAcademicClass(response?.data?.studentGradeId);
+          setselectedCategory(
+            categoryList.find(
+              (category: any) => category.id === response?.data?.category
+            )
+          );
+          getGradeList(response?.data?.category).then((result: any) => {
+            if (result.data) {
+              setSelectedGrade(
+                result.data.find(
+                  (grade: any) => grade.id === response?.data?.studentGradeId
+                )
+              );
+            }
+          });
+          console.log("User info res", response?.data);
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -140,25 +180,46 @@ const UserProfile = () => {
               />
             </View>
           </View>
-          <View style={[common.p12]}>
+          <View
+            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
+          >
+            <View
+              style={[
+                common.j_row,
+                {
+                  alignItems: "flex-start",
+                },
+              ]}
+            >
+              <Text style={[common.mb5, common.h2Title]}>Profile</Text>
+              <Button
+                onPress={() => setIsBasicModal(true)}
+                title="EDIT"
+                titleStyle={[common.rText, { color: YoColors.primary }]}
+                buttonStyle={[
+                  btnStyle.btnCross,
+                  {
+                    paddingHorizontal: 1,
+                    paddingStart: 15,
+                    backgroundColor: YoColors.background,
+                  },
+                ]}
+              />
+            </View>
             <View>
-              <View style={[cardStyle.j_row]}>
-                <Text style={[common.h1Title]}>
-                  {userDetails?.firstName + " " + userDetails?.lastName}
-                </Text>
-                <Button
-                  onPress={() => setIsBasicModal(true)}
-                  icon={<Icon name="pencil-alt" size={16} />}
-                  buttonStyle={[
-                    btnStyle.btnCross,
-                    {
-                      paddingHorizontal: 1,
-                      paddingStart: 15,
-                      backgroundColor: YoColors.background,
-                    },
-                  ]}
-                />
-              </View>
+              {userDetails?.firstName && (
+                <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <Icon
+                    name="user-alt"
+                    size={12}
+                    color={YoColors.primary}
+                    style={{ marginTop: 3 }}
+                  />
+                  <Text style={{ paddingStart: 5, color: YoColors.primary }}>
+                    {userDetails?.firstName + " " + userDetails?.lastName}
+                  </Text>
+                </View>
+              )}
 
               {userDetails?.phone && (
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
@@ -223,10 +284,107 @@ const UserProfile = () => {
                 },
               ]}
             >
+              <Text style={[common.mb5, common.h2Title]}>Prefrences</Text>
+              <Button
+                onPress={() => setIsPreferencesModal(true)}
+                title="EDIT"
+                titleStyle={[common.rText, { color: YoColors.primary }]}
+                buttonStyle={[
+                  btnStyle.btnCross,
+                  {
+                    paddingHorizontal: 1,
+                    paddingStart: 15,
+                    backgroundColor: YoColors.background,
+                  },
+                ]}
+              />
+            </View>
+            <View>
+              <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    width: "95%",
+                  }}
+                >
+                  <View style={styles.cardWrapper}>
+                    {selectedCategory && (
+                      <Card
+                        key={selectedCategory.id}
+                        containerStyle={[
+                          styles.cardContainer,
+                          common.py10,
+                          common.mr10,
+                          { width: 100 },
+                        ]}
+                      >
+                        <Image
+                          style={styles.cardImage}
+                          resizeMode="contain"
+                          source={
+                            selectedCategory.id == 1
+                              ? image.knowledge
+                              : image.competition
+                          }
+                        />
+                        <Card.Title style={[styles.cardTitle, common.fs12]}>
+                          {selectedCategory.name}
+                        </Card.Title>
+                      </Card>
+                    )}
+
+                    {selectedGrade && (
+                      <Card
+                        key={selectedGrade.id}
+                        containerStyle={[
+                          styles.cardContainer,
+                          common.py10,
+                          common.mr10,
+                          { width: 100 },
+                        ]}
+                      >
+                        <Image
+                          style={
+                            categoryType == 1
+                              ? styles.cardImage
+                              : styles.cardImage
+                          }
+                          resizeMode="contain"
+                          source={
+                            categoryType == 1
+                              ? image.knowledge
+                              : image.competition
+                          }
+                        />
+                        <Card.Title style={[styles.cardTitle, common.fs12]}>
+                          {selectedGrade.name}
+                        </Card.Title>
+                      </Card>
+                    )}
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View
+            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
+          >
+            <View
+              style={[
+                common.j_row,
+                {
+                  alignItems: "flex-start",
+                },
+              ]}
+            >
               <Text style={[common.mb5, common.h2Title]}>Address</Text>
               <Button
                 onPress={() => setIsAddressModal(true)}
-                icon={<Icon name="pencil-alt" size={16} />}
+                title="EDIT"
+                titleStyle={[common.rText, { color: YoColors.primary }]}
                 buttonStyle={[
                   btnStyle.btnCross,
                   {
@@ -257,7 +415,9 @@ const UserProfile = () => {
                       />
                       <Text style={{ paddingStart: 5 }}>
                         {userDetails?.userAddress?.address1}{" "}
-                        {userDetails?.userAddress?.pincode}
+                        {userDetails?.userAddress?.city}{" "}
+                        {userDetails?.userAddress?.pincode}{" "}
+                        {userDetails?.userAddress?.stateName}
                       </Text>
                     </View>
                   )}
@@ -407,6 +567,13 @@ const UserProfile = () => {
         />
       )}
 
+      {isPreferencesModal && (
+        <PreferencesModal
+          isPreferencesModal={isPreferencesModal}
+          closeModal={(value) => updateInfo(value)}
+        />
+      )}
+
       <SpecialityModal
         isSpecilityModal={isSpecilityModal}
         setIsSpecilityModal={setIsSpecilityModal}
@@ -417,4 +584,62 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 12,
+  },
+  cardWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  cardWrapper1: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+  },
+  cardContainer: {
+    width: "23%",
+    padding: 5,
+    margin: 0,
+    marginBottom: 10,
+    marginRight: 5.5,
+  },
+  cardContainer1: {
+    width: "48%",
+    padding: 5,
+    margin: 0,
+    marginBottom: 10,
+  },
+  cardImage1: {
+    width: "100%",
+    height: 60,
+    marginVertical: 5,
+  },
+  cardImage: {
+    width: "100%",
+    height: 30,
+    marginVertical: 5,
+  },
+  cardTitle: {
+    marginBottom: 0,
+  },
+  stepContainer: {
+    marginVertical: 20,
+    paddingHorizontal: 12,
+    position: "relative",
+  },
+  input: {
+    height: 45,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+});

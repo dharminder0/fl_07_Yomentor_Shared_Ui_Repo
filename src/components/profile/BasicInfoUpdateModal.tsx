@@ -41,7 +41,6 @@ const BasicInfoUpdateModal = ({
   const [isProcessLoader, setIsProcessLoader] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [dataToPreset, setDataToPreset]: any = useState(dataToEdit);
-  const [gradeList, setGradeList]: any = useState([]);
   const genderOptions = [
     { name: "Male", id: "male" },
     { name: "Female", id: "female" },
@@ -63,20 +62,12 @@ const BasicInfoUpdateModal = ({
   };
 
   useEffect(() => {
-    getGradeList().then((result: any) => {
-      setGradeList([]);
-      if (result.data && result.data.length > 0) {
-        setGradeList(result.data);
-      }
-    });
-
     reset({
       id: dataToPreset.id,
       firstName: dataToPreset.firstName,
       lastName: dataToPreset.lastName,
       phone: dataToPreset.phone,
       email: dataToPreset.email,
-      gradeId: dataToPreset.studentGradeId,
       type: dataToPreset.type,
       dateOfBirth: new Date(dataToPreset.dateOfBirth),
     });
@@ -93,7 +84,8 @@ const BasicInfoUpdateModal = ({
       type: data.type,
       dateOfBirth: data.dateOfBirth,
       gender: data.gender,
-      gradeId: data.gradeId,
+      gradeId: dataToPreset.studentGradeId,
+      category: dataToPreset.category,
     };
     upsertUserInfo(payload)
       .then((response: any) => {
@@ -245,26 +237,7 @@ const BasicInfoUpdateModal = ({
                   />
                 )}
               />
-
-              {dataToPreset.type === 3 && (
-                <Controller
-                  control={control}
-                  name="gradeId"
-                  render={({ field: { onChange, value } }) => (
-                    <SelectModal
-                      data={gradeList}
-                      placeholder={!dataToPreset.studentGradeId ? "Grade" : dataToPreset.studentGradeId}
-                      defaultValue={gradeList.find(
-                        (item: any) => item.id === dataToPreset.studentGradeId
-                      )}
-                      onChanged={(values: any) => {
-                        setValue("gradeId", values?.id);
-                      }}
-                    />
-                  )}
-                />
-              )}
-
+              
               <Controller
                 control={control}
                 name="dateOfBirth"
