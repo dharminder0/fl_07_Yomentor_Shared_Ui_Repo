@@ -32,6 +32,8 @@ import TopSkillTest from "../skillsTest/TopSkillTest";
 import StudentOnBoard from "../auth/StudentOnBoard";
 import { YoImages } from "../../assets/themes/YoImages";
 import SkillStastics from "../skillsTest/SkillStastics";
+import TrendingSubjects from "../students/TrendingSubjects";
+import Banner from "./Banner";
 
 const HomeScreen = () => {
   const { height, width } = Dimensions.get("window");
@@ -160,7 +162,7 @@ const HomeScreen = () => {
   const getCustomSkillList = () => {
     const payload: any = {
       userId: userInfo.id,
-      pageSize: 10,
+      pageSize: 5,
       pageIndex: 1,
     };
     getSkilsList(payload)
@@ -295,10 +297,9 @@ const HomeScreen = () => {
             <TopTeachers title="Top Teachers" data={teacherList} />
           )} */}
 
-
-
+          <Banner />
           {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && userInfo?.studentGradeId > 0 && (
-            <TopSkillTest title="Yo!Mentor Top Skill Tests" data={skillsList} />
+            <TopSkillTest title="Yo!Mentor Trending Skill Tests" data={skillsList} />
           )}
 
           {userInfo?.type === 3 && userInfo?.studentGradeId <= 0 && (
@@ -307,13 +308,17 @@ const HomeScreen = () => {
             </View>
           )}
 
+          {userInfo?.type === 3 &&
+            <TrendingSubjects title='Trending Subjects' id={userInfo?.studentGradeId} />
+          }
+
           {userInfo?.type === 3 && userInfo?.studentGradeId > 0 && (
             <View style={common.my10}>
               {
                 customSkillsList &&
                 <TopSkillTest title="My Skill Tests" data={customSkillsList} isTop={false} />
               }
-              {/* <SkillStastics /> */}
+              <SkillStastics />
             </View>
           )}
 

@@ -70,10 +70,10 @@ const StudentAttendanceDetails = ({ route, batchDetail = {} }: any) => {
 
       <View style={{ paddingHorizontal: 10, paddingVertical: 20, flex: 1 }}>
         <Calendar
-          onDayPress={(day) => {
+          onDayPress={(day: any) => {
             console.log("selected day", day);
           }}
-          onMonthChange={(month) => {
+          onMonthChange={(month: any) => {
             setSelectedMonth(month.dateString);
           }}
           theme={{

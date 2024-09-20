@@ -198,7 +198,7 @@ export function StackNavigator() {
         name="SkillsTestList"
         component={SkillsTestList}
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "Skill Test List",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
@@ -236,7 +236,7 @@ export function StackNavigator() {
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
           headerBackVisible: false,
-          headerLeft: leftBackBtn,
+          // headerLeft: leftBackBtn,
         }}
       />
       <Stack.Screen
@@ -244,7 +244,7 @@ export function StackNavigator() {
         component={AttemptedQuestionsPreview}
         options={{
           headerShown: true,
-          title: "Attempt Preview",
+          title: "Attempt Summary",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
           headerLeft: leftBackBtn,

@@ -44,6 +44,7 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                 ) {
                     let dataObject = userInfo;
                     dataObject.studentGradeId = id;
+                    dataObject.category = categoryType;
                     saveAsyncData('userData', dataObject);
                     isRefresh(true);
                 }

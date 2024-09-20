@@ -81,6 +81,73 @@ export const getCategoryList = () => {
   ];
   return Category;
 };
+
+export const getTimeBounds = () => {
+  const timeBounds: any = [
+    {
+      id: 1,
+      name: "5 minute",
+      value: 5
+    },
+    {
+      id: 2,
+      name: "10 minute",
+      value: 10
+    },
+    {
+      id: 3,
+      name: "15 minute",
+      value: 15
+    },
+    {
+      id: 4,
+      name: "20 minute",
+      value: 20
+    },
+    {
+      id: 5,
+      name: "25 minute",
+      value: 25
+    },
+    {
+      id: 6,
+      name: "30 minute",
+      value: 30
+    },
+    {
+      id: 7,
+      name: "35 minute",
+      value: 35
+    },
+    {
+      id: 8,
+      name: "40 minute",
+      value: 40
+    },
+    {
+      id: 9,
+      name: "45 minute",
+      value: 45
+    },
+    {
+      id: 10,
+      name: "50 minute",
+      value: 50
+    },
+    {
+      id: 11,
+      name: "55 minute",
+      value: 55
+    },
+    {
+      id: 12,
+      name: "60 minute",
+      value: 60
+    },
+  ];
+  return timeBounds;
+};
+
 export const getNoQuestions = () => {
   const Category: any = [
     {

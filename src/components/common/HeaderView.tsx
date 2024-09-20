@@ -19,7 +19,8 @@ const HeaderView = ({ title = "", type = "back" }) => {
           backgroundColor: YoColors.primary,
           alignItems: "center",
           paddingHorizontal: 15,
-         // marginBottom: 5,
+          paddingVertical: 5
+          // marginBottom: 5,
         },
       ]}
     >
@@ -43,7 +44,7 @@ const HeaderView = ({ title = "", type = "back" }) => {
       <Text
         style={{
           color: "#fff",
-          fontSize: 19,
+          fontSize: 21,
           marginVertical: 10,
           fontWeight: "500",
           textAlign: "center",

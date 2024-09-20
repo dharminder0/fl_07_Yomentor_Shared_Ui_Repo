@@ -273,3 +273,7 @@ export async function createSkillTest(payload: any): Promise<any> {
 export async function SkillTestStatics(payload: any): Promise<any> {
   return AxiosInterceptor.post(`ChatGPT/SkillTest-attempts/dailyCount`, payload);
 }
+
+export async function SuggestedSkillTests(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/SimilerSkillTestList`, payload);
+}

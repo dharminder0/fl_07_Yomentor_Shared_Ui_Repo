@@ -14,10 +14,9 @@ import { YoImages } from "../../assets/themes/YoImages";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import COLORS from "../../assets/themes/colors";
 
 const { width } = Dimensions.get("window");
-const TopSkillTest = ({ title = "", data = [], isTop = true }) => {
+const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) => {
   const image: any = YoImages();
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
@@ -38,45 +37,55 @@ const TopSkillTest = ({ title = "", data = [], isTop = true }) => {
           key={index}
         >
           <View>
-            {item.title && (
-              <View style={cardStyle.row}>
-                <Text style={[common.title]} numberOfLines={1}>
-                  {item.title}
-                </Text>
+            <View style={[common.j_row]}>
+              <View style={common.pe5}>
+                {item?.icon &&
+                  <Image source={{ uri: item?.icon }} height={32} width={32} />
+                }
+                <Text style={[common.rText, { width: 40 }]} numberOfLines={1}> {item?.subjectName}</Text>
               </View>
-            )}
-            <View style={[common.row, common.my5]}>
-              <View style={cardStyle.row}>
-                <Icon name="laptop" size={12} />
-                <Text style={common.rText}>{item?.gradeName}</Text>
-              </View>
-              <View style={[cardStyle.row, common.ps5]}>
-                <Icon name="book" size={12} />
-                <Text style={common.rText}> {item?.subjectName}</Text>
-              </View>
-              {item?.averageMarks > 0 && (
-                <View style={[cardStyle.row, common.ps5]}>
-                  <Icon name="shield-alt" size={12} />
-                  <Text style={common.rText}> Avg Score: {item?.averageMarks}
-                  </Text>
+              <View style={{ width: '89%' }}>
+                {item.title && (
+                  <View style={[cardStyle.row, common.mb5]}>
+                    <Text style={[common.title]} numberOfLines={1}>
+                      {item.title}
+                    </Text>
+                  </View>
+                )}
+                <View style={[common.row, common.my5]}>
+                  <View style={[cardStyle.row, common.pe5]}>
+                    <Icon name="laptop" size={12} />
+                    <Text style={common.rText}> {item?.gradeName}</Text>
+                  </View>
+                  {/* <View style={[cardStyle.row, common.pe5]}>
+                    <Icon name="book" size={12} />
+                    <Text style={[common.rText, { maxWidth: 100 }]} numberOfLines={1}> {item?.subjectName}</Text>
+                  </View> */}
+                  {item?.averageMarks > 0 && (
+                    <View style={[cardStyle.row, common.pe5]}>
+                      <Icon name="shield-alt" size={12} />
+                      <Text style={common.rText}> Avg Score: {item?.averageMarks}
+                      </Text>
+                    </View>
+                  )}
+                  {item?.attemptCount > 0 && (
+                    <View style={[cardStyle.row, common.pe5]}>
+                      <Icon name="users" size={12} />
+                      <Text style={common.rText}> Attempts: {item?.attemptCount}
+                      </Text>
+                    </View>
+                  )}
+                  {/* {item?.description && (
+                    <View style={cardStyle.row}>
+                      <Text style={common.rText} numberOfLines={1}>
+                        {item?.description}
+                      </Text>
+                    </View>
+                  )} */}
                 </View>
-              )}
-              {item?.attemptCount > 0 && (
-                <View style={[cardStyle.row, common.ps5]}>
-                  <Icon name="users" size={12} />
-                  <Text style={common.rText}> Attempted By: {item?.attemptCount}
-                  </Text>
-                </View>
-              )}
+              </View>
             </View>
 
-            {item?.description && (
-              <View style={cardStyle.row}>
-                <Text style={common.rText} numberOfLines={1}>
-                  {item?.description}
-                </Text>
-              </View>
-            )}
           </View>
         </View>
       </Pressable>
@@ -86,12 +95,12 @@ const TopSkillTest = ({ title = "", data = [], isTop = true }) => {
   return (
     <View>
       <View style={common.j_row}>
-        {title && <Text style={[common.title, common.my10]}>{title}</Text>}
+        {title && <Text style={[common.h3Title, common.my10]}>{title}</Text>}
         {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}> */}
         {
           !isTop && data && data?.length > 0 && (
             <Button
-              title="Create Skill Test"
+              title="Create New Test"
               onPress={() => navigation.navigate("CreateSkillTest")}
               type="outline"
               buttonStyle={{ paddingHorizontal: 8, paddingVertical: 2, borderColor: YoColors.primary }}
@@ -99,7 +108,7 @@ const TopSkillTest = ({ title = "", data = [], isTop = true }) => {
               containerStyle={common.mr10}
             />
           )}
-        {data && data?.length > 0 && (
+        {isView && data && data?.length > 0 && (
           <Button
             title="View All"
             icon={{
@@ -125,11 +134,11 @@ const TopSkillTest = ({ title = "", data = [], isTop = true }) => {
           />
           <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>You haven't created any tests yet! Design a test tailored to your needs and take control of your learning.</Text>
           <Button
-            title="Create Skill Test"
+            title="Create New Test"
             onPress={() => navigation.navigate("CreateSkillTest")}
             buttonStyle={[btnStyle.solid]}
             titleStyle={[common.fs12]}
-            containerStyle={[common.mr10, { width: 150 }]}
+            containerStyle={[common.mb10, { width: 150 }]}
           />
         </View>
       )

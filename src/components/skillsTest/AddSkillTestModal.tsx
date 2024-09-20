@@ -94,7 +94,6 @@ const AddSkillTestModal = ({ isOpenModal = false, setIsOpenModal = (value: boole
     const onSubmit = (data: any) => {
         const payload = data;
         payload['userId'] = userInfo.id;
-        console.log(payload);
         setIsProcessLoader(true);
         createSkillTest(payload)
             .then((response: any) => {

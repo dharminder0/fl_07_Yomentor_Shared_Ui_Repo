@@ -9,26 +9,25 @@ import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 import useStore from "../../store/useStore";
-import PopupModal from "../common/PopupModal";
-import AlertModal from "../common/AlertModal";
+import SkillResultModal from "../common/SkillResultModal";
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
 const AttemptSkillTest = ({ route, navigation }: any) => {
-  const skillTestId = route.params?.skillTestId;
+  const skillDetails = route.params?.skillDetails;
   const attemptId = route.params?.attemptId;
   const YoColors: any = useThemeColor();
   const [questions, setQuestions] = useState<any>([]);
   const [message, setMessage] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const { isAlertModal, setIsAlertModal }: any = useStore();
 
   useEffect(() => {
     setIsLoading(true);
     getQuestionAnswerBySkillTestId();
-  }, [skillTestId, attemptId]);
+  }, [skillDetails?.id, attemptId]);
 
   const getQuestionAnswerBySkillTestId = () => {
-    questionsAnswersBySkillId(skillTestId)
+    questionsAnswersBySkillId(skillDetails?.id)
       .then((response: any) => {
         if (response.data && response.data?.length > 0) {
           setQuestions(response.data);
@@ -76,16 +75,16 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
         setIsAlertModal(true);
         if (response.data && response.data.success) {
           setMessage(response.data?.content);
-          setTimeout(() => {
-            setIsAlertModal(false);
-            navigation.goBack(null);
-          }, 2000);
+          // setTimeout(() => {
+          //   setIsAlertModal(false);
+          //   navigation.goBack(null);
+          // }, 2000);
         }
       })
       .catch((error: any) => {
         setTimeout(() => {
           setIsAlertModal(false);
-        }, 500);
+        }, 2000);
         console.log("Error : ", error);
       });
   };
@@ -101,62 +100,99 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
         </View>
       )}
       {questions && questions?.length > 0 && (
-        <View style={styles.container}>
-          <Text style={styles.question}>
-            {currentQuestionIndex + 1}.{" "}
-            {questions[currentQuestionIndex].questionTitle}
-          </Text>
-          <Text style={common.rText}>
-            {questions[currentQuestionIndex].questionDescription}
-          </Text>
-          <View style={styles.optionsContainer}>
-            {questions[currentQuestionIndex].answerOptions.map(
-              (option: any, index: any) => (
-                <TouchableOpacity
-                  key={option.id}
-                  style={[
-                    styles.option,
-                    selectedAnswers[currentQuestionIndex] === index &&
-                    styles.selectedOption,
-                  ]}
-                  onPress={() => handleOptionClick(index)}
-                >
-                  <Text
+        <>
+          <View style={[common.p12, { alignItems: 'center' }]}>
+
+            {skillDetails?.title &&
+              <Text style={[common.h3Title, common.mb20]}>{skillDetails?.title}</Text>
+            }
+
+            {skillDetails?.timerValue > 0 &&
+              <CountdownCircleTimer
+                isPlaying
+                size={100}
+                strokeWidth={5}
+                duration={skillDetails?.timerValue * 60} // Convert minutes to seconds
+                colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                colorsTime={[60, 30, 10, 0]} // Change colors based on time left
+                onComplete={() => {
+                  handleSubmit();
+                  console.log('Time is up!');
+                  // You can trigger quiz submission or other actions here
+                  return { shouldRepeat: false }; // Do not repeat the timer
+                }}
+              >
+                {({ remainingTime }) => {
+                  const minutes = Math.floor(remainingTime / 60);
+                  const seconds = remainingTime % 60;
+                  return (
+                    <Text style={{ fontSize: 24 }}>
+                      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                    </Text>
+                  );
+                }}
+              </CountdownCircleTimer>
+            }
+          </View>
+
+          <View style={styles.container}>
+            <Text style={styles.question}>
+              {currentQuestionIndex + 1}.{" "}
+              {questions[currentQuestionIndex].questionTitle}
+            </Text>
+            <Text style={common.rText}>
+              {questions[currentQuestionIndex].questionDescription}
+            </Text>
+            <View style={styles.optionsContainer}>
+              {questions[currentQuestionIndex].answerOptions.map(
+                (option: any, index: any) => (
+                  <TouchableOpacity
+                    key={option.id}
                     style={[
-                      common.rText,
-                      selectedAnswers[currentQuestionIndex] === index && {
-                        color: "#fff",
-                      },
+                      styles.option,
+                      selectedAnswers[currentQuestionIndex] === index &&
+                      styles.selectedOption,
                     ]}
+                    onPress={() => handleOptionClick(index)}
                   >
-                    {String.fromCharCode(65 + index)}. {option.title}
-                  </Text>
-                </TouchableOpacity>
-              )
+                    <Text
+                      style={[
+                        common.rText,
+                        selectedAnswers[currentQuestionIndex] === index && {
+                          color: "#fff",
+                        },
+                      ]}
+                    >
+                      {String.fromCharCode(65 + index)}. {option.title}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              )}
+            </View>
+            {currentQuestionIndex === questions.length - 1 ? (
+              <Button
+                title="Submit"
+                buttonStyle={{ backgroundColor: YoColors.primary }}
+                titleStyle={{ fontWeight: "600", fontSize: 12 }}
+                onPress={handleSubmit}
+                disabled={isNextButtonDisabled}
+                containerStyle={{ width: 100, alignSelf: "flex-end" }}
+                disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
+              />
+            ) : (
+              <Button
+                title="Next"
+                buttonStyle={{ backgroundColor: YoColors.primary }}
+                onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+                titleStyle={{ fontSize: 12 }}
+                disabled={isNextButtonDisabled}
+                containerStyle={{ width: 100, alignSelf: "flex-end" }}
+                disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
+              />
             )}
           </View>
-          {currentQuestionIndex === questions.length - 1 ? (
-            <Button
-              title="Submit"
-              buttonStyle={{ backgroundColor: YoColors.primary }}
-              titleStyle={{ fontWeight: "600", fontSize: 12 }}
-              onPress={handleSubmit}
-              disabled={isNextButtonDisabled}
-              containerStyle={{ width: 100, alignSelf: "flex-end" }}
-              disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
-            />
-          ) : (
-            <Button
-              title="Next"
-              buttonStyle={{ backgroundColor: YoColors.primary }}
-              onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-              titleStyle={{ fontSize: 12 }}
-              disabled={isNextButtonDisabled}
-              containerStyle={{ width: 100, alignSelf: "flex-end" }}
-              disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
-            />
-          )}
-        </View>
+        </>
+
       )}
 
       {questions?.length === 0 && !isLoading && (
@@ -164,11 +200,12 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
       )}
 
       {isAlertModal && (
-        <AlertModal
-          message={`You have attempted ${message?.totalQuestions} questions \n Your correct answers: ${message?.totalCorrectAnswers} \n Score: ${message?.percentageCorrect}%`}
-          icon={"checkmark-circle"}
-          color={"green"}
-          iconSize={40}
+        <SkillResultModal
+          // message={`You have attempted ${message?.totalQuestions} questions \n Your correct answers: ${message?.totalCorrectAnswers} \n Score: ${message?.percentageCorrect}%`}
+          // message={`${message?.percentageCorrect}%`}
+          score={message?.percentageCorrect}
+          attemptId={message?.attemptId}
+          skillDetails={skillDetails?.id}
         />
       )}
     </>
@@ -178,7 +215,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     padding: 20,
   },
   question: {

@@ -28,6 +28,8 @@ import AddSkillTestModal from "./AddSkillTestModal";
 import Modal from "react-native-modal";
 import SelectModal from "../common/SelectModal";
 import { YoImages } from "../../assets/themes/YoImages";
+import { Header } from "react-native-elements";
+import HeaderView from "../common/HeaderView";
 
 const SkillsTestList = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
@@ -43,9 +45,9 @@ const SkillsTestList = ({ route }: any) => {
   const [refreshLoader, setRefreshLoader] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [searchText, setSearchText] = useState<any>("");
-  const [teacherList, setTeacherList] = useState<any>([]);
+  const [skillsList, setSkillsList] = useState<any>([]);
   const [subjectList, setSubjectList] = useState<any>([]);
-  const [selectedSubject, setSelectedSubject] = useState<any>(null);
+  const [selectedSubject, setSelectedSubject] = useState<any>(!route.params?.subjectId ? null : route.params?.subjectId);
 
   useEffect(() => {
     setIsLoading(true);
@@ -78,16 +80,16 @@ const SkillsTestList = ({ route }: any) => {
       searchText: searchText,
       pageSize: 10,
       pageIndex: pageIndex,
-      subjectId: selectedSubject
+      subjectId: !selectedSubject ? 0 : selectedSubject
     };
     useFor ? (payload['gradeId'] = !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId) : payload['userId'] = !useFor && userInfo.id;
     getSkilsList(payload)
       .then((response: any) => {
         if (pageIndex === 1) {
-          setTeacherList([]);
+          setSkillsList([]);
         }
         if (response.data && response.data.length > 0) {
-          setTeacherList((prevList: any) => [...prevList, ...response.data]);
+          setSkillsList((prevList: any) => [...prevList, ...response.data]);
         }
         setTimeout(() => {
           setIsLoading(false);
@@ -202,6 +204,7 @@ const SkillsTestList = ({ route }: any) => {
 
   return (
     <>
+      <HeaderView title={!useFor ? 'My Skill Tests' : "Skill Test List"} type="back" />
       <View style={common.container}>
         <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
           <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -210,7 +213,7 @@ const SkillsTestList = ({ route }: any) => {
                 placeholder="Search Skill Test"
                 onChangeText={(text: any) => setSearchText(text)}
                 value={searchText}
-                style={[common.input, { marginBottom: 0 }]}
+                style={[common.input, { marginBottom: 0, height: 40 }]}
                 onSubmitEditing={handleSearch}
                 placeholderTextColor={YoColors.placeholderText}
               />
@@ -225,7 +228,7 @@ const SkillsTestList = ({ route }: any) => {
                 <Ionicons
                   name="search-outline"
                   size={21}
-                  style={{ position: "absolute", right: 10, top: 12 }}
+                  style={{ position: "absolute", right: 10, top: 10 }}
                 />
               )}
             </View>
@@ -253,16 +256,16 @@ const SkillsTestList = ({ route }: any) => {
         </View> */}
         </View>
 
-        {teacherList && teacherList.length > 0 ? (
+        {skillsList && skillsList.length > 0 ? (
           <FlatList
-            data={teacherList}
+            data={skillsList}
             keyExtractor={(item: any) => item?.id}
             renderItem={renderItem}
             style={{
-              height: "90%",
+              height: '84%',
               marginTop: 5,
             }}
-            windowSize={Platform.OS === "ios" ? height - 205 : height - 165}
+            windowSize={Platform.OS === "ios" ? height - 265 : height - 120}
             showsVerticalScrollIndicator={false}
             onScrollEndDrag={handleLoadMore}
             onEndReachedThreshold={0.5}

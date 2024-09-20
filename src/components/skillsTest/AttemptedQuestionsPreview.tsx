@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { questionsAnswersBySkillId } from "../../apiconfig/SharedApis";
+import { common } from "../../assets/styles/Common";
 
 const AttemptedQuestionsPreview = ({ route }: any) => {
-  const skillTestId: any = route.params?.skillTestId;
+  const skillDetails: any = route.params?.skillDetails;
   const attemptId: any = route.params?.attemptId;
   const [attemptedQuestions, setAttemptedQuestions] = useState<any>([]);
 
   useEffect(() => {
     getQuestionAnswerBySkillTestId();
-  }, [skillTestId, attemptId]);
+  }, [skillDetails?.id, attemptId]);
 
   const getQuestionAnswerBySkillTestId = () => {
-    questionsAnswersBySkillId(skillTestId, attemptId)
+    questionsAnswersBySkillId(skillDetails?.id, attemptId)
       .then((response: any) => {
         if (response.data && response.data?.length > 0) {
           setAttemptedQuestions(response.data);
@@ -24,7 +25,8 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <Text style={[common.h3Title, common.mb20]}>{skillDetails?.title}</Text>
       {attemptedQuestions &&
         attemptedQuestions.length > 0 &&
         attemptedQuestions.map((question: any, index: number) => {
@@ -76,7 +78,7 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 12,
   },
   questionContainer: {
     marginBottom: 20,
