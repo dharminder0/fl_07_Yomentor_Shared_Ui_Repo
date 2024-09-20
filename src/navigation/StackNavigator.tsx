@@ -198,7 +198,6 @@ export function StackNavigator() {
         name="SkillsTestList"
         component={SkillsTestList}
         options={{
-          headerShown: false,
           title: "Skill Test List",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },

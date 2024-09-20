@@ -277,3 +277,11 @@ export async function SkillTestStatics(payload: any): Promise<any> {
 export async function SuggestedSkillTests(payload: any): Promise<any> {
   return AxiosInterceptor.post(`SkillTest/SimilerSkillTestList`, payload);
 }
+
+export async function getBanners(userType: any, pageType: any = 1): Promise<any> {
+  return AxiosInterceptor.get(`Banners/GetBnners?userType=${userType}&pageType=${pageType}`);
+}
+
+export async function getAttemptHitory(userId: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/AttemptHitory?userId=${userId}`);
+}

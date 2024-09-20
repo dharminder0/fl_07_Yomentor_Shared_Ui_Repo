@@ -35,7 +35,6 @@ const SkillsTestList = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
   const image: any = YoImages();
   const userInfo: any = getUserInfo();
-  const useFor = route.params?.useFor;
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -80,9 +79,10 @@ const SkillsTestList = ({ route }: any) => {
       searchText: searchText,
       pageSize: 10,
       pageIndex: pageIndex,
-      subjectId: !selectedSubject ? 0 : selectedSubject
+      subjectId: !selectedSubject ? 0 : selectedSubject,
+      gradeId: !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId
     };
-    useFor ? (payload['gradeId'] = !userInfo?.studentGradeId ? 0 : userInfo?.studentGradeId) : payload['userId'] = !useFor && userInfo.id;
+
     getSkilsList(payload)
       .then((response: any) => {
         if (pageIndex === 1) {
@@ -204,7 +204,6 @@ const SkillsTestList = ({ route }: any) => {
 
   return (
     <>
-      <HeaderView title={!useFor ? 'My Skill Tests' : "Skill Test List"} type="back" />
       <View style={common.container}>
         <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
           <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -233,16 +232,9 @@ const SkillsTestList = ({ route }: any) => {
               )}
             </View>
             <View style={{ width: '15%' }}>
-              {
-                // isFilter &&
-                <Button radius={"sm"} type="clear" onPress={() => setIsFilter(true)}>
-                  <Icon name="filter" color={YoColors.primary} size={18} />
-                </Button>
-                // :
-                // <Button radius={"sm"} type="clear" onPress={() => setIsFilter(true)}>
-                //   <Icon name="filter" color={YoColors.primary} size={18} />
-                // </Button>
-              }
+              <Button radius={"sm"} type="clear" onPress={() => setIsFilter(true)}>
+                <Icon name="filter" color={YoColors.primary} size={18} />
+              </Button>
             </View>
           </View>
           {/* <View style={{ width: '48%' }}>

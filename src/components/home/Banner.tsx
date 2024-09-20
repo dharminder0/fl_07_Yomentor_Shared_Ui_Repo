@@ -1,55 +1,44 @@
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Swiper from 'react-native-swiper'
 import { common } from '../../assets/styles/Common';
+import { getUserInfo } from '../../shared/sharedDetails';
+import { getBanners } from '../../apiconfig/SharedApis';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Banner = () => {
-    const settings = {
-        dots: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        infinite: true,
-        slidesPerView: 1,
-        initialSlide: 0,
-        speed: 1000,
-    };
+    const userInfo: any = getUserInfo();
+    const [bannerList, setBannerList] = useState<any>([]);
+
+    useFocusEffect(useCallback(() => {
+        getBanners(userInfo?.type, 1).then((response: any) => {
+            if (response.data?.length >= 0) {
+                setBannerList(response.data)
+            }
+        })
+    }, []));
 
     return (
-        <View style={[common.my10, { height: 170 }]}>
+        <View style={[common.my10, { height: 185 }]}>
             <Swiper style={styles.wrapper}
-                // {...settings}
                 dotStyle={[styles.setDots]}
                 activeDotStyle={styles.activeDotStyle}
             >
-                <View style={styles.slide}>
-                    <ImageBackground
-                        style={[styles.backImgStyle]}
-                        source={require('../../assets/images/Baaner-hd1.jpg')}
-                        resizeMode="cover"
-                    />
-                </View>
-                <View style={styles.slide}>
-                    <ImageBackground
-                        style={[styles.backImgStyle]}
-                        source={require('../../assets/images/Banner2.png')}
-                        resizeMode="cover"
-                    />
-                </View>
-                <View style={styles.slide}>
-                    <ImageBackground
-                        style={[styles.backImgStyle]}
-                        source={require('../../assets/images/Banner1.jpg')}
-                        resizeMode="cover"
-                    />
-                </View>
-
+                {bannerList?.length > 0 && bannerList?.map((item: any) => (
+                    <View style={styles.slide}>
+                        <ImageBackground
+                            style={[styles.backImgStyle]}
+                            source={{ uri: item?.bannerUrl }}
+                            resizeMode="cover"
+                        />
+                    </View>
+                ))}
             </Swiper>
         </View>
     )
 }
 
 export default Banner
-
 
 const styles = StyleSheet.create({
     wrapper: {},
@@ -58,7 +47,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        // backgroundColor: '#0f0fff'
     },
     slideItmes: {
         flex: 1,
@@ -66,15 +54,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 15,
         paddingBottom: 25,
-        // backgroundColor: 'rgba(6, 136, 138,0.5)',
     },
     setDots: {
-        // top: 35,
+        top: 35,
         backgroundColor: '#D9D9D9',
     },
     activeDotStyle: {
-        // top: 35,
-        backgroundColor: '#38BABC',
+        top: 35,
+        backgroundColor: '#124076',
     },
     text: {
         color: '#fff',

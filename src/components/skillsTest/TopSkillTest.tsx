@@ -117,7 +117,7 @@ const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) =>
               size: 12,
               color: YoColors.primary
             }}
-            onPress={() => navigation.navigate("SkillsTestList", { useFor: isTop })}
+            onPress={() => navigation.navigate("SkillsTestList")}
             type="clear"
             titleStyle={[btnStyle.outlineTitle, common.fs12]}
           />

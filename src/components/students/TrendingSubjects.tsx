@@ -26,37 +26,53 @@ const TrendingSubjects = ({ title = '', id = 0 }) => {
     // Render each item
     const renderItem = ({ item }: any) => (
         <TouchableOpacity
-            style={[common.mr10, { width: 70, backgroundColor: YoColors.bgColor, alignItems: 'center', padding: 8 }]}
+            style={[{ backgroundColor: YoColors.bgColor }, styles.card]}
             activeOpacity={0.7}
             onPress={() => navigation.navigate("SkillsTestList", { subjectId: item.id })}
         >
             <Image source={{ uri: item.icon }} height={32} width={32} />
-            <Text style={[common.rText, common.mt5]}>{item.name}</Text>
+            <Text style={styles.text} numberOfLines={2}>{item.name}</Text>
         </TouchableOpacity>
     );
 
     return (
         <View>
-            {title &&
+            {title && subjectList?.length > 0 &&
                 <Text style={[common.h3Title, common.my10]}>Trending Subjects</Text>
             }
-            <View style={[common.p12, { backgroundColor: YoColors.background, borderRadius: 6 }]}>
-                {subjectList?.length > 0 &&
-                    <VirtualizedList
-                        horizontal
-                        data={subjectList}
-                        initialNumToRender={4}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id.toString()} // Ensure unique keys
-                        getItem={getItem}
-                        getItemCount={getItemCount}
-                    />
-                }
-            </View>
+            {subjectList?.length > 0 &&
+                <VirtualizedList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={subjectList}
+                    initialNumToRender={4}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()} // Ensure unique keys
+                    getItem={getItem}
+                    getItemCount={getItemCount}
+                />
+            }
         </View>
     )
 }
 
 export default TrendingSubjects
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    card: {
+        width: 120,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderRadius: 6,
+        marginRight: 10,
+    },
+    text: {
+        marginTop: 5,
+        fontSize: 12,
+        textAlign: 'center',
+        fontWeight: '600'
+    }
+
+})

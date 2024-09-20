@@ -22,6 +22,8 @@ import DashboardPage from "../components/DashboardPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TeachersList from "../components/TeachersList";
 import BooksList from "../components/books/BooksList";
+import MySkillTests from "../components/students/MySkillTests";
+import AttemptHistory from "../components/students/AttemptHistory";
 
 const Tab = createBottomTabNavigator();
 // Ionicons.loadFont();
@@ -78,6 +80,8 @@ export const BottomNavigation = () => {
   const TeacherAssessmentTab = "TeacherAssessmentList";
   const TeachersListTab = "TeachersList";
   const BooksListTab = "BooksList";
+  const MySkillTestTabs = "MySkillTestTabs";
+  const AttemptHistoryTab = "AttemptHistoryTab";
 
   const pageOptions: any = {
     homeTab: {
@@ -108,6 +112,16 @@ export const BottomNavigation = () => {
     BooksListTab: {
       headerTintColor: "#fff",
       title: "Book Exchange",
+      headerLeft: headerDrawer,
+    },
+    MySkillTestTabs: {
+      headerTintColor: "#fff",
+      title: "My Skill Test",
+      headerLeft: headerDrawer,
+    },
+    AttemptHistoryTab: {
+      headerTintColor: "#fff",
+      title: "Attempt History",
       headerLeft: headerDrawer,
     },
   };
@@ -168,6 +182,22 @@ export const BottomNavigation = () => {
                   </Text>
                 </View>
               )}
+              {rn === MySkillTestTabs && (
+                <View style={{ alignItems: "center" }}>
+                  <Ionicons name="book" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    My {"\n"} Tests
+                  </Text>
+                </View>
+              )}
+              {rn === AttemptHistoryTab && (
+                <View style={{ alignItems: "center" }}>
+                  <Ionicons name="book" size={21} color={color} />
+                  <Text style={[styles.labelTitle, { color: color }]}>
+                    My {"\n"} Attempts
+                  </Text>
+                </View>
+              )}
             </View>
           );
         },
@@ -207,13 +237,25 @@ export const BottomNavigation = () => {
         </>
       )}
 
-      {/* {userInfo?.type === 3 && (
-        <Tab.Screen
-          name={TeachersListTab}
-          component={TeachersList}
-          options={pageOptions["TeachersListTab"]}
-        />
-      )} */}
+      {userInfo?.type === 3 && (
+        <>
+          <Tab.Screen
+            name={MySkillTestTabs}
+            component={MySkillTests}
+            options={pageOptions["MySkillTestTabs"]}
+          />
+          <Tab.Screen
+            name={AttemptHistoryTab}
+            component={AttemptHistory}
+            options={pageOptions["AttemptHistoryTab"]}
+          />
+        </>
+        // <Tab.Screen
+        //   name={TeachersListTab}
+        //   component={TeachersList}
+        //   options={pageOptions["TeachersListTab"]}
+        // />
+      )}
 
       {/* <Tab.Screen
         name={BooksListTab}

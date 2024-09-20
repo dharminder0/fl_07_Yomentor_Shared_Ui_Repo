@@ -48,7 +48,6 @@ const HomeScreen = () => {
   const [shortlisted, setShortlisted] = useState([]);
   const [teacherList, setTeacherList] = useState<any>([]);
   const [skillsList, setSkillsList] = useState<any>([]);
-  const [customSkillsList, setCustomSkillsList] = useState<any>([]);
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
 
   const navigation: any = useNavigation();
@@ -63,7 +62,6 @@ const HomeScreen = () => {
       getOpenBatchDatabyTeacherId(3);
       getTeacherList();
       getSkillList();
-      getCustomSkillList();
     }, [userInfo?.id, refreshLoader])
   );
 
@@ -152,24 +150,6 @@ const HomeScreen = () => {
         setSkillsList([]);
         if (response.data && response.data.length > 0) {
           setSkillsList(response.data);
-        }
-      })
-      .catch((error: any) => {
-        console.error("Error fetching :", error);
-      });
-  };
-
-  const getCustomSkillList = () => {
-    const payload: any = {
-      userId: userInfo.id,
-      pageSize: 5,
-      pageIndex: 1,
-    };
-    getSkilsList(payload)
-      .then((response: any) => {
-        setCustomSkillsList([]);
-        if (response.data && response.data.length > 0) {
-          setCustomSkillsList(response.data);
         }
       })
       .catch((error: any) => {
@@ -302,11 +282,11 @@ const HomeScreen = () => {
             <TopSkillTest title="Yo!Mentor Trending Skill Tests" data={skillsList} />
           )}
 
-          {userInfo?.type === 3 && userInfo?.studentGradeId <= 0 && (
+          {/* {userInfo?.type === 3 && userInfo?.studentGradeId <= 0 && (
             <View style={{ justifyContent: 'center' }}>
               <StudentOnBoard isRefresh={setRefreshLoader} />
             </View>
-          )}
+          )} */}
 
           {userInfo?.type === 3 &&
             <TrendingSubjects title='Trending Subjects' id={userInfo?.studentGradeId} />
@@ -314,10 +294,6 @@ const HomeScreen = () => {
 
           {userInfo?.type === 3 && userInfo?.studentGradeId > 0 && (
             <View style={common.my10}>
-              {
-                customSkillsList &&
-                <TopSkillTest title="My Skill Tests" data={customSkillsList} isTop={false} />
-              }
               <SkillStastics />
             </View>
           )}

@@ -45,10 +45,17 @@ const Startup = () => {
                 new Promise((resolve) =>
                   setTimeout(() => {
                     resolve(true);
-                    navigation.reset({
-                      index: 0,
-                      routes: [{ name: "AppStack" }],
-                    });
+                    if (result.type == 3 && result.studentGradeId <= 0 && result.category <= 0) {
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "StudentOnBoard" }],
+                      });
+                    } else {
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "AppStack" }],
+                      });
+                    }
                     SplashScreen.hide();
                   }, 2000)
                 );

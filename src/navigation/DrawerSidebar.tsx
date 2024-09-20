@@ -136,9 +136,9 @@ const DrawerSidebar = () => {
                 />
                 <Text style={styles.tabTitle}>Skill Tests</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.tabView}
-                onPress={() => navigation.navigate("SkillsTestList", { useFor: false })}
+                onPress={() => navigation.navigate("SkillsTestList")}
               >
                 <MaterialCommunityIcons
                   name="clipboard-text"
@@ -146,7 +146,7 @@ const DrawerSidebar = () => {
                   color={YoColors.primary}
                 />
                 <Text style={styles.tabTitle}>My Skill Tests</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </>
           )}
         </View>
