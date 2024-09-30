@@ -83,11 +83,15 @@ export const common = StyleSheet.create({
     borderColor: YoColors.primary,
     borderWidth: 1,
   },
+  tCenter: {
+    textAlign: 'center'
+  },
   mtop10: { marginTop: 10 },
   mt5: { marginTop: 5 },
   mt15: { marginTop: 15 },
   mt20: { marginTop: 20 },
   mt25: { marginTop: 25 },
+  mb0: { marginBottom: 0 },
   mb5: { marginBottom: 5 },
   mb10: { marginBottom: 10 },
   mb20: { marginBottom: 20 },

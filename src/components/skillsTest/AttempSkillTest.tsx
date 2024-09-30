@@ -11,6 +11,7 @@ import { Button } from "react-native-elements";
 import useStore from "../../store/useStore";
 import SkillResultModal from "../common/SkillResultModal";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { ScrollView } from "react-native-gesture-handler";
 
 const AttemptSkillTest = ({ route, navigation }: any) => {
   const skillDetails = route.params?.skillDetails;
@@ -19,12 +20,14 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
   const [questions, setQuestions] = useState<any>([]);
   const [message, setMessage] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { isAlertModal, setIsAlertModal }: any = useStore();
+  const { isSkillModal, setIsSkillModal }: any = useStore();
 
   useEffect(() => {
     setIsLoading(true);
     getQuestionAnswerBySkillTestId();
   }, [skillDetails?.id, attemptId]);
+
+  console.log(skillDetails?.id, attemptId)
 
   const getQuestionAnswerBySkillTestId = () => {
     questionsAnswersBySkillId(skillDetails?.id)
@@ -72,18 +75,14 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
     };
     upsertBulkAttempt(payload)
       .then((response: any) => {
-        setIsAlertModal(true);
+        setIsSkillModal(true);
         if (response.data && response.data.success) {
           setMessage(response.data?.content);
-          // setTimeout(() => {
-          //   setIsAlertModal(false);
-          //   navigation.goBack(null);
-          // }, 2000);
         }
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setIsAlertModal(false);
+          setIsSkillModal(false);
         }, 2000);
         console.log("Error : ", error);
       });
@@ -135,62 +134,66 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
             }
           </View>
 
-          <View style={styles.container}>
-            <Text style={styles.question}>
-              {currentQuestionIndex + 1}.{" "}
-              {questions[currentQuestionIndex].questionTitle}
-            </Text>
-            <Text style={common.rText}>
-              {questions[currentQuestionIndex].questionDescription}
-            </Text>
-            <View style={styles.optionsContainer}>
-              {questions[currentQuestionIndex].answerOptions.map(
-                (option: any, index: any) => (
-                  <TouchableOpacity
-                    key={option.id}
-                    style={[
-                      styles.option,
-                      selectedAnswers[currentQuestionIndex] === index &&
-                      styles.selectedOption,
-                    ]}
-                    onPress={() => handleOptionClick(index)}
-                  >
-                    <Text
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.container}>
+
+              <Text style={styles.question}>
+                {currentQuestionIndex + 1}.{" "}
+                {questions[currentQuestionIndex].questionTitle}
+              </Text>
+              <Text style={common.rText}>
+                {questions[currentQuestionIndex].questionDescription}
+              </Text>
+              <View style={styles.optionsContainer}>
+                {questions[currentQuestionIndex].answerOptions.map(
+                  (option: any, index: any) => (
+                    <TouchableOpacity
+                      key={option.id}
                       style={[
-                        common.rText,
-                        selectedAnswers[currentQuestionIndex] === index && {
-                          color: "#fff",
-                        },
+                        styles.option,
+                        selectedAnswers[currentQuestionIndex] === index &&
+                        styles.selectedOption,
                       ]}
+                      onPress={() => handleOptionClick(index)}
                     >
-                      {String.fromCharCode(65 + index)}. {option.title}
-                    </Text>
-                  </TouchableOpacity>
-                )
+                      <Text
+                        style={[
+                          common.rText,
+                          selectedAnswers[currentQuestionIndex] === index && {
+                            color: "#fff",
+                          },
+                        ]}
+                      >
+                        {String.fromCharCode(65 + index)}. {option.title}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                )}
+              </View>
+              {currentQuestionIndex === questions.length - 1 ? (
+                <Button
+                  title="Submit"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  titleStyle={{ fontWeight: "600", fontSize: 12 }}
+                  onPress={handleSubmit}
+                  disabled={isNextButtonDisabled}
+                  containerStyle={{ width: 100, alignSelf: "flex-end" }}
+                  disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
+                />
+              ) : (
+                <Button
+                  title="Next"
+                  buttonStyle={{ backgroundColor: YoColors.primary }}
+                  onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+                  titleStyle={{ fontSize: 12 }}
+                  disabled={isNextButtonDisabled}
+                  containerStyle={{ width: 100, alignSelf: "flex-end" }}
+                  disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
+                />
               )}
+
             </View>
-            {currentQuestionIndex === questions.length - 1 ? (
-              <Button
-                title="Submit"
-                buttonStyle={{ backgroundColor: YoColors.primary }}
-                titleStyle={{ fontWeight: "600", fontSize: 12 }}
-                onPress={handleSubmit}
-                disabled={isNextButtonDisabled}
-                containerStyle={{ width: 100, alignSelf: "flex-end" }}
-                disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
-              />
-            ) : (
-              <Button
-                title="Next"
-                buttonStyle={{ backgroundColor: YoColors.primary }}
-                onPress={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-                titleStyle={{ fontSize: 12 }}
-                disabled={isNextButtonDisabled}
-                containerStyle={{ width: 100, alignSelf: "flex-end" }}
-                disabledStyle={{ borderWidth: 1, borderColor: YoColors.primary }}
-              />
-            )}
-          </View>
+          </ScrollView>
         </>
 
       )}
@@ -199,15 +202,14 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
         <Text>There is no questions for this skill test</Text>
       )}
 
-      {isAlertModal && (
-        <SkillResultModal
-          // message={`You have attempted ${message?.totalQuestions} questions \n Your correct answers: ${message?.totalCorrectAnswers} \n Score: ${message?.percentageCorrect}%`}
-          // message={`${message?.percentageCorrect}%`}
-          score={message?.percentageCorrect}
-          attemptId={message?.attemptId}
-          skillDetails={skillDetails?.id}
-        />
-      )}
+
+      <SkillResultModal
+        // message={`You have attempted ${message?.totalQuestions} questions \n Your correct answers: ${message?.totalCorrectAnswers} \n Score: ${message?.percentageCorrect}%`}
+        // message={`${message?.percentageCorrect}%`}
+        score={message?.percentageCorrect}
+        attemptId={message?.attemptId}
+        skillDetails={skillDetails}
+      />
     </>
   );
 };

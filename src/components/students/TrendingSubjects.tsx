@@ -38,7 +38,7 @@ const TrendingSubjects = ({ title = '', id = 0 }) => {
     return (
         <View>
             {title && subjectList?.length > 0 &&
-                <Text style={[common.h3Title, common.my10]}>Trending Subjects</Text>
+                <Text style={[common.h3Title, common.my10]}>{title}</Text>
             }
             {subjectList?.length > 0 &&
                 <VirtualizedList
@@ -60,13 +60,18 @@ export default TrendingSubjects
 
 const styles = StyleSheet.create({
     card: {
-        width: 120,
+        width: 90,
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderRadius: 6,
         marginRight: 10,
+        shadowColor: 'red',
+        shadowOffset: { width: 5, height: 4 },
+        shadowOpacity: 0.86,
+        shadowRadius: 3,
+
     },
     text: {
         marginTop: 5,

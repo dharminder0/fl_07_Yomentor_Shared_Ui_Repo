@@ -1,29 +1,24 @@
-import { ActivityIndicator, Animated, Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { Animated, Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Card } from '@rneui/themed'
 import { getCategoryList, getUserInfo, saveAsyncData } from '../../shared/sharedDetails'
-import { getGradeList, upsertUserInfo } from '../../apiconfig/SharedApis'
+import { getCategories, getGradeList, upsertUserInfo } from '../../apiconfig/SharedApis'
 import { common } from '../../assets/styles/Common'
 import { YoImages } from '../../assets/themes/YoImages'
 import { useThemeColor } from '../../assets/themes/useThemeColor'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
-import { Category } from '../../shared/enum'
-import Icon from "react-native-vector-icons/FontAwesome5";
-import AlertModal from '../common/AlertModal'
-import useStore from '../../store/useStore'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 
 const screenWidth = Dimensions.get('window').width;
 const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
     const image: any = YoImages();
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
-    const { isAlertModal, setIsAlertModal }: any = useStore();
-
     const [categoryType, setCategoryType] = useState(null);
     const [gradeId, setGradeId] = useState(null);
     const [classList, setClassList] = useState<any>([]);
+    const [categoryList, setCategoryList] = useState<any>([]);
     const userInfo = getUserInfo();
 
     const [isCategorySelected, setIsCategorySelected] = useState(false); // To track whether a category is selected
@@ -39,6 +34,19 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
             });
         }
     }, [categoryType]);
+
+    useFocusEffect(useCallback(() => {
+        getCategoryData();
+    }, []));
+
+    const getCategoryData = async () => {
+        getCategories().then((res: any) => {
+            setCategoryList(res.data);
+        }).catch((error: any) => {
+            console.log('error', error)
+        })
+    }
+
 
     const handleCategorySelect = (id: any) => {
         setCategoryType(id);
@@ -62,8 +70,6 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
         });
     }
 
-
-
     const handleGradeChange = () => {
         const payload: any = {
             id: userInfo.id,
@@ -84,22 +90,17 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                     response.data &&
                     response.data?.message === "Update_Suucessfully."
                 ) {
-                    setIsAlertModal(true);
                     let dataObject = userInfo;
                     dataObject.studentGradeId = gradeId;
                     dataObject.category = categoryType;
                     saveAsyncData('userData', dataObject);
                 }
                 setTimeout(() => {
-                    setIsAlertModal(false);
                     navigation.navigate("Startup");
                 }, 2000)
             })
             .catch((error: any) => {
                 console.error("Error fetching :", error);
-                setTimeout(() => {
-                    setIsAlertModal(false);
-                }, 1000)
             });
     }
 
@@ -114,7 +115,7 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                         width: screenWidth * 2, // Width of both views combined
                     }}
                 >
-                    <View style={[{ width: screenWidth }, common.px12]}>
+                    <View style={[{ width: screenWidth, justifyContent: 'center', backgroundColor: YoColors.bgColor }, common.px12]}>
                         <View style={{ alignItems: 'center', paddingHorizontal: 12 }}>
                             <Image source={require('../../assets/images/onboard.png')} style={{ width: '70%', height: 240 }} />
                             <Text style={[styles.title, { color: YoColors.primary }]}>Welcome to Yo!Mentor</Text>
@@ -122,16 +123,17 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                         </View>
                         <Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: YoColors.primary }]}>Tell us what you're preparing for</Card.Title>
                         <View style={[styles.cardWrapper]}>
-                            {getCategoryList().map((item: any) => {
+                            {categoryList?.length > 0 && categoryList.map((item: any) => {
                                 return (
                                     <Card
                                         key={item.id}
                                         containerStyle={[
                                             styles.cardContainer,
-                                            common.mr10,
                                             {
                                                 backgroundColor:
                                                     categoryType == item.id ? YoColors.bgColor : 'white',
+                                                borderColor:
+                                                    categoryType == item.id ? YoColors.secondary : 'white',
                                             },
                                         ]}
                                     >
@@ -139,9 +141,9 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                                             <Image
                                                 style={[common.my10, styles.cardImage]}
                                                 resizeMode="contain"
-                                                source={item.id == 1 ? image.knowledge : image.competition}
+                                                source={!item?.icon ? image.knowledge : { uri: item?.icon }}
                                             />
-                                            <Card.Title style={common.rText}>{item.name}</Card.Title>
+                                            <Card.Title style={common.rText}>{item.categoryName}</Card.Title>
                                         </Pressable>
                                     </Card>
                                 );
@@ -149,62 +151,52 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                         </View>
                     </View>
 
-                    {classList?.length > 0 && (
-                        <View style={[{ width: screenWidth }, common.px12]}>
-                            {isCategorySelected && (
-                                <>
-                                    <Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: YoColors.primary }]}>Choose the area you're focusing on</Card.Title>
-                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+
+                    <View style={[{ width: screenWidth, backgroundColor: YoColors.bgColor }, common.px12]}>
+                        {isCategorySelected && (
+                            <>
+                                {classList?.length > 0 &&
+                                    <><Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: YoColors.primary }]}>Choose the area you're focusing on</Card.Title><ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={styles.cardWrapper}>
                                             {classList.map((item: any) => {
                                                 return (
-                                                    <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (gradeId == item.id ? YoColors.bgColor : 'white') }]}>
+                                                    <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (gradeId == item.id ? YoColors.bgColor : 'white'), borderColor: (gradeId == item.id ? YoColors.secondary : 'white') }]}>
                                                         <Pressable onPress={() => setGradeId(item.id)}>
                                                             <Image
                                                                 style={[common.my10, styles.cardImage]}
                                                                 resizeMode="contain"
-                                                                source={
-                                                                    categoryType == 1 ? image.knowledge : image.competition
-                                                                }
-                                                            />
+                                                                source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
                                                             <Card.Title style={common.rText} numberOfLines={2}>{item.name}</Card.Title>
                                                         </Pressable>
                                                     </Card>
-                                                );
+                                                )
                                             })}
                                         </View>
-                                    </ScrollView>
-                                    <Button title='Get Started'
-                                        onPress={handleGradeChange}
-                                        buttonStyle={{ width: '100%', alignSelf: 'center', backgroundColor: YoColors.primary }}
-                                        titleStyle={{ fontSize: 17 }}
-                                        disabled={!categoryType || !gradeId}
+                                    </ScrollView></>
+                                }
+                                <Button title='Get Started'
+                                    onPress={handleGradeChange}
+                                    buttonStyle={{ width: '100%', alignSelf: 'center', backgroundColor: YoColors.primary }}
+                                    titleStyle={{ fontSize: 17 }}
+                                    disabled={classList?.length > 0 && (!categoryType || !gradeId)}
+                                />
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={{ color: YoColors.text }}>Need to adjust your goal?</Text>
+                                    <Button
+                                        onPress={goBack}
+                                        title='Go back'
+                                        type='clear'
+                                        buttonStyle={{ alignSelf: 'center' }}
+                                        titleStyle={{ fontSize: 15, color: YoColors.primary }}
                                     />
 
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={{ color: YoColors.text }}>Need to adjust your goal?</Text>
-                                        <Button
-                                            onPress={goBack}
-                                            title='Go back'
-                                            type='clear'
-                                            buttonStyle={{ alignSelf: 'center' }}
-                                            titleStyle={{ fontSize: 15, color: YoColors.primary }}
-                                        />
-
-                                    </View>
-                                </>
-                            )}
-                        </View>
-                    )}
+                                </View>
+                            </>
+                        )}
+                    </View>
                 </Animated.View>
             </View>
-            {isAlertModal && (
-                <AlertModal
-                    message={`Thanks for sharing your details! We’re personalizing your experience based on your preferences.`}
-                    icon={"checkmark-circle"}
-                    color={"green"}
-                    iconSize={40} />
-            )}
         </>
 
     )
@@ -215,8 +207,6 @@ export default StudentOnBoard
 const styles = StyleSheet.create({
     container: {
         height: Dimensions.get('window').height,
-        // paddingHorizontal: 12,
-        paddingVertical: 12,
         backgroundColor: '#fff'
     },
     cardWrapper: {
@@ -228,12 +218,14 @@ const styles = StyleSheet.create({
         height: 40
     },
     cardContainer: {
-        width: '30%',
-        padding: 5,
+        width: '23%',
+        padding: 0,
         margin: 0,
+        paddingHorizontal: 3,
+        marginHorizontal: 3,
         marginBottom: 10,
         borderRadius: 6,
-        marginHorizontal: 5
+        elevation: 0
     },
     title: {
         textAlign: 'center',

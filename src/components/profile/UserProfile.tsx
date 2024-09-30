@@ -1,20 +1,18 @@
 import {
   Dimensions,
   Image,
-  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
+import React, { useCallback, useEffect, useState } from "react";
+import { btnStyle, common } from "../../assets/styles/Common";
 import { YoImages } from "../../assets/themes/YoImages";
-import { useNavigation } from "@react-navigation/native";
-import { getGradeList, getUsersDetails } from "../../apiconfig/SharedApis";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { getCategories, getGradeList, getUsersDetails } from "../../apiconfig/SharedApis";
 import {
-  getCategoryList,
   getUserInfo,
   requestLocationPermission,
   saveAsyncData,
@@ -43,7 +41,6 @@ const UserProfile = () => {
   const toast: any = useToast();
   const image: any = YoImages();
   const userInfo: any = getUserInfo();
-  const categoryList: any = getCategoryList();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
@@ -52,6 +49,7 @@ const UserProfile = () => {
   const [isBasicModal, setIsBasicModal] = useState<boolean>(false);
   const [isSpecilityModal, setIsSpecilityModal] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<any>({});
+  const [categoryList, setCategoryList] = useState<any>([]);
   const [selectedGrade, setSelectedGrade] = useState<any>({});
   const [selectedCategory, setselectedCategory] = useState<any>({});
   const [categoryType, setCategoryType] = useState<number>(
@@ -59,10 +57,14 @@ const UserProfile = () => {
   );
   const [academicClass, setAcademicClass] = useState(userInfo.studentGradeId);
 
-  useEffect(() => {
-    setselectedCategory(
-      categoryList.find((category: any) => category.id === categoryType)
-    );
+  useFocusEffect(useCallback(() => {
+    getCategoryData();
+    getGradeData();
+    requestLocationPermission();
+    getUserDetails();
+  }, []));
+
+  const getGradeData = () => {
     getGradeList(categoryType).then((result: any) => {
       if (result.data) {
         setSelectedGrade(
@@ -70,9 +72,18 @@ const UserProfile = () => {
         );
       }
     });
-    requestLocationPermission();
-    getUserDetails();
-  }, []);
+  }
+
+  const getCategoryData = () => {
+    getCategories().then((res: any) => {
+      setCategoryList(res.data);
+      setselectedCategory(
+        res.data?.length > 0 && res.data?.find((category: any) => category.id === userInfo?.category)
+      );
+    }).catch((error: any) => {
+      console.log('error', error)
+    })
+  }
 
   const updateInfo = (isUpdated: boolean) => {
     if (isUpdated) {
@@ -108,14 +119,12 @@ const UserProfile = () => {
               );
             }
           });
-          console.log("User info res", response?.data);
         }
         setTimeout(() => {
           setIsLoading(false);
         }, 200);
       })
       .catch((error: any) => {
-        console.log(error);
         setIsLoading(false);
       });
   };
@@ -323,14 +332,10 @@ const UserProfile = () => {
                         <Image
                           style={styles.cardImage}
                           resizeMode="contain"
-                          source={
-                            selectedCategory.id == 1
-                              ? image.knowledge
-                              : image.competition
-                          }
+                          source={{ uri: selectedCategory.icon }}
                         />
                         <Card.Title style={[styles.cardTitle, common.fs12]}>
-                          {selectedCategory.name}
+                          {selectedCategory.categoryName}
                         </Card.Title>
                       </Card>
                     )}
@@ -352,11 +357,7 @@ const UserProfile = () => {
                               : styles.cardImage
                           }
                           resizeMode="contain"
-                          source={
-                            categoryType == 1
-                              ? image.knowledge
-                              : image.competition
-                          }
+                          source={!selectedGrade?.icon ? image.knowledge : selectedGrade?.icon}
                         />
                         <Card.Title style={[styles.cardTitle, common.fs12]}>
                           {selectedGrade.name}

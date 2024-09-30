@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Dimensions,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -130,6 +131,7 @@ const SkillDetails = ({ route }: any) => {
       complexityLevel: skillDetails.complexity,
       isEnableTimer: skillDetails.isEnableTimer,
     };
+    console.log(payload)
 
     setIsProcessLoader(true);
 
@@ -161,20 +163,26 @@ const SkillDetails = ({ route }: any) => {
         </View>
       )}
       <ScrollView style={common.px12}>
-        {skillDetails?.title && (
-          <Text style={[common.h3Title, common.mtop10]}>
-            {skillDetails?.title}
-          </Text>
-        )}
+        <View style={[common.j_row, common.mt20, { alignItems: 'flex-start' }]}>
+          <View style={[common.pe5, { width: 60, alignItems: 'center' }]}>
+            {skillDetails?.icon &&
+              <Image source={{ uri: skillDetails?.icon }} height={32} width={32} />
+            }
+            <Text style={[common.rText, { maxWidth: 75 }]} numberOfLines={2}> {skillDetails?.subjectName}</Text>
+          </View>
+          <View style={{ width: width - 90 }}>
+            {skillDetails?.title && (
+              <Text style={[common.h3Title]}>
+                {skillDetails?.title}
+              </Text>
+            )}
+          </View>
+        </View>
 
         <View style={[common.row, common.mtop10]}>
           <View style={[cardStyle.row, common.pe5]}>
             <Icon name="laptop" size={12} />
-            <Text style={common.rText}>{skillDetails?.gradeName}</Text>
-          </View>
-          <View style={[cardStyle.row, common.pe5]}>
-            <Icon name="book" size={12} />
-            <Text style={common.rText}> {skillDetails?.subjectName}</Text>
+            <Text style={common.rText}> {skillDetails?.gradeName}</Text>
           </View>
           {skillDetails?.averageMarks > 0 && (
             <View style={[cardStyle.row, common.pe5]}>

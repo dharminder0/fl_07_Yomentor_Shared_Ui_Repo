@@ -198,7 +198,7 @@ export function StackNavigator() {
         name="SkillsTestList"
         component={SkillsTestList}
         options={{
-          title: "Skill Test List",
+          title: "Yo!Mentor Tests",
           headerStyle: { backgroundColor: YoColors.primary },
           headerTitleStyle: { color: "#fff" },
           headerLeft: leftBackBtn,

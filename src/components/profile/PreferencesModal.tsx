@@ -1,81 +1,75 @@
 import {
-  Alert,
   Dimensions,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
-import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import {
-  getAddress,
+  getCategories,
   getGradeList,
-  getStates,
-  upsertAddress,
   upsertUserInfo,
 } from "../../apiconfig/SharedApis";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PopupModal from "../common/PopupModal";
-import SelectModal from "../common/SelectModal";
 import {
-  getCategoryList,
-  getLocation,
   getUserInfo,
-  requestLocationPermission,
   saveAsyncData,
 } from "../../shared/sharedDetails";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Card } from "@rneui/base";
 import { Image } from "react-native";
 import { YoImages } from "../../assets/themes/YoImages";
 
 const PreferencesModal = ({
   isPreferencesModal = false,
-  closeModal = (value: boolean) => {},
+  closeModal = (value: boolean) => { },
 }) => {
   const userInfo = getUserInfo();
   const image: any = YoImages();
+  const navigation: any = useNavigation();
   const YoColors = useThemeColor();
+  const [isProcessLoader, setIsProcessLoader] = useState<boolean>(false);
   const [categoryType, setCategoryType] = useState<number>(userInfo?.category || 1);
   const [academicClass, setAcademicClass] = useState(userInfo.studentGradeId);
+  const [categoryList, setCategoryList] = useState<any>([]);
   const [classList, setClassList] = useState<any>([]);
   const { height, width } = Dimensions.get("window");
 
-  const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
-  const [isProcessLoader, setIsProcessLoader] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    getValues,
-    formState: { errors },
-  } = useForm();
+  // const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
 
   useEffect(() => {
     if (categoryType) {
       getGradeList(categoryType).then((result: any) => {
         if (result.data) {
           setClassList(result.data);
-          console.log('academicClass',academicClass)
-          console.log('categoryType', categoryType)
-          console.log(result.data)
         }
-      });
+      }).catch((error: any) => {
+        console.log(error)
+      })
     }
   }, [categoryType]);
 
+  useFocusEffect(useCallback(() => {
+    getCategoryData();
+  }, []));
+
+  const getCategoryData = () => {
+    getCategories().then((res: any) => {
+      setCategoryList(res.data);
+    }).catch((error: any) => {
+      console.log('error', error)
+    })
+  }
+
   const toggleModal = (isUpdated: boolean = false) => {
     closeModal(isUpdated); // Toggle the modal visibility state
-    reset();
   };
 
   const handleGradeChange = (id: any) => {
@@ -89,9 +83,9 @@ const PreferencesModal = ({
       dateOfBirth: !userInfo.dateOfBirth ? "" : userInfo.dateOfBirth,
       gender: !userInfo.gender ? "" : userInfo.gender,
       category: categoryType,
-      gradeId: id
-
+      gradeId: academicClass
     };
+    setIsProcessLoader(true);
     console.log('payload', payload);
     upsertUserInfo(payload)
       .then((response: any) => {
@@ -103,13 +97,12 @@ const PreferencesModal = ({
           dataObject.studentGradeId = id;
           dataObject.category = categoryType;
           saveAsyncData("userData", dataObject);
-          setIsPopupModalVisible(true);
-          setTimeout(() => {
-            setIsPopupModalVisible(false);
-            toggleModal(true);
-          }, 1000);
+          // setIsPopupModalVisible(true);
+          toggleModal(true);
+          setIsProcessLoader(false); (false);
+          navigation.goBack(null);
+          navigation.navigate("Home");
         }
-        console.log('response', response.data);
       })
       .catch((error: any) => {
         console.error("Error fetching :", error);
@@ -125,14 +118,14 @@ const PreferencesModal = ({
       style={{ margin: 0, justifyContent: "flex-end" }}
       useNativeDriver
     >
-      {isPopupModalVisible && (
+      {/* {isPopupModalVisible && (
         <PopupModal
           message="Preferences has been successfully updated."
           icon={"checkmark-circle"}
           color={"green"}
           iconSize={40}
         />
-      )}
+      )} */}
       <>
         <View
           style={{
@@ -144,7 +137,7 @@ const PreferencesModal = ({
           <View
             style={[
               cardStyle.j_row,
-              { paddingHorizontal: 12, alignItems: "center" },
+              common.p12
             ]}
           >
             <Text style={common.h3Title}>Update Preferences</Text>
@@ -168,18 +161,16 @@ const PreferencesModal = ({
             />
           </View>
           <ScrollView
-            style={{ maxHeight: height - 100 }}
+            style={{ maxHeight: height - 180 }}
             showsVerticalScrollIndicator={false}
           >
-            <View style={{ paddingHorizontal: 12 }}>
+            <View>
               <View style={styles.container}>
-                <Card.Title
-                  style={[common.my10, common.title, { textAlign: "left" }]}
-                >
-                  Are you preparing for:
+                <Card.Title style={[common.title, { textAlign: "left" }]}>
+                  What are you preparing for?
                 </Card.Title>
                 <View style={styles.cardWrapper}>
-                  {getCategoryList().map((item: any) => {
+                  {categoryList.map((item: any) => {
                     return (
                       <Card
                         key={item.id}
@@ -201,13 +192,9 @@ const PreferencesModal = ({
                           <Image
                             style={[common.my10, styles.cardImage]}
                             resizeMode="contain"
-                            source={
-                              item.id == 1 ? image.knowledge : image.competition
-                            }
+                            source={{ uri: item.icon }}
                           />
-                          <Card.Title style={common.rText}>
-                            {item.name}
-                          </Card.Title>
+                          <Text style={[common.rText, common.tCenter]}>{item.categoryName}</Text>
                         </Pressable>
                       </Card>
                     );
@@ -215,11 +202,7 @@ const PreferencesModal = ({
                 </View>
                 {classList && classList?.length > 0 && (
                   <>
-                    <Card.Title style={[{ textAlign: "left" }, common.title]}>
-                      {categoryType === 1
-                        ? "Please choose your current grade or academic level to help us tailor the skill tests to your curriculum:"
-                        : "Please choose the competitive exam you are preparing for so we can customize your practice tests:"}
-                    </Card.Title>
+                    <Card.Title style={[{ textAlign: "left" }, common.title]}>Choose the area you're focusing on</Card.Title>
                     <View style={styles.cardWrapper}>
                       {classList.map((item: any) => {
                         return (
@@ -229,7 +212,7 @@ const PreferencesModal = ({
                               styles.cardContainer,
                               {
                                 backgroundColor:
-                                academicClass == item.id
+                                  academicClass == item.id
                                     ? YoColors.bgColor
                                     : "white",
                               },
@@ -237,21 +220,15 @@ const PreferencesModal = ({
                           >
                             <Pressable
                               onPress={() => {
-                                handleGradeChange(item.id);
+                                setAcademicClass(item.id);
                               }}
                             >
                               <Image
                                 style={[common.my10, styles.cardImage]}
                                 resizeMode="contain"
-                                source={
-                                  categoryType == 1
-                                    ? image.knowledge
-                                    : image.competition
-                                }
+                                source={!item?.icon ? image.knowledge : { uri: item?.icon }}
                               />
-                              <Card.Title style={common.rText}>
-                                {item.name}
-                              </Card.Title>
+                              <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
                             </Pressable>
                           </Card>
                         );
@@ -262,6 +239,13 @@ const PreferencesModal = ({
               </View>
             </View>
           </ScrollView>
+          <Button title='Update'
+            loading={isProcessLoader}
+            onPress={handleGradeChange}
+            buttonStyle={[btnStyle.solid, { width: 120, alignSelf: 'center' }]}
+            titleStyle={btnStyle.solidTitle}
+            disabled={!categoryType || !academicClass}
+          />
         </View>
       </>
     </Modal>
@@ -287,17 +271,18 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flexDirection: "row",
-    justifyContent: "space-between",
     flexWrap: "wrap",
   },
   cardImage: {
     width: "100%",
-    height: 60,
+    height: 30,
+    marginVertical: 5
   },
   cardContainer: {
-    width: "48%",
+    width: "23%",
     padding: 5,
     margin: 0,
+    marginHorizontal: 3,
     marginBottom: 10,
   },
 });

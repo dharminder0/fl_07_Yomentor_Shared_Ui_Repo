@@ -18,10 +18,10 @@ const SkillResultModal = ({
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
     const { width } = Dimensions.get("screen");
-    const { isAlertModal, setIsAlertModal }: any = useStore();
+    const { isSkillModal, setIsSkillModal }: any = useStore();
     const userInfo: any = getUserInfo();
     const closeModal = () => {
-        setIsAlertModal(false);
+        setIsSkillModal(false);
     };
 
     const handleAttempTest = () => {
@@ -51,7 +51,7 @@ const SkillResultModal = ({
 
     return (
         <Modal
-            isVisible={isAlertModal}
+            isVisible={isSkillModal}
             onBackButtonPress={closeModal}
             swipeDirection="down"
             onBackdropPress={closeModal}

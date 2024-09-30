@@ -8,12 +8,12 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import HeaderView from "./common/HeaderView";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { cardStyle, common } from "../assets/styles/Common";
 import { YoImages } from "../assets/themes/YoImages";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   assignFavouriteBatch,
   assignStudentBatch,
@@ -52,12 +52,12 @@ const UserDetailList = ({ route }: { route: any }) => {
   const [isWithdrawModal, setIsWithdrawModal] = useState<boolean>(false);
   const [selectedBatchId, setSelectedBatchId] = useState<number>();
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     setIsLoading(true);
     getBatchesListbyEntity(1);
     getBatchesListbyEntity(2);
     getUserDetail();
-  }, [userInfo?.id]);
+  }, [userInfo?.id]));
 
   const getUserDetail = () => {
     setUserDetailList({});
@@ -362,49 +362,49 @@ const UserDetailList = ({ route }: { route: any }) => {
               )}
               {(userDetailList?.userAddress?.address1 ||
                 userDetailList?.userAddress?.address2) && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Ionicons
-                    name="location"
-                    size={14}
-                    color={YoColors.textTheme}
-                    style={{ marginTop: 3 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      width: "95%",
-                    }}
-                  >
-                    {userDetailList?.userAddress?.address1 && (
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetailList?.userAddress?.address1}
-                      </Text>
-                    )}
-                    {userDetailList?.userAddress?.address1 &&
-                      userDetailList?.userAddress?.address2 && <Text>, </Text>}
-                    {userDetailList?.userAddress?.address2 && (
-                      <Text>{userDetailList?.userAddress?.address2}</Text>
-                    )}
-                    {userDetailList?.userAddress?.address2 &&
-                      userDetailList?.userAddress?.city && <Text>, </Text>}
-                    {userDetailList?.userAddress?.city && (
-                      <Text>{userDetailList?.userAddress?.city}</Text>
-                    )}
-                    {userDetailList?.userAddress?.city &&
-                      userDetailList?.userAddress?.stateName && <Text>, </Text>}
-                    {userDetailList?.userAddress?.stateName && (
-                      <Text>{userDetailList?.userAddress?.stateName}</Text>
-                    )}
-                    {userDetailList?.userAddress?.stateName &&
-                      userDetailList?.userAddress?.pincode && <Text>, </Text>}
-                    {userDetailList?.userAddress?.pincode && (
-                      <Text>{userDetailList?.userAddress?.pincode}</Text>
-                    )}
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Ionicons
+                      name="location"
+                      size={14}
+                      color={YoColors.textTheme}
+                      style={{ marginTop: 3 }}
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        width: "95%",
+                      }}
+                    >
+                      {userDetailList?.userAddress?.address1 && (
+                        <Text style={{ paddingStart: 5 }}>
+                          {userDetailList?.userAddress?.address1}
+                        </Text>
+                      )}
+                      {userDetailList?.userAddress?.address1 &&
+                        userDetailList?.userAddress?.address2 && <Text>, </Text>}
+                      {userDetailList?.userAddress?.address2 && (
+                        <Text>{userDetailList?.userAddress?.address2}</Text>
+                      )}
+                      {userDetailList?.userAddress?.address2 &&
+                        userDetailList?.userAddress?.city && <Text>, </Text>}
+                      {userDetailList?.userAddress?.city && (
+                        <Text>{userDetailList?.userAddress?.city}</Text>
+                      )}
+                      {userDetailList?.userAddress?.city &&
+                        userDetailList?.userAddress?.stateName && <Text>, </Text>}
+                      {userDetailList?.userAddress?.stateName && (
+                        <Text>{userDetailList?.userAddress?.stateName}</Text>
+                      )}
+                      {userDetailList?.userAddress?.stateName &&
+                        userDetailList?.userAddress?.pincode && <Text>, </Text>}
+                      {userDetailList?.userAddress?.pincode && (
+                        <Text>{userDetailList?.userAddress?.pincode}</Text>
+                      )}
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
             </View>
 
             {openBatchList && openBatchList?.length > 0 && (
@@ -551,29 +551,29 @@ const UserDetailList = ({ route }: { route: any }) => {
 
                             {(item?.enrollmentstatusId === 1 ||
                               item?.enrollmentstatusId === 2) && (
-                              <Button
-                                title="Withdraw Enrollment"
-                                onPress={() => {
-                                  setIsWithdrawModal(true);
-                                  setSelectedBatchId(item?.id);
-                                }}
-                                buttonStyle={{
-                                  backgroundColor: YoColors.white,
-                                  paddingHorizontal: 7,
-                                  paddingVertical: 3,
-                                  borderWidth: 0.7,
-                                  borderColor: YoColors.primary,
-                                }}
-                                containerStyle={{ padding: 0 }}
-                                titleStyle={[
-                                  common.rText,
-                                  {
-                                    color: YoColors.primary,
-                                    fontWeight: "400",
-                                  },
-                                ]}
-                              />
-                            )}
+                                <Button
+                                  title="Withdraw Enrollment"
+                                  onPress={() => {
+                                    setIsWithdrawModal(true);
+                                    setSelectedBatchId(item?.id);
+                                  }}
+                                  buttonStyle={{
+                                    backgroundColor: YoColors.white,
+                                    paddingHorizontal: 7,
+                                    paddingVertical: 3,
+                                    borderWidth: 0.7,
+                                    borderColor: YoColors.primary,
+                                  }}
+                                  containerStyle={{ padding: 0 }}
+                                  titleStyle={[
+                                    common.rText,
+                                    {
+                                      color: YoColors.primary,
+                                      fontWeight: "400",
+                                    },
+                                  ]}
+                                />
+                              )}
                           </View>
 
                           <Button

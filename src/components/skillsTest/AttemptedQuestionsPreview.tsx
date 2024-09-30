@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { questionsAnswersBySkillId } from "../../apiconfig/SharedApis";
 import { common } from "../../assets/styles/Common";
+import { PieChart } from "react-native-gifted-charts";
+import { useThemeColor } from "../../assets/themes/useThemeColor";
 
 const AttemptedQuestionsPreview = ({ route }: any) => {
   const skillDetails: any = route.params?.skillDetails;
   const attemptId: any = route.params?.attemptId;
+  const YoColors = useThemeColor();
   const [attemptedQuestions, setAttemptedQuestions] = useState<any>([]);
+  const [chartData, setChartData] = useState<any>([{ value: 0, color: '#4CAF50' }, { color: '#F44336', value: 0, }]);
 
   useEffect(() => {
     getQuestionAnswerBySkillTestId();
@@ -17,6 +21,7 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
       .then((response: any) => {
         if (response.data && response.data?.length > 0) {
           setAttemptedQuestions(response.data);
+          getCorrectAndWrongCount(response.data);
         }
       })
       .catch((error: any) => {
@@ -24,9 +29,75 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
       });
   };
 
+  const getCorrectAndWrongCount = (questions: any[]) => {
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    questions.forEach((question) => {
+      const selectedAnswer = question.answerOptions.find(
+        (option: any) => option.id === question.selectedAnswerId
+      );
+
+      if (selectedAnswer?.isCorrect) {
+        correctCount++;
+      } else {
+        wrongCount++;
+      }
+    });
+    setChartData([
+      { value: correctCount, color: '#4CAF50' },
+      { value: wrongCount, color: '#F44336', },
+    ]);
+    return { correctCount, wrongCount };
+  };
+
+  const renderDot = (color: any) => {
+    return (
+      <View
+        style={{
+          height: 10,
+          width: 10,
+          borderRadius: 5,
+          backgroundColor: color,
+          marginRight: 10,
+        }}
+      />
+    );
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={[common.h3Title, common.mb20]}>{skillDetails?.title}</Text>
+      <Text style={[common.h3Title, common.mb10]}>{skillDetails?.title}</Text>
+      <View style={common.j_row}>
+        <PieChart
+          data={chartData}
+          donut
+          showGradient
+          sectionAutoFocus
+          radius={50}
+          innerRadius={25}
+          innerCircleColor={'#232B5D'}
+          centerLabelComponent={() => {
+            return (
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}>{(chartData[0]?.value / attemptedQuestions?.length) * 100}%</Text>
+              </View>
+            );
+          }}
+        />
+
+        <View style={{ width: '58%' }}>
+          <View style={common.row}>
+            {renderDot('#4CAF50')}
+            <Text>Correct Answers: {chartData[0].value}</Text>
+          </View>
+          <View style={common.row}>
+            {renderDot('#F44336')}
+            <Text>Wrong Answers: {chartData[1].value}</Text>
+          </View>
+        </View>
+
+      </View>
       {attemptedQuestions &&
         attemptedQuestions.length > 0 &&
         attemptedQuestions.map((question: any, index: number) => {
@@ -105,11 +176,11 @@ const styles = StyleSheet.create({
   },
   correctOption: {
     // backgroundColor: "rgba(0,128,0, 0.6)",
-    borderColor: "green",
+    borderColor: "#4CAF50",
   },
   incorrectOption: {
     // backgroundColor: "rgba(255,0,0, 0.7)",
-    borderColor: "red",
+    borderColor: "#F44336",
   },
 });
 

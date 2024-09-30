@@ -2,6 +2,7 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
 import {
   Dimensions,
   Image,
@@ -184,17 +185,17 @@ export const BottomNavigation = () => {
               )}
               {rn === MySkillTestTabs && (
                 <View style={{ alignItems: "center" }}>
-                  <Ionicons name="book" size={21} color={color} />
+                  <MaterialCommunityIcons name="clipboard-list-outline" size={21} color={color} />
                   <Text style={[styles.labelTitle, { color: color }]}>
-                    My {"\n"} Tests
+                    My Tests
                   </Text>
                 </View>
               )}
               {rn === AttemptHistoryTab && (
                 <View style={{ alignItems: "center" }}>
-                  <Ionicons name="book" size={21} color={color} />
+                  <Feather name="target" size={21} color={color} />
                   <Text style={[styles.labelTitle, { color: color }]}>
-                    My {"\n"} Attempts
+                    My Attempts
                   </Text>
                 </View>
               )}

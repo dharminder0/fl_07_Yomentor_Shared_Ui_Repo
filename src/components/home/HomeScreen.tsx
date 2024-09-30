@@ -279,7 +279,7 @@ const HomeScreen = () => {
 
           <Banner />
           {userInfo?.type === 3 && skillsList && skillsList?.length > 0 && userInfo?.studentGradeId > 0 && (
-            <TopSkillTest title="Yo!Mentor Trending Skill Tests" data={skillsList} />
+            <TopSkillTest title="Yo!Mentor Trending Tests" data={skillsList} />
           )}
 
           {/* {userInfo?.type === 3 && userInfo?.studentGradeId <= 0 && (
@@ -289,7 +289,7 @@ const HomeScreen = () => {
           )} */}
 
           {userInfo?.type === 3 &&
-            <TrendingSubjects title='Trending Subjects' id={userInfo?.studentGradeId} />
+            <TrendingSubjects title='Trending Areas' id={userInfo?.studentGradeId} />
           }
 
           {userInfo?.type === 3 && userInfo?.studentGradeId > 0 && (

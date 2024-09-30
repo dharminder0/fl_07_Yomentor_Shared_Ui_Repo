@@ -1,32 +1,18 @@
-import {
-    ActivityIndicator,
-    Dimensions,
-    FlatList,
-    Image,
-    Platform,
-    Pressable,
-    RefreshControl,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { Button, Card } from "@rneui/base";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
-import { getUserInfo } from "../../shared/sharedDetails";
-import { useThemeColor } from "../../assets/themes/useThemeColor";
-import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
+import { ActivityIndicator, Dimensions, Image, Pressable, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View, VirtualizedList } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { YoImages } from '../../assets/themes/YoImages';
+import { getComplexityLevel, getUserInfo } from '../../shared/sharedDetails';
+import { useThemeColor } from '../../assets/themes/useThemeColor';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { getGradeList, getSkilsList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Loading from "../../screens/Loading";
-import NoDataView from "../../screens/NoDataView";
-import { getSkilsList, getSubjectByGradeId } from "../../apiconfig/SharedApis";
-import Modal from "react-native-modal";
-import { YoImages } from "../../assets/themes/YoImages";
-import HeaderView from "../common/HeaderView";
-import AddSkillTestModal from "../skillsTest/AddSkillTestModal";
+import { Button, Card } from '@rneui/base';
+import { btnStyle, cardStyle, common } from '../../assets/styles/Common';
+import { Chip, Input, SearchBar } from '@rneui/themed';
+import debounce from 'lodash.debounce';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Modal from 'react-native-modal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const MySkillTests = () => {
     const { height, width } = Dimensions.get("window");
@@ -34,370 +20,475 @@ const MySkillTests = () => {
     const userInfo: any = getUserInfo();
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
-    const [isLoading, setIsLoading] = useState(false);
-    const [isFilter, setIsFilter] = useState(false);
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [isBottomLoader, setIsBottomLoader] = useState(false);
-    const [refreshLoader, setRefreshLoader] = useState(false);
+
     const [pageIndex, setPageIndex] = useState(1);
-    const [searchText, setSearchText] = useState<any>("");
-    const [skillsList, setSkillsList] = useState<any>([]);
+    const [pageSize, setPageSize] = useState(10);
+    const [skillList, setSkillList] = useState<any>([]);
+    const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [bottomLoading, setBottomLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [isFilterModal, setIsFilterModal] = useState(false);
+
+    const [selectedGrade, setSelectedGrade] = useState<any>(userInfo?.studentGradeId);
+    const [gradeId, setGradeId] = useState<any>(0);
+    const [selectedSubject, setSelectedSubject] = useState<any>(0);
+    const [complexityLevel, setComplexityLevel] = useState<any>(0);
     const [subjectList, setSubjectList] = useState<any>([]);
-    const [selectedSubject, setSelectedSubject] = useState<any>(null);
+    const [shouldFetch, setShouldFetch] = useState(false);
+
+    const getSkilsListData = (isRefreshing = false) => {
+        if (loading) return; // Prevent multiple API calls while loading
+        if (bottomLoading) return; // Prevent multiple API calls while loading
+        setBottomLoading(true);
+        setRefreshing(isRefreshing);
+
+        let payload = {
+            userId: userInfo.id,
+            searchText: search,
+            gradeId: gradeId,
+            pageSize,
+            pageIndex: isRefreshing ? 1 : pageIndex, // Reset to page 1 on refresh
+            subjectId: selectedSubject,
+            complexityLevel: complexityLevel,
+        };
+        console.log("payload", payload);
+        getSkilsList(payload)
+            .then((response: any) => {
+                if (response.data?.length > 0) {
+                    if (isRefreshing) {
+                        setSkillList(response.data); // Replace skillList if it's a new search
+                        setPageIndex(2); // Next page would be 2
+                    } else {
+                        setSkillList((prev: any) => [...prev, ...response.data]); // Append data for pagination
+                        setPageIndex((prev) => prev + 1); // Increment pageIndex
+                    }
+                } else {
+                    setHasMoreData(false); // No more data available
+                }
+            })
+            .catch((error: any) => {
+                console.error("Error fetching :", error);
+            })
+            .finally(() => {
+                setBottomLoading(false);
+                setLoading(false);
+                setShouldFetch(false);
+                setRefreshing(false);
+            });
+    };
+
+    const handleSearch = (text: string) => {
+        setSearch(text);
+        setSkillList([]); // Clear the list if the search is cleared
+        setHasMoreData(true); // Reset data availability
+        setPageIndex(1); // Reset page index
+    };
+
+    useFocusEffect(useCallback(() => {
+        setLoading(true);
+        setPageIndex(1); // Reset page index when search changes
+        setHasMoreData(true); // Reset the flag for more data
+        getSkilsListData(true); // Fetch data on search change (refresh)
+    }, [search]));
 
     useEffect(() => {
-        setIsLoading(true);
-        getSkilsListData();
-    }, []);
-
-    useEffect(() => {
-        getSkilsListData();
+        setHasMoreData(true); // Reset the flag for more data
+        getSkilsListData(true); // Fetch data on search change (refresh)
     }, [pageIndex]);
 
     useEffect(() => {
-        if (searchText?.length > 3) {
-            getSkilsListData();
-        }
-        if (searchText?.length === 0) {
-            getSkilsListData();
-        }
-    }, [searchText]);
+        getGradeList(userInfo?.category).then((result: any) => {
+            if (result.data) {
+                setSelectedGrade(result.data.find((grade: any) => grade.id === userInfo?.studentGradeId));
+            }
+        });
 
-    (() => {
         getSubjectByGradeId(userInfo?.studentGradeId).then((result: any) => {
             if (result?.data && result.data.length > 0) {
                 setSubjectList(result.data);
             }
         });
-    })();
+    }, [userInfo?.category, userInfo?.studentGradeId])
 
-    const getSkilsListData = () => {
-        let payload: any = {
-            searchText: searchText,
-            pageSize: 10,
-            pageIndex: pageIndex,
-            subjectId: !selectedSubject ? 0 : selectedSubject,
-            userId: userInfo.id
-        };
-        getSkilsList(payload)
-            .then((response: any) => {
-                if (pageIndex === 1) {
-                    setSkillsList([]);
-                }
-                if (response.data && response.data.length > 0) {
-                    setSkillsList((prevList: any) => [...prevList, ...response.data]);
-                }
-                setTimeout(() => {
-                    setIsLoading(false);
-                    setRefreshLoader(false);
-                    setIsBottomLoader(false);
-                }, 500);
-            })
-            .catch((error: any) => {
-                setTimeout(() => {
-                    setIsLoading(false);
-                    setRefreshLoader(false);
-                    setIsBottomLoader(false);
-                }, 500);
-                console.error("Error fetching :", error);
-            });
-    };
-
-    const handleSearch = () => {
-        setPageIndex(1);
-        getSkilsListData();
-    };
-
-    const handleLoadMore = () => {
-        if (!isBottomLoader) {
-            setIsBottomLoader(true);
-            setPageIndex(pageIndex + 1);
+    const loadMoreData = () => {
+        if (hasMoreData && !bottomLoading) {
+            getSkilsListData(); // Fetch next page
         }
     };
 
     const handleFilter = (type: any) => {
         if (type === 'clear') {
-            setSelectedSubject(null)
+            setSelectedSubject(null);
+            setComplexityLevel(null);
+            setGradeId(0);
         }
-        getSkilsListData();
-        setIsFilter(false);
+        setShouldFetch(true);
+        setIsFilterModal(false);
+    }
+
+    const handleChips = (type: string) => {
+        if (type === 'subject') {
+            setSelectedSubject(0);
+        } else if (type === 'complexity') {
+            setComplexityLevel(0);
+        } else if (type === 'grade') {
+            setGradeId(0);
+        }
+        setShouldFetch(true);
     }
 
     useEffect(() => {
-        if (!selectedSubject) {
-            getSkilsListData();
+        if (shouldFetch) {
+            setLoading(true);
+            setSkillList([]);
+            setPageIndex(1);
+            getSkilsListData(true);
         }
-    }, [selectedSubject]);
+    }, [shouldFetch]);
 
-    const renderItem = ({ item, index }: any) => (
+    const renderItem = ({ item }: any) => (
         <TouchableOpacity
             activeOpacity={0.8}
             onPress={() =>
                 navigation.navigate("SkillTestDetails", { skillId: item?.id })
             }
+            key={item?.id}
+            style={[styles.itemContainer, { backgroundColor: YoColors.background }]}
         >
-            <Card
-                containerStyle={[
-                    cardStyle.container,
-                    {
-                        backgroundColor: YoColors.background,
-                    },
-                ]}
-                key={index}
-            >
-                <View style={cardStyle.row}>
-                    <View
-                        style={{
-                            width: width - 50,
-                        }}
-                    >
-                        <View style={[cardStyle.row]}>
-                            {item?.title && (
-                                <Text
-                                    style={[common.title, { width: "100%" }]}
-                                    numberOfLines={2}
-                                >
-                                    {item?.title}
-                                </Text>
-                            )}
-                        </View>
+            <View style={[common.j_row]}>
+                <View style={[common.pe5, { width: 60 }]}>
+                    {item?.icon &&
+                        <Image source={{ uri: item?.icon }} height={32} width={32} style={{ alignSelf: 'center' }} />
+                    }
+                    <Text style={[common.rText, common.tCenter]} numberOfLines={2}>{item?.subjectName}</Text>
+                </View>
+                <View
+                    style={{
+                        width: '83%',
+                    }}
+                >
+                    <View style={[cardStyle.row]}>
+                        {item?.title && (
+                            <Text
+                                style={[common.title, { width: "100%" }]}
+                                numberOfLines={2}
+                            >
+                                {item?.title}
+                            </Text>
+                        )}
+                    </View>
 
-                        <View style={[common.row, common.my5]}>
-                            <View style={cardStyle.row}>
-                                <Icon name="laptop" size={12} />
-                                <Text style={common.rText}>{item?.gradeName}</Text>
-                            </View>
-                            <View style={[cardStyle.row, common.ps5]}>
-                                <Icon name="book" size={12} />
-                                <Text style={common.rText}> {item?.subjectName}</Text>
-                            </View>
-                            {item?.averageMarks > 0 && (
-                                <View style={[cardStyle.row, common.ps5]}>
-                                    <Icon name="shield-alt" size={12} />
-                                    <Text style={common.rText}> Avg Score: {item?.averageMarks}</Text>
-                                </View>
-                            )}
-                            {item?.attemptCount > 0 && (
-                                <View style={[cardStyle.row, common.ps5]}>
-                                    <Icon name="users" size={12} />
-                                    <Text style={common.rText}> Attempted By: {item?.attemptCount}</Text>
-                                </View>
-                            )}
+                    <View style={[common.row, common.my5]}>
+                        <View style={[cardStyle.row, common.pe5]}>
+                            <Icon name="laptop" size={12} />
+                            <Text style={common.rText}>{item?.gradeName}</Text>
                         </View>
-
-                        {item?.description && (
-                            <View style={[cardStyle.row, common.mb5]}>
-                                <Text style={common.rText} numberOfLines={2}>
-                                    {item?.description}
-                                </Text>
+                        {item?.averageMarks > 0 && (
+                            <View style={[cardStyle.row, common.pe5]}>
+                                <Icon name="shield-alt" size={12} />
+                                <Text style={common.rText}> Avg Score: {item?.averageMarks}</Text>
+                            </View>
+                        )}
+                        {item?.attemptCount > 0 && (
+                            <View style={[cardStyle.row, common.pe5]}>
+                                <Icon name="users" size={12} />
+                                <Text style={common.rText}> Attempts: {item?.attemptCount}</Text>
                             </View>
                         )}
                     </View>
                 </View>
-            </Card>
+            </View>
         </TouchableOpacity>
     );
 
+    const keyExtractor = (item: any) => item.id.toString();
+    const getItem = (data: any, index: any) => data[index];
+    const getItemCount = (data: any) => data.length;
+
     return (
-        <>
-            <View style={common.container}>
-                <View style={[common.j_row, common.mtop10, { alignItems: 'center' }]}>
-                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <View style={{ width: '82%' }}>
-                            <TextInput
-                                placeholder="Search Skill Test"
-                                onChangeText={(text: any) => setSearchText(text)}
-                                value={searchText}
-                                style={[common.input, { marginBottom: 0, height: 40 }]}
-                                onSubmitEditing={handleSearch}
-                                placeholderTextColor={YoColors.placeholderText}
+        <View>
+            <View style={[common.px12, { height: (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? 80 : 55) }]}>
+                <View style={[common.j_row, common.mtop10, { width: width - 25, alignItems: 'center' }]}>
+                    <View style={{ width: width - 110 }}>
+                        <TextInput
+                            placeholder="Search Skill Test"
+                            onChangeText={handleSearch}
+                            value={search}
+                            style={[common.input, { marginBottom: 0, height: 40 }]}
+                            placeholderTextColor={YoColors.placeholderText}
+                        />
+
+                        {search && search?.length > 0 ? (
+                            <Ionicons
+                                onPress={() => handleSearch("")}
+                                name="close-sharp"
+                                size={21}
+                                style={{ position: "absolute", right: 10, top: 12 }}
                             />
-                            {searchText && searchText?.length > 0 ? (
-                                <Ionicons
-                                    onPress={() => setSearchText("")}
-                                    name="close-sharp"
-                                    size={21}
-                                    style={{ position: "absolute", right: 10, top: 12 }}
-                                />
-                            ) : (
-                                <Ionicons
-                                    name="search-outline"
-                                    size={21}
-                                    style={{ position: "absolute", right: 10, top: 10 }}
-                                />
-                            )}
-                        </View>
-                        <View style={{ width: '15%' }}>
-                            {
-                                // isFilter &&
-                                <Button radius={"sm"} type="clear" onPress={() => setIsFilter(true)}>
-                                    <Icon name="filter" color={YoColors.primary} size={18} />
-                                </Button>
-                                // :
-                                // <Button radius={"sm"} type="clear" onPress={() => setIsFilter(true)}>
-                                //   <Icon name="filter" color={YoColors.primary} size={18} />
-                                // </Button>
-                            }
-                        </View>
+                        ) : (
+                            <Ionicons
+                                name="search-outline"
+                                size={21}
+                                style={{ position: "absolute", right: 10, top: 10 }}
+                            />
+                        )}
                     </View>
-                    {/* <View style={{ width: '48%' }}>
-            <Button
-              title="Create AI Skill Test"
-              onPress={() => setIsOpenModal(true)}
-              buttonStyle={[btnStyle.outline, common.px12, { height: 45 }]}
-              titleStyle={[btnStyle.outlineTitle, common.fs12]}
-              containerStyle={[common.my10]}
-            />
-          </View> */}
+                    <View style={{ width: 80, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Button radius={"sm"} type="outline"
+                            onPress={() => navigation.navigate("CreateSkillTest")}
+                            buttonStyle={{ borderColor: YoColors.primary }}
+                        >
+                            <Ionicons name="add" color={YoColors.primary} size={21} />
+                        </Button>
+                        <Button radius={"sm"} type="clear" onPress={() => setIsFilterModal(true)}>
+                            <Ionicons name="filter" color={YoColors.primary} size={18} />
+                        </Button>
+                    </View>
                 </View>
+                <View style={common.row}>
+                    {gradeId > 0 &&
+                        <Chip
+                            title={selectedGrade?.name}
+                            icon={{
+                                name: 'close',
+                                type: 'ionicons',
+                                size: 12,
+                                color: YoColors.primary,
+                            }}
+                            onPress={() => handleChips('grade')}
+                            iconRight
+                            type="outline"
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
+                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            containerStyle={common.mr10}
+                        />
+                    }
+                    {complexityLevel > 0 &&
+                        <Chip
+                            title={(getComplexityLevel().find((item: any) => complexityLevel == item.id))?.name}
+                            icon={{
+                                name: 'close',
+                                type: 'ionicons',
+                                size: 12,
+                                color: YoColors.primary,
+                            }}
+                            onPress={() => handleChips('complexity')}
+                            iconRight
+                            type="outline"
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
+                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            containerStyle={common.mr10}
+                        />
+                    }
 
-                {skillsList && skillsList.length > 0 ? (
-                    <FlatList
-                        data={skillsList}
-                        keyExtractor={(item: any) => item?.id}
-                        renderItem={renderItem}
-                        style={{
-                            height: '84%',
-                            marginTop: 5,
-                        }}
-                        windowSize={Platform.OS === "ios" ? height - 265 : height - 120}
-                        showsVerticalScrollIndicator={false}
-                        onScrollEndDrag={handleLoadMore}
-                        onEndReachedThreshold={0.5}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshLoader}
-                                onRefresh={() => {
-                                    setRefreshLoader(true);
-                                    setPageIndex(1);
-                                }}
-                            />
-                        }
-                        ListFooterComponent={
-                            <>
-                                {isBottomLoader && (
-                                    <View style={{ height: 50 }}>
-                                        <ActivityIndicator size="large" />
-                                    </View>
-                                )}
-                            </>
-                        }
-                    />
-                ) : isLoading ? (
-                    <Loading />
-                ) : (
-                    <NoDataView />
-                )}
-
-                {isOpenModal &&
-                    <AddSkillTestModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
-                }
-
-
+                    {selectedSubject > 0 &&
+                        <Chip
+                            title={(subjectList.find((item: any) => selectedSubject == item.id))?.name}
+                            icon={{
+                                name: 'close',
+                                type: 'ionicons',
+                                size: 12,
+                                color: YoColors.primary,
+                            }}
+                            onPress={() => handleChips('subject')}
+                            iconRight
+                            type="outline"
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
+                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            containerStyle={common.mr10}
+                        />
+                    }
+                </View>
             </View>
 
-            {isFilter &&
-                <Modal
-                    isVisible={isFilter}
-                    onBackButtonPress={() => setIsFilter(false)}
-                    swipeDirection="down"
-                    onBackdropPress={() => setIsFilter(false)}
-                    style={{ margin: 0, alignItems: "center", justifyContent: 'flex-end' }}
-                    useNativeDriver
+            {skillList?.length > 0 ?
+                <VirtualizedList
+                    data={skillList}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
+                    getItem={getItem}
+                    getItemCount={getItemCount}
+                    initialNumToRender={10} // Number of items to render initially
+                    showsVerticalScrollIndicator={false}
+                    style={{ height: height - (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? 180 : 160) }}
+                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? 180 : 160)}
+                    contentContainerStyle={[common.px12, common.py5]}
+                    onScrollEndDrag={loadMoreData}
+                    onEndReachedThreshold={0.7}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={() => getSkilsListData(true)}
+                        />
+                    }
+                    ListFooterComponent={
+                        <>
+                            {bottomLoading && <ActivityIndicator />}
+                        </>
+                    }
+                /> : loading ?
+                    <View style={{ height: height - 170, justifyContent: 'center' }}>
+                        <ActivityIndicator size='large' />
+                    </View> :
+                    <View style={[{ height: '90%', justifyContent: 'center', alignItems: 'center', }]}>
+                        <View style={[common.mb10, { alignItems: 'center', borderRadius: 6, width: '100%' }]}>
+                            <Image
+                                style={[common.mtop10, { width: 200, height: 240 }]}
+                                resizeMode="contain"
+                                source={require('../../assets/images/onboard.png')}
+                            />
+                            {(search?.length > 0 || selectedSubject > 0 || complexityLevel > 0 || gradeId > 0) ?
+                                <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>Sorry, we couldn't find any tests matching your search criteria. Create a new test tailored to your needs.</Text>
+                                :
+                                <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>You haven't created any tests yet! Design a test tailored to your needs and take control of your learning.</Text>
+                            }
+                            <Button
+                                title="Create New Test"
+                                onPress={() => navigation.navigate("CreateSkillTest")}
+                                buttonStyle={[btnStyle.solid]}
+                                titleStyle={[common.fs12]}
+                                containerStyle={[common.mb10, { width: 150 }]}
+                            />
+                        </View>
+                    </View>
+            }
+
+            <Modal
+                isVisible={isFilterModal}
+                onBackButtonPress={() => handleFilter('clear')}
+                onBackdropPress={() => handleFilter('clear')}
+                swipeDirection="down"
+                style={{ margin: 0, alignItems: "center", justifyContent: 'flex-end' }}
+                useNativeDriver
+            >
+                <View
+                    style={[common.px12, {
+                        backgroundColor: YoColors.background,
+                        minHeight: '42%',
+                        maxHeight: '85%',
+                        width: '100%',
+                    }]}
                 >
-                    <View
-                        style={[common.px12, {
-                            backgroundColor: YoColors.background,
-                            minHeight: '42%',
-                            maxHeight: '70%',
-                            width: '100%',
-                        }]}
-                    >
-                        <Text style={[common.h3Title, common.my10]}>Select Filters</Text>
+                    <Text style={[common.h3Title, common.my10]}>Select Filters</Text>
 
+                    <ScrollView>
                         <View>
-                            <View>
-                                <Text style={[common.title, common.mb10]}>Grade</Text>
-
-                                {userInfo?.studentGradeId &&
-                                    <Card containerStyle={[styles.cardContainer, { backgroundColor: YoColors.bgColor }]}>
+                            <Text style={[common.title, common.mb10]}>Grade</Text>
+                            {userInfo?.studentGradeId &&
+                                <Card containerStyle={[styles.cardContainer, { backgroundColor: (selectedGrade?.id == gradeId ? YoColors.bgColor : 'white') }]}>
+                                    <Pressable onPress={() => { setGradeId(userInfo?.studentGradeId); }}>
                                         <Image
                                             style={styles.cardImage}
                                             resizeMode="contain"
-                                            source={image.knowledge}
+                                            source={!selectedGrade?.icon ? image.knowledge : { uri: selectedGrade.icon }}
                                         />
-                                        <Card.Title style={styles.cardTitle}>{userInfo?.studentGradeId}</Card.Title>
-                                    </Card>
-                                }
+                                        <Text style={[common.rText, common.tCenter]}>{selectedGrade?.name}</Text>
+                                    </Pressable>
+                                </Card>
+                            }
+                        </View>
+                        <View>
+                            <Text style={[common.title, common.mb10]}>Area</Text>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {subjectList && subjectList?.length > 0 &&
+                                    subjectList.map((item: any) => {
+                                        return (
+                                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (selectedSubject == item.id ? YoColors.bgColor : 'white') }]}>
+                                                <Pressable onPress={() => { setSelectedSubject(item.id); }}>
+                                                    <Image
+                                                        style={styles.cardImage}
+                                                        resizeMode="contain"
+                                                        source={!item?.icon ? image.subject : { uri: item.icon }}
+                                                    />
+                                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                                </Pressable>
+                                            </Card>
+                                        )
+                                    })}
                             </View>
-                            <View>
-                                <Text style={[common.title, common.mb10]}>Subject</Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                    {subjectList && subjectList?.length > 0 ?
-                                        subjectList.map((item: any) => {
-                                            return (
-                                                <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (selectedSubject == item.id ? YoColors.bgColor : 'white') }]}>
-                                                    <Pressable onPress={() => { setSelectedSubject(item.id); }}>
-                                                        <Image
-                                                            style={styles.cardImage}
-                                                            resizeMode="contain"
-                                                            source={image.subject}
-                                                        />
-                                                        <Card.Title style={styles.cardTitle}>{item.name}</Card.Title>
-                                                    </Pressable>
-                                                </Card>
-                                            )
-                                        })
-                                        : null}
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Button
-                                    title="Clear"
-                                    type="outline"
-                                    buttonStyle={{ borderColor: YoColors.primary }}
-                                    titleStyle={btnStyle.outlineTitle}
-                                    containerStyle={{
-                                        width: '40%',
-                                        marginVertical: 10,
-                                        marginRight: 12
-                                    }}
-                                    onPress={() => handleFilter('clear')}
-                                />
-                                <Button
-                                    title="Apply"
-                                    buttonStyle={{
-                                        backgroundColor: YoColors.primary,
-                                        borderRadius: 3,
-                                    }}
-                                    containerStyle={{
-                                        width: '40%',
-                                        marginVertical: 10,
-                                    }}
-                                    onPress={() => handleFilter('apply')}
-                                />
+                        </View>
+                        <View>
+                            <Text style={[common.title, common.mb10]}>Complexity</Text>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {getComplexityLevel().map((item: any) => {
+                                    return (
+                                        <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (complexityLevel == item.id ? YoColors.bgColor : 'white') }]}>
+                                            <Pressable onPress={() => { setComplexityLevel(item.id); }}>
+                                                <Image
+                                                    style={styles.cardImage}
+                                                    resizeMode="contain"
+                                                    source={image.complexity}
+                                                />
+                                                <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                            </Pressable>
+                                        </Card>
+                                    )
+                                })}
                             </View>
                         </View>
 
-                    </View>
-                </Modal>
-            }
-        </>
-    );
-};
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                            <Button
+                                title="Clear"
+                                type="outline"
+                                buttonStyle={{ borderColor: YoColors.primary }}
+                                titleStyle={btnStyle.outlineTitle}
+                                containerStyle={{
+                                    width: '40%',
+                                    marginVertical: 10,
+                                    marginRight: 12
+                                }}
+                                onPress={() => handleFilter('clear')}
+                            />
+                            <Button
+                                title="Apply"
+                                buttonStyle={{
+                                    backgroundColor: YoColors.primary,
+                                    borderRadius: 3,
+                                }}
+                                containerStyle={{
+                                    width: '40%',
+                                    marginVertical: 10,
+                                }}
+                                onPress={() => handleFilter('apply')}
+                            />
+                        </View>
+                    </ScrollView>
 
-export default MySkillTests;
+                </View>
+            </Modal>
+        </View>
+    )
+}
+
+export default MySkillTests
 
 const styles = StyleSheet.create({
+    itemContainer: {
+        borderRadius: 6,
+        marginBottom: 8,
+        padding: 6
+    },
+    itemText: {
+        fontSize: 16,
+    },
+    inputContainer: {
+        borderWidth: 1,
+        borderRadius: 4,
+    },
+    inputStyle: {
+        padding: 10,
+        borderRadius: 4,
+    },
     cardContainer: {
-        width: '24%',
+        width: Dimensions.get('window').width / 4.56,
         padding: 5,
         margin: 0,
         marginBottom: 10,
         marginRight: 5
     },
-
     cardImage: {
         width: "100%",
         height: 30,
@@ -406,4 +497,4 @@ const styles = StyleSheet.create({
     cardTitle: {
         marginBottom: 0
     },
-});
+})

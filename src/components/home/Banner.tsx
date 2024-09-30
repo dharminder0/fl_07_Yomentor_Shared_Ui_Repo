@@ -19,22 +19,27 @@ const Banner = () => {
     }, []));
 
     return (
-        <View style={[common.my10, { height: 185 }]}>
-            <Swiper style={styles.wrapper}
-                dotStyle={[styles.setDots]}
-                activeDotStyle={styles.activeDotStyle}
-            >
-                {bannerList?.length > 0 && bannerList?.map((item: any) => (
-                    <View style={styles.slide}>
-                        <ImageBackground
-                            style={[styles.backImgStyle]}
-                            source={{ uri: item?.bannerUrl }}
-                            resizeMode="cover"
-                        />
-                    </View>
-                ))}
-            </Swiper>
-        </View>
+        <>
+            {bannerList?.length > 0 &&
+
+                <View style={[common.my10, { height: 185 }]}>
+                    <Swiper style={styles.wrapper}
+                        dotStyle={[styles.setDots]}
+                        activeDotStyle={styles.activeDotStyle}
+                    >
+                        {bannerList?.length > 0 && bannerList?.map((item: any) => (
+                            <View style={styles.slide}>
+                                <ImageBackground
+                                    style={[styles.backImgStyle]}
+                                    source={{ uri: item?.bannerUrl }}
+                                    resizeMode="cover"
+                                />
+                            </View>
+                        ))}
+                    </Swiper>
+                </View>
+            }
+        </>
     )
 }
 

@@ -1,20 +1,18 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { BarChart, LineChart } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
 import { SkillTestStatics } from '../../apiconfig/SharedApis';
 import { getUserInfo } from '../../shared/sharedDetails';
 import { common } from '../../assets/styles/Common';
-import { Button, Card } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
-import { Calendar } from 'react-native-calendars';
-import Modal from 'react-native-modal';
-import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 
 const SkillStastics = () => {
     const userInfo: any = getUserInfo();
     const YoColors = useThemeColor();
-    const [data, setData] = useState<any>();
-    const [isAllZero, setIsAllZero] = useState<boolean>(true);
+    const navigation: any = useNavigation();
+    const [data, setData] = useState<any>([]);
     const [activeCode, setActiveCode] = useState('Weekly');
 
     const [filters, setFilters] = useState([
@@ -38,51 +36,32 @@ const SkillStastics = () => {
         SkillTestStatics(payload).then((result: any) => {
             if (result?.data && result.data.length > 0) {
                 setData(result?.data);
-                for (const item of result?.data || []) {
-                    if (item.value > 0) {
-                        setIsAllZero(false);
-                        break;
-                    } else if (item.value == 0) {
-                        setIsAllZero(true);
-                    }
-                }
             }
         });
     }
 
     return (
         <View>
-            <Text style={[common.h3Title, common.my10, { textAlign: 'left' }]}>Progress Over Time <Text style={[common.rText, { fontWeight: '400' }]}>(Number of tests you've completed daily to track your preparation journey)</Text></Text>
-
+            <Text style={[common.h3Title, common.mtop10, { textAlign: 'left' }]}>Your Statistics </Text>
+            <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Track the number of tests you've completed over time</Text>
             <View style={[{ alignItems: 'center', backgroundColor: '#fff', borderRadius: 6 }]}>
-                {
-                    !isAllZero &&
+                {data?.length > 0 && !data?.every((obj: any) => obj.value == 0) &&
                     <>
                         <View style={[common.row, common.my10, { justifyContent: 'space-around' }]}>
                             {filters?.map((item: any) => (
                                 <Button
                                     type='outline'
                                     title={item.name}
-                                    buttonStyle={{ borderColor: YoColors.primary, paddingHorizontal: 5, paddingVertical: 3 }}
-                                    titleStyle={[common.fs12, { color: YoColors.primary }]}
+                                    buttonStyle={{ paddingHorizontal: 5, paddingVertical: 3, borderColor: YoColors.placeholderText }}
+                                    titleStyle={[common.fs12, { color: YoColors.placeholderText }]}
                                     disabled={item.code == activeCode}
+                                    disabledStyle={{ borderColor: YoColors.primary }}
+                                    disabledTitleStyle={{ color: YoColors.primary }}
                                     onPress={() => setActiveCode(item.code)}
                                     containerStyle={{ marginRight: 5 }}
                                 />
                             ))}
-
                         </View>
-
-                        {/* <LineChart data={data}
-                            areaChart
-                            color1={YoColors.primary}
-                            startFillColor={YoColors.primary}
-                            xAxisLabelTextStyle={{ fontSize: 10 }}
-
-                            initialSpacing={0}
-                            spacing={41}
-                            hideDataPoints
-                        /> */}
                         <View>
                             <BarChart
                                 isAnimated={true}
@@ -108,11 +87,16 @@ const SkillStastics = () => {
                         </View>
                     </>
                 }
-                {
-                    !!isAllZero &&
+                {data?.length > 0 && data?.every((obj: any) => obj.value == 0) &&
                     <View style={common.p12}>
                         <Text style={[common.h1Title, common.mb10, { textAlign: 'center' }]}>Oops</Text>
-                        <Text style={{ textAlign: 'center' }}>No tests taken yet! Jump in now to boost your learning and track your progress!</Text>
+                        <Text style={[common.tCenter, common.mb10]}>No tests taken yet! Jump in now to boost your learning and track your progress!</Text>
+                        <Button title='Explore Available Tests'
+                            onPress={() => navigation.navigate('SkillsTestList')}
+                            titleStyle={[common.fs12]}
+                            buttonStyle={{ borderColor: YoColors.primary, backgroundColor: YoColors.primary, width: 170 }}
+                            containerStyle={{ alignSelf: 'center' }}
+                        />
                     </View>
                 }
             </View>

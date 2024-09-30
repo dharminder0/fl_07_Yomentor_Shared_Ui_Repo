@@ -1,39 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Dimensions, ScrollView, Image, Pressable, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, Pressable, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Card } from '@rneui/themed';
-import { Controller, useForm } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import SelectModal from '../common/SelectModal';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
-    getCategoryList,
     getComplexityLevel,
-    getDayList,
-    getFeeTypes,
     getLanguage,
     getNoQuestions,
     getTimeBounds,
     getUserInfo,
 } from "../../shared/sharedDetails";
-import { createSkillTest, getGradeList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
+import { createSkillTest, getCategories, getGradeList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
 import useStore from '../../store/useStore';
 import AlertModal from '../common/AlertModal';
 import { YoImages } from '../../assets/themes/YoImages';
-import { btnStyle, common } from '../../assets/styles/Common';
+import { common } from '../../assets/styles/Common';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
-import ProcessLoader from '../../screens/ProcessLoader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import { Touchable } from 'react-native';
 
 const CreateSkillTest = () => {
     const image: any = YoImages();
     const userInfo: any = getUserInfo();
     const navigation: any = useNavigation();
     const YoColors: any = useThemeColor();
-    const categoryList: any = getCategoryList();
 
-    const [step, setStep] = useState(0); // Current step
+    const [categoryList, setCategoryList] = useState<any>([]);
+    // const [step, setStep] = useState(0); // Current step
     const [isTimeModal, setIsTimeModal] = useState(false);
     const [isTry, setIsTry] = useState(false);
     const [category, setCategory] = useState(!userInfo?.category ? 1 : userInfo?.category);
@@ -57,9 +50,9 @@ const CreateSkillTest = () => {
 
     const { isAlertModal, setIsAlertModal }: any = useStore();
 
-    const nextStep = () => setStep((prevStep) => prevStep + 1);
+    // const nextStep = () => setStep((prevStep) => prevStep + 1);
     useEffect(() => {
-        !isTry && setselectedCategory(categoryList.find((category: any) => category.id === categoryType));
+        !isTry && setselectedCategory(categoryList?.length > 0 && categoryList.find((category: any) => category.id === categoryType));
         getGradeList(categoryType).then((result: any) => {
             if (result.data) {
                 setClassList(result.data);
@@ -69,6 +62,19 @@ const CreateSkillTest = () => {
         setIsRefreshSelectModal(0);
         handleGradeChange(userInfo.studentGradeId);
     }, [categoryType]);
+
+    useFocusEffect(useCallback(() => {
+        getCategoryData();
+    }, []));
+
+    const getCategoryData = async () => {
+        getCategories().then((res: any) => {
+            setCategoryList(res.data);
+            setselectedCategory(res.data?.length > 0 && res.data.find((category: any) => category.id === categoryType));
+        }).catch((error: any) => {
+            console.log('error', error)
+        })
+    }
 
     const handleGradeChange = (grade: any) => {
         setSubjectList([]);
@@ -82,7 +88,6 @@ const CreateSkillTest = () => {
     };
 
     const handleToggle = () => {
-        // setIsTry(!isTry);
         setIsTry(true);
     }
 
@@ -99,15 +104,17 @@ const CreateSkillTest = () => {
             timerValue,
             isEnableTimer: isTimer
         };
+        console.log("payload", payload);
 
         setIsProcessLoader(true);
         createSkillTest(payload)
             .then((response: any) => {
                 setIsAlertModal(true);
-                if (response.data) {
+                if (response !== 0) {
                     setTimeout(() => {
                         setIsAlertModal(false);
                         setIsProcessLoader(false);
+                        navigation.goBack(null);
                         navigation.navigate("SkillTestDetails", { skillId: response.data })
                     }, 2000);
                 }
@@ -132,40 +139,42 @@ const CreateSkillTest = () => {
                 </View>
                 <View style={styles.cardWrapper}>
                     {!isTry && selectedCategory &&
-                        <Card key={selectedCategory.id} containerStyle={[styles.cardContainer1, common.py10, common.mr10, { width: '30%' }]}>
+                        <Card key={selectedCategory.id} containerStyle={[styles.cardContainer, { backgroundColor: (categoryType == userInfo?.category ? YoColors.bgColor : 'white') }]}>
                             <Pressable onPress={() => { setCategory(selectedCategory.id); setCategoryType(selectedCategory.id); }}>
-                                <Image
+
+                                {selectedCategory?.icon && <Image
                                     style={styles.cardImage}
                                     resizeMode="contain"
-                                    source={selectedCategory.id == 1 ? image.knowledge : image.competition}
+                                    source={{ uri: selectedCategory.icon }}
                                 />
-                                <Card.Title style={[styles.cardTitle, common.fs12]}>{selectedCategory.name}</Card.Title>
+                                }
+                                <Text style={[common.rText, common.tCenter]}>{selectedCategory.categoryName}</Text>
                             </Pressable>
                         </Card>
                     }
 
                     {!isTry && selectedGrade &&
-                        <Card key={selectedGrade.id} containerStyle={[categoryType == 1 ? styles.cardContainer : styles.cardContainer1, common.py10, { width: '30%' }]}>
+                        <Card key={selectedGrade.id} containerStyle={[styles.cardContainer, { backgroundColor: (academicClass == userInfo?.studentGradeId ? YoColors.bgColor : 'white') }]}>
                             <Pressable onPress={() => { setAcademicClass(selectedGrade.id); handleGradeChange(selectedGrade.id); }}>
                                 <Image
-                                    style={categoryType == 1 ? styles.cardImage : styles.cardImage}
+                                    style={styles.cardImage}
                                     resizeMode="contain"
                                     source={categoryType == 1 ? image.knowledge : image.competition}
                                 />
-                                <Card.Title style={[styles.cardTitle, common.fs12]}>{selectedGrade.name}</Card.Title>
+                                <Text style={[common.rText, common.tCenter]}>{selectedGrade.name}</Text>
                             </Pressable>
                         </Card>
                     }
                     {isTry && categoryList.map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer1, common.py10, common.mr10, { width: '30%', backgroundColor: (categoryType == item.id ? YoColors.bgColor : 'white') }]}>
+                            <Card key={item.id} containerStyle={[styles.cardContainer, common.mr10, { backgroundColor: (categoryType == item.id ? YoColors.bgColor : 'white') }]}>
                                 <Pressable onPress={() => { setCategory(item.id); setCategoryType(item.id); }}>
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
-                                        source={item.id == 1 ? image.knowledge : image.competition}
-                                    />
-                                    <Card.Title style={styles.cardTitle}>{item.name}</Card.Title>
+                                        source={!item?.icon ? image.competition : { uri: item?.icon }} />
+
+                                    <Text style={[common.rText, common.tCenter]}>{item.categoryName}</Text>
                                 </Pressable>
                             </Card>
                         )
@@ -176,28 +185,17 @@ const CreateSkillTest = () => {
                 {
                     isTry &&
                     <>
-                        <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>
-                            {categoryType === 1 ?
-                                <>
-                                    <Text>Grade </Text>
-                                    <Text style={[common.rText, { fontWeight: '400' }]}>(Select your grade level)</Text>
-                                </>
-                                :
-                                <>
-                                    <Text>Exam Name </Text>
-                                    <Text style={[common.rText, { fontWeight: '400' }]}>(Select an exam you are preparing for)</Text>
-                                </>}
-                        </Card.Title>
-                        <View style={styles.cardWrapper1}>
+                        <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Choose the area you're focusing on</Card.Title>
+                        <View style={styles.cardWrapper}>
                             {classList.map((item: any) => {
                                 return (
-                                    <Card key={item.id} containerStyle={[categoryType == 1 ? styles.cardContainer : styles.cardContainer1, common.py10, { backgroundColor: (academicClass == item.id ? YoColors.bgColor : 'white') }]}>
+                                    <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (academicClass == item.id ? YoColors.bgColor : 'white') }]}>
                                         <Pressable onPress={() => { setAcademicClass(item.id); handleGradeChange(item.id); }}>
                                             <Image
-                                                style={categoryType == 1 ? styles.cardImage : styles.cardImage1}
+                                                style={styles.cardImage}
                                                 resizeMode="contain"
-                                                source={categoryType == 1 ? image.knowledge : image.competition} />
-                                            <Card.Title style={styles.cardTitle}>{item.name}</Card.Title>
+                                                source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
+                                            <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
                                         </Pressable>
                                     </Card>
                                 );
@@ -207,9 +205,9 @@ const CreateSkillTest = () => {
                 }
 
 
-                <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Subject
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Choose a subject to tailor the test)</Text>
-                </Card.Title>
+                <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Area </Card.Title>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose an area to tailor the test</Text>
+
                 <View style={[styles.cardWrapper, common.mb10]}>
                     {subjectList.map((item: any) => {
                         return (
@@ -218,18 +216,17 @@ const CreateSkillTest = () => {
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
-                                        source={image.subject}
-                                    />
-                                    <Card.Title style={[styles.cardTitle, common.fs12]}>{item.name}</Card.Title>
+                                        source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
+                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
                                 </Pressable>
                             </Card>
                         )
                     })}
                 </View>
 
-                <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Topic
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Enter a topic (e.g., Algebra) to focus on a specific area)</Text>
-                </Card.Title>
+                <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Topic </Card.Title>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Enter a topic you want to practice (e.g., Algebra)</Text>
+
                 <TextInput
                     style={styles.input}
                     placeholder="Enter topic (e.g., Algebra)"
@@ -238,9 +235,9 @@ const CreateSkillTest = () => {
                 // onEndEditing={() => nextStep()}
                 />
 
-                <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Complexity
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Choose the complexity level to match your skill level)</Text>
-                </Card.Title>
+                <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Complexity</Card.Title>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose the complexity level to match your skill level</Text>
+
                 <View style={styles.cardWrapper}>
                     {getComplexityLevel().map((item: any) => {
                         return (
@@ -249,18 +246,17 @@ const CreateSkillTest = () => {
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
-                                        source={image.complexity}
-                                    />
-                                    <Card.Title style={[styles.cardTitle, common.fs12]}>{item.name}</Card.Title>
+                                        source={!item?.icon ? image.complexity : { uri: item?.icon }} />
+                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
                                 </Pressable>
                             </Card>
                         )
                     })}
                 </View>
 
-                <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>No. of questions
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Choose the number of questions to adjust the length of your test)</Text>
-                </Card.Title>
+                <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>No. of questions</Card.Title>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose the number of questions to adjust the length of your test</Text>
+
                 <View style={styles.cardWrapper}>
                     {getNoQuestions().map((item: any) => {
                         return (
@@ -269,18 +265,17 @@ const CreateSkillTest = () => {
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
-                                        source={image.question}
-                                    />
-                                    <Card.Title style={[styles.cardTitle, common.fs12]}>{item.name}</Card.Title>
+                                        source={!item?.icon ? image.question : { uri: item?.icon }} />
+                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
                                 </Pressable>
                             </Card>
                         )
                     })}
                 </View>
 
-                <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Language
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Select the language for your test to ensure it matches your preferred language)</Text>
-                </Card.Title>
+                <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Language</Card.Title>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Select the language for your test as per your preference</Text>
+
                 <View style={styles.cardWrapper}>
                     {getLanguage().map((item: any) => {
                         return (
@@ -320,7 +315,7 @@ const CreateSkillTest = () => {
                     onPress={handleSubmit}
                     buttonStyle={{ backgroundColor: YoColors.primary, paddingHorizontal: 25 }}
                     titleStyle={[common.fs12]}
-                    disabled={!language || !subject || !complexityLevel || !numberOfQuestions || !topic || !category || !academicClass}
+                    disabled={!language || !subject || !complexityLevel || !numberOfQuestions || !topic || !category || !academicClass || !categoryType}
                     containerStyle={[common.my10, { alignSelf: 'center' }]}
                 />
 
@@ -349,8 +344,6 @@ const CreateSkillTest = () => {
                     </View>
                 </Modal>
             </>
-
-
         );
     };
 
@@ -394,11 +387,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
-    cardWrapper1: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap'
-    },
+    // cardWrapper1: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     flexWrap: 'wrap'
+    // },
     cardContainer: {
         width: '23%',
         padding: 5,

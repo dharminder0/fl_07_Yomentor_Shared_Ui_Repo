@@ -282,6 +282,10 @@ export async function getBanners(userType: any, pageType: any = 1): Promise<any>
   return AxiosInterceptor.get(`Banners/GetBnners?userType=${userType}&pageType=${pageType}`);
 }
 
-export async function getAttemptHitory(userId: any): Promise<any> {
-  return AxiosInterceptor.post(`SkillTest/AttemptHitory?userId=${userId}`);
+export async function getAttemptHitory(payload: any): Promise<any> {
+  return AxiosInterceptor.post(`SkillTest/AttemptHitory`, payload);
+}
+
+export async function getCategories(): Promise<any> {
+  return AxiosInterceptor.get(`Grade/Category/list`);
 }
