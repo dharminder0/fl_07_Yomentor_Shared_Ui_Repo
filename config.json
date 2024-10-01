@@ -1,5 +1,5 @@
 {
-  "ApiUrl": "https://fl-01-ymen-shared-api-cin-prod.azurewebsites.net/api/",
+  "ApiUrl": "https://fl-01-ymen-shared-api-cin-test.azurewebsites.net/api/",
   "ApiBearer": "Bearer YoMntrP1ADGhoepymjasdhas",
   "MapBoxToken": "pk.eyJ1IjoiYW1pdDMwIiwiYSI6ImNsdjJnc2piaTBmbjcybXFnaDkzeHR0dzIifQ.5oe6p61ibJesDxwZAxeCHQ"
 }

@@ -140,14 +140,14 @@ const UserProfile = () => {
           }}
         />
       }
-      style={{ backgroundColor: YoColors.background }}
+      style={{ backgroundColor: YoColors.bgColor }}
     >
       {isLoading ? (
         <View style={{ height: height }}>
           <Loading />
         </View>
       ) : (
-        <>
+        <View style={common.p12}>
           <View
             style={{
               flexDirection: "row",
@@ -189,397 +189,284 @@ const UserProfile = () => {
               />
             </View>
           </View>
-          <View
-            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
-          >
-            <View
-              style={[
-                common.j_row,
-                {
-                  alignItems: "flex-start",
-                },
-              ]}
-            >
-              <Text style={[common.mb5, common.h2Title]}>Profile</Text>
+
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+            <View style={[common.j_row, common.mb10]}>
+              <Text style={[common.h2Title]}>Profile</Text>
               <Button
+                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: YoColors.primary, }}
                 onPress={() => setIsBasicModal(true)}
-                title="EDIT"
-                titleStyle={[common.rText, { color: YoColors.primary }]}
-                buttonStyle={[
-                  btnStyle.btnCross,
-                  {
-                    paddingHorizontal: 1,
-                    paddingStart: 15,
-                    backgroundColor: YoColors.background,
-                  },
-                ]}
+                title="Edit"
+                titleStyle={[common.fs12, { color: YoColors.primary }]}
+                type="clear"
+                buttonStyle={common.p0}
               />
             </View>
-            <View>
-              {userDetails?.firstName && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Icon
-                    name="user-alt"
-                    size={12}
-                    color={YoColors.primary}
-                    style={{ marginTop: 3 }}
+
+            {userDetails?.firstName && (
+              <View style={common.row}>
+                <Icon
+                  name="user-alt"
+                  size={12}
+                  color={YoColors.primary}
+                  style={{ marginTop: 3 }}
+                />
+                <Text style={common.ps5}>{userDetails?.firstName + " " + userDetails?.lastName}</Text>
+              </View>
+            )}
+
+            {userDetails?.phone && (
+              <View style={common.row}>
+                <Icon
+                  name="phone-alt"
+                  size={12}
+                  color={YoColors.primary}
+                  style={{ marginTop: 3 }}
+                />
+                <Text style={common.ps5}>{userDetails?.phone}</Text>
+              </View>
+            )}
+
+            {userDetails?.email && (
+              <View style={common.row}>
+                <FontAwesome
+                  name="envelope"
+                  size={12}
+                  color={YoColors.primary}
+                  style={{ marginTop: 3 }}
+                />
+                <Text style={common.ps5}>{userDetails?.email}</Text>
+              </View>
+            )}
+
+            {userDetails?.gender && (
+              <View style={common.row}>
+                <FontAwesome5
+                  name="transgender"
+                  size={14}
+                  color={YoColors.primary}
+                  style={{ marginTop: 3 }}
+                />
+                <Text style={common.ps5}>{userDetails?.gender}</Text>
+              </View>
+            )}
+
+            {userDetails?.dateOfBirth && (
+              <View style={common.row}>
+                <FontAwesome5
+                  name="birthday-cake"
+                  size={14}
+                  color={YoColors.primary}
+                  style={{ marginTop: 3 }}
+                />
+                <Text style={common.ps5}>{moment(userDetails?.dateOfBirth).format("DD-MM-YYYY")}</Text>
+              </View>
+            )}
+
+          </View>
+
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+            <View style={[common.j_row]}>
+              <Text style={[common.h2Title]}>Prefrences</Text>
+              <Button
+                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: YoColors.primary, }}
+                onPress={() => setIsPreferencesModal(true)}
+                title="Edit"
+                titleStyle={[common.fs12, { color: YoColors.primary }]}
+                type="clear"
+                buttonStyle={common.p0}
+              />
+            </View>
+
+            <View style={styles.cardWrapper}>
+              {selectedCategory && (
+                <Card
+                  key={selectedCategory.id}
+                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: YoColors.bgColor, borderColor: YoColors.primary }]}>
+                  <Image
+                    style={styles.cardImage}
+                    resizeMode="contain"
+                    source={{ uri: selectedCategory?.icon }}
                   />
-                  <Text style={{ paddingStart: 5, color: YoColors.primary }}>
-                    {userDetails?.firstName + " " + userDetails?.lastName}
-                  </Text>
-                </View>
+                  <Text style={[common.rText, common.tCenter]}>{selectedCategory.categoryName}</Text>
+                </Card>
               )}
 
-              {userDetails?.phone && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Icon
-                    name="phone-alt"
-                    size={12}
-                    color={YoColors.primary}
-                    style={{ marginTop: 3 }}
+              {selectedGrade && (
+                <Card
+                  key={selectedGrade.id}
+                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: YoColors.bgColor, borderColor: YoColors.primary }]}>
+                  <Image
+                    style={categoryType == 1 ? styles.cardImage : styles.cardImage}
+                    resizeMode="contain"
+                    source={!selectedGrade?.icon ? image.knowledge : selectedGrade?.icon}
                   />
-                  <Text style={{ paddingStart: 5 }}>{userDetails?.phone}</Text>
-                </View>
+                  <Text style={[common.rText, common.tCenter]}>{selectedGrade.name}</Text>
+                </Card>
               )}
+            </View>
+          </View>
 
-              {userDetails?.email && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <FontAwesome
-                    name="envelope"
-                    size={12}
-                    color={YoColors.primary}
-                    style={{ marginTop: 3 }}
-                  />
-                  <Text style={{ paddingStart: 5 }}>{userDetails?.email}</Text>
-                </View>
-              )}
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+            <View style={[common.j_row]} >
+              <Text style={[common.h2Title]}>Address</Text>
+              <Button
+                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: YoColors.primary, }}
+                onPress={() => setIsAddressModal(true)}
+                title="Edit"
+                titleStyle={[common.fs12, { color: YoColors.primary }]}
+                type="clear"
+                buttonStyle={common.p0}
+              />
+            </View>
 
-              {userDetails?.gender && (
+            <View style={common.row}>
+              {userDetails?.userAddress?.address1 && (
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <FontAwesome5
-                    name="transgender"
-                    size={14}
-                    color={YoColors.primary}
-                    style={{ marginTop: 3 }}
-                  />
-                  <Text style={{ paddingStart: 5 }}>{userDetails?.gender}</Text>
-                </View>
-              )}
-
-              {userDetails?.dateOfBirth && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <FontAwesome5
-                    name="birthday-cake"
+                  <Ionicons
+                    name="location"
                     size={14}
                     color={YoColors.primary}
                     style={{ marginTop: 3 }}
                   />
                   <Text style={{ paddingStart: 5 }}>
-                    {moment(userDetails?.dateOfBirth).format("DD-MM-YYYY")}
+                    {userDetails?.userAddress?.address1}{" "}
+                    {userDetails?.userAddress?.city}{" "}
+                    {userDetails?.userAddress?.pincode}{" "}
+                    {userDetails?.userAddress?.stateName}
                   </Text>
                 </View>
+              )}
+              {userDetails?.userAddress?.address2 && (
+                <Text>{userDetails?.userAddress?.address2} </Text>
               )}
             </View>
           </View>
 
-          <View
-            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
-          >
-            <View
-              style={[
-                common.j_row,
-                {
-                  alignItems: "flex-start",
-                },
-              ]}
-            >
-              <Text style={[common.mb5, common.h2Title]}>Prefrences</Text>
-              <Button
-                onPress={() => setIsPreferencesModal(true)}
-                title="EDIT"
-                titleStyle={[common.rText, { color: YoColors.primary }]}
-                buttonStyle={[
-                  btnStyle.btnCross,
-                  {
-                    paddingHorizontal: 1,
-                    paddingStart: 15,
-                    backgroundColor: YoColors.background,
-                  },
-                ]}
-              />
-            </View>
-            <View>
-              <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    width: "95%",
-                  }}
-                >
-                  <View style={styles.cardWrapper}>
-                    {selectedCategory && (
-                      <Card
-                        key={selectedCategory.id}
-                        containerStyle={[
-                          styles.cardContainer,
-                          common.py10,
-                          common.mr10,
-                          { width: 100 },
-                        ]}
-                      >
-                        <Image
-                          style={styles.cardImage}
-                          resizeMode="contain"
-                          source={{ uri: selectedCategory.icon }}
-                        />
-                        <Card.Title style={[styles.cardTitle, common.fs12]}>
-                          {selectedCategory.categoryName}
-                        </Card.Title>
-                      </Card>
-                    )}
-
-                    {selectedGrade && (
-                      <Card
-                        key={selectedGrade.id}
-                        containerStyle={[
-                          styles.cardContainer,
-                          common.py10,
-                          common.mr10,
-                          { width: 100 },
-                        ]}
-                      >
-                        <Image
-                          style={
-                            categoryType == 1
-                              ? styles.cardImage
-                              : styles.cardImage
-                          }
-                          resizeMode="contain"
-                          source={!selectedGrade?.icon ? image.knowledge : selectedGrade?.icon}
-                        />
-                        <Card.Title style={[styles.cardTitle, common.fs12]}>
-                          {selectedGrade.name}
-                        </Card.Title>
-                      </Card>
-                    )}
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]}
-          >
-            <View
-              style={[
-                common.j_row,
-                {
-                  alignItems: "flex-start",
-                },
-              ]}
-            >
-              <Text style={[common.mb5, common.h2Title]}>Address</Text>
-              <Button
-                onPress={() => setIsAddressModal(true)}
-                title="EDIT"
-                titleStyle={[common.rText, { color: YoColors.primary }]}
-                buttonStyle={[
-                  btnStyle.btnCross,
-                  {
-                    paddingHorizontal: 1,
-                    paddingStart: 15,
-                    backgroundColor: YoColors.background,
-                  },
-                ]}
-              />
-            </View>
-            <View>
-              <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    width: "95%",
-                  }}
-                >
-                  {userDetails?.userAddress?.address1 && (
-                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <Ionicons
-                        name="location"
-                        size={14}
-                        color={YoColors.primary}
-                        style={{ marginTop: 3 }}
-                      />
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetails?.userAddress?.address1}{" "}
-                        {userDetails?.userAddress?.city}{" "}
-                        {userDetails?.userAddress?.pincode}{" "}
-                        {userDetails?.userAddress?.stateName}
-                      </Text>
-                    </View>
-                  )}
-                  {userDetails?.userAddress?.address2 && (
-                    <Text>{userDetails?.userAddress?.address2} </Text>
-                  )}
-                </View>
-              </View>
-            </View>
-          </View>
-
           {userInfo?.type === 1 && (
-            <>
+            <View
+              style={[
+                common.p12,
+                { borderTopWidth: 8, borderTopColor: "#ccc" },
+              ]}
+            >
               <View
                 style={[
-                  common.p12,
-                  { borderTopWidth: 8, borderTopColor: "#ccc" },
+                  common.j_row,
+                  {
+                    alignItems: "flex-start",
+                  },
                 ]}
               >
-                <View
-                  style={[
-                    common.j_row,
+                <Text style={[common.mb5, common.h2Title]}>Profile</Text>
+
+                <Button
+                  onPress={() => setModalVisible(true)}
+                  icon={<Icon name="pencil-alt" size={16} />}
+                  buttonStyle={[
+                    btnStyle.btnCross,
                     {
-                      alignItems: "flex-start",
+                      paddingHorizontal: 1,
+                      paddingStart: 15,
+                      backgroundColor: YoColors.background,
                     },
                   ]}
-                >
-                  <Text style={[common.mb5, common.h2Title]}>Profile</Text>
-
-                  <Button
-                    onPress={() => setModalVisible(true)}
-                    icon={<Icon name="pencil-alt" size={16} />}
-                    buttonStyle={[
-                      btnStyle.btnCross,
-                      {
-                        paddingHorizontal: 1,
-                        paddingStart: 15,
-                        backgroundColor: YoColors.background,
-                      },
-                    ]}
-                  />
-                </View>
-                <View>
-                  {userDetails?.teacherProfile?.education && (
-                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <Icon
-                        name="user-graduate"
-                        size={12}
-                        color={YoColors.primary}
-                        style={{ marginTop: 3 }}
-                      />
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetails?.teacherProfile?.education}
-                      </Text>
-                    </View>
-                  )}
-
-                  {userDetails?.teacherProfile?.experience && (
-                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <FontAwesome5
-                        name="chalkboard-teacher"
-                        size={12}
-                        color={YoColors.primary}
-                        style={{ marginTop: 3 }}
-                      />
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetails?.teacherProfile?.experience +
-                          " years of experience"}
-                      </Text>
-                    </View>
-                  )}
-
-                  {userDetails?.teacherProfile?.about && (
-                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <Icon
-                        name="info-circle"
-                        size={12}
-                        style={{ marginTop: 2 }}
-                        color={YoColors.primary}
-                      />
-                      <Text style={{ paddingStart: 5 }}>
-                        {userDetails?.teacherProfile?.about}
-                      </Text>
-                    </View>
-                  )}
-                </View>
+                />
               </View>
+              <View>
+                {userDetails?.teacherProfile?.education && (
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Icon
+                      name="user-graduate"
+                      size={12}
+                      color={YoColors.primary}
+                      style={{ marginTop: 3 }}
+                    />
+                    <Text style={{ paddingStart: 5 }}>
+                      {userDetails?.teacherProfile?.education}
+                    </Text>
+                  </View>
+                )}
 
-              {/* <View style={[common.p12]}>
-                <View
-                  style={[
-                    common.j_row,
-                    {
-                      alignItems: "flex-start",
-                    },
-                  ]}
-                >
-                  <Text style={[common.mb5, common.h2Title]}>Specialties</Text>
-                  <Button
-                    onPress={() => setIsSpecilityModal(true)}
-                    icon={<Icon name="pencil-alt" size={16} />}
-                    buttonStyle={[
-                      btnStyle.btnCross,
-                      {
-                        paddingHorizontal: 1,
-                        paddingStart: 15,
-                      },
-                    ]}
-                  />
-                </View>
+                {userDetails?.teacherProfile?.experience && (
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <FontAwesome5
+                      name="chalkboard-teacher"
+                      size={12}
+                      color={YoColors.primary}
+                      style={{ marginTop: 3 }}
+                    />
+                    <Text style={{ paddingStart: 5 }}>
+                      {userDetails?.teacherProfile?.experience +
+                        " years of experience"}
+                    </Text>
+                  </View>
+                )}
 
-                {userDetails?.teacherSpeciality?.gradeSubjectList?.length > 0 &&
-                  userDetails?.teacherSpeciality?.gradeSubjectList?.map(
-                    (item: any, index: number) => (
-                      <Text key={index}>
-                        {item.gradeName + " - " + item.subjectName}
-                      </Text>
-                    )
-                  )}
-              </View> */}
-            </>
+                {userDetails?.teacherProfile?.about && (
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Icon
+                      name="info-circle"
+                      size={12}
+                      style={{ marginTop: 2 }}
+                      color={YoColors.primary}
+                    />
+                    <Text style={{ paddingStart: 5 }}>
+                      {userDetails?.teacherProfile?.about}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
           )}
-        </>
-      )}
+        </View>
+      )
+      }
 
-      {isBasicModal && (
-        <BasicInfoUpdateModal
-          isBasicModal={isBasicModal}
-          closeModal={(value) => updateInfo(value)}
-          dataToEdit={userDetails}
-        />
-      )}
+      {
+        isBasicModal && (
+          <BasicInfoUpdateModal
+            isBasicModal={isBasicModal}
+            closeModal={(value) => updateInfo(value)}
+            dataToEdit={userDetails}
+          />
+        )
+      }
 
-      {isModalVisible && (
-        <ProfileUpdateModal
-          isBasicModal={isModalVisible}
-          closeModal={(value) => updateInfo(value)}
-          dataToEdit={userDetails}
-        />
-      )}
+      {
+        isModalVisible && (
+          <ProfileUpdateModal
+            isBasicModal={isModalVisible}
+            closeModal={(value) => updateInfo(value)}
+            dataToEdit={userDetails}
+          />
+        )
+      }
 
-      {isAddressModal && (
-        <AddressUpdateModal
-          isAddressModal={isAddressModal}
-          closeModal={(value) => updateInfo(value)}
-          userId={userInfo?.id}
-        />
-      )}
+      {
+        isAddressModal && (
+          <AddressUpdateModal
+            isAddressModal={isAddressModal}
+            closeModal={(value) => updateInfo(value)}
+            userId={userInfo?.id}
+          />
+        )
+      }
 
-      {isPreferencesModal && (
-        <PreferencesModal
-          isPreferencesModal={isPreferencesModal}
-          closeModal={(value) => updateInfo(value)}
-        />
-      )}
+      {
+        isPreferencesModal && (
+          <PreferencesModal
+            isPreferencesModal={isPreferencesModal}
+            closeModal={(value) => updateInfo(value)}
+          />
+        )
+      }
 
       <SpecialityModal
         isSpecilityModal={isSpecilityModal}
         setIsSpecilityModal={setIsSpecilityModal}
       />
-    </ScrollView>
+    </ScrollView >
   );
 };
 
@@ -599,17 +486,13 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   cardContainer: {
-    width: "23%",
+    width: "24%",
     padding: 5,
     margin: 0,
     marginBottom: 10,
     marginRight: 5.5,
-  },
-  cardContainer1: {
-    width: "48%",
-    padding: 5,
-    margin: 0,
-    marginBottom: 10,
+    borderRadius: 6,
+    elevation: 0
   },
   cardImage1: {
     width: "100%",
