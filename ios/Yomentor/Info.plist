@@ -31,12 +31,12 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Yomentor need access to your photo library to allow you to upload and share photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Yomentor need access to your location to provide accurate location-based features, even when the app is not in use.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Yomentor need access to your location to provide accurate location-based features while you are using the app.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

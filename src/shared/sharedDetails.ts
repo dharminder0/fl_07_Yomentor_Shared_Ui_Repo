@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import configData from "../../config.json";
-import { firebase } from "@react-native-firebase/messaging";
+// import { firebase } from "@react-native-firebase/messaging";
 
 export const saveAsyncData = async (key: string, data: any) => {
   try {
@@ -551,31 +551,31 @@ export const requestNotificationPermission = async () => {
   }
 };
 
-export const GetFCMToken = () => {
-  AsyncStorage.getItem("fcmtoken").then((result: any) => {
-    if (!result) {
-      const messaging = firebase.messaging();
-      messaging
-        .requestPermission()
-        .then(() => {
-          messaging
-            .getToken()
-            .then((fcmtoken: any) => {
-              AsyncStorage.setItem("fcmtoken", fcmtoken);
-              return fcmtoken;
-            })
-            .catch((error: any) => {
-              console.log("Error retrieving FCM token:", error);
-            });
-        })
-        .catch((error: any) => {
-          console.log("Error requesting permission:", error);
-        });
-    } else if (result) {
-      return result;
-    }
-  });
-};
+// export const GetFCMToken = () => {
+//   AsyncStorage.getItem("fcmtoken").then((result: any) => {
+//     if (!result) {
+//       const messaging = firebase.messaging();
+//       messaging
+//         .requestPermission()
+//         .then(() => {
+//           messaging
+//             .getToken()
+//             .then((fcmtoken: any) => {
+//               AsyncStorage.setItem("fcmtoken", fcmtoken);
+//               return fcmtoken;
+//             })
+//             .catch((error: any) => {
+//               console.log("Error retrieving FCM token:", error);
+//             });
+//         })
+//         .catch((error: any) => {
+//           console.log("Error requesting permission:", error);
+//         });
+//     } else if (result) {
+//       return result;
+//     }
+//   });
+// };
 
 const notifyInfo: any = {
   channelId: "YomentorNotify",

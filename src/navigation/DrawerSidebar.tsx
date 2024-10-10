@@ -112,6 +112,7 @@ const DrawerSidebar = () => {
           padding: 8,
           flex: 1,
           backgroundColor: YoColors.background,
+          justifyContent: 'space-between'
         }}
       >
         <View>
@@ -151,22 +152,12 @@ const DrawerSidebar = () => {
           )}
         </View>
 
-        <View
-          style={{
-            height: 20,
-            position: "absolute",
-            left: 15,
-            bottom: 12,
-          }}
-        >
+        <View style={{ height: 50 }}>
           <Button
             onPress={logoutUser}
-            buttonStyle={{
-              padding: 0,
-              paddingEnd: 12,
-              backgroundColor: "none",
-            }}
             title="Logout"
+            type="clear"
+            buttonStyle={[common.p0, { width: 70 }]}
             titleStyle={[common.fs12, { color: YoColors.primary }]}
             icon={
               <MaterialCommunityIcons
@@ -175,9 +166,6 @@ const DrawerSidebar = () => {
                 color={YoColors.primary}
               />
             }
-            containerStyle={{
-              justifyContent: "center",
-            }}
           />
         </View>
       </View>
