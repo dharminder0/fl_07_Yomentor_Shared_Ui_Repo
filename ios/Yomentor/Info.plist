@@ -30,6 +30,8 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+		<key>NSLocalNetworkUsageDescription</key>
+		<string>App requires access to the local network to communicate with the Metro bundler on your development machine.</string>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Yomentor need access to your photo library to allow you to upload and share photos.</string>
@@ -63,7 +65,7 @@
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
