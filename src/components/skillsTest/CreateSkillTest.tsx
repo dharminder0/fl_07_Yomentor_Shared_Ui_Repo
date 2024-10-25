@@ -13,14 +13,14 @@ import {
 import { createSkillTest, getCategories, getGradeList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
 import useStore from '../../store/useStore';
 import AlertModal from '../common/AlertModal';
-import { YoImages } from '../../assets/themes/YoImages';
+import image from '../../assets/themes/YoImages';
 import { common } from '../../assets/styles/Common';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 
 const CreateSkillTest = () => {
-    const image: any = YoImages();
+
     const userInfo: any = getUserInfo();
     const navigation: any = useNavigation();
     const YoColors: any = useThemeColor();

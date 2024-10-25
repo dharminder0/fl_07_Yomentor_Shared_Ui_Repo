@@ -14,7 +14,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { clearUserData, getUserInfo } from "../shared/sharedDetails";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import { common } from "../assets/styles/Common";
-import { YoImages } from "../assets/themes/YoImages";
+import image from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 
@@ -22,7 +22,7 @@ const DrawerSidebar = () => {
   const YoColors = useThemeColor();
   const userInfo: any = getUserInfo();
   const { height, width } = Dimensions.get("screen");
-  const image: any = YoImages();
+
   const navigation: any = useNavigation();
   const logoutUser = () => {
     clearUserData("userData");

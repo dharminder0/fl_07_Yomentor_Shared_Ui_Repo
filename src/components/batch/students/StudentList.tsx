@@ -12,7 +12,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../../assets/styles/Common";
-import { YoImages } from "../../../assets/themes/YoImages";
+import image from "../../../assets/themes/YoImages";
 import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import { getStudentsListByBatchId } from "../../../apiconfig/SharedApis";
 import Loading from "../../../screens/Loading";
@@ -42,7 +42,7 @@ const StudentList = ({ batchInfo }: any) => {
       });
   }, []);
 
-  const image: any = YoImages();
+
 
   const renderItem = ({ item, index }: any) => (
     <Card

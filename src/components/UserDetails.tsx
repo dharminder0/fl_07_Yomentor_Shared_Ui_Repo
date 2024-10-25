@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import HeaderView from "./common/HeaderView";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { cardStyle, common } from "../assets/styles/Common";
-import { YoImages } from "../assets/themes/YoImages";
+import image from "../assets/themes/YoImages";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   assignFavouriteBatch,
@@ -40,7 +40,7 @@ const UserDetailList = ({ route }: { route: any }) => {
   const navigation: any = useNavigation();
   const YoColors = useThemeColor();
   const toast: any = useToast();
-  const image: any = YoImages();
+
   const userInfo: any = getUserInfo();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);

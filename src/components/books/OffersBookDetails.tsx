@@ -27,7 +27,7 @@ import { Button, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import CreateBookRequest from "./CreateBookRequest";
 import UpdatePhoto from "../common/UpdatePhoto";
 import { useToast } from "react-native-toast-notifications";
@@ -37,7 +37,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 const OffersBookDetails = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
-  const image: any = YoImages();
+
   const toast = useToast();
   const navigation: any = useNavigation();
   const selectedBookDetails = route?.params?.selectedBookDetails ?? {};
@@ -300,7 +300,7 @@ const OffersBookDetails = ({ route }: any) => {
                                     {
                                       color:
                                         item.receiverStatusId === 1 ||
-                                        item.receiverStatusId === 2
+                                          item.receiverStatusId === 2
                                           ? YoColors.success
                                           : YoColors.danger,
                                       fontWeight: "bold",
@@ -313,14 +313,14 @@ const OffersBookDetails = ({ route }: any) => {
                                 <Icon
                                   name={
                                     item.receiverStatusId === 1 ||
-                                    item.receiverStatusId === 2
+                                      item.receiverStatusId === 2
                                       ? "check"
                                       : "times"
                                   }
                                   size={10}
                                   color={
                                     item.receiverStatusId === 1 ||
-                                    item.receiverStatusId === 2
+                                      item.receiverStatusId === 2
                                       ? YoColors.success
                                       : YoColors.danger
                                   }
@@ -343,64 +343,64 @@ const OffersBookDetails = ({ route }: any) => {
                           </View>
                           {(item?.userAddress?.address1 ||
                             item?.userAddress?.address2) && (
-                            <View
-                              style={{ flexDirection: "row", marginTop: 5 }}
-                            >
-                              <Ionicons
-                                name="location"
-                                size={14}
-                                style={{ width: 12 }}
-                              />
                               <View
-                                style={{
-                                  flexDirection: "row",
-                                  flexWrap: "wrap",
-                                  alignItems: "center",
-                                  width: "95%",
-                                }}
+                                style={{ flexDirection: "row", marginTop: 5 }}
                               >
-                                {item?.userAddress?.address1 && (
-                                  <Text
-                                    style={[common.rText, { paddingStart: 5 }]}
-                                  >
-                                    {item?.userAddress?.address1}
-                                  </Text>
-                                )}
-                                {item?.userAddress?.address1 &&
-                                  item?.userAddress?.address2 && (
-                                    <Text>, </Text>
+                                <Ionicons
+                                  name="location"
+                                  size={14}
+                                  style={{ width: 12 }}
+                                />
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    alignItems: "center",
+                                    width: "95%",
+                                  }}
+                                >
+                                  {item?.userAddress?.address1 && (
+                                    <Text
+                                      style={[common.rText, { paddingStart: 5 }]}
+                                    >
+                                      {item?.userAddress?.address1}
+                                    </Text>
                                   )}
-                                {item?.userAddress?.address2 && (
-                                  <Text style={[common.rText]}>
-                                    {item?.userAddress?.address2}
-                                  </Text>
-                                )}
-                                {item?.userAddress?.address2 &&
-                                  item?.userAddress?.city && <Text>, </Text>}
-                                {item?.userAddress?.city && (
-                                  <Text style={[common.rText]}>
-                                    {item?.userAddress?.city}
-                                  </Text>
-                                )}
-                                {item?.userAddress?.city &&
-                                  item?.userAddress?.stateName && (
-                                    <Text>, </Text>
+                                  {item?.userAddress?.address1 &&
+                                    item?.userAddress?.address2 && (
+                                      <Text>, </Text>
+                                    )}
+                                  {item?.userAddress?.address2 && (
+                                    <Text style={[common.rText]}>
+                                      {item?.userAddress?.address2}
+                                    </Text>
                                   )}
-                                {item?.userAddress?.stateName && (
-                                  <Text style={[common.rText]}>
-                                    {item?.userAddress?.stateName}
-                                  </Text>
-                                )}
-                                {item?.userAddress?.stateName &&
-                                  item?.userAddress?.pincode && <Text>, </Text>}
-                                {item?.userAddress?.pincode && (
-                                  <Text style={[common.rText]}>
-                                    {item?.userAddress?.pincode}
-                                  </Text>
-                                )}
+                                  {item?.userAddress?.address2 &&
+                                    item?.userAddress?.city && <Text>, </Text>}
+                                  {item?.userAddress?.city && (
+                                    <Text style={[common.rText]}>
+                                      {item?.userAddress?.city}
+                                    </Text>
+                                  )}
+                                  {item?.userAddress?.city &&
+                                    item?.userAddress?.stateName && (
+                                      <Text>, </Text>
+                                    )}
+                                  {item?.userAddress?.stateName && (
+                                    <Text style={[common.rText]}>
+                                      {item?.userAddress?.stateName}
+                                    </Text>
+                                  )}
+                                  {item?.userAddress?.stateName &&
+                                    item?.userAddress?.pincode && <Text>, </Text>}
+                                  {item?.userAddress?.pincode && (
+                                    <Text style={[common.rText]}>
+                                      {item?.userAddress?.pincode}
+                                    </Text>
+                                  )}
+                                </View>
                               </View>
-                            </View>
-                          )}
+                            )}
 
                           {item?.receiverStatusId === 1 && (
                             <View

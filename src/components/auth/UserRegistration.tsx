@@ -19,7 +19,7 @@ import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { upsertUser, userLogin } from "../../apiconfig/AuthService";
 import PopupModal from "../common/PopupModal";
 import useStore from "../../store/useStore";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import { saveAsyncData } from "../../shared/sharedDetails";
 
 const { height, width } = Dimensions.get("window");
@@ -27,7 +27,7 @@ const { height, width } = Dimensions.get("window");
 const UserRegistration = ({ route }: any) => {
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
-  const image: any = YoImages();
+
   const userType: any = !route.params?.userType ? 3 : route.params?.userType;
   const [regError, setRegError] = useState<string>();
 

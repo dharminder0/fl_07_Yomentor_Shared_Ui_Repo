@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import {
   questionsAnswersBySkillId,
   upsertBulkAttempt,
+  upsertTestAttempt,
 } from "../../apiconfig/SharedApis";
 import Loading from "../../screens/Loading";
 import { common } from "../../assets/styles/Common";
@@ -12,11 +13,16 @@ import useStore from "../../store/useStore";
 import SkillResultModal from "../common/SkillResultModal";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { ScrollView } from "react-native-gesture-handler";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { getUserInfo } from "../../shared/sharedDetails";
 
-const AttemptSkillTest = ({ route, navigation }: any) => {
+const AttemptSkillTest = ({ route }: any) => {
+  console.log("check skill idd=== ==", route.params?.skillDetails)
   const skillDetails = route.params?.skillDetails;
-  const attemptId = route.params?.attemptId;
+  const [attemptId, setAttemptId] = useState<any>(route.params?.attemptId);
   const YoColors: any = useThemeColor();
+  const navigation: any = useNavigation();
+  const userInfo: any = getUserInfo();
   const [questions, setQuestions] = useState<any>([]);
   const [message, setMessage] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -25,14 +31,16 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
   useEffect(() => {
     setIsLoading(true);
     getQuestionAnswerBySkillTestId();
-  }, [skillDetails?.id, attemptId]);
+  }, [attemptId]);
 
   console.log(skillDetails?.id, attemptId)
 
   const getQuestionAnswerBySkillTestId = () => {
-    questionsAnswersBySkillId(skillDetails?.id)
+    questionsAnswersBySkillId(skillDetails?.id, attemptId)
       .then((response: any) => {
         if (response.data && response.data?.length > 0) {
+          setCurrentQuestionIndex(0);
+          setSelectedAnswers({});
           setQuestions(response.data);
         }
         setIsLoading(false);
@@ -40,6 +48,24 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
       .catch((error: any) => {
         setIsLoading(false);
         console.log("error: ", error);
+      });
+  };
+
+  const handleAttempTest = () => {
+    const payload: any = {
+      attemptCode: "1",
+      userId: userInfo.id,
+      skillTestId: skillDetails?.id,
+      status: "0",
+    };
+    upsertTestAttempt(payload)
+      .then((response: any) => {
+        if (response.data && response.data.success) {
+          setAttemptId(response.data.content);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
       });
   };
 
@@ -209,6 +235,7 @@ const AttemptSkillTest = ({ route, navigation }: any) => {
         score={message?.percentageCorrect}
         attemptId={message?.attemptId}
         skillDetails={skillDetails}
+        handleAttempTest={handleAttempTest}
       />
     </>
   );

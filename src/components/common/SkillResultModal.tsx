@@ -14,6 +14,7 @@ const SkillResultModal = ({
     score = 0,
     attemptId = 0,
     skillDetails = {},
+    handleAttempTest = () => { },
 }: any) => {
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
@@ -24,30 +25,43 @@ const SkillResultModal = ({
         setIsSkillModal(false);
     };
 
-    const handleAttempTest = () => {
-        const payload: any = {
-            attemptCode: "1",
-            userId: userInfo.id,
-            skillTestId: skillDetails?.id,
-            status: "0",
-        };
-        closeModal();
-        upsertTestAttempt(payload)
-            .then((response: any) => {
-                // setAttemptId(response.data.content);
-                if (response.data && response.data.success) {
-                    //   setIsAttempModal(false);
-                    navigation.goBack(null);
-                    navigation.navigate("AttemptSkillTest", {
-                        skillTestId: skillDetails?.id,
-                        attemptId: response.data.content,
-                    });
-                }
-            })
-            .catch((error: any) => {
-                console.log(error);
+    // const handleAttempTest = () => {
+    //     const payload: any = {
+    //         attemptCode: "1",
+    //         userId: userInfo.id,
+    //         skillTestId: skillDetails?.id,
+    //         status: "0",
+    //     };
+    //     closeModal();
+    //     upsertTestAttempt(payload)
+    //         .then((response: any) => {
+    //             // setAttemptId(response.data.content);
+    //             if (response.data && response.data.success) {
+    //                 //   setIsAttempModal(false);
+    //                 navigation.goBack(null);
+    //                 setTimeout(() => {
+    //                     navigation.navigate("AttemptSkillTest", {
+    //                         skillTestId: skillDetails,
+    //                         attemptId: response.data.content,
+    //                     });
+    //                 }, 200);
+    //             }
+    //         })
+    //         .catch((error: any) => {
+    //             console.log(error);
+    //         });
+    // };
+
+    const gotoSummary = () => {
+        navigation.goBack(null);
+        setTimeout(() => {
+            navigation.navigate("AttemptedQuestionsPreview", {
+                skillDetails: skillDetails,
+                attemptId: attemptId,
             });
-    };
+            closeModal();
+        }, 200);
+    }
 
     return (
         <Modal
@@ -107,13 +121,7 @@ const SkillResultModal = ({
                     <Button
                         title="Summary"
                         type="outline"
-                        onPress={() => {
-                            navigation.goBack(null);
-                            navigation.navigate("AttemptedQuestionsPreview", {
-                                skillDetails: skillDetails,
-                                attemptId: attemptId,
-                            }); closeModal();
-                        }}
+                        onPress={gotoSummary}
                         buttonStyle={{
                             width: 100,
                             paddingVertical: 6,
@@ -126,7 +134,7 @@ const SkillResultModal = ({
                         score < 80 &&
                         <Button
                             title="Retake"
-                            onPress={handleAttempTest}
+                            onPress={() => { closeModal(); handleAttempTest(); }}
                             buttonStyle={{
                                 backgroundColor: YoColors.primary,
                                 borderRadius: 3,

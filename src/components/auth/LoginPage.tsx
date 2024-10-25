@@ -18,13 +18,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { userLogin } from "../../apiconfig/AuthService";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import COLORS from "../../assets/themes/colors";
 
 const { height, width } = Dimensions.get("window");
 const LoginPage = () => {
   const isDarkMode = useColorScheme() === "dark";
-  const image: any = YoImages();
+
   const YoColors = useThemeColor();
   const scrollViewRef: any = useRef();
 

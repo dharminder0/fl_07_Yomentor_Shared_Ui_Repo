@@ -1,6 +1,6 @@
-import { ActivityIndicator, Dimensions, Image, Pressable, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View, VirtualizedList } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, Platform, Pressable, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View, VirtualizedList } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { YoImages } from '../../assets/themes/YoImages';
+import image from '../../assets/themes/YoImages';
 import { getComplexityLevel, getUserInfo } from '../../shared/sharedDetails';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -17,7 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const MySkillTests = () => {
     const { height, width } = Dimensions.get("window");
-    const image: any = YoImages();
+
     const userInfo: any = getUserInfo();
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
@@ -298,8 +298,8 @@ const MySkillTests = () => {
                     getItem={getItem}
                     getItemCount={getItemCount}
                     initialNumToRender={10} // Number of items to render initially
-                    style={{ height: height - (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? 180 : 160) }}
-                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? 180 : 160)}
+                    style={{ height: height - (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? 210 : 180) : (Platform.OS === 'ios' ? 235 : 160)) }}
+                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? 220 : 180) : (Platform.OS === 'ios' ? 200 : 200))}
                     contentContainerStyle={[common.px12, common.py5]}
                     onScrollEndDrag={loadMoreData}
                     onEndReachedThreshold={0.7}
@@ -323,7 +323,7 @@ const MySkillTests = () => {
                             <Image
                                 style={[common.mtop10, { width: 200, height: 240 }]}
                                 resizeMode="contain"
-                                source={require('../../assets/images/onboard.png')}
+                                source={require('../../assets/img/onboard.png')}
                             />
                             {(search?.length > 0 || selectedSubject > 0 || complexityLevel > 0 || gradeId > 0) ?
                                 <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>Sorry, we couldn't find any tests matching your search criteria. Create a new test tailored to your needs.</Text>

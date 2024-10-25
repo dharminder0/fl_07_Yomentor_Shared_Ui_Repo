@@ -67,17 +67,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 6,
         marginRight: 10,
-        shadowColor: 'red',
-        shadowOffset: { width: 5, height: 4 },
-        shadowOpacity: 0.86,
-        shadowRadius: 3,
-
     },
     text: {
         marginTop: 5,
         fontSize: 12,
         textAlign: 'center',
-        fontWeight: '600'
+        fontWeight: '500'
     }
 
 })

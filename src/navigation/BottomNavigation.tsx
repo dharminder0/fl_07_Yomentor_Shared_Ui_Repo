@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { getUserInfo } from "../shared/sharedDetails";
-import { YoImages } from "../assets/themes/YoImages";
+import Images from "../assets/themes/YoImages";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 import HomeScreen from "../components/home/HomeScreen";
 import TeacherAssignmentList from "../components/teacher/TeacherAssignmentList";
@@ -35,7 +35,6 @@ export const BottomNavigation = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
-  const Images: any = YoImages();
 
   const openDrawerScreen = () => {
     navigation.dispatch(DrawerActions.openDrawer());

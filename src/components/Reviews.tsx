@@ -19,14 +19,13 @@ import { cardStyle, common } from "../assets/styles/Common";
 import NoDataView from "../screens/NoDataView";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Card } from "@rneui/base";
-import { YoImages } from "../assets/themes/YoImages";
+import image from "../assets/themes/YoImages";
 import { getReviews } from "../apiconfig/SharedApis";
 import moment from "moment";
 import { useThemeColor } from "../assets/themes/useThemeColor";
 
 const Reviews = ({ route }: { route: any }) => {
   const { height } = Dimensions.get("screen");
-  const image: any = YoImages();
   const YoColors = useThemeColor();
   const teacherId = route.params.teacherId;
   const [isLoading, setIsLoading] = useState(false);
@@ -91,7 +90,7 @@ const Reviews = ({ route }: { route: any }) => {
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity
       activeOpacity={0.7}
-      //   onPress={() => navigation.navigate("UserDetails", { detail: item })}
+    //   onPress={() => navigation.navigate("UserDetails", { detail: item })}
     >
       <Card containerStyle={cardStyle.container} key={index}>
         <View style={cardStyle.row}>

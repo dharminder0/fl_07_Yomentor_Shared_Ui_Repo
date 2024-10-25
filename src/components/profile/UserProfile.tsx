@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { btnStyle, common } from "../../assets/styles/Common";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getCategories, getGradeList, getUsersDetails } from "../../apiconfig/SharedApis";
 import {
@@ -39,7 +39,7 @@ const UserProfile = () => {
   const navigation: any = useNavigation();
   const YoColors = useThemeColor();
   const toast: any = useToast();
-  const image: any = YoImages();
+
   const userInfo: any = getUserInfo();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshLoader, setRefreshLoader] = useState<boolean>(false);

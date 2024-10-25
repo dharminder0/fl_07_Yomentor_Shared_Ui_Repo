@@ -13,13 +13,13 @@ import { Card } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 
 const { height } = Dimensions.get("window");
 const SelectUserType = () => {
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
-  const image: any = YoImages();
+
   return (
     <View style={styles.container}>
       <Image source={image.icon} style={{ height: 102, width: 156 }} />

@@ -21,7 +21,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -35,7 +35,7 @@ const BooksList = () => {
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
-  const image: any = YoImages();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomLoader, setIsBottomLoader] = useState(false);
   const [refreshLoader, setRefreshLoader] = useState(false);
@@ -72,8 +72,8 @@ const BooksList = () => {
         selectedActionTab === "requests"
           ? 1
           : selectedActionTab === "offers"
-          ? 2
-          : null,
+            ? 2
+            : null,
       //"gradeId": 1,
       searchText: searchedText ?? searchText,
       pageSize: pageSize,

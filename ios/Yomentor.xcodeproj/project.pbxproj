@@ -8,30 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* YomentorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* YomentorTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-Yomentor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Yomentor.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		41F274C42B99D6A500846AC3 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B22B99D6A500846AC3 /* Octicons.ttf */; };
-		41F274C52B99D6A500846AC3 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B32B99D6A500846AC3 /* Feather.ttf */; };
-		41F274C62B99D6A500846AC3 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B42B99D6A500846AC3 /* FontAwesome6_Regular.ttf */; };
-		41F274C72B99D6A500846AC3 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B52B99D6A500846AC3 /* Entypo.ttf */; };
-		41F274C82B99D6A500846AC3 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B62B99D6A500846AC3 /* FontAwesome5_Brands.ttf */; };
-		41F274C92B99D6A500846AC3 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B72B99D6A500846AC3 /* MaterialCommunityIcons.ttf */; };
-		41F274CA2B99D6A500846AC3 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B82B99D6A500846AC3 /* AntDesign.ttf */; };
-		41F274CB2B99D6A500846AC3 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274B92B99D6A500846AC3 /* Foundation.ttf */; };
-		41F274CC2B99D6A500846AC3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BA2B99D6A500846AC3 /* Ionicons.ttf */; };
-		41F274CD2B99D6A500846AC3 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BB2B99D6A500846AC3 /* FontAwesome5_Solid.ttf */; };
-		41F274CE2B99D6A500846AC3 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BC2B99D6A500846AC3 /* FontAwesome5_Regular.ttf */; };
-		41F274CF2B99D6A500846AC3 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BD2B99D6A500846AC3 /* FontAwesome.ttf */; };
-		41F274D02B99D6A500846AC3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BE2B99D6A500846AC3 /* Zocial.ttf */; };
-		41F274D12B99D6A500846AC3 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274BF2B99D6A500846AC3 /* EvilIcons.ttf */; };
-		41F274D22B99D6A500846AC3 /* FontAwesome6_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274C02B99D6A500846AC3 /* FontAwesome6_Solid.ttf */; };
-		41F274D32B99D6A500846AC3 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274C12B99D6A500846AC3 /* SimpleLineIcons.ttf */; };
-		41F274D42B99D6A500846AC3 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274C22B99D6A500846AC3 /* FontAwesome6_Brands.ttf */; };
-		41F274D52B99D6A500846AC3 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F274C32B99D6A500846AC3 /* MaterialIcons.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-Yomentor-YomentorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Yomentor-YomentorTests.a */; };
+		1874EAB92CCA28B200B72421 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAA62CCA28B200B72421 /* Foundation.ttf */; };
+		1874EABA2CCA28B200B72421 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAA72CCA28B200B72421 /* Entypo.ttf */; };
+		1874EABB2CCA28B200B72421 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAA82CCA28B200B72421 /* Octicons.ttf */; };
+		1874EABC2CCA28B200B72421 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAA92CCA28B200B72421 /* MaterialCommunityIcons.ttf */; };
+		1874EABD2CCA28B200B72421 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAA2CCA28B200B72421 /* Fontisto.ttf */; };
+		1874EABE2CCA28B200B72421 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAB2CCA28B200B72421 /* FontAwesome.ttf */; };
+		1874EABF2CCA28B200B72421 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAC2CCA28B200B72421 /* SimpleLineIcons.ttf */; };
+		1874EAC02CCA28B200B72421 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAD2CCA28B200B72421 /* Zocial.ttf */; };
+		1874EAC12CCA28B200B72421 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAE2CCA28B200B72421 /* FontAwesome5_Solid.ttf */; };
+		1874EAC22CCA28B200B72421 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAAF2CCA28B200B72421 /* FontAwesome5_Regular.ttf */; };
+		1874EAC32CCA28B200B72421 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB02CCA28B200B72421 /* Feather.ttf */; };
+		1874EAC42CCA28B200B72421 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB12CCA28B200B72421 /* FontAwesome5_Brands.ttf */; };
+		1874EAC52CCA28B200B72421 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB22CCA28B200B72421 /* EvilIcons.ttf */; };
+		1874EAC62CCA28B200B72421 /* FontAwesome6_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB32CCA28B200B72421 /* FontAwesome6_Solid.ttf */; };
+		1874EAC72CCA28B200B72421 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB42CCA28B200B72421 /* AntDesign.ttf */; };
+		1874EAC82CCA28B200B72421 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB52CCA28B200B72421 /* MaterialIcons.ttf */; };
+		1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB62CCA28B200B72421 /* Ionicons.ttf */; };
+		1874EACA2CCA28B200B72421 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */; };
+		1874EACB2CCA28B200B72421 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */; };
+		188CD84A2CCA8F47002789DE /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 188CD8492CCA8F47002789DE /* assets */; };
+		18BA03A02CCA563A0096F737 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18BA039F2CCA563A0096F737 /* main.jsbundle */; };
+		3C0D25DE7D70C6DB25F0BE86 /* libPods-Yomentor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D1FA1CB21B2DC6CB3226690E /* libPods-Yomentor-YomentorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FBE33D134744BA2DEE0CDA /* libPods-Yomentor-YomentorTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,31 +57,34 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Yomentor/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Yomentor/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Yomentor/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Yomentor-YomentorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomentor-YomentorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-Yomentor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.debug.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.debug.xcconfig"; sourceTree = "<group>"; };
-		41F274B22B99D6A500846AC3 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
-		41F274B32B99D6A500846AC3 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
-		41F274B42B99D6A500846AC3 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Regular.ttf; sourceTree = "<group>"; };
-		41F274B52B99D6A500846AC3 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
-		41F274B62B99D6A500846AC3 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
-		41F274B72B99D6A500846AC3 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
-		41F274B82B99D6A500846AC3 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
-		41F274B92B99D6A500846AC3 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Foundation.ttf; sourceTree = "<group>"; };
-		41F274BA2B99D6A500846AC3 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
-		41F274BB2B99D6A500846AC3 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
-		41F274BC2B99D6A500846AC3 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
-		41F274BD2B99D6A500846AC3 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
-		41F274BE2B99D6A500846AC3 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
-		41F274BF2B99D6A500846AC3 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
-		41F274C02B99D6A500846AC3 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
-		41F274C12B99D6A500846AC3 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
-		41F274C22B99D6A500846AC3 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Brands.ttf; sourceTree = "<group>"; };
-		41F274C32B99D6A500846AC3 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-Yomentor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.release.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-Yomentor-YomentorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.debug.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-Yomentor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomentor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1874EAA62CCA28B200B72421 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		1874EAA72CCA28B200B72421 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		1874EAA82CCA28B200B72421 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		1874EAA92CCA28B200B72421 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		1874EAAA2CCA28B200B72421 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		1874EAAB2CCA28B200B72421 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		1874EAAC2CCA28B200B72421 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		1874EAAD2CCA28B200B72421 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		1874EAAE2CCA28B200B72421 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		1874EAAF2CCA28B200B72421 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		1874EAB02CCA28B200B72421 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		1874EAB12CCA28B200B72421 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		1874EAB22CCA28B200B72421 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		1874EAB32CCA28B200B72421 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Solid.ttf"; sourceTree = "<group>"; };
+		1874EAB42CCA28B200B72421 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		1874EAB52CCA28B200B72421 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		1874EAB62CCA28B200B72421 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf"; sourceTree = "<group>"; };
+		1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
+		188CD8492CCA8F47002789DE /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		18BA039F2CCA563A0096F737 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.release.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.release.xcconfig"; sourceTree = "<group>"; };
+		2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.release.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.release.xcconfig"; sourceTree = "<group>"; };
+		37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomentor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CDDD20AD7B3B16A0F786A6F /* Pods-Yomentor-YomentorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.debug.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.debug.xcconfig"; sourceTree = "<group>"; };
+		64FBE33D134744BA2DEE0CDA /* libPods-Yomentor-YomentorTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomentor-YomentorTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Yomentor/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-Yomentor-YomentorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.release.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B290675A128704D130E0404 /* Pods-Yomentor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.debug.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -87,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-Yomentor-YomentorTests.a in Frameworks */,
+				D1FA1CB21B2DC6CB3226690E /* libPods-Yomentor-YomentorTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-Yomentor.a in Frameworks */,
+				3C0D25DE7D70C6DB25F0BE86 /* libPods-Yomentor.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,9 +128,10 @@
 		13B07FAE1A68108700A75B9A /* Yomentor */ = {
 			isa = PBXGroup;
 			children = (
-				41F274B12B99D6A500846AC3 /* Fonts */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				18BA039F2CCA563A0096F737 /* main.jsbundle */,
+				1874EAA52CCA282200B72421 /* Fonts */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -133,40 +140,40 @@
 			name = Yomentor;
 			sourceTree = "<group>";
 		};
+		1874EAA52CCA282200B72421 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1874EAB42CCA28B200B72421 /* AntDesign.ttf */,
+				1874EAA72CCA28B200B72421 /* Entypo.ttf */,
+				1874EAB22CCA28B200B72421 /* EvilIcons.ttf */,
+				1874EAB02CCA28B200B72421 /* Feather.ttf */,
+				1874EAAB2CCA28B200B72421 /* FontAwesome.ttf */,
+				1874EAB12CCA28B200B72421 /* FontAwesome5_Brands.ttf */,
+				1874EAAF2CCA28B200B72421 /* FontAwesome5_Regular.ttf */,
+				1874EAAE2CCA28B200B72421 /* FontAwesome5_Solid.ttf */,
+				1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */,
+				1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */,
+				1874EAB32CCA28B200B72421 /* FontAwesome6_Solid.ttf */,
+				1874EAAA2CCA28B200B72421 /* Fontisto.ttf */,
+				1874EAA62CCA28B200B72421 /* Foundation.ttf */,
+				1874EAB62CCA28B200B72421 /* Ionicons.ttf */,
+				1874EAA92CCA28B200B72421 /* MaterialCommunityIcons.ttf */,
+				1874EAB52CCA28B200B72421 /* MaterialIcons.ttf */,
+				1874EAA82CCA28B200B72421 /* Octicons.ttf */,
+				1874EAAC2CCA28B200B72421 /* SimpleLineIcons.ttf */,
+				1874EAAD2CCA28B200B72421 /* Zocial.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-Yomentor.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Yomentor-YomentorTests.a */,
+				37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */,
+				64FBE33D134744BA2DEE0CDA /* libPods-Yomentor-YomentorTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		41F274B12B99D6A500846AC3 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				41F274B22B99D6A500846AC3 /* Octicons.ttf */,
-				41F274B32B99D6A500846AC3 /* Feather.ttf */,
-				41F274B42B99D6A500846AC3 /* FontAwesome6_Regular.ttf */,
-				41F274B52B99D6A500846AC3 /* Entypo.ttf */,
-				41F274B62B99D6A500846AC3 /* FontAwesome5_Brands.ttf */,
-				41F274B72B99D6A500846AC3 /* MaterialCommunityIcons.ttf */,
-				41F274B82B99D6A500846AC3 /* AntDesign.ttf */,
-				41F274B92B99D6A500846AC3 /* Foundation.ttf */,
-				41F274BA2B99D6A500846AC3 /* Ionicons.ttf */,
-				41F274BB2B99D6A500846AC3 /* FontAwesome5_Solid.ttf */,
-				41F274BC2B99D6A500846AC3 /* FontAwesome5_Regular.ttf */,
-				41F274BD2B99D6A500846AC3 /* FontAwesome.ttf */,
-				41F274BE2B99D6A500846AC3 /* Zocial.ttf */,
-				41F274BF2B99D6A500846AC3 /* EvilIcons.ttf */,
-				41F274C02B99D6A500846AC3 /* FontAwesome6_Solid.ttf */,
-				41F274C12B99D6A500846AC3 /* SimpleLineIcons.ttf */,
-				41F274C22B99D6A500846AC3 /* FontAwesome6_Brands.ttf */,
-				41F274C32B99D6A500846AC3 /* MaterialIcons.ttf */,
-			);
-			name = Fonts;
-			path = ../../../../Desktop/Fonts;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -179,6 +186,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				188CD8492CCA8F47002789DE /* assets */,
 				13B07FAE1A68108700A75B9A /* Yomentor */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* YomentorTests */,
@@ -203,10 +211,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-Yomentor.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-Yomentor.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-Yomentor-YomentorTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-Yomentor-YomentorTests.release.xcconfig */,
+				8B290675A128704D130E0404 /* Pods-Yomentor.debug.xcconfig */,
+				1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */,
+				5CDDD20AD7B3B16A0F786A6F /* Pods-Yomentor-YomentorTests.debug.xcconfig */,
+				2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -218,12 +226,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "YomentorTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				DB83A2B24D7539054D837F34 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				E4E6C1833DBC798E5F6230D4 /* [CP] Embed Pods Frameworks */,
+				A454D2F3E5925E2D1A31FE68 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -239,13 +247,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Yomentor" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				F77AC35BE798E20CE54B15F1 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				1F911A71F7C303F2469D22D3 /* [CP] Embed Pods Frameworks */,
+				72A242195696B7C698CDE1A7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -304,26 +312,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				188CD84A2CCA8F47002789DE /* assets in Resources */,
+				1874EABB2CCA28B200B72421 /* Octicons.ttf in Resources */,
+				1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */,
+				1874EAB92CCA28B200B72421 /* Foundation.ttf in Resources */,
+				1874EAC02CCA28B200B72421 /* Zocial.ttf in Resources */,
+				1874EABA2CCA28B200B72421 /* Entypo.ttf in Resources */,
+				1874EABE2CCA28B200B72421 /* FontAwesome.ttf in Resources */,
+				1874EAC42CCA28B200B72421 /* FontAwesome5_Brands.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				41F274CF2B99D6A500846AC3 /* FontAwesome.ttf in Resources */,
-				41F274CB2B99D6A500846AC3 /* Foundation.ttf in Resources */,
-				41F274D42B99D6A500846AC3 /* FontAwesome6_Brands.ttf in Resources */,
-				41F274CE2B99D6A500846AC3 /* FontAwesome5_Regular.ttf in Resources */,
-				41F274CC2B99D6A500846AC3 /* Ionicons.ttf in Resources */,
-				41F274D32B99D6A500846AC3 /* SimpleLineIcons.ttf in Resources */,
-				41F274D12B99D6A500846AC3 /* EvilIcons.ttf in Resources */,
-				41F274C72B99D6A500846AC3 /* Entypo.ttf in Resources */,
-				41F274C62B99D6A500846AC3 /* FontAwesome6_Regular.ttf in Resources */,
-				41F274D02B99D6A500846AC3 /* Zocial.ttf in Resources */,
-				41F274D22B99D6A500846AC3 /* FontAwesome6_Solid.ttf in Resources */,
-				41F274D52B99D6A500846AC3 /* MaterialIcons.ttf in Resources */,
-				41F274C42B99D6A500846AC3 /* Octicons.ttf in Resources */,
-				41F274C52B99D6A500846AC3 /* Feather.ttf in Resources */,
-				41F274C82B99D6A500846AC3 /* FontAwesome5_Brands.ttf in Resources */,
-				41F274CA2B99D6A500846AC3 /* AntDesign.ttf in Resources */,
-				41F274CD2B99D6A500846AC3 /* FontAwesome5_Solid.ttf in Resources */,
-				41F274C92B99D6A500846AC3 /* MaterialCommunityIcons.ttf in Resources */,
+				1874EAC72CCA28B200B72421 /* AntDesign.ttf in Resources */,
+				1874EAC22CCA28B200B72421 /* FontAwesome5_Regular.ttf in Resources */,
+				1874EACB2CCA28B200B72421 /* FontAwesome6_Brands.ttf in Resources */,
+				1874EABF2CCA28B200B72421 /* SimpleLineIcons.ttf in Resources */,
+				1874EACA2CCA28B200B72421 /* FontAwesome6_Regular.ttf in Resources */,
+				1874EABC2CCA28B200B72421 /* MaterialCommunityIcons.ttf in Resources */,
+				1874EAC62CCA28B200B72421 /* FontAwesome6_Solid.ttf in Resources */,
+				1874EAC32CCA28B200B72421 /* Feather.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				1874EAC82CCA28B200B72421 /* MaterialIcons.ttf in Resources */,
+				1874EAC12CCA28B200B72421 /* FontAwesome5_Solid.ttf in Resources */,
+				18BA03A02CCA563A0096F737 /* main.jsbundle in Resources */,
+				1874EAC52CCA28B200B72421 /* EvilIcons.ttf in Resources */,
+				1874EABD2CCA28B200B72421 /* Fontisto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,7 +343,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -342,11 +353,12 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "
+";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		1F911A71F7C303F2469D22D3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -363,7 +375,41 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		72A242195696B7C698CDE1A7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A454D2F3E5925E2D1A31FE68 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB83A2B24D7539054D837F34 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -385,7 +431,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		E4E6C1833DBC798E5F6230D4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F77AC35BE798E20CE54B15F1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,57 +468,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor/Pods-Yomentor-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -491,7 +503,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Yomentor-YomentorTests.debug.xcconfig */;
+			baseConfigurationReference = 5CDDD20AD7B3B16A0F786A6F /* Pods-Yomentor-YomentorTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -518,7 +530,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Yomentor-YomentorTests.release.xcconfig */;
+			baseConfigurationReference = 2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -542,14 +554,20 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Yomentor.debug.xcconfig */;
+			baseConfigurationReference = 8B290675A128704D130E0404 /* Pods-Yomentor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DY8829UJVB;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JUTCL6QC9U;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Yomentor/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -561,23 +579,36 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.Yomentor;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.yomentor;
 				PRODUCT_NAME = Yomentor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = yomentor_provision;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Yomentor.release.xcconfig */;
+			baseConfigurationReference = 1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DY8829UJVB;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JUTCL6QC9U;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Yomentor/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -589,9 +620,16 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.Yomentor;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.yomentor;
 				PRODUCT_NAME = Yomentor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = yomentor_provision;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -665,10 +703,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -736,10 +771,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

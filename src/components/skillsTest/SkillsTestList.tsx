@@ -1,6 +1,6 @@
 import { ActivityIndicator, Dimensions, Image, Pressable, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View, VirtualizedList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { YoImages } from '../../assets/themes/YoImages';
+import image from '../../assets/themes/YoImages';
 import { getComplexityLevel, getUserInfo } from '../../shared/sharedDetails';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
 import { useNavigation } from '@react-navigation/native';
@@ -16,7 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const SkillsTestList = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
-  const image: any = YoImages();
+
   const userInfo: any = getUserInfo();
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
@@ -327,7 +327,7 @@ const SkillsTestList = ({ route }: any) => {
               <Image
                 style={[common.mtop10, { width: 200, height: 240 }]}
                 resizeMode="contain"
-                source={require('../../assets/images/onboard.png')}
+                source={require('../../assets/img/onboard.png')}
               />
               {(search?.length > 0 || selectedSubject > 0 || complexityLevel > 0 || gradeId > 0) ?
                 <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>Sorry, we couldn't find any tests matching your search criteria. Create a new test tailored to your needs.</Text>

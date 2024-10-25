@@ -25,14 +25,14 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Card } from "@rneui/base";
 import { Image } from "react-native";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 
 const PreferencesModal = ({
   isPreferencesModal = false,
   closeModal = (value: boolean) => { },
 }) => {
   const userInfo = getUserInfo();
-  const image: any = YoImages();
+
   const navigation: any = useNavigation();
   const YoColors = useThemeColor();
   const [isProcessLoader, setIsProcessLoader] = useState<boolean>(false);

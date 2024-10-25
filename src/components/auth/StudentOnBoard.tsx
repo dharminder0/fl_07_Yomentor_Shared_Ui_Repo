@@ -4,7 +4,7 @@ import { Card } from '@rneui/themed'
 import { getCategoryList, getUserInfo, saveAsyncData } from '../../shared/sharedDetails'
 import { getCategories, getGradeList, upsertUserInfo } from '../../apiconfig/SharedApis'
 import { common } from '../../assets/styles/Common'
-import { YoImages } from '../../assets/themes/YoImages'
+import image from '../../assets/themes/YoImages'
 import { useThemeColor } from '../../assets/themes/useThemeColor'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
@@ -12,7 +12,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 
 const screenWidth = Dimensions.get('window').width;
 const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
-    const image: any = YoImages();
+
     const YoColors = useThemeColor();
     const navigation: any = useNavigation();
     const [categoryType, setCategoryType] = useState(null);
@@ -117,7 +117,7 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                 >
                     <View style={[{ width: screenWidth, justifyContent: 'center', backgroundColor: YoColors.bgColor }, common.px12]}>
                         <View style={{ alignItems: 'center', paddingHorizontal: 12 }}>
-                            <Image source={require('../../assets/images/onboard.png')} style={{ width: '70%', height: 240 }} />
+                            <Image source={require('../../assets/img/onboard.png')} style={{ width: '70%', height: 240 }} />
                             <Text style={[styles.title, { color: YoColors.primary }]}>Welcome to Yo!Mentor</Text>
                             <Text style={styles.subTitle}>We’re excited to have you onboard! Yo!Mentor supports your learning by creating personalized practice tests tailored to your preferences.</Text>
                         </View>

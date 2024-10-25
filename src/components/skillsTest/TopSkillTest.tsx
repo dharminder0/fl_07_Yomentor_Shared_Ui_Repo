@@ -10,14 +10,14 @@ import {
 import React from "react";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) => {
-  const image: any = YoImages();
+
   const YoColors = useThemeColor();
   const navigation: any = useNavigation();
 

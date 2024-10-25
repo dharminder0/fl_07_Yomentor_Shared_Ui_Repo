@@ -30,7 +30,7 @@ import AddBatchModalForm from "../common/AddBatchModalForm";
 import useStore from "../../store/useStore";
 import TopSkillTest from "../skillsTest/TopSkillTest";
 import StudentOnBoard from "../auth/StudentOnBoard";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import SkillStastics from "../skillsTest/SkillStastics";
 import TrendingSubjects from "../students/TrendingSubjects";
 import Banner from "./Banner";
@@ -51,7 +51,7 @@ const HomeScreen = () => {
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
 
   const navigation: any = useNavigation();
-  const image: any = YoImages();
+
 
   useFocusEffect(
     useCallback(() => {

@@ -15,7 +15,7 @@ import CalendarView from "./CalendarView";
 import NoDataView from "../../../screens/NoDataView";
 import { Card } from "@rneui/themed";
 import { cardStyle, common } from "../../../assets/styles/Common";
-import { YoImages } from "../../../assets/themes/YoImages";
+import image from "../../../assets/themes/YoImages";
 import { useThemeColor } from "../../../assets/themes/useThemeColor";
 import {
   getStudentsAttendance,
@@ -36,7 +36,7 @@ const AddStudentAttendance = ({ route }: any) => {
   const [studentsList, setStudentsList] = useState([]);
   const [calendarDate, setCalendarDate] = useState<any>(new Date());
   const [attendanceList, setAttendanceList] = useState<any>({});
-  const image: any = YoImages();
+
   const { height } = Dimensions.get("window");
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
@@ -59,8 +59,8 @@ const AddStudentAttendance = ({ route }: any) => {
               student.status == 1
                 ? "present"
                 : student.status == 2
-                ? "absent"
-                : "none"; // 'none', 'present', or 'absent'
+                  ? "absent"
+                  : "none"; // 'none', 'present', or 'absent'
           });
           setAttendanceList(attendanceObj);
           setStudentsList(response.data);

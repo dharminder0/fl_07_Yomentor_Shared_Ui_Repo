@@ -11,13 +11,13 @@ import Loading from "../../screens/Loading";
 import NoDataView from "../../screens/NoDataView";
 import { Button, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { YoImages } from "../../assets/themes/YoImages";
+import image from "../../assets/themes/YoImages";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { getUserInfo } from "../../shared/sharedDetails";
 
 const BookDetails = ({ route }: any) => {
   const { height, width } = Dimensions.get("window");
-  const image: any = YoImages();
+
   const userInfo: any = getUserInfo();
   const selectedBookDetails = route?.params?.selectedBookDetails ?? {};
   const [bookDetails, setBookDetails] = useState<any>({});
@@ -249,60 +249,60 @@ const BookDetails = ({ route }: any) => {
               )}
               {(bookDetails?.userInfo?.userAddress?.address1 ||
                 bookDetails?.userInfo?.userAddress?.address2) && (
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Ionicons name="location" size={14} style={{ width: 12 }} />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      width: "95%",
-                    }}
-                  >
-                    {bookDetails?.userInfo?.userAddress?.address1 && (
-                      <Text style={[common.rText, { paddingStart: 5 }]}>
-                        {bookDetails?.userInfo?.userAddress?.address1}
-                      </Text>
-                    )}
-                    {bookDetails?.userInfo?.userAddress?.address1 &&
-                      bookDetails?.userInfo?.userAddress?.address2 && (
-                        <Text>, </Text>
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Ionicons name="location" size={14} style={{ width: 12 }} />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        width: "95%",
+                      }}
+                    >
+                      {bookDetails?.userInfo?.userAddress?.address1 && (
+                        <Text style={[common.rText, { paddingStart: 5 }]}>
+                          {bookDetails?.userInfo?.userAddress?.address1}
+                        </Text>
                       )}
-                    {bookDetails?.userInfo?.userAddress?.address2 && (
-                      <Text style={[common.rText]}>
-                        {bookDetails?.userInfo?.userAddress?.address2}
-                      </Text>
-                    )}
-                    {bookDetails?.userInfo?.userAddress?.address2 &&
-                      bookDetails?.userInfo?.userAddress?.city && (
-                        <Text>, </Text>
+                      {bookDetails?.userInfo?.userAddress?.address1 &&
+                        bookDetails?.userInfo?.userAddress?.address2 && (
+                          <Text>, </Text>
+                        )}
+                      {bookDetails?.userInfo?.userAddress?.address2 && (
+                        <Text style={[common.rText]}>
+                          {bookDetails?.userInfo?.userAddress?.address2}
+                        </Text>
                       )}
-                    {bookDetails?.userInfo?.userAddress?.city && (
-                      <Text style={[common.rText]}>
-                        {bookDetails?.userInfo?.userAddress?.city}
-                      </Text>
-                    )}
-                    {bookDetails?.userInfo?.userAddress?.city &&
-                      bookDetails?.userInfo?.userAddress?.stateName && (
-                        <Text>, </Text>
+                      {bookDetails?.userInfo?.userAddress?.address2 &&
+                        bookDetails?.userInfo?.userAddress?.city && (
+                          <Text>, </Text>
+                        )}
+                      {bookDetails?.userInfo?.userAddress?.city && (
+                        <Text style={[common.rText]}>
+                          {bookDetails?.userInfo?.userAddress?.city}
+                        </Text>
                       )}
-                    {bookDetails?.userInfo?.userAddress?.stateName && (
-                      <Text style={[common.rText]}>
-                        {bookDetails?.userInfo?.userAddress?.stateName}
-                      </Text>
-                    )}
-                    {bookDetails?.userInfo?.userAddress?.stateName &&
-                      bookDetails?.userInfo?.userAddress?.pincode && (
-                        <Text>, </Text>
+                      {bookDetails?.userInfo?.userAddress?.city &&
+                        bookDetails?.userInfo?.userAddress?.stateName && (
+                          <Text>, </Text>
+                        )}
+                      {bookDetails?.userInfo?.userAddress?.stateName && (
+                        <Text style={[common.rText]}>
+                          {bookDetails?.userInfo?.userAddress?.stateName}
+                        </Text>
                       )}
-                    {bookDetails?.userInfo?.userAddress?.pincode && (
-                      <Text style={[common.rText]}>
-                        {bookDetails?.userInfo?.userAddress?.pincode}
-                      </Text>
-                    )}
+                      {bookDetails?.userInfo?.userAddress?.stateName &&
+                        bookDetails?.userInfo?.userAddress?.pincode && (
+                          <Text>, </Text>
+                        )}
+                      {bookDetails?.userInfo?.userAddress?.pincode && (
+                        <Text style={[common.rText]}>
+                          {bookDetails?.userInfo?.userAddress?.pincode}
+                        </Text>
+                      )}
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
             </View>
             <View style={{ marginTop: 50, alignItems: "center" }}>
               {!bookDetails.status && (
