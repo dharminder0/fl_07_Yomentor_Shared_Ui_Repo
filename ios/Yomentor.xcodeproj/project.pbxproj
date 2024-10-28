@@ -30,8 +30,8 @@
 		1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB62CCA28B200B72421 /* Ionicons.ttf */; };
 		1874EACA2CCA28B200B72421 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */; };
 		1874EACB2CCA28B200B72421 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */; };
-		188CD84A2CCA8F47002789DE /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 188CD8492CCA8F47002789DE /* assets */; };
 		18BA03A02CCA563A0096F737 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18BA039F2CCA563A0096F737 /* main.jsbundle */; };
+		18F1B4BF2CCBA87C0087214F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 18F1B4BE2CCBA87C0087214F /* assets */; };
 		3C0D25DE7D70C6DB25F0BE86 /* libPods-Yomentor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D1FA1CB21B2DC6CB3226690E /* libPods-Yomentor-YomentorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FBE33D134744BA2DEE0CDA /* libPods-Yomentor-YomentorTests.a */; };
@@ -76,8 +76,8 @@
 		1874EAB62CCA28B200B72421 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf"; sourceTree = "<group>"; };
 		1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
-		188CD8492CCA8F47002789DE /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		18BA039F2CCA563A0096F737 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		18F1B4BE2CCBA87C0087214F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.release.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.release.xcconfig"; sourceTree = "<group>"; };
 		2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.release.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.release.xcconfig"; sourceTree = "<group>"; };
 		37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomentor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -186,7 +186,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				188CD8492CCA8F47002789DE /* assets */,
+				18F1B4BE2CCBA87C0087214F /* assets */,
 				13B07FAE1A68108700A75B9A /* Yomentor */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* YomentorTests */,
@@ -312,7 +312,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				188CD84A2CCA8F47002789DE /* assets in Resources */,
+				18F1B4BF2CCBA87C0087214F /* assets in Resources */,
 				1874EABB2CCA28B200B72421 /* Octicons.ttf in Resources */,
 				1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */,
 				1874EAB92CCA28B200B72421 /* Foundation.ttf in Resources */,
