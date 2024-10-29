@@ -25,6 +25,7 @@ import TeachersList from "../components/TeachersList";
 import BooksList from "../components/books/BooksList";
 import MySkillTests from "../components/students/MySkillTests";
 import AttemptHistory from "../components/students/AttemptHistory";
+import { useTheme } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 // Ionicons.loadFont();
@@ -34,6 +35,7 @@ const YoColors = useThemeColor();
 export const BottomNavigation = () => {
   const { height, width } = Dimensions.get("window");
   const userInfo: any = getUserInfo();
+  const { colors }: any = useTheme();
   const navigation: any = useNavigation();
 
   const openDrawerScreen = () => {
@@ -207,7 +209,7 @@ export const BottomNavigation = () => {
         headerLeftContainerStyle: { paddingStart: 12 },
         headerTitleAlign: "center",
         headerRightContainerStyle: { paddingEnd: 12 },
-        headerStyle: { backgroundColor: YoColors.primary },
+        headerStyle: { backgroundColor: colors.primary },
         tabBarShowLabel: false,
       })}
     >

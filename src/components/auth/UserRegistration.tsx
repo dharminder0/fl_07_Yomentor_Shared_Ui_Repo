@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "react-native-elements";
 import { common } from "../../assets/styles/Common";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { upsertUser, userLogin } from "../../apiconfig/AuthService";
 import PopupModal from "../common/PopupModal";
@@ -26,6 +26,7 @@ const { height, width } = Dimensions.get("window");
 
 const UserRegistration = ({ route }: any) => {
   const YoColors = useThemeColor();
+  const { colors }: any = useTheme();
   const navigation: any = useNavigation();
 
   const userType: any = !route.params?.userType ? 3 : route.params?.userType;
@@ -109,6 +110,7 @@ const UserRegistration = ({ route }: any) => {
                     common.input,
                     {
                       borderColor: errors.firstName ? "red" : "#ccc",
+                      color: colors.inputText
                     },
                   ]}
                   placeholderTextColor={YoColors.placeholderText}
@@ -129,7 +131,7 @@ const UserRegistration = ({ route }: any) => {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Last Name"
-                style={[common.input]}
+                style={[common.input, { color: colors.inputText }]}
                 placeholderTextColor={YoColors.placeholderText}
               />
             )}
@@ -174,6 +176,7 @@ const UserRegistration = ({ route }: any) => {
                     common.input,
                     {
                       borderColor: errors.phone ? "red" : "#ccc",
+                      color: colors.inputText
                     },
                   ]}
                   placeholderTextColor={YoColors.placeholderText}
@@ -226,6 +229,7 @@ const UserRegistration = ({ route }: any) => {
                     common.input,
                     {
                       borderColor: errors.name ? "red" : "#ccc",
+                      color: colors.inputText
                     },
                   ]}
                   placeholderTextColor={YoColors.placeholderText}

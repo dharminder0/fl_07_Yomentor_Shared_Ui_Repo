@@ -156,7 +156,7 @@ const MySkillTests = () => {
                 navigation.navigate("SkillTestDetails", { skillId: item?.skillTestId })
             }
             key={item?.id}
-            style={[styles.itemContainer, { backgroundColor: YoColors.background }]}
+            style={[styles.itemContainer, { backgroundColor: '#f1f1f1' }]}
         >
             <View style={[common.j_row]}>
                 <View style={[common.pe5, { width: 60 }]}>
@@ -298,8 +298,8 @@ const MySkillTests = () => {
                     getItem={getItem}
                     getItemCount={getItemCount}
                     initialNumToRender={10} // Number of items to render initially
-                    style={{ height: (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : 180) : (Platform.OS === 'ios' ? '90%' : 160)) }}
-                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? 200 : 180) : (Platform.OS === 'ios' ? 200 : 200))}
+                    style={{ height: (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : height - 180) : (Platform.OS === 'ios' ? '90%' : height - 160)) }}
+                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : height - 180) : (Platform.OS === 'ios' ? height - 205 : height - 160))}
                     contentContainerStyle={[common.px12, common.py5]}
                     onScrollEndDrag={loadMoreData}
                     onEndReachedThreshold={0.7}

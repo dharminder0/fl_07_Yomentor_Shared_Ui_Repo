@@ -19,16 +19,18 @@ import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { userLogin } from "../../apiconfig/AuthService";
 import image from "../../assets/themes/YoImages";
-import COLORS from "../../assets/themes/colors";
+import { useTheme } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get("window");
 const LoginPage = () => {
   const isDarkMode = useColorScheme() === "dark";
 
   const YoColors = useThemeColor();
+  const { colors } = useTheme();
   const scrollViewRef: any = useRef();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -38,6 +40,7 @@ const LoginPage = () => {
   const navigation: any = useNavigation();
 
   const onSubmit = (data: any) => {
+    setIsLoader(true);
     if (!!data?.phone && !!data?.password) {
       setIsLoggedIn(true);
       userLogin(data).then((result: any) => {
@@ -46,6 +49,7 @@ const LoginPage = () => {
           navigation.navigate("Startup");
         }
         setTimeout(() => {
+          setIsLoggedIn(false);
           setIsLoggedIn(false);
         }, 500);
       });
@@ -130,6 +134,7 @@ const LoginPage = () => {
           <Button
             title="Login"
             onPress={handleSubmit(onSubmit)}
+            loading={isLoader}
             buttonStyle={{ backgroundColor: YoColors.primary }}
             titleStyle={{ fontWeight: "600" }}
             containerStyle={{ width: "100%", marginTop: 20 }}

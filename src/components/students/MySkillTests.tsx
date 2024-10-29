@@ -312,8 +312,8 @@ const MySkillTests = () => {
                     getItemCount={getItemCount}
                     initialNumToRender={10} // Number of items to render initially
                     showsVerticalScrollIndicator={false}
-                    style={{ height: (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : 180) : (Platform.OS === 'ios' ? '90%' : 160)) }}
-                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? 210 : 180) : (Platform.OS === 'ios' ? 235 : 160))}
+                    style={{ height: (selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : height - 180) : (Platform.OS === 'ios' ? '90%' : height - 160)) }}
+                    windowSize={(selectedSubject > 0 || complexityLevel > 0 || gradeId > 0 ? (Platform.OS === 'ios' ? height - 200 : height - 180) : (Platform.OS === 'ios' ? height - 205 : height - 160))}
                     contentContainerStyle={[common.px12, common.py5]}
                     onScrollEndDrag={loadMoreData}
                     onEndReachedThreshold={0.7}

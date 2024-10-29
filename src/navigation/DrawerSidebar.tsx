@@ -12,14 +12,15 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { clearUserData, getUserInfo } from "../shared/sharedDetails";
-import { useThemeColor } from "../assets/themes/useThemeColor";
+import { useTheme } from '@react-navigation/native';
 import { common } from "../assets/styles/Common";
 import image from "../assets/themes/YoImages";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
+import { color } from "@rneui/base";
 
 const DrawerSidebar = () => {
-  const YoColors = useThemeColor();
+  const { colors }: any = useTheme();
   const userInfo: any = getUserInfo();
   const { height, width } = Dimensions.get("screen");
 
@@ -33,13 +34,13 @@ const DrawerSidebar = () => {
     navigation.navigate("UserProfile");
   };
   return (
-    <View style={{ flex: 1, backgroundColor: YoColors.white }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View
         style={{
           minHeight: 70,
           paddingVertical: 15,
           paddingStart: 12,
-          backgroundColor: YoColors.primary,
+          backgroundColor: colors.primary,
         }}
       >
         <View style={common.row}>
@@ -57,14 +58,14 @@ const DrawerSidebar = () => {
           </View>
           <View style={{ width: "60%" }}>
             <Text
-              style={[common.h2Title, { color: YoColors.white }]}
+              style={[common.h2Title, { color: '#fff' }]}
               numberOfLines={1}
             >
               {userInfo?.firstName + " " + userInfo?.lastName}
             </Text>
             {userInfo?.email && (
               <Text
-                style={[common.title, { color: YoColors.white }]}
+                style={[common.title, { color: '#fff' }]}
                 numberOfLines={1}
               >
                 {userInfo?.email}
@@ -75,9 +76,9 @@ const DrawerSidebar = () => {
                 <MaterialCommunityIcons
                   name="phone"
                   size={13}
-                  color={YoColors.white}
+                  color={'#fff'}
                 />
-                <Text style={[common.title, { color: YoColors.white }]}>
+                <Text style={[common.title, { color: '#fff' }]}>
                   {" "}
                   {userInfo?.phone}
                 </Text>
@@ -96,7 +97,7 @@ const DrawerSidebar = () => {
                 <MaterialCommunityIcons
                   name="chevron-right"
                   size={25}
-                  color={YoColors.white}
+                  color={'#fff'}
                 />
               }
               containerStyle={{
@@ -111,16 +112,16 @@ const DrawerSidebar = () => {
         style={{
           padding: 8,
           flex: 1,
-          backgroundColor: YoColors.background,
+          backgroundColor: colors.background,
         }}
       >
-        <View>
+        <View style={{ height: Platform.OS === 'ios' ? '97%' : '94%' }}>
           <TouchableOpacity
             style={styles.tabView}
             onPress={() => navigation.navigate("Home")}
           >
-            <Ionicons name="home" size={19} color={YoColors.primary} />
-            <Text style={styles.tabTitle}>Home</Text>
+            <Ionicons name="home" size={19} color={colors.icon} />
+            <Text style={[styles.tabTitle, { color: colors.icon }]}>Home</Text>
           </TouchableOpacity>
 
           {userInfo?.type === 3 && (
@@ -132,9 +133,9 @@ const DrawerSidebar = () => {
                 <MaterialCommunityIcons
                   name="clipboard-text"
                   size={19}
-                  color={YoColors.primary}
+                  color={colors.icon}
                 />
-                <Text style={styles.tabTitle}>Skill Tests</Text>
+                <Text style={[styles.tabTitle, { color: colors.icon }]}>Skill Tests</Text>
               </TouchableOpacity>
               {/* <TouchableOpacity
                 style={styles.tabView}
@@ -145,7 +146,7 @@ const DrawerSidebar = () => {
                   size={19}
                   color={YoColors.primary}
                 />
-                <Text style={styles.tabTitle}>My Skill Tests</Text>
+                <Text style={[styles.tabTitle, { color: colors.icon }]}>My Skill Tests</Text>
               </TouchableOpacity> */}
             </>
           )}
@@ -154,30 +155,25 @@ const DrawerSidebar = () => {
         <View
           style={{
             height: 20,
-            position: "absolute",
-            left: 15,
-            bottom: 12,
           }}
         >
           <Button
             onPress={logoutUser}
             buttonStyle={{
               padding: 0,
-              paddingEnd: 12,
-              backgroundColor: "none",
+              paddingHorizontal: 12,
+              alignSelf: 'flex-start'
             }}
-            title="Logout"
-            titleStyle={[common.fs12, { color: YoColors.primary }]}
+            type="clear"
+            title=" Logout"
+            titleStyle={[common.fs12, { color: colors.icon }]}
             icon={
               <MaterialCommunityIcons
                 name="logout"
                 size={12}
-                color={YoColors.primary}
+                color={colors.icon}
               />
             }
-            containerStyle={{
-              justifyContent: "center",
-            }}
           />
         </View>
       </View>
@@ -198,6 +194,5 @@ const styles = StyleSheet.create({
   tabTitle: {
     paddingHorizontal: 8,
     fontSize: 16,
-    color: "#124076",
   },
 });
