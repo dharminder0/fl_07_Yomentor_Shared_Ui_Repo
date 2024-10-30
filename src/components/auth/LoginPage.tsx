@@ -50,12 +50,12 @@ const LoginPage = () => {
         }
         setTimeout(() => {
           setIsLoggedIn(false);
-          setIsLoggedIn(false);
+          setIsLoader(false);
         }, 500);
       }).catch((error: any) => {
         setTimeout(() => {
           setIsLoggedIn(false);
-          setIsLoggedIn(false);
+          setIsLoader(false);
         }, 500);
       })
     }
