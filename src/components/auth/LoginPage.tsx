@@ -40,8 +40,8 @@ const LoginPage = () => {
   const navigation: any = useNavigation();
 
   const onSubmit = (data: any) => {
-    setIsLoader(true);
     if (!!data?.phone && !!data?.password) {
+      setIsLoader(true);
       setIsLoggedIn(true);
       userLogin(data).then((result: any) => {
         if (result?.data && result?.data.success) {
@@ -52,7 +52,12 @@ const LoginPage = () => {
           setIsLoggedIn(false);
           setIsLoggedIn(false);
         }, 500);
-      });
+      }).catch((error: any) => {
+        setTimeout(() => {
+          setIsLoggedIn(false);
+          setIsLoggedIn(false);
+        }, 500);
+      })
     }
   };
 
