@@ -33,6 +33,10 @@
 		<key>NSLocalNetworkUsageDescription</key>
 		<string>App requires access to the local network to communicate with the Metro bundler on your development machine.</string>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Yomentor need access to your camera for capturing photos and videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Yomentor need access to your microphone for recording audio.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Yomentor need access to your photo library to allow you to upload and share photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
