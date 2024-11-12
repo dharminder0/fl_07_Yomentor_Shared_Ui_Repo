@@ -33,6 +33,7 @@ import moment from "moment";
 import AddressUpdateModal from "./AddressUpdateModal";
 import { Card } from "@rneui/base";
 import PreferencesModal from "./PreferencesModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 const UserProfile = () => {
   const { height } = Dimensions.get("window");
@@ -47,6 +48,7 @@ const UserProfile = () => {
   const [isAddressModal, setIsAddressModal] = useState<boolean>(false);
   const [isPreferencesModal, setIsPreferencesModal] = useState<boolean>(false);
   const [isBasicModal, setIsBasicModal] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [isSpecilityModal, setIsSpecilityModal] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<any>({});
   const [categoryList, setCategoryList] = useState<any>([]);
@@ -128,6 +130,10 @@ const UserProfile = () => {
         setIsLoading(false);
       });
   };
+
+  const handleDeleteAccount = () => {
+
+  }
 
   return (
     <ScrollView
@@ -419,7 +425,24 @@ const UserProfile = () => {
               </View>
             </View>
           )}
+
+          <View style={[common.mtop10, { alignItems: 'flex-end' }]}>
+            <Button
+              icon={{ name: 'trash', type: 'font-awesome', size: 12, color: YoColors.primary, }}
+              onPress={() => setIsDeleteModal(true)}
+              title="Delete account"
+              titleStyle={[common.fs12, { color: YoColors.primary }]}
+              type="clear"
+              buttonStyle={common.p0}
+            />
+          </View>
+
         </View>
+      )
+      }
+
+      {isDeleteModal && (
+        <DeleteAccountModal isVisible={isDeleteModal} setIsVisible={setIsDeleteModal} userId={userInfo?.id} />
       )
       }
 

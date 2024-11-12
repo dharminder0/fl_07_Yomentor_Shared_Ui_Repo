@@ -30,7 +30,7 @@
 		1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB62CCA28B200B72421 /* Ionicons.ttf */; };
 		1874EACA2CCA28B200B72421 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */; };
 		1874EACB2CCA28B200B72421 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */; };
-		18BA03A02CCA563A0096F737 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18BA039F2CCA563A0096F737 /* main.jsbundle */; };
+		18CD4B452CE1F3E300DE71D8 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18CD4B442CE1F3E300DE71D8 /* main.jsbundle */; };
 		18F1B4BF2CCBA87C0087214F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 18F1B4BE2CCBA87C0087214F /* assets */; };
 		3C0D25DE7D70C6DB25F0BE86 /* libPods-Yomentor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -76,7 +76,7 @@
 		1874EAB62CCA28B200B72421 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf"; sourceTree = "<group>"; };
 		1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
-		18BA039F2CCA563A0096F737 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		18CD4B442CE1F3E300DE71D8 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		18F1B4BE2CCBA87C0087214F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.release.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.release.xcconfig"; sourceTree = "<group>"; };
 		2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.release.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,7 +128,6 @@
 		13B07FAE1A68108700A75B9A /* Yomentor */ = {
 			isa = PBXGroup;
 			children = (
-				18BA039F2CCA563A0096F737 /* main.jsbundle */,
 				1874EAA52CCA282200B72421 /* Fonts */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -136,6 +135,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				18CD4B442CE1F3E300DE71D8 /* main.jsbundle */,
 			);
 			name = Yomentor;
 			sourceTree = "<group>";
@@ -314,6 +314,7 @@
 			files = (
 				18F1B4BF2CCBA87C0087214F /* assets in Resources */,
 				1874EABB2CCA28B200B72421 /* Octicons.ttf in Resources */,
+				18CD4B452CE1F3E300DE71D8 /* main.jsbundle in Resources */,
 				1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */,
 				1874EAB92CCA28B200B72421 /* Foundation.ttf in Resources */,
 				1874EAC02CCA28B200B72421 /* Zocial.ttf in Resources */,
@@ -332,7 +333,6 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				1874EAC82CCA28B200B72421 /* MaterialIcons.ttf in Resources */,
 				1874EAC12CCA28B200B72421 /* FontAwesome5_Solid.ttf in Resources */,
-				18BA03A02CCA563A0096F737 /* main.jsbundle in Resources */,
 				1874EAC52CCA28B200B72421 /* EvilIcons.ttf in Resources */,
 				1874EABD2CCA28B200B72421 /* Fontisto.ttf in Resources */,
 			);
@@ -559,11 +559,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JUTCL6QC9U;
+				DEVELOPMENT_TEAM = JUTCL6QC9U;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Yomentor/Info.plist;
@@ -572,7 +570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -582,7 +580,6 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.yomentor;
 				PRODUCT_NAME = Yomentor;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = yomentor_provision;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -601,11 +598,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = JUTCL6QC9U;
+				DEVELOPMENT_TEAM = JUTCL6QC9U;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Yomentor/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -613,7 +608,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -623,7 +618,6 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.yomentor;
 				PRODUCT_NAME = Yomentor;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = yomentor_provision;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

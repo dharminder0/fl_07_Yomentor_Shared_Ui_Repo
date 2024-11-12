@@ -11,4 +11,5 @@ export default {
   language: require('../img/language.png'),
   subject: require('../img/subject.png'),
   skillsTest: require('../img/skills-test.png'),
+  DeleteIcon: require('../img/DeleteIcon.png'),
 };

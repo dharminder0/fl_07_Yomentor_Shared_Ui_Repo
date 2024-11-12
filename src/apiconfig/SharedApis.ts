@@ -23,6 +23,9 @@ export async function deleteMediaFilev2(payload: any): Promise<any> {
 export async function getUsersList(payload: any): Promise<any> {
   return AxiosInterceptor.post("User/UserSearch", payload);
 }
+export async function deleteUser(userId: any): Promise<any> {
+  return AxiosInterceptor.get(`/User/DeleteUser?userId=${userId}&isDeleted=true`);
+}
 
 export async function getUsersDetails(
   userId: number,
