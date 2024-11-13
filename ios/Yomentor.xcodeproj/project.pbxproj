@@ -30,7 +30,7 @@
 		1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB62CCA28B200B72421 /* Ionicons.ttf */; };
 		1874EACA2CCA28B200B72421 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */; };
 		1874EACB2CCA28B200B72421 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */; };
-		18CD4B452CE1F3E300DE71D8 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18CD4B442CE1F3E300DE71D8 /* main.jsbundle */; };
+		18AEE01E2CE3920600563A39 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 18AEE01D2CE3920600563A39 /* main.jsbundle */; };
 		18F1B4BF2CCBA87C0087214F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 18F1B4BE2CCBA87C0087214F /* assets */; };
 		3C0D25DE7D70C6DB25F0BE86 /* libPods-Yomentor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DEE37D4448E52B4E9C8AD4 /* libPods-Yomentor.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -76,7 +76,7 @@
 		1874EAB62CCA28B200B72421 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		1874EAB72CCA28B200B72421 /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf"; sourceTree = "<group>"; };
 		1874EAB82CCA28B200B72421 /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
-		18CD4B442CE1F3E300DE71D8 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		18AEE01D2CE3920600563A39 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		18F1B4BE2CCBA87C0087214F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		1F849D160F762296E2DFE93F /* Pods-Yomentor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor.release.xcconfig"; path = "Target Support Files/Pods-Yomentor/Pods-Yomentor.release.xcconfig"; sourceTree = "<group>"; };
 		2F2387770104F0CEFB2C6FE6 /* Pods-Yomentor-YomentorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomentor-YomentorTests.release.xcconfig"; path = "Target Support Files/Pods-Yomentor-YomentorTests/Pods-Yomentor-YomentorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				18CD4B442CE1F3E300DE71D8 /* main.jsbundle */,
+				18AEE01D2CE3920600563A39 /* main.jsbundle */,
 			);
 			name = Yomentor;
 			sourceTree = "<group>";
@@ -314,7 +314,7 @@
 			files = (
 				18F1B4BF2CCBA87C0087214F /* assets in Resources */,
 				1874EABB2CCA28B200B72421 /* Octicons.ttf in Resources */,
-				18CD4B452CE1F3E300DE71D8 /* main.jsbundle in Resources */,
+				18AEE01E2CE3920600563A39 /* main.jsbundle in Resources */,
 				1874EAC92CCA28B200B72421 /* Ionicons.ttf in Resources */,
 				1874EAB92CCA28B200B72421 /* Foundation.ttf in Resources */,
 				1874EAC02CCA28B200B72421 /* Zocial.ttf in Resources */,
@@ -570,7 +570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -608,7 +608,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
