@@ -284,8 +284,9 @@ const UserRegistration = ({ route }: any) => {
           <Button
             title="Register"
             onPress={handleSubmit(onSubmit)}
-            buttonStyle={{ backgroundColor: YoColors.primary, marginTop: 20 }}
+            buttonStyle={{ backgroundColor: colors.primary }}
             titleStyle={{ fontWeight: "600" }}
+            containerStyle={common.mt20}
           />
           <View
             style={[
@@ -296,13 +297,13 @@ const UserRegistration = ({ route }: any) => {
               },
             ]}
           >
-            <Text style={common.rText}>Already have an account</Text>
+            <Text style={[common.fs12, { color: colors.text }]}>Already have an account</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("Login")}
               activeOpacity={0.7}
               style={{ paddingVertical: 6 }}
             >
-              <Text style={[common.rText, { color: YoColors.primary }]}>
+              <Text style={[common.fs12, { color: colors.primary }]}>
                 {" "}
                 Log in
               </Text>

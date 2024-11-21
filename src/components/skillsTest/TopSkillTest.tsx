@@ -13,12 +13,13 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import image from "../../assets/themes/YoImages";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) => {
 
   const YoColors = useThemeColor();
+  const { colors } = useTheme();
   const navigation: any = useNavigation();
 
   const getItem = (data: any, index: any) => data[index];
@@ -54,8 +55,8 @@ const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) =>
                 )}
                 <View style={[common.row, common.my5]}>
                   <View style={[cardStyle.row, common.pe5]}>
-                    <Icon name="laptop" size={12} />
-                    <Text style={common.rText}> {item?.gradeName}</Text>
+                    <Icon name="laptop" size={12} color={colors.text} />
+                    <Text style={[common.fs12, { color: colors.text }]}> {item?.gradeName}</Text>
                   </View>
                   {/* <View style={[cardStyle.row, common.pe5]}>
                     <Icon name="book" size={12} />
@@ -63,15 +64,15 @@ const TopSkillTest = ({ title = "", data = [], isTop = true, isView = true }) =>
                   </View> */}
                   {item?.averageMarks > 0 && (
                     <View style={[cardStyle.row, common.pe5]}>
-                      <Icon name="shield-alt" size={12} />
-                      <Text style={common.rText}> Avg Score: {item?.averageMarks}
+                      <Icon name="shield-alt" size={12} color={colors.text} />
+                      <Text style={[common.fs12, { color: colors.text }]}> Avg Score: {item?.averageMarks}
                       </Text>
                     </View>
                   )}
                   {item?.attemptCount > 0 && (
                     <View style={[cardStyle.row, common.pe5]}>
-                      <Icon name="users" size={12} />
-                      <Text style={common.rText}> Attempts: {item?.attemptCount}
+                      <Icon name="users" size={12} color={colors.text} />
+                      <Text style={[common.fs12, { color: colors.text }]}> Attempts: {item?.attemptCount}
                       </Text>
                     </View>
                   )}

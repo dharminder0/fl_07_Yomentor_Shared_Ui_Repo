@@ -12,4 +12,5 @@ export default {
   subject: require('../img/subject.png'),
   skillsTest: require('../img/skills-test.png'),
   DeleteIcon: require('../img/DeleteIcon.png'),
+  confirm: require('../img/confirm.png'),
 };

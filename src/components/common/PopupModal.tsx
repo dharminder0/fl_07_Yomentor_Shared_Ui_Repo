@@ -1,10 +1,10 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/Ionicons";
 import useStore from "../../store/useStore";
-import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { common } from "../../assets/styles/Common";
+import image from "../../assets/themes/YoImages";
+import { useTheme } from '@react-navigation/native';
 
 interface ModelProps {
   icon: string;
@@ -22,7 +22,7 @@ const PopupModal: React.FC<ModelProps> = ({
 }) => {
   const { isPopupModal, setIsPopupModal }: any = useStore();
 
-  const YoColors = useThemeColor();
+  const { colors } = useTheme();
   useEffect(() => {
     setTimeout(() => {
       setIsPopupModal(false);
@@ -33,25 +33,19 @@ const PopupModal: React.FC<ModelProps> = ({
     <View>
       <Modal
         isVisible={isPopupModal}
-        onBackButtonPress={() => setIsPopupModal(false)}
         swipeDirection="down"
+        onBackButtonPress={() => setIsPopupModal(false)}
         onBackdropPress={() => setIsPopupModal(false)}
+        animationInTiming={300}
         style={{ margin: 0, alignItems: "center" }}
         useNativeDriver
       >
-        <View
-          style={{
-            backgroundColor: "white",
-            minHeight: 150,
-            maxHeight: 300,
-            width: width - 40,
-            borderRadius: 12,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Icon name={icon} size={iconSize} color={color} />
-          <Text style={[common.h3Title, { marginTop: 20 }]}>{message}</Text>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+          <Image
+            style={{ height: 54, width: 54 }}
+            source={image?.confirm}
+          />
+          <Text style={[common.h1Title, { marginTop: 20 }]}>{message}</Text>
         </View>
       </Modal>
     </View>
@@ -61,12 +55,13 @@ const PopupModal: React.FC<ModelProps> = ({
 export default PopupModal;
 
 const styles = StyleSheet.create({
-  headText: {
-    fontSize: 16,
-    fontWeight: "700",
-    textAlign: "center",
-    // color: useThemeColor().secondary,
-    marginVertical: 10,
-    paddingTop: 10,
-  },
+  container: {
+    alignItems: 'center',
+    maxHeight: 300,
+    width: '92%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 21,
+  }
 });

@@ -21,18 +21,19 @@ import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import ConfirmationPopup from "../common/ConfirmationPopup";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 import { getComplexityLevel, getUserInfo } from "../../shared/sharedDetails";
 import moment from "moment";
 import useStore from "../../store/useStore";
 import AlertModal from "../common/AlertModal";
 import TopSkillTest from "./TopSkillTest";
+import ConfirmationPopupV2 from "../common/ConfirmationPopupV2";
 
 const { width } = Dimensions.get("window");
 const SkillDetails = ({ route }: any) => {
   const skillTestId: any = route.params?.skillId;
   const YoColors = useThemeColor();
+  const { colors } = useTheme();
   const userInfo: any = getUserInfo();
   const navigation: any = useNavigation();
   const [isLoader, setIsLoader] = useState<boolean>(false);
@@ -168,7 +169,7 @@ const SkillDetails = ({ route }: any) => {
             {skillDetails?.icon &&
               <Image source={{ uri: skillDetails?.icon }} height={32} width={32} />
             }
-            <Text style={[common.rText, { maxWidth: 75 }]} numberOfLines={2}> {skillDetails?.subjectName}</Text>
+            <Text style={[common.fs12, { maxWidth: 75, color: colors.text }]} numberOfLines={2}> {skillDetails?.subjectName}</Text>
           </View>
           <View style={{ width: width - 90 }}>
             {skillDetails?.title && (
@@ -181,37 +182,37 @@ const SkillDetails = ({ route }: any) => {
 
         <View style={[common.row, common.mtop10]}>
           <View style={[cardStyle.row, common.pe5]}>
-            <Icon name="laptop" size={12} />
-            <Text style={common.rText}> {skillDetails?.gradeName}</Text>
+            <Icon name="laptop" size={12} color={colors.text} />
+            <Text style={[common.fs12, { color: colors.text }]}> {skillDetails?.gradeName}</Text>
           </View>
           {skillDetails?.averageMarks > 0 && (
             <View style={[cardStyle.row, common.pe5]}>
-              <Icon name="shield-alt" size={12} />
-              <Text style={common.rText}> Avg Score: {skillDetails?.averageMarks}</Text>
+              <Icon name="shield-alt" size={12} color={colors.text} />
+              <Text style={[common.fs12, { color: colors.text }]}> Avg Score: {skillDetails?.averageMarks}</Text>
             </View>
           )}
           {skillDetails?.numberOfQuestions > 0 && (
             <View style={[cardStyle.row, common.pe5]}>
-              <Icon name="list-ol" size={12} />
-              <Text style={common.rText}> Questions: {skillDetails?.numberOfQuestions}</Text>
+              <Icon name="list-ol" size={12} color={colors.text} />
+              <Text style={[common.fs12, { color: colors.text }]}> Questions: {skillDetails?.numberOfQuestions}</Text>
             </View>
           )}
           {skillDetails?.complexity > 0 && (
             <View style={[cardStyle.row, common.pe5]}>
-              <Icon name="chart-bar" size={12} />
-              <Text style={common.rText}> Level: {getComplexityLevel().find((complexity: any) => complexity.id == skillDetails?.complexity).name}</Text>
+              <Icon name="chart-bar" size={12} color={colors.text} />
+              <Text style={[common.fs12, { color: colors.text }]}> Level: {getComplexityLevel().find((complexity: any) => complexity.id == skillDetails?.complexity).name}</Text>
             </View>
           )}
           {skillDetails?.timerValue > 0 && (
             <View style={[cardStyle.row, common.pe5]}>
-              <Icon name="clock" size={12} />
-              <Text style={common.rText}> Time: {skillDetails?.timerValue} minute</Text>
+              <Icon name="clock" size={12} color={colors.text} />
+              <Text style={[common.fs12, { color: colors.text }]}> Time: {skillDetails?.timerValue} minute</Text>
             </View>
           )}
         </View>
 
         {skillDetails?.description && (
-          <Text style={[common.rText, common.my10]}>
+          <Text style={[common.fs12, common.my10, { color: colors.text }]}>
             {skillDetails?.description}
           </Text>
         )}
@@ -267,11 +268,11 @@ const SkillDetails = ({ route }: any) => {
               }
             >
               <View
-                style={[styles.item, { backgroundColor: YoColors.background }]}
+                style={[styles.item, { backgroundColor: colors.card }]}
                 key={index}
               >
-                <Text>{moment(item.attemptDate).format("DD-MMM-YYYY")}</Text>
-                <Text>Score: {item.score}</Text>
+                <Text style={{ color: colors.text }}>{moment(item.attemptDate).format("DD-MMM-YYYY")}</Text>
+                <Text style={{ color: colors.text }}>Score: {item.score}</Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -279,23 +280,24 @@ const SkillDetails = ({ route }: any) => {
         {suggestedSkillTestData && suggestedSkillTestData?.length > 0 &&
           <>
             <Text style={[common.h3Title, common.mtop10]}>Explore Similar Tests
-              <Text style={[common.rText, { fontWeight: '400' }]}> (Check out these related tests to sharpen your skills and boost your preparation!)</Text>
+              <Text style={[common.rText, { fontWeight: '400', color: colors.text }]}> (Check out these related tests to sharpen your skills and boost your preparation!)</Text>
             </Text>
             <TopSkillTest data={suggestedSkillTestData} isTop={true} isView={false} />
           </>
         }
         <View style={[common.my10]}>
-          <Text style={[common.rText, common.my10, { fontWeight: '400', textAlign: 'center' }]}>If you need more practice on this topic? Ask AI to create a new test for you!</Text>
+          <Text style={[common.rText, common.my10, { fontWeight: '400', textAlign: 'center', color: colors.text }]}>If you need more practice on this topic? Ask AI to create a new test for you!</Text>
           <Button title='Generate New Test' type="outline"
             onPress={handleRegenerate}
-            buttonStyle={[{ borderColor: YoColors.primary, paddingHorizontal: 5, paddingVertical: 3, width: 120 }]}
+            buttonStyle={[{ borderColor: colors.primary, paddingHorizontal: 5, paddingVertical: 3, width: 120 }]}
             containerStyle={{ alignSelf: 'center' }}
-            titleStyle={[common.fs12, { color: YoColors.primary }]} />
+            titleStyle={[common.fs12, { color: colors.primary }]} />
         </View>
 
       </ScrollView>
       {isAttempModal && (
-        <ConfirmationPopup
+        <ConfirmationPopupV2
+          isLoader={isLoader}
           message="You want to attempt this skill test"
           onSubmit={handleAttempTest}
           isVisible={isAttempModal}

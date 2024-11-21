@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, Pressable, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Card } from '@rneui/themed';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import {
     getComplexityLevel,
     getLanguage,
@@ -24,6 +24,7 @@ const CreateSkillTest = () => {
     const userInfo: any = getUserInfo();
     const navigation: any = useNavigation();
     const YoColors: any = useThemeColor();
+    const { colors }: any = useTheme();
 
     const [categoryList, setCategoryList] = useState<any>([]);
     // const [step, setStep] = useState(0); // Current step
@@ -139,44 +140,52 @@ const CreateSkillTest = () => {
                 </View>
                 <View style={styles.cardWrapper}>
                     {!isTry && selectedCategory &&
-                        <Card key={selectedCategory.id} containerStyle={[styles.cardContainer, { backgroundColor: (categoryType == userInfo?.category ? YoColors.bgColor : 'white') }]}>
+                        <View key={selectedCategory.id} style={[styles.cardContainer, {
+                            backgroundColor: (categoryType == userInfo?.category ? colors.lightBackground : colors.card),
+                            borderColor: (categoryType == userInfo?.category ? colors.primary : 'white')
+                        }]}>
                             <Pressable onPress={() => { setCategory(selectedCategory.id); setCategoryType(selectedCategory.id); }}>
-
                                 {selectedCategory?.icon && <Image
                                     style={styles.cardImage}
                                     resizeMode="contain"
                                     source={{ uri: selectedCategory.icon }}
                                 />
                                 }
-                                <Text style={[common.rText, common.tCenter]}>{selectedCategory.categoryName}</Text>
+                                <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedCategory.categoryName}</Text>
                             </Pressable>
-                        </Card>
+                        </View>
                     }
 
                     {!isTry && selectedGrade &&
-                        <Card key={selectedGrade.id} containerStyle={[styles.cardContainer, { backgroundColor: (academicClass == userInfo?.studentGradeId ? YoColors.bgColor : 'white') }]}>
+                        <View key={selectedGrade.id} style={[styles.cardContainer, {
+                            backgroundColor: (academicClass == userInfo?.studentGradeId ? colors.lightBackground : colors.card),
+                            borderColor: (academicClass == userInfo?.studentGradeId ? colors.primary : 'white')
+                        }]}>
                             <Pressable onPress={() => { setAcademicClass(selectedGrade.id); handleGradeChange(selectedGrade.id); }}>
                                 <Image
                                     style={styles.cardImage}
                                     resizeMode="contain"
                                     source={categoryType == 1 ? image.knowledge : image.competition}
                                 />
-                                <Text style={[common.rText, common.tCenter]}>{selectedGrade.name}</Text>
+                                <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedGrade.name}</Text>
                             </Pressable>
-                        </Card>
+                        </View>
                     }
                     {isTry && categoryList.map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer, common.mr10, { backgroundColor: (categoryType == item.id ? YoColors.bgColor : 'white') }]}>
+                            <View key={item.id} style={[styles.cardContainer, common.mr10, {
+                                backgroundColor: (categoryType == item.id ? colors.lightBackground : colors.card),
+                                borderColor: (categoryType == item.id ? colors.primary : 'white'),
+                            }]}>
                                 <Pressable onPress={() => { setCategory(item.id); setCategoryType(item.id); }}>
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
                                         source={!item?.icon ? image.competition : { uri: item?.icon }} />
 
-                                    <Text style={[common.rText, common.tCenter]}>{item.categoryName}</Text>
+                                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.categoryName}</Text>
                                 </Pressable>
-                            </Card>
+                            </View>
                         )
                     })}
                 </View>
@@ -189,15 +198,18 @@ const CreateSkillTest = () => {
                         <View style={styles.cardWrapper}>
                             {classList.map((item: any) => {
                                 return (
-                                    <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (academicClass == item.id ? YoColors.bgColor : 'white') }]}>
+                                    <View key={item.id} style={[styles.cardContainer, {
+                                        backgroundColor: (academicClass == item.id ? colors.lightBackground : colors.card),
+                                        borderColor: (academicClass == item.id ? colors.primary : 'white'),
+                                    }]}>
                                         <Pressable onPress={() => { setAcademicClass(item.id); handleGradeChange(item.id); }}>
                                             <Image
                                                 style={styles.cardImage}
                                                 resizeMode="contain"
                                                 source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
-                                            <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                            <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                         </Pressable>
-                                    </Card>
+                                    </View>
                                 );
                             })}
                         </View>
@@ -206,29 +218,32 @@ const CreateSkillTest = () => {
 
 
                 <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Area </Card.Title>
-                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose an area to tailor the test</Text>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400', color: colors.text }]}>Choose an area to tailor the test</Text>
 
                 <View style={[styles.cardWrapper, common.mb10]}>
                     {subjectList.map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (subject == item.id ? YoColors.bgColor : 'white') }]}>
+                            <View key={item.id} style={[styles.cardContainer, {
+                                backgroundColor: (subject == item.id ? colors.lightBackground : colors.card),
+                                borderColor: (subject == item.id ? colors.primary : 'white'),
+                            }]}>
                                 <Pressable onPress={() => { setSubject(item.id); }}>
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
                                         source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
-                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                 </Pressable>
-                            </Card>
+                            </View>
                         )
                     })}
                 </View>
 
                 <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Topic </Card.Title>
-                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Enter a topic you want to practice (e.g., Algebra)</Text>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400', color: colors.text }]}>Enter a topic you want to practice (e.g., Algebra)</Text>
 
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: colors.inputText }]}
                     placeholder="Enter topic (e.g., Algebra)"
                     value={topic}
                     onChangeText={(text) => setTopic(text)}
@@ -236,62 +251,71 @@ const CreateSkillTest = () => {
                 />
 
                 <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Complexity</Card.Title>
-                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose the complexity level to match your skill level</Text>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400', color: colors.text }]}>Choose the complexity level to match your skill level</Text>
 
                 <View style={styles.cardWrapper}>
                     {getComplexityLevel().map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (complexityLevel == item.id ? YoColors.bgColor : 'white') }]}>
+                            <View key={item.id} style={[styles.cardContainer, {
+                                backgroundColor: (complexityLevel == item.id ? colors.lightBackground : colors.card),
+                                borderColor: (complexityLevel == item.id ? colors.primary : 'white'),
+                            }]}>
                                 <Pressable onPress={() => { setComplexityLevel(item.id); }}>
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
                                         source={!item?.icon ? image.complexity : { uri: item?.icon }} />
-                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                 </Pressable>
-                            </Card>
+                            </View>
                         )
                     })}
                 </View>
 
                 <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>No. of questions</Card.Title>
-                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Choose the number of questions to adjust the length of your test</Text>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400', color: colors.text }]}>Choose the number of questions to adjust the length of your test</Text>
 
                 <View style={styles.cardWrapper}>
                     {getNoQuestions().map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (numberOfQuestions == item.id ? YoColors.bgColor : 'white') }]}>
+                            <View key={item.id} style={[styles.cardContainer, {
+                                backgroundColor: (numberOfQuestions == item.id ? colors.lightBackground : colors.card),
+                                borderColor: (numberOfQuestions == item.id ? colors.primary : 'white'),
+                            }]}>
                                 <Pressable onPress={() => { setNumberOfQuestions(item.id); }}>
                                     <Image
                                         style={styles.cardImage}
                                         resizeMode="contain"
                                         source={!item?.icon ? image.question : { uri: item?.icon }} />
-                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                 </Pressable>
-                            </Card>
+                            </View>
                         )
                     })}
                 </View>
 
                 <Card.Title style={[{ textAlign: 'left', color: YoColors.primary }, common.mb0]}>Language</Card.Title>
-                <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Select the language for your test as per your preference</Text>
+                <Text style={[common.rText, common.mb10, { fontWeight: '400', color: colors.text }]}>Select the language for your test as per your preference</Text>
 
                 <View style={styles.cardWrapper}>
                     {getLanguage().map((item: any) => {
                         return (
-                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (language == item.id ? YoColors.bgColor : 'white') }]}>
+                            <View key={item.id} style={[styles.cardContainer, {
+                                backgroundColor: (language == item.id ? colors.lightBackground : colors.card),
+                                borderColor: (language == item.id ? colors.primary : 'white'),
+                            }]}>
                                 <Pressable onPress={() => { setLanguage(item.id); }}>
                                     <View style={[styles.cardImage, common.mt15]}>
-                                        <Card.Title style={[styles.cardTitle, common.fs12]}>{item.label}</Card.Title>
+                                        <Card.Title style={[styles.cardTitle, common.fs12, { color: colors.text }]}>{item.label}</Card.Title>
                                     </View>
                                 </Pressable>
-                            </Card>
+                            </View>
                         )
                     })}
                 </View>
 
                 <Card.Title style={{ textAlign: 'left', color: YoColors.primary }}>Time bound
-                    <Text style={[common.rText, { fontWeight: '400' }]}> (Optional)</Text>
+                    <Text style={[common.fs12, { fontWeight: '400', color: colors.text }]}> (Optional)</Text>
                 </Card.Title>
                 <Button
                     title={!timerValue ? "Select Time" : `${timerValue} minute`}
@@ -301,12 +325,12 @@ const CreateSkillTest = () => {
                         <Ionicons
                             name="chevron-down" // Ionicons' chevron-down icon
                             size={15}
-                            color={YoColors.gray}
+                            color={colors.text}
                         />
                     }
                     iconPosition='right'
-                    buttonStyle={[common.px12, common.py10, { justifyContent: 'space-between', borderColor: YoColors.gray }]}
-                    titleStyle={[common.fs12, { color: YoColors.gray }]}
+                    buttonStyle={[common.px12, common.py10, { justifyContent: 'space-between', borderColor: colors.text }]}
+                    titleStyle={[common.fs12, { color: colors.text }]}
                     containerStyle={[common.mb10]}
                 />
 
@@ -323,12 +347,10 @@ const CreateSkillTest = () => {
                 <Modal
                     isVisible={isTimeModal}
                     useNativeDriver
-                    style={{ justifyContent: 'flex-end', width: '100%', margin: 0 }}
+                    style={{ justifyContent: 'flex-end', margin: 0 }}
                     onBackdropPress={() => setIsTimeModal(false)} // Close on backdrop press
                 >
-                    <View
-                        style={[{ backgroundColor: 'white' }, common.p12]}
-                    >
+                    <View style={[{ backgroundColor: colors.background }, common.p12]}>
                         {getTimeBounds().map((item: any) => (
                             <Button
                                 type='outline'
@@ -348,16 +370,17 @@ const CreateSkillTest = () => {
     };
 
     return (
-        <><ScrollView>
-            <View style={styles.stepContainer}>{renderStep()}</View>
-            {isAlertModal && (
-                <AlertModal
-                    message={`Yo!Mentor AI generated best questions`}
-                    icon={"checkmark-circle"}
-                    color={"green"}
-                    iconSize={40} />
-            )}
-        </ScrollView>
+        <>
+            <ScrollView>
+                <View style={styles.stepContainer}>{renderStep()}</View>
+                {isAlertModal && (
+                    <AlertModal
+                        message={`Yo!Mentor AI generated best questions`}
+                        icon={"checkmark-circle"}
+                        color={"green"}
+                        iconSize={40} />
+                )}
+            </ScrollView>
 
             {isProcessLoader &&
                 <View
@@ -398,6 +421,8 @@ const styles = StyleSheet.create({
         margin: 0,
         marginBottom: 10,
         marginRight: 5.5,
+        borderWidth: 0.6,
+        borderRadius: 3
     },
     cardContainer1: {
         width: '48%',

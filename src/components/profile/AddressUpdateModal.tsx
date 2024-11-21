@@ -12,7 +12,6 @@ import Modal from "react-native-modal";
 import { btnStyle, cardStyle, common } from "../../assets/styles/Common";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-elements";
-import { useThemeColor } from "../../assets/themes/useThemeColor";
 import {
   getAddress,
   getStates,
@@ -25,16 +24,14 @@ import {
   getLocation,
   requestLocationPermission,
 } from "../../shared/sharedDetails";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
 
 const AddressUpdateModal = ({
   isAddressModal = false,
-  closeModal = (value: boolean) => {},
+  closeModal = (value: boolean) => { },
   userId = 0,
 }) => {
-  const YoColors = useThemeColor();
-
-  const { height, width } = Dimensions.get("window");
+  const { colors }: any = useTheme();
 
   const [isPopupModalVisible, setIsPopupModalVisible] = useState(false);
   const [isProcessLoader, setIsProcessLoader] = useState(false);
@@ -189,153 +186,141 @@ const AddressUpdateModal = ({
           iconSize={40}
         />
       )}
-      <>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView
-          style={{ maxHeight: height - 100 }}
           showsVerticalScrollIndicator={false}
         >
           <View
-            style={{
-              backgroundColor: YoColors.background,
-              height: height,
-              minHeight: 150,
-            }}
+            style={[cardStyle.j_row, common.px12, { alignItems: "center" }]}
           >
-            <View
-              style={[cardStyle.j_row, { padding: 12, alignItems: "center" }]}
-            >
-              <Text style={common.h3Title}>Update Address</Text>
-              <Button
-                onPress={() => toggleModal(false)}
-                icon={
-                  <Ionicons
-                    name="close-sharp"
-                    size={24}
-                    color={YoColors.primary}
-                  />
-                }
-                buttonStyle={[
-                  btnStyle.btnCross,
-                  {
-                    paddingHorizontal: 1,
-                    paddingStart: 15,
-                    backgroundColor: YoColors.background,
-                  },
-                ]}
-              />
-            </View>
-            <View style={{ paddingHorizontal: 12 }}>
-              <Button
-                onPress={getCurrentLocation}
-                title={"Use Current Location"}
-                icon={
-                  <Ionicons
-                    name="location"
-                    size={12}
-                    color={YoColors.primary}
-                  />
-                }
-                iconPosition="right"
-                buttonStyle={[btnStyle.outline, common.px12]}
-                titleStyle={[btnStyle.outlineTitle, common.fs12]}
-                containerStyle={[common.mb10, { width: 155 }]}
-              />
-
-              <Controller
-                control={control}
-                name="address1"
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: errors.address1 ? "red" : "#ccc",
-                        height: 80,
-                        verticalAlign: "top",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    multiline={true}
-                    placeholder="Address 1"
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="city"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="City"
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="pincode"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    onChangeText={onChange}
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: "#ccc",
-                      },
-                    ]}
-                    placeholderTextColor={YoColors.placeholderText}
-                    value={value}
-                    placeholder="Pin Code"
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="stateId"
-                render={({ field: { onChange, value } }) => (
-                  <SelectModal
-                    data={stateList}
-                    placeholder="Select State"
-                    defaultValue={stateList.find(
-                      (item: any) =>
-                        item.id ==
-                        (!userAddress?.stateId
-                          ? getValues("stateId")
-                          : userAddress?.stateId)
-                    )}
-                    onChanged={(values: any) => {
-                      setValue("stateId", values?.id);
-                    }}
-                  />
-                )}
-              />
-
-              <View style={{ marginTop: 20, alignItems: "center" }}>
-                <Button
-                  title="Update"
-                  loading={isProcessLoader}
-                  buttonStyle={btnStyle.solid}
-                  titleStyle={btnStyle.solidTitle}
-                  onPress={handleSubmit(onSubmit)}
+            <Text style={common.h3Title}>Update Address</Text>
+            <Button
+              onPress={() => toggleModal(false)}
+              type="clear"
+              icon={
+                <Ionicons
+                  name="close-sharp"
+                  size={24}
+                  color={colors.text}
                 />
-              </View>
+              }
+            />
+          </View>
+          <View style={{ paddingHorizontal: 12 }}>
+            <Button
+              onPress={getCurrentLocation}
+              title={"Use Current Location"}
+              type="outline"
+              icon={
+                <Ionicons
+                  name="location"
+                  size={12}
+                  color={colors.primary}
+                />
+              }
+              iconPosition="right"
+              buttonStyle={{ borderColor: colors.primary, paddingVertical: 2 }}
+              titleStyle={[common.fs12, { color: colors.primary }]}
+              containerStyle={[common.mb10, { width: 155 }]}
+            />
+
+            <Controller
+              control={control}
+              name="address1"
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  onChangeText={onChange}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: errors.address1 ? "red" : "#ccc",
+                      height: 80,
+                      verticalAlign: "top",
+                      color: colors.inputText
+                    },
+                  ]}
+                  placeholderTextColor={colors.placeholderText}
+                  value={value}
+                  multiline={true}
+                  placeholder="Address 1"
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="city"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  onChangeText={onChange}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: "#ccc",
+                      color: colors.inputText
+                    },
+                  ]}
+                  placeholderTextColor={colors.placeholderText}
+                  value={value}
+                  placeholder="City"
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="pincode"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  onChangeText={onChange}
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: "#ccc",
+                      color: colors.inputText
+                    },
+                  ]}
+                  placeholderTextColor={colors.placeholderText}
+                  value={value}
+                  placeholder="Pin Code"
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="stateId"
+              render={({ field: { onChange, value } }) => (
+                <SelectModal
+                  data={stateList}
+                  placeholder="Select State"
+                  defaultValue={stateList.find(
+                    (item: any) =>
+                      item.id ==
+                      (!userAddress?.stateId
+                        ? getValues("stateId")
+                        : userAddress?.stateId)
+                  )}
+                  onChanged={(values: any) => {
+                    setValue("stateId", values?.id);
+                  }}
+                />
+              )}
+            />
+
+            <View style={{ marginTop: 20, alignItems: "center" }}>
+              <Button
+                title="Update"
+                loading={isProcessLoader}
+                buttonStyle={btnStyle.solid}
+                titleStyle={btnStyle.solidTitle}
+                onPress={handleSubmit(onSubmit)}
+              />
             </View>
           </View>
         </ScrollView>
-      </>
+      </View>
     </Modal>
   );
 };
@@ -343,6 +328,12 @@ const AddressUpdateModal = ({
 export default AddressUpdateModal;
 
 const styles = StyleSheet.create({
+  container: {
+    maxHeight: '93%',
+    paddingVertical: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12
+  },
   input: {
     height: 45,
     padding: 8,

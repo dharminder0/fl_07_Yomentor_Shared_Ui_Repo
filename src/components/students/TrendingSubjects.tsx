@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { common } from '../../assets/styles/Common'
 import { getSubjectByGradeId } from '../../apiconfig/SharedApis'
 import { useThemeColor } from '../../assets/themes/useThemeColor'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
 
 const TrendingSubjects = ({ title = '', id = 0 }) => {
-    const YoColors = useThemeColor();
+
     const navigation: any = useNavigation();
     const [subjectList, setSubjectList] = useState<any>([]);
-
+    const { colors }: any = useTheme();
     useEffect(() => {
         getSubjectByGradeId(id).then((result: any) => {
             if (result?.data && result.data.length > 0) {
@@ -26,12 +26,12 @@ const TrendingSubjects = ({ title = '', id = 0 }) => {
     // Render each item
     const renderItem = ({ item }: any) => (
         <TouchableOpacity
-            style={[{ backgroundColor: YoColors.bgColor }, styles.card]}
+            style={[{ backgroundColor: colors.lightBackground }, styles.card]}
             activeOpacity={0.7}
             onPress={() => navigation.navigate("SkillsTestList", { subjectId: item.id })}
         >
             <Image source={{ uri: item.icon }} height={32} width={32} />
-            <Text style={styles.text} numberOfLines={2}>{item.name}</Text>
+            <Text style={[styles.text, { color: colors.text }]} numberOfLines={2}>{item.name}</Text>
         </TouchableOpacity>
     );
 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 12,
         textAlign: 'center',
-        fontWeight: '500'
+        fontWeight: '500',
     }
 
 })

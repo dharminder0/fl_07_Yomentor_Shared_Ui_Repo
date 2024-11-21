@@ -3,7 +3,7 @@ import { Appearance, useColorScheme } from "react-native";
 export const useThemeColor = () => {
   const colors = {
     light: {
-      primary: "#124076",
+      primary: "#283F8E",
       secondary: "#6c757d",
       background: "#f8f9fa",
       bgColor: "rgba(97,175,254,.15)",
@@ -15,10 +15,10 @@ export const useThemeColor = () => {
       inputText: "#000",
       success: "#198754",
       danger: "#dc3545",
-      icon: "#124076",
+      icon: "#283F8E",
     },
     dark: {
-      primary: "#345678", // Example dark mode color
+      primary: "#283F8E", // Example dark mode color
       secondary: "#789abc", // Example dark mode color
       background: "#121212", // Example dark mode color
       bgColor: "rgba(254,175,97,.15)", // Example dark mode color

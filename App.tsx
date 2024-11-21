@@ -26,7 +26,7 @@ function App(): React.JSX.Element {
   const { height } = Dimensions.get("window");
 
   const backgroundStyle = {
-    backgroundColor: '#124076',
+    backgroundColor: '#283F8E',
     height: height,
     color: isDarkMode ? '#fff' : "#000",
   };
@@ -35,13 +35,14 @@ function App(): React.JSX.Element {
   const MyDarkTheme: any = {
     dark: true,
     colors: {
-      primary: '#124076',
+      primary: '#283F8E',
       secondary: "#6c757d",
-      background: 'rgb(1, 1, 1)',
-      card: 'rgb(18, 18, 18)',
-      text: "#343a40",
+      background: '#171616',
+      lightBackground: "#121212",
+      card: '#121212',
+      text: "#D8D8D8",
       inputText: "#fff",
-      border: 'rgb(39, 39, 41)',
+      border: '#272729',
       notification: 'rgb(255, 69, 58)',
       placeholderText: "#707070",
       icon: "#fff",
@@ -54,11 +55,12 @@ function App(): React.JSX.Element {
   const MyLightTheme: any = {
     dark: false,
     colors: {
-      primary: '#124076',
+      primary: '#283F8E',
       secondary: "#789abc",
-      background: 'rgb(242, 242, 242)',
+      background: '#F2F2F2',
+      lightBackground: "rgba(97,175,254,.15)",
       card: 'rgb(255, 255, 255)',
-      text: "#989a9c",
+      text: "#2F3438",
       inputText: "#000",
       border: 'rgb(216, 216, 216)',
       notification: 'rgb(255, 59, 48)',

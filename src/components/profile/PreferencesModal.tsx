@@ -22,7 +22,7 @@ import {
   getUserInfo,
   saveAsyncData,
 } from "../../shared/sharedDetails";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 import { Card } from "@rneui/base";
 import { Image } from "react-native";
 import image from "../../assets/themes/YoImages";
@@ -34,7 +34,7 @@ const PreferencesModal = ({
   const userInfo = getUserInfo();
 
   const navigation: any = useNavigation();
-  const YoColors = useThemeColor();
+  const { colors }: any = useTheme();
   const [isProcessLoader, setIsProcessLoader] = useState<boolean>(false);
   const [categoryType, setCategoryType] = useState<number>(userInfo?.category || 1);
   const [academicClass, setAcademicClass] = useState(userInfo.studentGradeId);
@@ -127,116 +127,99 @@ const PreferencesModal = ({
         />
       )} */}
       <>
-        <View
-          style={{
-            backgroundColor: YoColors.background,
-            height: height - 100,
-            minHeight: 150,
-          }}
-        >
-          <View
-            style={[
-              cardStyle.j_row,
-              common.p12
-            ]}
-          >
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+          <View style={[cardStyle.j_row, common.px12, { alignItems: 'center' }]} >
             <Text style={common.h3Title}>Update Preferences</Text>
             <Button
               onPress={() => toggleModal(false)}
+              type="clear"
               icon={
                 <Ionicons
                   name="close-sharp"
                   size={24}
-                  color={YoColors.primary}
+                  color={colors.primary}
                 />
               }
-              buttonStyle={[
-                btnStyle.btnCross,
-                {
-                  paddingHorizontal: 1,
-                  paddingStart: 15,
-                  backgroundColor: YoColors.background,
-                },
-              ]}
             />
           </View>
-          <ScrollView
-            style={{ maxHeight: height - 180 }}
-            showsVerticalScrollIndicator={false}
-          >
-            <View>
-              <View style={styles.container}>
-                <Card.Title style={[common.title, { textAlign: "left" }]}>
-                  What are you preparing for?
-                </Card.Title>
-                <View style={styles.cardWrapper}>
-                  {categoryList.map((item: any) => {
-                    return (
-                      <Card
-                        key={item.id}
-                        containerStyle={[
-                          styles.cardContainer,
-                          {
-                            backgroundColor:
-                              categoryType == item.id
-                                ? YoColors.bgColor
-                                : "white",
-                          },
-                        ]}
+          <ScrollView showsVerticalScrollIndicator={false} >
+            <View style={common.px12}>
+              <Card.Title style={[common.title, { textAlign: "left" }]}>
+                What are you preparing for?
+              </Card.Title>
+              <View style={styles.cardWrapper}>
+                {categoryList.map((item: any) => {
+                  return (
+                    <View
+                      key={item.id}
+                      style={[
+                        styles.cardContainer,
+                        {
+                          backgroundColor:
+                            categoryType == item.id
+                              ? colors.lightBackground
+                              : colors.background,
+                          borderColor: categoryType == item.id
+                            ? colors.primary
+                            : '#CACCCD',
+                        },
+                      ]}
+                    >
+                      <Pressable
+                        onPress={() => {
+                          setCategoryType(item.id);
+                        }}
                       >
-                        <Pressable
-                          onPress={() => {
-                            setCategoryType(item.id);
-                          }}
-                        >
-                          <Image
-                            style={[common.my10, styles.cardImage]}
-                            resizeMode="contain"
-                            source={{ uri: item.icon }}
-                          />
-                          <Text style={[common.rText, common.tCenter]}>{item.categoryName}</Text>
-                        </Pressable>
-                      </Card>
-                    );
-                  })}
-                </View>
-                {classList && classList?.length > 0 && (
-                  <>
-                    <Card.Title style={[{ textAlign: "left" }, common.title]}>Choose the area you're focusing on</Card.Title>
-                    <View style={styles.cardWrapper}>
-                      {classList.map((item: any) => {
-                        return (
-                          <Card
-                            key={item.id}
-                            containerStyle={[
-                              styles.cardContainer,
-                              {
-                                backgroundColor:
-                                  academicClass == item.id
-                                    ? YoColors.bgColor
-                                    : "white",
-                              },
-                            ]}
-                          >
-                            <Pressable
-                              onPress={() => {
-                                setAcademicClass(item.id);
-                              }}
-                            >
-                              <Image
-                                style={[common.my10, styles.cardImage]}
-                                resizeMode="contain"
-                                source={!item?.icon ? image.knowledge : { uri: item?.icon }}
-                              />
-                              <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
-                            </Pressable>
-                          </Card>
-                        );
-                      })}
+                        <Image
+                          style={[common.my10, styles.cardImage]}
+                          resizeMode="contain"
+                          source={{ uri: item.icon }}
+                        />
+                        <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.categoryName}</Text>
+                      </Pressable>
                     </View>
-                  </>
-                )}
+                  );
+                })}
               </View>
+              {classList && classList?.length > 0 && (
+                <>
+                  <Card.Title style={[{ textAlign: "left" }, common.title]}>Choose the area you're focusing on</Card.Title>
+                  <View style={styles.cardWrapper}>
+                    {classList.map((item: any) => {
+                      return (
+                        <View
+                          key={item.id}
+                          style={[
+                            styles.cardContainer,
+                            {
+                              backgroundColor:
+                                academicClass == item.id
+                                  ? colors.lightBackground
+                                  : colors.background,
+                              borderColor: academicClass == item.id
+                                ? colors.primary
+                                : '#CACCCD',
+                            },
+                          ]}
+                        >
+                          <Pressable
+                            onPress={() => {
+                              setAcademicClass(item.id);
+                            }}
+                          >
+                            <Image
+                              style={[common.my10, styles.cardImage]}
+                              resizeMode="contain"
+                              source={!item?.icon ? image.knowledge : { uri: item?.icon }}
+                            />
+                            <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
+                          </Pressable>
+                        </View>
+                      );
+                    })}
+                  </View>
+                </>
+              )}
             </View>
           </ScrollView>
           <Button title='Update'
@@ -265,9 +248,10 @@ const styles = StyleSheet.create({
     width: "100%", // Adjust width as needed
   },
   container: {
-    paddingHorizontal: 12,
-    //paddingTop: 40,
-    overflow: "scroll",
+    maxHeight: '93%',
+    paddingVertical: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12
   },
   cardWrapper: {
     flexDirection: "row",
@@ -282,7 +266,9 @@ const styles = StyleSheet.create({
     width: "23%",
     padding: 5,
     margin: 0,
+    borderWidth: 1,
     marginHorizontal: 3,
     marginBottom: 10,
+    borderRadius: 3,
   },
 });

@@ -10,7 +10,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { btnStyle, common } from "../../assets/styles/Common";
 import image from "../../assets/themes/YoImages";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 import { getCategories, getGradeList, getUsersDetails } from "../../apiconfig/SharedApis";
 import {
   getUserInfo,
@@ -39,6 +39,7 @@ const UserProfile = () => {
   const { height } = Dimensions.get("window");
   const navigation: any = useNavigation();
   const YoColors = useThemeColor();
+  const { colors }: any = useTheme();
   const toast: any = useToast();
 
   const userInfo: any = getUserInfo();
@@ -146,7 +147,7 @@ const UserProfile = () => {
           }}
         />
       }
-      style={{ backgroundColor: YoColors.bgColor }}
+      style={{ backgroundColor: colors.lightBackground }}
     >
       {isLoading ? (
         <View style={{ height: height }}>
@@ -196,14 +197,14 @@ const UserProfile = () => {
             </View>
           </View>
 
-          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: colors.background }]}>
             <View style={[common.j_row, common.mb10]}>
               <Text style={[common.h2Title]}>Profile</Text>
               <Button
-                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: YoColors.primary, }}
+                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: colors.primary, }}
                 onPress={() => setIsBasicModal(true)}
                 title="Edit"
-                titleStyle={[common.fs12, { color: YoColors.primary }]}
+                titleStyle={[common.fs12, { color: colors.primary }]}
                 type="clear"
                 buttonStyle={common.p0}
               />
@@ -214,10 +215,10 @@ const UserProfile = () => {
                 <Icon
                   name="user-alt"
                   size={12}
-                  color={YoColors.primary}
+                  color={colors.primary}
                   style={{ marginTop: 3 }}
                 />
-                <Text style={common.ps5}>{userDetails?.firstName + " " + userDetails?.lastName}</Text>
+                <Text style={[common.ps5, { color: colors.text }]}>{userDetails?.firstName + " " + userDetails?.lastName}</Text>
               </View>
             )}
 
@@ -226,10 +227,10 @@ const UserProfile = () => {
                 <Icon
                   name="phone-alt"
                   size={12}
-                  color={YoColors.primary}
+                  color={colors.primary}
                   style={{ marginTop: 3 }}
                 />
-                <Text style={common.ps5}>{userDetails?.phone}</Text>
+                <Text style={[common.ps5, { color: colors.text }]}>{userDetails?.phone}</Text>
               </View>
             )}
 
@@ -238,10 +239,10 @@ const UserProfile = () => {
                 <FontAwesome
                   name="envelope"
                   size={12}
-                  color={YoColors.primary}
+                  color={colors.primary}
                   style={{ marginTop: 3 }}
                 />
-                <Text style={common.ps5}>{userDetails?.email}</Text>
+                <Text style={[common.ps5, { color: colors.text }]}>{userDetails?.email}</Text>
               </View>
             )}
 
@@ -250,10 +251,10 @@ const UserProfile = () => {
                 <FontAwesome5
                   name="transgender"
                   size={14}
-                  color={YoColors.primary}
+                  color={colors.primary}
                   style={{ marginTop: 3 }}
                 />
-                <Text style={common.ps5}>{userDetails?.gender}</Text>
+                <Text style={[common.ps5, { color: colors.text }]}>{userDetails?.gender}</Text>
               </View>
             )}
 
@@ -262,23 +263,23 @@ const UserProfile = () => {
                 <FontAwesome5
                   name="birthday-cake"
                   size={14}
-                  color={YoColors.primary}
+                  color={colors.primary}
                   style={{ marginTop: 3 }}
                 />
-                <Text style={common.ps5}>{moment(userDetails?.dateOfBirth).format("DD-MM-YYYY")}</Text>
+                <Text style={[common.ps5, { color: colors.text }]}>{moment(userDetails?.dateOfBirth).format("DD-MM-YYYY")}</Text>
               </View>
             )}
 
           </View>
 
-          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: colors.background }]}>
             <View style={[common.j_row]}>
               <Text style={[common.h2Title]}>Prefrences</Text>
               <Button
-                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: YoColors.primary, }}
+                icon={{ name: 'pencil-square', type: 'font-awesome', size: 12, color: colors.primary, }}
                 onPress={() => setIsPreferencesModal(true)}
                 title="Edit"
-                titleStyle={[common.fs12, { color: YoColors.primary }]}
+                titleStyle={[common.fs12, { color: colors.primary }]}
                 type="clear"
                 buttonStyle={common.p0}
               />
@@ -288,32 +289,32 @@ const UserProfile = () => {
               {selectedCategory && (
                 <Card
                   key={selectedCategory.id}
-                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: YoColors.bgColor, borderColor: YoColors.primary }]}>
+                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: colors.lightBackground, borderColor: colors.primary }]}>
                   <Image
                     style={styles.cardImage}
                     resizeMode="contain"
                     source={{ uri: selectedCategory?.icon }}
                   />
-                  <Text style={[common.rText, common.tCenter]}>{selectedCategory.categoryName}</Text>
+                  <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedCategory.categoryName}</Text>
                 </Card>
               )}
 
               {selectedGrade && (
                 <Card
                   key={selectedGrade.id}
-                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: YoColors.bgColor, borderColor: YoColors.primary }]}>
+                  containerStyle={[styles.cardContainer, common.py10, common.mr10, { backgroundColor: colors.lightBackground, borderColor: colors.primary }]}>
                   <Image
                     style={categoryType == 1 ? styles.cardImage : styles.cardImage}
                     resizeMode="contain"
                     source={!selectedGrade?.icon ? image.knowledge : selectedGrade?.icon}
                   />
-                  <Text style={[common.rText, common.tCenter]}>{selectedGrade.name}</Text>
+                  <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedGrade.name}</Text>
                 </Card>
               )}
             </View>
           </View>
 
-          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: YoColors.white }]}>
+          <View style={[common.p12, common.mb10, { borderRadius: 6, backgroundColor: colors.background }]}>
             <View style={[common.j_row]} >
               <Text style={[common.h2Title]}>Address</Text>
               <Button
@@ -332,10 +333,10 @@ const UserProfile = () => {
                   <Ionicons
                     name="location"
                     size={14}
-                    color={YoColors.primary}
+                    color={colors.primary}
                     style={{ marginTop: 3 }}
                   />
-                  <Text style={{ paddingStart: 5 }}>
+                  <Text style={{ paddingStart: 5, color: colors.text }}>
                     {userDetails?.userAddress?.address1}{" "}
                     {userDetails?.userAddress?.city}{" "}
                     {userDetails?.userAddress?.pincode}{" "}
@@ -350,22 +351,9 @@ const UserProfile = () => {
           </View>
 
           {userInfo?.type === 1 && (
-            <View
-              style={[
-                common.p12,
-                { borderTopWidth: 8, borderTopColor: "#ccc" },
-              ]}
-            >
-              <View
-                style={[
-                  common.j_row,
-                  {
-                    alignItems: "flex-start",
-                  },
-                ]}
-              >
+            <View style={[common.p12, { borderTopWidth: 8, borderTopColor: "#ccc" }]} >
+              <View style={[common.j_row, { alignItems: "flex-start", }]}>
                 <Text style={[common.mb5, common.h2Title]}>Profile</Text>
-
                 <Button
                   onPress={() => setModalVisible(true)}
                   icon={<Icon name="pencil-alt" size={16} />}
@@ -385,10 +373,10 @@ const UserProfile = () => {
                     <Icon
                       name="user-graduate"
                       size={12}
-                      color={YoColors.primary}
+                      color={colors.primary}
                       style={{ marginTop: 3 }}
                     />
-                    <Text style={{ paddingStart: 5 }}>
+                    <Text style={{ paddingStart: 5, color: colors.text }}>
                       {userDetails?.teacherProfile?.education}
                     </Text>
                   </View>
@@ -399,12 +387,11 @@ const UserProfile = () => {
                     <FontAwesome5
                       name="chalkboard-teacher"
                       size={12}
-                      color={YoColors.primary}
+                      color={colors.primary}
                       style={{ marginTop: 3 }}
                     />
-                    <Text style={{ paddingStart: 5 }}>
-                      {userDetails?.teacherProfile?.experience +
-                        " years of experience"}
+                    <Text style={{ paddingStart: 5, color: colors.text }}>
+                      {userDetails?.teacherProfile?.experience + " years of experience"}
                     </Text>
                   </View>
                 )}
@@ -415,9 +402,9 @@ const UserProfile = () => {
                       name="info-circle"
                       size={12}
                       style={{ marginTop: 2 }}
-                      color={YoColors.primary}
+                      color={colors.primary}
                     />
-                    <Text style={{ paddingStart: 5 }}>
+                    <Text style={{ paddingStart: 5, color: colors.text }}>
                       {userDetails?.teacherProfile?.about}
                     </Text>
                   </View>

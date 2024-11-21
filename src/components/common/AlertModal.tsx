@@ -1,10 +1,11 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/Ionicons";
 import useStore from "../../store/useStore";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { common } from "../../assets/styles/Common";
+import image from "../../assets/themes/YoImages";
+import { useTheme } from "@react-navigation/native";
 
 interface ModelProps {
   icon: string;
@@ -21,7 +22,8 @@ const AlertModal: React.FC<ModelProps> = ({
   iconSize = 40,
 }) => {
   const { isAlertModal, setIsAlertModal }: any = useStore();
-  const YoColors: any = useThemeColor();
+  const { colors }: any = useTheme();
+
   useEffect(() => {
     setTimeout(() => {
       setIsAlertModal(false);
@@ -32,25 +34,21 @@ const AlertModal: React.FC<ModelProps> = ({
     <View>
       <Modal
         isVisible={isAlertModal}
-        onBackButtonPress={() => setIsAlertModal(false)}
         swipeDirection="down"
+        onBackButtonPress={() => setIsAlertModal(false)}
         onBackdropPress={() => setIsAlertModal(false)}
         style={{ margin: 0, alignItems: "center" }}
+        animationInTiming={300}
         useNativeDriver
       >
-        <View
-          style={{
-            backgroundColor: YoColors.background,
-            minHeight: 150,
-            maxHeight: 300,
-            width: width - 40,
-            borderRadius: 12,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Icon name={icon} size={iconSize} color={color} />
-          <Text style={[common.h3Title, { marginTop: 20 }]}>{message}</Text>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+          <View style={[common.j_row, { justifyContent: 'center' }]}>
+            <Image
+              style={{ height: 58, width: 58 }}
+              source={image?.confirm}
+            />
+          </View>
+          <Text style={[common.h2Title, common.my10]}>{message}</Text>
         </View>
       </Modal>
     </View>
@@ -60,11 +58,11 @@ const AlertModal: React.FC<ModelProps> = ({
 export default AlertModal;
 
 const styles = StyleSheet.create({
-  headText: {
-    fontSize: 16,
-    fontWeight: "700",
-    textAlign: "center",
-    marginVertical: 10,
-    paddingTop: 10,
-  },
+  container: {
+    maxHeight: 300,
+    width: '92%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16
+  }
 });

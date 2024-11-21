@@ -1,4 +1,4 @@
-import { Animated, Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Animated, Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Card } from '@rneui/themed'
 import { getCategoryList, getUserInfo, saveAsyncData } from '../../shared/sharedDetails'
@@ -8,12 +8,12 @@ import image from '../../assets/themes/YoImages'
 import { useThemeColor } from '../../assets/themes/useThemeColor'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native'
 
 const screenWidth = Dimensions.get('window').width;
 const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
 
-    const YoColors = useThemeColor();
+    const { colors }: any = useTheme();
     const navigation: any = useNavigation();
     const [categoryType, setCategoryType] = useState(null);
     const [gradeId, setGradeId] = useState(null);
@@ -106,7 +106,7 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
                 <Animated.View
                     style={{
                         flex: 1,
@@ -115,25 +115,25 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                         width: screenWidth * 2, // Width of both views combined
                     }}
                 >
-                    <View style={[{ width: screenWidth, justifyContent: 'center', backgroundColor: YoColors.bgColor }, common.px12]}>
+                    <View style={[{ width: screenWidth, justifyContent: 'center', backgroundColor: colors.lightBackground }, common.px12]}>
                         <View style={{ alignItems: 'center', paddingHorizontal: 12 }}>
                             <Image source={require('../../assets/img/onboard.png')} style={{ width: '70%', height: 240 }} />
-                            <Text style={[styles.title, { color: YoColors.primary }]}>Welcome to Yo!Mentor</Text>
-                            <Text style={styles.subTitle}>We’re excited to have you onboard! Yo!Mentor supports your learning by creating personalized practice tests tailored to your preferences.</Text>
+                            <Text style={[styles.title, { color: colors.primary }]}>Welcome to Yo!Mentor</Text>
+                            <Text style={[styles.subTitle, { color: colors.text }]}>We’re excited to have you onboard! Yo!Mentor supports your learning by creating personalized practice tests tailored to your preferences.</Text>
                         </View>
-                        <Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: YoColors.primary }]}>Tell us what you're preparing for</Card.Title>
+                        <Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: colors.primary }]}>Tell us what you're preparing for</Card.Title>
                         <View style={[styles.cardWrapper]}>
                             {categoryList?.length > 0 && categoryList.map((item: any) => {
                                 return (
-                                    <Card
+                                    <View
                                         key={item.id}
-                                        containerStyle={[
+                                        style={[
                                             styles.cardContainer,
                                             {
                                                 backgroundColor:
-                                                    categoryType == item.id ? YoColors.bgColor : 'white',
+                                                    categoryType == item.id ? colors.lightBackground : colors.card,
                                                 borderColor:
-                                                    categoryType == item.id ? YoColors.secondary : 'white',
+                                                    categoryType == item.id ? colors.primary : 'white',
                                             },
                                         ]}
                                     >
@@ -143,32 +143,32 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                                                 resizeMode="contain"
                                                 source={!item?.icon ? image.knowledge : { uri: item?.icon }}
                                             />
-                                            <Card.Title style={common.rText}>{item.categoryName}</Card.Title>
+                                            <Card.Title style={[common.fs12, { color: colors.text }]}>{item.categoryName}</Card.Title>
                                         </Pressable>
-                                    </Card>
+                                    </View>
                                 );
                             })}
                         </View>
                     </View>
 
 
-                    <View style={[{ width: screenWidth, backgroundColor: YoColors.bgColor }, common.px12]}>
+                    <View style={[{ width: screenWidth, backgroundColor: colors.lightBackground, height: Platform.OS == 'ios' ? '90%' : '96%' }, common.px12]}>
                         {isCategorySelected && (
                             <>
                                 {classList?.length > 0 &&
-                                    <><Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: YoColors.primary }]}>Choose the area you're focusing on</Card.Title><ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                    <><Card.Title style={[styles.subTitle1, common.mb20, common.mt15, { color: colors.primary }]}>Choose the area you're focusing on</Card.Title><ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                                         <View style={styles.cardWrapper}>
                                             {classList.map((item: any) => {
                                                 return (
-                                                    <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (gradeId == item.id ? YoColors.bgColor : 'white'), borderColor: (gradeId == item.id ? YoColors.secondary : 'white') }]}>
+                                                    <View key={item.id} style={[styles.cardContainer, { backgroundColor: (gradeId == item.id ? colors.lightBackground : colors.card), borderColor: (gradeId == item.id ? colors.primary : 'white') }]}>
                                                         <Pressable onPress={() => setGradeId(item.id)}>
                                                             <Image
                                                                 style={[common.my10, styles.cardImage]}
                                                                 resizeMode="contain"
                                                                 source={!item?.icon ? image.knowledge : { uri: item?.icon }} />
-                                                            <Card.Title style={common.rText} numberOfLines={2}>{item.name}</Card.Title>
+                                                            <Card.Title style={[common.fs12, { color: colors.text }]} numberOfLines={2}>{item.name}</Card.Title>
                                                         </Pressable>
-                                                    </Card>
+                                                    </View>
                                                 )
                                             })}
                                         </View>
@@ -176,19 +176,19 @@ const StudentOnBoard = ({ isRefresh = (value: any) => { } }) => {
                                 }
                                 <Button title='Get Started'
                                     onPress={handleGradeChange}
-                                    buttonStyle={{ width: '100%', alignSelf: 'center', backgroundColor: YoColors.primary }}
+                                    buttonStyle={{ width: '100%', alignSelf: 'center', backgroundColor: colors.primary }}
                                     titleStyle={{ fontSize: 17 }}
                                     disabled={classList?.length > 0 && (!categoryType || !gradeId)}
                                 />
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ color: YoColors.text }}>Need to adjust your goal?</Text>
+                                    <Text style={{ color: colors.text }}>Need to adjust your goal?</Text>
                                     <Button
                                         onPress={goBack}
                                         title='Go back'
                                         type='clear'
                                         buttonStyle={{ alignSelf: 'center' }}
-                                        titleStyle={{ fontSize: 15, color: YoColors.primary }}
+                                        titleStyle={{ fontSize: 15, color: colors.primary }}
                                     />
 
                                 </View>
@@ -207,7 +207,6 @@ export default StudentOnBoard
 const styles = StyleSheet.create({
     container: {
         height: Dimensions.get('window').height,
-        backgroundColor: '#fff'
     },
     cardWrapper: {
         flexDirection: 'row',
@@ -225,7 +224,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 3,
         marginBottom: 10,
         borderRadius: 6,
-        elevation: 0
+        borderWidth: 0.6
     },
     title: {
         textAlign: 'center',

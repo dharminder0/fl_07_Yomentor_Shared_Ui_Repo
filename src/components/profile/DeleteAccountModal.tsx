@@ -13,7 +13,7 @@ import { useThemeColor } from "../../assets/themes/useThemeColor";
 import image from "../../assets/themes/YoImages";
 import { deleteUser } from "../../apiconfig/SharedApis";
 import { clearUserData } from "../../shared/sharedDetails";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import useStore from "../../store/useStore";
 
 const ProfileUpdateModal = ({
@@ -22,6 +22,7 @@ const ProfileUpdateModal = ({
     userId = 0
 }) => {
     const YoColors: any = useThemeColor();
+    const { colors }: any = useTheme();
     const navigation: any = useNavigation();
     const [isProcessLoader, setIsProcessLoader] = useState(false);
 
@@ -56,7 +57,7 @@ const ProfileUpdateModal = ({
             animationInTiming={200}
             useNativeDriver
         >
-            <View style={styles.container}>
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
                 <View style={[common.j_row]}>
                     <Image
                         style={{ height: 48, width: 48 }}
@@ -70,8 +71,8 @@ const ProfileUpdateModal = ({
                     />
                 </View>
                 <Text style={[common.h1Title, common.my10]}>Delete account</Text>
-                <Text>Are you sure you want to delete this account? This action cannot be undone.</Text>
-                <View style={[common.mt15]}>
+                <Text style={{ color: colors.text }}>Are you sure you want to delete this account? This action cannot be undone.</Text>
+                <View style={[common.mt20]}>
                     <Button
                         title="Delete"
                         titleStyle={[common.h2Title, { color: YoColors.white }]}
@@ -84,8 +85,8 @@ const ProfileUpdateModal = ({
                         title="Cancel"
                         type="outline"
                         onPress={() => setIsVisible(false)}
-                        titleStyle={[common.h2Title, { color: YoColors.dark }]}
-                        buttonStyle={{ borderRadius: 8, backgroundColor: YoColors.white, borderColor: YoColors.text }}
+                        titleStyle={[common.h2Title, { color: colors.text }]}
+                        buttonStyle={{ borderRadius: 8, borderColor: colors.text }}
                     />
                 </View>
             </View>
@@ -97,10 +98,10 @@ export default ProfileUpdateModal;
 
 const styles = StyleSheet.create({
     container: {
-        height: 280,
+        maxHeight: 300,
         width: '92%',
         backgroundColor: '#fff',
         borderRadius: 12,
-        padding: 12
+        padding: 18
     }
 });

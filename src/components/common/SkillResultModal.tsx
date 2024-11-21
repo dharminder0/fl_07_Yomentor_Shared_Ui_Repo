@@ -1,14 +1,12 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { common } from "../../assets/styles/Common";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { Button } from "react-native-elements";
 import useStore from "../../store/useStore";
-import { useNavigation } from "@react-navigation/native";
-import { upsertTestAttempt } from "../../apiconfig/SharedApis";
-import { getUserInfo } from "../../shared/sharedDetails";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import image from "../../assets/themes/YoImages";
 
 const SkillResultModal = ({
     score = 0,
@@ -16,41 +14,14 @@ const SkillResultModal = ({
     skillDetails = {},
     handleAttempTest = () => { },
 }: any) => {
-    const YoColors = useThemeColor();
+    const YoColors: any = useThemeColor();
+    const { colors }: any = useTheme();
     const navigation: any = useNavigation();
     const { width } = Dimensions.get("screen");
     const { isSkillModal, setIsSkillModal }: any = useStore();
-    const userInfo: any = getUserInfo();
     const closeModal = () => {
         setIsSkillModal(false);
     };
-
-    // const handleAttempTest = () => {
-    //     const payload: any = {
-    //         attemptCode: "1",
-    //         userId: userInfo.id,
-    //         skillTestId: skillDetails?.id,
-    //         status: "0",
-    //     };
-    //     closeModal();
-    //     upsertTestAttempt(payload)
-    //         .then((response: any) => {
-    //             // setAttemptId(response.data.content);
-    //             if (response.data && response.data.success) {
-    //                 //   setIsAttempModal(false);
-    //                 navigation.goBack(null);
-    //                 setTimeout(() => {
-    //                     navigation.navigate("AttemptSkillTest", {
-    //                         skillTestId: skillDetails,
-    //                         attemptId: response.data.content,
-    //                     });
-    //                 }, 200);
-    //             }
-    //         })
-    //         .catch((error: any) => {
-    //             console.log(error);
-    //         });
-    // };
 
     const gotoSummary = () => {
         navigation.goBack(null);
@@ -73,75 +44,49 @@ const SkillResultModal = ({
             animationInTiming={300}
             useNativeDriver
         >
-            <View
-                style={{
-                    backgroundColor: YoColors.background,
-                    minHeight: 150,
-                    maxHeight: 400,
-                    width: width - 30,
-                    borderRadius: 12,
-                    padding: 12,
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <View style={{ position: 'relative', width: '100%' }}>
+            <View style={[styles.container, { backgroundColor: colors.card }]}>
+                <View style={[common.j_row]}>
+                    <Image
+                        style={{ height: 48, width: 48 }}
+                        source={image?.confirm}
+                    />
                     <Button
-                        onPress={() => { navigation.goBack(null); closeModal(); navigation.navigate('Home'); }}
-                        icon={{
-                            name: 'close',
-                            type: 'ionicons',
-                            size: 16,
-                            color: '#000',
-                        }}
+                        icon={{ name: 'close', type: 'ionicons', size: 26, color: YoColors.text, }}
                         type="clear"
-                        buttonStyle={{
-                            height: 32,
-                            width: 32,
-                            padding: 0,
-                            borderRadius: 16,
-                        }}
-                        containerStyle={{ alignSelf: 'flex-end' }}
+                        onPress={() => { navigation.goBack(null); closeModal(); navigation.navigate('Home'); }}
+                        buttonStyle={common.p0}
                     />
                 </View>
                 <View>
                     {score < 40 &&
-                        <Text style={[common.h2Title]}>Don't worry, give it another shot!</Text>
+                        <Text style={[common.h1Title]}>Don't worry, give it another shot!</Text>
                     }
                     {(score >= 40 && score < 80) &&
-                        <Text style={[common.h2Title, common.mb10]}>Good job! Almost there, keep going!</Text>
+                        <Text style={[common.h1Title, common.mb10]}>Good job! Almost there, keep going!</Text>
                     }
                     {score >= 80 &&
-                        <Text style={common.h2Title}>Awesome work! You nailed it!</Text>
+                        <Text style={common.h1Title}>Awesome work! You nailed it!</Text>
                     }
-
-                    <Text style={[common.mb20, { color: YoColors.text, fontSize: 36, fontWeight: '600', textAlign: 'center' }]}>{`${score}%`}</Text>
+                    <Text style={[common.mt15, { color: YoColors.text, fontSize: 36, fontWeight: '600', textAlign: 'center' }]}>{`${score}%`}</Text>
                 </View>
-                <View style={[common.row, common.mb10, { alignSelf: "flex-end" }]}>
+                <View style={[common.mt20]}>
                     <Button
                         title="Summary"
                         type="outline"
                         onPress={gotoSummary}
-                        buttonStyle={{
-                            width: 100,
-                            paddingVertical: 6,
-                            borderColor: YoColors.primary
-                        }}
-                        titleStyle={[common.fs12, { color: YoColors.primary }]}
-                        containerStyle={common.mr10}
+                        titleStyle={[common.h2Title, { color: YoColors.white }]}
+                        containerStyle={common.mb10}
+                        buttonStyle={{ borderRadius: 8, backgroundColor: YoColors.primary, borderColor: YoColors.primary }}
                     />
+
                     {
                         score < 80 &&
                         <Button
                             title="Retake"
+                            type="outline"
                             onPress={() => { closeModal(); handleAttempTest(); }}
-                            buttonStyle={{
-                                backgroundColor: YoColors.primary,
-                                borderRadius: 3,
-                                width: 100,
-                                paddingVertical: 6
-                            }}
-                            titleStyle={[common.fs12]}
+                            titleStyle={[common.h2Title, { color: colors.text }]}
+                            buttonStyle={{ borderRadius: 8, borderColor: colors.text, borderWidth: 0.6 }}
                         />
                     }
                 </View>
@@ -152,4 +97,11 @@ const SkillResultModal = ({
 
 export default SkillResultModal;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        maxHeight: 320,
+        width: '92%',
+        borderRadius: 12,
+        padding: 16
+    }
+});

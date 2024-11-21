@@ -6,11 +6,11 @@ import { getUserInfo } from '../../shared/sharedDetails';
 import { common } from '../../assets/styles/Common';
 import { Button } from 'react-native-elements';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 
 const SkillStastics = () => {
     const userInfo: any = getUserInfo();
-    const YoColors = useThemeColor();
+    const { colors }: any = useTheme();
     const navigation: any = useNavigation();
     const [data, setData] = useState<any>([]);
     const [activeCode, setActiveCode] = useState('Weekly');
@@ -43,8 +43,8 @@ const SkillStastics = () => {
     return (
         <View>
             <Text style={[common.h3Title, common.mtop10, { textAlign: 'left' }]}>Your Statistics </Text>
-            <Text style={[common.rText, common.mb10, { fontWeight: '400' }]}>Track the number of tests you've completed over time</Text>
-            <View style={[{ alignItems: 'center', backgroundColor: '#fff', borderRadius: 6 }]}>
+            <Text style={[common.fs12, common.mb10, { fontWeight: '400', color: colors.text }]}>Track the number of tests you've completed over time</Text>
+            <View style={[{ alignItems: 'center', backgroundColor: colors.card, borderRadius: 6 }]}>
                 {data?.length > 0 && !data?.every((obj: any) => obj.value == 0) &&
                     <>
                         <View style={[common.row, common.my10, { justifyContent: 'space-around' }]}>
@@ -52,11 +52,11 @@ const SkillStastics = () => {
                                 <Button
                                     type='outline'
                                     title={item.name}
-                                    buttonStyle={{ paddingHorizontal: 5, paddingVertical: 3, borderColor: YoColors.placeholderText }}
-                                    titleStyle={[common.fs12, { color: YoColors.placeholderText }]}
+                                    buttonStyle={{ paddingHorizontal: 5, paddingVertical: 3, borderColor: colors.placeholderText }}
+                                    titleStyle={[common.fs12, { color: colors.placeholderText }]}
                                     disabled={item.code == activeCode}
-                                    disabledStyle={{ borderColor: YoColors.primary }}
-                                    disabledTitleStyle={{ color: YoColors.primary }}
+                                    disabledStyle={{ borderColor: colors.primary }}
+                                    disabledTitleStyle={{ color: colors.primary }}
                                     onPress={() => setActiveCode(item.code)}
                                     containerStyle={{ marginRight: 5 }}
                                 />
@@ -71,15 +71,15 @@ const SkillStastics = () => {
                                 initialSpacing={5}
                                 endSpacing={5}
                                 barBorderRadius={4}
-                                frontColor={YoColors.primary}
+                                frontColor={colors.primary}
                                 data={data}
-                                xAxisColor={YoColors.primary}
-                                // yAxisColor={YoColors.primary}
+                                xAxisColor={colors.primary}
+                                // yAxisColor={colors.primary}
                                 hideYAxisText
                                 yAxisThickness={0}
                                 labelsExtraHeight={10}
                                 adjustToWidth={true}
-                                xAxisLabelTextStyle={{ fontSize: 10 }}
+                                xAxisLabelTextStyle={{ fontSize: 10, color: colors.text }}
                             // yAxisTextStyle={{ fontSize: 10 }}
                             // showValuesAsTopLabel
                             // topLabelTextStyle={{ fontSize: 10, marginBottom: 5 }}
@@ -90,11 +90,11 @@ const SkillStastics = () => {
                 {data?.length > 0 && data?.every((obj: any) => obj.value == 0) &&
                     <View style={common.p12}>
                         <Text style={[common.h1Title, common.mb10, { textAlign: 'center' }]}>Oops</Text>
-                        <Text style={[common.tCenter, common.mb10]}>No tests taken yet! Jump in now to boost your learning and track your progress!</Text>
+                        <Text style={[common.tCenter, common.mb10, { color: colors.text }]}>No tests taken yet! Jump in now to boost your learning and track your progress!</Text>
                         <Button title='Explore Available Tests'
                             onPress={() => navigation.navigate('SkillsTestList')}
                             titleStyle={[common.fs12]}
-                            buttonStyle={{ borderColor: YoColors.primary, backgroundColor: YoColors.primary, width: 170 }}
+                            buttonStyle={{ borderColor: colors.primary, backgroundColor: colors.primary, width: 170 }}
                             containerStyle={{ alignSelf: 'center' }}
                         />
                     </View>

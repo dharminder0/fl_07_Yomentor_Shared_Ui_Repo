@@ -13,7 +13,7 @@ import useStore from "../../store/useStore";
 import SkillResultModal from "../common/SkillResultModal";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { ScrollView } from "react-native-gesture-handler";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 import { getUserInfo } from "../../shared/sharedDetails";
 
 const AttemptSkillTest = ({ route }: any) => {
@@ -21,6 +21,7 @@ const AttemptSkillTest = ({ route }: any) => {
   const skillDetails = route.params?.skillDetails;
   const [attemptId, setAttemptId] = useState<any>(route.params?.attemptId);
   const YoColors: any = useThemeColor();
+  const { colors }: any = useTheme();
   const navigation: any = useNavigation();
   const userInfo: any = getUserInfo();
   const [questions, setQuestions] = useState<any>([]);
@@ -175,19 +176,19 @@ const AttemptSkillTest = ({ route }: any) => {
                   (option: any, index: any) => (
                     <TouchableOpacity
                       key={option.id}
-                      style={[
-                        styles.option,
-                        selectedAnswers[currentQuestionIndex] === index &&
-                        styles.selectedOption,
+                      style={[{ backgroundColor: colors.card },
+                      styles.option,
+                      selectedAnswers[currentQuestionIndex] === index &&
+                      styles.selectedOption,
                       ]}
                       onPress={() => handleOptionClick(index)}
                     >
                       <Text
-                        style={[
-                          common.rText,
-                          selectedAnswers[currentQuestionIndex] === index && {
-                            color: "#fff",
-                          },
+                        style={[{ color: colors.text },
+                        common.fs12,
+                        selectedAnswers[currentQuestionIndex] === index && {
+                          color: '#fff',
+                        },
                         ]}
                       >
                         {String.fromCharCode(65 + index)}. {option.title}
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 10,
     fontWeight: "600",
-    color: "#124076",
+    color: "#283F8E",
   },
   questionDescription: {
     fontSize: 12,
@@ -262,7 +263,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   option: {
-    backgroundColor: "#e4e5f1",
     paddingHorizontal: 12,
     paddingVertical: 15,
     marginVertical: 5,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   selectedOption: {
-    backgroundColor: "#124076",
+    backgroundColor: "#283F8E",
   },
 });
 

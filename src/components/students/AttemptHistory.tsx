@@ -3,13 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import image from '../../assets/themes/YoImages';
 import { getComplexityLevel, getUserInfo } from '../../shared/sharedDetails';
 import { useThemeColor } from '../../assets/themes/useThemeColor';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { getAttemptHitory, getGradeList, getSkilsList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
+import { getAttemptHitory, getGradeList, getSubjectByGradeId } from '../../apiconfig/SharedApis';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Button, Card } from '@rneui/base';
 import { btnStyle, cardStyle, common } from '../../assets/styles/Common';
-import { Chip, Input, SearchBar } from '@rneui/themed';
-import debounce from 'lodash.debounce';
+import { Chip } from '@rneui/themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import moment from 'moment';
@@ -20,6 +19,7 @@ const MySkillTests = () => {
 
     const userInfo: any = getUserInfo();
     const YoColors = useThemeColor();
+    const { colors }: any = useTheme();
     const navigation: any = useNavigation();
 
     const [pageIndex, setPageIndex] = useState(1);
@@ -156,14 +156,14 @@ const MySkillTests = () => {
                 navigation.navigate("SkillTestDetails", { skillId: item?.skillTestId })
             }
             key={item?.id}
-            style={[styles.itemContainer, { backgroundColor: '#f1f1f1' }]}
+            style={[styles.itemContainer, { backgroundColor: colors.card }]}
         >
             <View style={[common.j_row]}>
                 <View style={[common.pe5, { width: 60 }]}>
                     {item?.subjectIconUrl &&
                         <Image source={{ uri: item?.subjectIconUrl }} height={32} width={32} style={{ alignSelf: 'center' }} />
                     }
-                    <Text style={[common.rText, common.tCenter]} numberOfLines={2}>{item?.subjectName}</Text>
+                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]} numberOfLines={2}>{item?.subjectName}</Text>
                 </View>
                 <View
                     style={{
@@ -180,14 +180,14 @@ const MySkillTests = () => {
                     <View style={common.row}>
                         {item?.startDate &&
                             <View style={[cardStyle.row, common.pe5]}>
-                                <Icon name="calendar" size={12} />
-                                <Text style={common.rText}> {moment(item?.startDate).format('DD-MM-YYYY')}</Text>
+                                <Icon name="calendar" size={12} color={colors.text} />
+                                <Text style={[common.fs12, { color: colors.text }]}> {moment(item?.startDate).format('DD-MM-YYYY')}</Text>
                             </View>
                         }
                         {item?.score > 0 &&
                             <View style={[cardStyle.row, common.pe5]}>
-                                <Icon name="shield-alt" size={12} />
-                                <Text style={common.rText}> Score: {item?.score}</Text>
+                                <Icon name="shield-alt" size={12} color={colors.text} />
+                                <Text style={[common.fs12, { color: colors.text }]}> Score: {item?.score}</Text>
                             </View>
                         }
                     </View>
@@ -209,8 +209,8 @@ const MySkillTests = () => {
                             placeholder="Search Skill Test"
                             onChangeText={handleSearch}
                             value={search}
-                            style={[common.input, { marginBottom: 0, height: 40 }]}
-                            placeholderTextColor={YoColors.placeholderText}
+                            style={[common.input, { marginBottom: 0, height: 40, color: colors.inputText }]}
+                            placeholderTextColor={colors.placeholderText}
                         />
 
                         {search && search?.length > 0 ? (
@@ -218,19 +218,21 @@ const MySkillTests = () => {
                                 onPress={() => handleSearch("")}
                                 name="close-sharp"
                                 size={21}
+                                color={colors.text}
                                 style={{ position: "absolute", right: 10, top: 12 }}
                             />
                         ) : (
                             <Ionicons
                                 name="search-outline"
                                 size={21}
+                                color={colors.text}
                                 style={{ position: "absolute", right: 10, top: 10 }}
                             />
                         )}
                     </View>
                     <View style={{ width: 40 }}>
                         <Button radius={"sm"} type="clear" onPress={() => setIsFilterModal(true)}>
-                            <Ionicons name="filter" color={YoColors.primary} size={18} />
+                            <Ionicons name="filter" color={colors.primary} size={18} />
                         </Button>
                     </View>
                 </View>
@@ -242,13 +244,13 @@ const MySkillTests = () => {
                                 name: 'close',
                                 type: 'ionicons',
                                 size: 12,
-                                color: YoColors.primary,
+                                color: colors.primary,
                             }}
                             onPress={() => handleChips('grade')}
                             iconRight
                             type="outline"
-                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
-                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: colors.primary }}
+                            titleStyle={[common.fs12, { color: colors.primary }]}
                             containerStyle={common.mr10}
                         />
                     }
@@ -259,13 +261,13 @@ const MySkillTests = () => {
                                 name: 'close',
                                 type: 'ionicons',
                                 size: 12,
-                                color: YoColors.primary,
+                                color: colors.primary,
                             }}
                             onPress={() => handleChips('complexity')}
                             iconRight
                             type="outline"
-                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
-                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: colors.primary }}
+                            titleStyle={[common.fs12, { color: colors.primary }]}
                             containerStyle={common.mr10}
                         />
                     }
@@ -277,13 +279,13 @@ const MySkillTests = () => {
                                 name: 'close',
                                 type: 'ionicons',
                                 size: 12,
-                                color: YoColors.primary,
+                                color: colors.primary,
                             }}
                             onPress={() => handleChips('subject')}
                             iconRight
                             type="outline"
-                            buttonStyle={{ width: 'auto', padding: 0, borderColor: YoColors.primary }}
-                            titleStyle={[common.fs12, { color: YoColors.primary }]}
+                            buttonStyle={{ width: 'auto', padding: 0, borderColor: colors.primary }}
+                            titleStyle={[common.fs12, { color: colors.primary }]}
                             containerStyle={common.mr10}
                         />
                     }
@@ -326,9 +328,9 @@ const MySkillTests = () => {
                                 source={require('../../assets/img/onboard.png')}
                             />
                             {(search?.length > 0 || selectedSubject > 0 || complexityLevel > 0 || gradeId > 0) ?
-                                <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>Sorry, we couldn't find any tests matching your search criteria. Create a new test tailored to your needs.</Text>
+                                <Text style={[common.mb10, { color: colors.primary, textAlign: 'center' }]}>Sorry, we couldn't find any tests matching your search criteria. Create a new test tailored to your needs.</Text>
                                 :
-                                <Text style={[common.mb10, { color: YoColors.primary, textAlign: 'center' }]}>You haven't created any tests yet! Design a test tailored to your needs and take control of your learning.</Text>
+                                <Text style={[common.mb10, { color: colors.primary, textAlign: 'center' }]}>You haven't created any tests yet! Design a test tailored to your needs and take control of your learning.</Text>
                             }
                             <Button
                                 title="Create New Test"
@@ -346,33 +348,29 @@ const MySkillTests = () => {
                 onBackButtonPress={() => handleFilter('clear')}
                 onBackdropPress={() => handleFilter('clear')}
                 swipeDirection="down"
-                style={{ margin: 0, alignItems: "center", justifyContent: 'flex-end' }}
+                style={{ margin: 0, justifyContent: 'flex-end' }}
                 useNativeDriver
             >
-                <View
-                    style={[common.px12, {
-                        backgroundColor: YoColors.background,
-                        minHeight: '42%',
-                        maxHeight: '85%',
-                        width: '100%',
-                    }]}
-                >
+                <View style={[styles.container, { backgroundColor: colors.background }]} >
                     <Text style={[common.h3Title, common.my10]}>Select Filters</Text>
 
                     <ScrollView>
                         <View>
                             <Text style={[common.title, common.mb10]}>Grade</Text>
                             {userInfo?.studentGradeId &&
-                                <Card containerStyle={[styles.cardContainer, { backgroundColor: (selectedGrade?.id == gradeId ? YoColors.bgColor : 'white') }]}>
+                                <View style={[styles.cardContainer, {
+                                    backgroundColor: (selectedGrade?.id == gradeId ? colors.lightBackground : colors.card),
+                                    borderColor: (selectedGrade?.id == gradeId ? colors.primary : 'white')
+                                }]}>
                                     <Pressable onPress={() => { setGradeId(userInfo?.studentGradeId); }}>
                                         <Image
                                             style={styles.cardImage}
                                             resizeMode="contain"
                                             source={!selectedGrade?.icon ? image.knowledge : { uri: selectedGrade.icon }}
                                         />
-                                        <Text style={[common.rText, common.tCenter]}>{selectedGrade?.name}</Text>
+                                        <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedGrade?.name}</Text>
                                     </Pressable>
-                                </Card>
+                                </View>
                             }
                         </View>
                         <View>
@@ -381,16 +379,19 @@ const MySkillTests = () => {
                                 {subjectList && subjectList?.length > 0 &&
                                     subjectList.map((item: any) => {
                                         return (
-                                            <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (selectedSubject == item.id ? YoColors.bgColor : 'white') }]}>
+                                            <View key={item.id} style={[styles.cardContainer, {
+                                                backgroundColor: (selectedSubject == item.id ? colors.lightBackground : colors.card),
+                                                borderColor: (selectedSubject == item.id ? colors.primary : 'white')
+                                            }]}>
                                                 <Pressable onPress={() => { setSelectedSubject(item.id); }}>
                                                     <Image
                                                         style={styles.cardImage}
                                                         resizeMode="contain"
                                                         source={!item?.icon ? image.subject : { uri: item.icon }}
                                                     />
-                                                    <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                                    <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                                 </Pressable>
-                                            </Card>
+                                            </View>
                                         )
                                     })}
                             </View>
@@ -400,16 +401,19 @@ const MySkillTests = () => {
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {getComplexityLevel().map((item: any) => {
                                     return (
-                                        <Card key={item.id} containerStyle={[styles.cardContainer, { backgroundColor: (complexityLevel == item.id ? YoColors.bgColor : 'white') }]}>
+                                        <View key={item.id} style={[styles.cardContainer, {
+                                            backgroundColor: (complexityLevel == item.id ? colors.lightBackground : colors.card),
+                                            borderColor: (complexityLevel == item.id ? colors.primary : 'white'),
+                                        }]}>
                                             <Pressable onPress={() => { setComplexityLevel(item.id); }}>
                                                 <Image
                                                     style={styles.cardImage}
                                                     resizeMode="contain"
                                                     source={image.complexity}
                                                 />
-                                                <Text style={[common.rText, common.tCenter]}>{item.name}</Text>
+                                                <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{item.name}</Text>
                                             </Pressable>
-                                        </Card>
+                                        </View>
                                     )
                                 })}
                             </View>
@@ -419,7 +423,7 @@ const MySkillTests = () => {
                             <Button
                                 title="Clear"
                                 type="outline"
-                                buttonStyle={{ borderColor: YoColors.primary }}
+                                buttonStyle={{ borderColor: colors.primary }}
                                 titleStyle={btnStyle.outlineTitle}
                                 containerStyle={{
                                     width: '40%',
@@ -431,7 +435,7 @@ const MySkillTests = () => {
                             <Button
                                 title="Apply"
                                 buttonStyle={{
-                                    backgroundColor: YoColors.primary,
+                                    backgroundColor: colors.primary,
                                     borderRadius: 3,
                                 }}
                                 containerStyle={{
@@ -452,6 +456,12 @@ const MySkillTests = () => {
 export default MySkillTests
 
 const styles = StyleSheet.create({
+    container: {
+        maxHeight: '93%',
+        padding: 12,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12
+    },
     itemContainer: {
         borderRadius: 6,
         marginBottom: 8,
@@ -473,7 +483,9 @@ const styles = StyleSheet.create({
         padding: 5,
         margin: 0,
         marginBottom: 10,
-        marginRight: 5
+        marginRight: 5,
+        borderWidth: 0.6,
+        borderRadius: 3
     },
     cardImage: {
         width: "100%",

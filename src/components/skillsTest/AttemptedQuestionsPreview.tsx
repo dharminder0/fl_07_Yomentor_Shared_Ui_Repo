@@ -4,11 +4,12 @@ import { questionsAnswersBySkillId } from "../../apiconfig/SharedApis";
 import { common } from "../../assets/styles/Common";
 import { PieChart } from "react-native-gifted-charts";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
+import { useTheme } from "@react-navigation/native";
 
 const AttemptedQuestionsPreview = ({ route }: any) => {
   const skillDetails: any = route.params?.skillDetails;
   const attemptId: any = route.params?.attemptId;
-  const YoColors = useThemeColor();
+  const { colors } = useTheme();
   const [attemptedQuestions, setAttemptedQuestions] = useState<any>([]);
   const [chartData, setChartData] = useState<any>([{ value: 0, color: '#4CAF50' }, { color: '#F44336', value: 0, }]);
 
@@ -89,11 +90,11 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
         <View style={{ width: '58%' }}>
           <View style={common.row}>
             {renderDot('#4CAF50')}
-            <Text>Correct Answers: {chartData[0].value}</Text>
+            <Text style={{ color: colors.text }}>Correct Answers: {chartData[0].value}</Text>
           </View>
           <View style={common.row}>
             {renderDot('#F44336')}
-            <Text>Wrong Answers: {chartData[1].value}</Text>
+            <Text style={{ color: colors.text }}>Wrong Answers: {chartData[1].value}</Text>
           </View>
         </View>
 
@@ -111,7 +112,7 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
               <Text style={styles.questionTitle}>
                 {`${index + 1}. ${question.questionTitle}`}
               </Text>
-              <Text style={styles.questionDescription}>
+              <Text style={[styles.questionDescription, { color: colors.text }]}>
                 {question.questionDescription}
               </Text>
               {question.answerOptions.map((option: any, optionIndex: number) => (
@@ -128,13 +129,13 @@ const AttemptedQuestionsPreview = ({ route }: any) => {
                       : null,
                   ]}
                 >
-                  <Text style={styles.optionText}>
+                  <Text style={[styles.optionText, { color: colors.text }]}>
                     {option.title}
                   </Text>
                 </View>
               ))}
               {selectedOption && selectedOption.explanations && (
-                <Text style={styles.questionDescription}>
+                <Text style={[styles.questionDescription, { color: colors.text }]}>
                   {selectedOption.explanations}
                 </Text>
               )}
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   questionContainer: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   questionTitle: {
     fontSize: 16,

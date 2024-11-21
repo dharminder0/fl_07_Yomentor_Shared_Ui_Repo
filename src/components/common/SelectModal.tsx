@@ -13,6 +13,7 @@ import { Dimensions } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
 import { useThemeColor } from "../../assets/themes/useThemeColor";
 import { common } from "../../assets/styles/Common";
+import { useTheme } from "@react-navigation/native";
 
 interface CheckboxState {
   [id: string]: boolean;
@@ -21,7 +22,7 @@ const SelectModal = ({
   title = "",
   placeholder = "",
   data = [],
-  onChanged = (value: any) => {},
+  onChanged = (value: any) => { },
   isMulti = false,
   isDisabled = false,
   fieldError = false,
@@ -29,6 +30,7 @@ const SelectModal = ({
   refreshModal = false,
 }: any) => {
   const YoColors = useThemeColor();
+  const { colors } = useTheme();
   const { width, height } = Dimensions.get("window");
   const [isSelectModal, setIsSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any[]>([]);
@@ -115,7 +117,7 @@ const SelectModal = ({
               backgroundColor: "#fff",
             }}
             iconPosition="right"
-            icon={<Ionicons name="chevron-down" size={20} />}
+            icon={<Ionicons name="chevron-down" size={20} color={colors.text} />}
             disabled={isDisabled}
             title={
               <View
@@ -128,14 +130,14 @@ const SelectModal = ({
                   {selectedValue &&
                     selectedValue.length > 0 &&
                     selectedValue.map((item, key) => (
-                      <Text key={key} style={[styles.fs12, styles.fw500]}>
+                      <Text key={key} style={[styles.fs12, styles.fw500, { color: colors.text }]}>
                         {item}
                         {key != selectedValue?.length - 1 && ", "}
                       </Text>
                     ))}
                 </Text>
                 {placeholder && selectedValue.length <= 0 && (
-                  <Text style={[styles.fs12, styles.fw500, { width: "90%" }]}>
+                  <Text style={[styles.fs12, styles.fw500, { width: "90%", color: colors.text }]}>
                     {placeholder}
                   </Text>
                 )}
@@ -150,16 +152,13 @@ const SelectModal = ({
         onBackButtonPress={() => setIsSelectModal(false)}
         swipeDirection="down"
         onBackdropPress={() => setIsSelectModal(false)}
-        style={{ margin: 0 }}
+        style={{ margin: 0, justifyContent: 'flex-end' }}
         useNativeDriver
       >
         <View
           style={{
-            backgroundColor: YoColors.background,
-            width: width,
+            backgroundColor: colors.background,
             maxHeight: height - 200,
-            position: "absolute",
-            bottom: 0,
           }}
         >
           <View
@@ -173,23 +172,13 @@ const SelectModal = ({
           >
             <Text style={common.title}>{placeholder}</Text>
             {isMulti && (
-              <TouchableOpacity
-                style={{ paddingStart: 5 }}
+              <Button
+                title="Save"
+                type="outline"
                 onPress={() => setIsSelectModal(false)}
-              >
-                <Text
-                  style={{
-                    color: YoColors.secondary,
-                    borderWidth: 1,
-                    paddingHorizontal: 7,
-                    paddingVertical: 2,
-                    borderRadius: 2,
-                    borderColor: YoColors.secondary,
-                  }}
-                >
-                  Save
-                </Text>
-              </TouchableOpacity>
+                titleStyle={{ color: colors.primary, fontSize: 14 }}
+                buttonStyle={{ borderColor: colors.primary, borderWidth: 0.6, paddingHorizontal: 7, paddingVertical: 2 }}
+              />
             )}
           </View>
 
@@ -210,8 +199,8 @@ const SelectModal = ({
                           style={{
                             color:
                               item.name === selectedValue
-                                ? YoColors.secondary
-                                : "",
+                                ? colors.primary
+                                : colors.text,
                             paddingHorizontal: 5,
                           }}
                           numberOfLines={1}
@@ -233,7 +222,7 @@ const SelectModal = ({
                   </View>
                 ))
               ) : (
-                <Text>No Records</Text>
+                <Text style={{ color: colors.text }}>No Records</Text>
               )}
             </View>
           </ScrollView>

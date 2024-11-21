@@ -140,7 +140,7 @@ const LoginPage = () => {
             title="Login"
             onPress={handleSubmit(onSubmit)}
             loading={isLoader}
-            buttonStyle={{ backgroundColor: YoColors.primary }}
+            buttonStyle={{ backgroundColor: colors.primary }}
             titleStyle={{ fontWeight: "600" }}
             containerStyle={{ width: "100%", marginTop: 20 }}
           />
@@ -153,7 +153,7 @@ const LoginPage = () => {
               },
             ]}
           >
-            <Text style={[common.rText, { color: YoColors.text }]}>
+            <Text style={[common.fs12, { color: colors.text }]}>
               Create a new account
             </Text>
             <TouchableOpacity
@@ -161,7 +161,7 @@ const LoginPage = () => {
               activeOpacity={0.7}
               style={{ paddingVertical: 6 }}
             >
-              <Text style={[common.rText, { color: YoColors.primary }]}>
+              <Text style={[common.fs12, { color: colors.primary }]}>
                 {" "}
                 Sign up
               </Text>
