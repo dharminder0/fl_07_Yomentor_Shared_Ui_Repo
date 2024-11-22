@@ -306,7 +306,7 @@ const UserProfile = () => {
                   <Image
                     style={categoryType == 1 ? styles.cardImage : styles.cardImage}
                     resizeMode="contain"
-                    source={!selectedGrade?.icon ? image.knowledge : selectedGrade?.icon}
+                    source={!selectedGrade?.icon ? image.knowledge : { uri: selectedGrade?.icon }}
                   />
                   <Text style={[common.fs12, common.tCenter, { color: colors.text }]}>{selectedGrade.name}</Text>
                 </Card>
